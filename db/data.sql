@@ -19,6 +19,18 @@ INSERT INTO `target_audience` VALUES (2, 60, 69, "60-69");
 INSERT INTO `target_audience` VALUES (3, 70, 79, "70-79");
 INSERT INTO `target_audience` VALUES (4, 80, 89, "80-89");
 
+INSERT INTO [gehoortest].[dbo].[target_audience] VALUES  
+  (0, 18, '-18'),
+  (19, 29, '19-29'),
+  (30, 39, '30-39'),
+  (40, 49, '40-49'),
+  (50, 59, '50-59'),
+  (60, 69, '60-69'),
+  (70, 79, '70-79'),
+  (80, 89, '80-89'),
+  (90, 99, '90-99'),
+  (100, 109, '100+');
+
 INSERT INTO `test_target_audience` VALUES (1, 2);
 INSERT INTO `test_target_audience` VALUES (2, 3);
 

@@ -10,7 +10,7 @@
        
         
         <Button Name="Jallooo" Content="Data!" HorizontalAlignment="Left" Margin="242,197,0,0" VerticalAlignment="Top" MouseUp="Jallooo_MouseUp"/>
-        <TextBlock Name="Test" Text="{StaticResource connectionString}" HorizontalAlignment="Left" Margin="442,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="104" Width="199"/>
+        <TextBlock Name="Test" HorizontalAlignment="Left" Margin="442,155,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="104" Width="199"/>
 
     </Grid>
 </Window>

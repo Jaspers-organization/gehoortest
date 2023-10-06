@@ -17,7 +17,7 @@ namespace gehoortest_application.Repository
         //Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;"
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True;");
         }
     }
 
