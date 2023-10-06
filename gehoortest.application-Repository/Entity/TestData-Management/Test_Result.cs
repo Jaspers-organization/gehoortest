@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace gehoortest.application_Repository.Models.TestData_Management
 {
-    public class Test_result
+    public class Test_Result
     {
     }
 }

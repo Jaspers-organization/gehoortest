@@ -6,10 +6,10 @@ using gehoortest.application_Repository.Models.TestData_Management;
 
 namespace gehoortest_application.Repository
 {
-    public class Repository : DbContext
+    public abstract class Repository<T> : DbContext where T : class
     {
         public string ConnectionString { get; set; }
-        public DbSet<Test> Tests { get; set; }
+        public DbSet<T> values { get; set; }
         public Repository(string connectionString)
         {
             ConnectionString = connectionString;
