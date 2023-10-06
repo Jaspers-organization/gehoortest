@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace gehoortest_application.User_Interface
+namespace gehoortest.application_User.Interface
 {
     /// <summary>
     /// Interaction logic for App.xaml

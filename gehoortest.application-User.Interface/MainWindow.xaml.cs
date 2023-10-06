@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace gehoortest_application.User_Interface
+namespace gehoortest.application_User.Interface
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
