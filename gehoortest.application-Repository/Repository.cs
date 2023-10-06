@@ -14,7 +14,7 @@ namespace gehoortest_application.Repository
         {
             ConnectionString = connectionString;
         }
-        //"Server=(localdb)\\mssqllocaldb;Database=SchoolDb;Trusted_Connection=True;"
+        //Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True;"
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConnectionString);

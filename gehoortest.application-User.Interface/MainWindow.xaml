@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:gehoortest.application_User.Interface"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Name="pnlMainGrid" Background="LightBlue">
+       
+        
+        <Button Name="Jallooo" Content="Data!" HorizontalAlignment="Left" Margin="242,197,0,0" VerticalAlignment="Top" MouseUp="Jallooo_MouseUp"/>
+        <TextBlock Name="Test" Text="{StaticResource connectionString}" HorizontalAlignment="Left" Margin="442,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="104" Width="199"/>
 
     </Grid>
 </Window>

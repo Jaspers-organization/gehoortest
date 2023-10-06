@@ -23,6 +23,14 @@ namespace gehoortest.application_User.Interface
         public MainWindow()
         {
             InitializeComponent();
+
+        }
+
+
+
+        private void Jallooo_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Test.Text = "test";
         }
     }
 }
