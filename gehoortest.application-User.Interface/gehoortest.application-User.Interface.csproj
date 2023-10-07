@@ -6,6 +6,23 @@
     <RootNamespace>gehoortest.application_User.Interface</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <StartupObject>gehoortest.application_User.Interface.App</StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Remove="App.xaml" />
+	  <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\gehoortest.application-Repository\gehoortest.application-Repository.csproj" />
+    <ProjectReference Include="..\gehoorttest.application-Service\gehoorttest.application-Service.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace gehoortest.application_Repository.Models.BusinessData_Management
+namespace gehoortest.application_Repository.Models.BusinessData_Management;
+[Table("employee_branch")]
+public class Branch
 {
-    public class Branch
-    {
-     public int id { get; set; }
-        public string name { get; set; }
-        public bool is_active { get; set; }
-    }
+    [Column("id")]
+    public int Id { get; set; }
+
+    [Column("name")]
+    public string? Name { get; set; }
+
+    [Column("deleted")]
+    public bool Deleted { get; set; }
 }

@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace gehoortest.application_Repository.Models.TestData_Management
+namespace gehoortest.application_Repository.Models.TestData_Management;
+
+[Table("target_audience")]
+public class Target_Audience
 {
-    public class Target_Audience
-    {
-        public int id { get; set; }
-        public int range_from { get; set; }
-        public int range_to { get; set; }
+    [Column("id")]
+    public int Id { get; set; }
 
-    }
+    [Column("from")]
+    public byte From { get; set; }
+
+    [Column("to")]
+    public byte To { get; set; }
+
+    [Column("label")]
+    public string? Label { get; set; }
 }

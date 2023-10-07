@@ -1,17 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gehoortest.application_Repository.Models.LoginData_Management
+namespace gehoortest.application_Repository.Models.LoginData_Management;
+
+[Table("client_login")]
+public class Client_Login
 {
-    public class Client_Login
-    {
-        public int id { get; set; }
-        public string password_hash { get; set; }
-        public string password_salt { get; set; }
-        public string email { get; set; }
-        public bool is_active { get; set; }
-    }
+    [Column("id")]
+    public int id { get; set; }
+
+    [Column("password_hash")]
+    public string? Password_hash { get; set; }
+
+    [Column("password_salt")]
+    public string? Password_salt { get; set; }
+
+    [Column("email")]
+    public string? Email { get; set; }
+
+    [Column("active")]
+    public bool Active { get; set; }
+
 }
