@@ -10,9 +10,9 @@ public class TargetAudienceRepository : Repository
     public TargetAudienceRepository(string connectionString) : base(connectionString)
     {
     }
-       
-    public ObservableCollection<TargetAudience> GetAllAgesBelow(byte amount)
-    {        
+
+    public List<TargetAudience> GetAllAgesBelow(byte amount)
+    {
         return Get<TargetAudience>(t => t.From < amount);
     }
 }

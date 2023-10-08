@@ -9,12 +9,12 @@ using System.Windows.Input;
 namespace gehoortest.application_User.Interface.ViewModels;
 
 public class MainWindowViewModel : ObservableObject
-{    
+{
     public MainWindowViewModel(TestRepository context)
     {
-       // TargetAudience = context.GetDataFromTable<Target_Audience>();
-        TargetAudience = context.GetAllActiveTests();
-        
+        // TargetAudience = new ObservableCollection<Test>(context.GetAllActiveTests());
+        TargetAudience = new ObservableCollection<Test>(context.GetAllActiveTests());
+
     }
     public ICommand TestCommand { get; }
 

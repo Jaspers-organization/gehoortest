@@ -1,10 +1,8 @@
-﻿using Castle.Core.Resource;
-using gehoortest.application_Repository.Models.BusinessData_Management;
+﻿using gehoortest.application_Repository.Models.BusinessData_Management;
 using gehoortest.application_Repository.Models.LoginData_Management;
 using gehoortest.application_Repository.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace gehoortest_application.Repository;
@@ -59,16 +57,15 @@ public abstract class Repository : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-
     /// <summary>
     ///  Base Get function to retrieve all the data from a table
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TEntity">The table to get from</typeparam>
     /// <returns>All the data from a table</returns>
-    public IEnumerable<TEntity> Get<TEntity>() where TEntity : class
+    public List<TEntity> Get<TEntity>() where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
-        return new ObservableCollection<TEntity>(table.ToList());
+        return new List<TEntity>(table.ToList());
     }
 
     /// <summary>
@@ -77,15 +74,15 @@ public abstract class Repository : DbContext
     /// <typeparam name="TEntity">The table to get from</typeparam>
     /// <param name="predicate">The condition to be met</param>
     /// <returns>The data from the table</returns>
-    public ObservableCollection<TEntity> Get<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
+    public List<TEntity> Get<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
         if (predicate != null)
         {
-            return new ObservableCollection<TEntity>(table.Where(predicate).ToList());
+            return new List<TEntity>(table.Where(predicate).ToList());
         }
 
-        return new ObservableCollection<TEntity>(table.ToList());
+        return new List<TEntity>(table.ToList());
     }
 
     /// <summary>

@@ -11,7 +11,15 @@ public class TestRepository : Repository
     {
     }
 
-    public ObservableCollection<Test> GetAllActiveTests()
+    //example for getting data as anoynmous type (if you want to select certain fields.)
+    public List<object> GetAllActiveTests(byte amount)
+    {
+        return Get<TargetAudience>(t => t.From < amount)
+            .Select(v => new { v.From, v.To })
+            .ToList<object>();
+    }
+
+    public List<Test> GetAllActiveTests()
     {
         return Get<Test>(t => t.Active);
     }
