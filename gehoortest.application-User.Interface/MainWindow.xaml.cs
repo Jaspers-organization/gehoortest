@@ -19,12 +19,12 @@ namespace gehoortest.application_User.Interface;
 public partial class MainWindow : Window
 {
 
-    public MainWindow(MainWindowViewModel viewModel)
+    public MainWindow()
     {
-        DataContext = viewModel;
         InitializeComponent();
 
     }
+    
 
     private void Jallooo_MouseUp(object sender, MouseButtonEventArgs e)
     {
