@@ -10,14 +10,14 @@ namespace gehoortest.application_User.Interface.ViewModels;
 
 public class MainWindowViewModel : ObservableObject
 {    
-    public MainWindowViewModel(TargetAudienceRepository context)
+    public MainWindowViewModel(TestRepository context)
     {
        // TargetAudience = context.GetDataFromTable<Target_Audience>();
-        TargetAudience = context.GetAllAgesBelow(70);
+        TargetAudience = context.GetAllActiveTests();
         
     }
     public ICommand TestCommand { get; }
 
     //can this be generic?
-    public ObservableCollection<TargetAudience>? TargetAudience { get; }
+    public ObservableCollection<Test>? TargetAudience { get; }
 }

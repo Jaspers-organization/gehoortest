@@ -15,7 +15,7 @@ BEGIN
     );
 END;
 
-IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee_login')
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee')
 BEGIN
     CREATE TABLE employee_login (
         id INT NOT NULL IDENTITY(1,1),
@@ -51,12 +51,12 @@ BEGIN
 		test_data NVARCHAR(MAX) NOT NULL,
         active BIT NOT NULL DEFAULT 0,
         PRIMARY KEY (id),
-        FOREIGN KEY (employee_id) REFERENCES employee_login (id),
+        FOREIGN KEY (employee_id) REFERENCES employee (id),
 		FOREIGN KEY (target_audience_id) REFERENCES target_audience (id)
     );
 END;
 
-IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client_login')
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client')
 BEGIN
     CREATE TABLE client_login (
         id INT NOT NULL IDENTITY(1,1),
@@ -78,6 +78,6 @@ BEGIN
         test_answers NVARCHAR(MAX) NOT NULL,
         PRIMARY KEY (id),
         FOREIGN KEY (branch_id) REFERENCES branch (id),
-        FOREIGN KEY (client_id) REFERENCES client_login (id)
+        FOREIGN KEY (client_id) REFERENCES client (id)
     );
 END;

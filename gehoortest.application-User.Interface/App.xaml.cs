@@ -42,6 +42,7 @@ public partial class App : Application
                 string? connectionString = hostContext.Configuration.GetConnectionString("Default");
 
                 services.AddSingleton(new TargetAudienceRepository(connectionString));
+                services.AddSingleton(new TestRepository(connectionString));
 
                 //Add refrence to a Repository (Like above)
 

@@ -13,6 +13,7 @@
             AutoGenerateColumns="True"
             ItemsSource="{Binding TargetAudience}"
              EnableRowVirtualization="True"
+            EnableColumnVirtualization="True"
             ></DataGrid>
 
         <Button Name="Jallooo" Content="Data!" HorizontalAlignment="Left" Margin="242,197,0,0" VerticalAlignment="Top" MouseUp="Jallooo_MouseUp"/>
