@@ -19,14 +19,26 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee')
 BEGIN
     CREATE TABLE employee_login (
         id INT NOT NULL IDENTITY(1,1),
-        employee_number NVARCHAR(50) NULL,
-        full_name NVARCHAR(50) NULL,
         email NVARCHAR(50) NOT NULL,
-        password CHAR(64) NOT NULL,
+        password NCHAR(64) NOT NULL,
+        PRIMARY KEY (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee')
+BEGIN
+    CREATE TABLE employee (
+        id INT NOT NULL IDENTITY(1,1),
+        employee_number NVARCHAR(50) NULL,
+        first_name NVARCHAR(50) NOT NULL,
+        infix NVARCHAR(10) NULL,
+        last_name NVARCHAR(50) NOT NULL,
         branch_id INT NOT NULL,
+        employee_login_id INT NOT NULL,
         active BIT NOT NULL DEFAULT 1,
         PRIMARY KEY (id),
-        FOREIGN KEY (branch_id) REFERENCES branch (id)
+        FOREIGN KEY (branch_id) REFERENCES branch (id),
+        FOREIGN KEY (employee_login_id) REFERENCES employee_login (id)
     );
 END;
 
@@ -60,10 +72,22 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client')
 BEGIN
     CREATE TABLE client_login (
         id INT NOT NULL IDENTITY(1,1),
-		full_name NVARCHAR(50) NULL,
         email NVARCHAR(50) NOT NULL,
-        password CHAR(64) NOT NULL,
+        password NCHAR(64) NOT NULL,
         PRIMARY KEY (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client')
+BEGIN
+    CREATE TABLE client (
+        id INT NOT NULL IDENTITY(1,1),
+		first_name NVARCHAR(50) NULL,
+        infix NVARCHAR(10) NULL,
+        last_name NVARCHAR(50) NULL,
+        client_login_id INT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (client_login_id) REFERENCES client_login (id)
     );
 END;
 
