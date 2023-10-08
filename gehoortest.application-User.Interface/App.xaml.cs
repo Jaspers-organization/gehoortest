@@ -1,14 +1,10 @@
-﻿using gehoortest_application.Repository;
+﻿using gehoortest.application_User.Interface.ViewModels;
+using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace gehoortest.application_User.Interface;
@@ -34,7 +30,7 @@ public partial class App : Application
         Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
-                //Copy 2 lines of code below to add new View and ViewModel.
+                //Copy the 2 lines of code below to add new View and ViewModel.
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton(s => new MainWindow()
                 {
