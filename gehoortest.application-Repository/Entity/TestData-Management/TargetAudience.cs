@@ -3,7 +3,7 @@
 namespace gehoortest.application_Repository.Models.TestData_Management;
 
 [Table("target_audience")]
-public class Target_Audience
+public class TargetAudience
 {
     [Column("id")]
     public int Id { get; set; }

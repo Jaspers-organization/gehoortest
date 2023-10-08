@@ -2,24 +2,25 @@
 using gehoortest.application_Repository.Models.LoginData_Management;
 using gehoortest.application_Repository.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace gehoortest_application.Repository;
 
-public class Repository : DbContext
+public abstract class Repository : DbContext
 {
     public string ConnectionString { get; set; }
 
     public Repository(string connectionString) => ConnectionString = connectionString;
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //BusinessData-Management
         //modelBuilder.Entity<Branch>();
 
-        //modelBuilder.Entity<Employee_Branch>()
-        //    .HasKey(eb => new { eb.Employee_id, eb.Branch_id }); // Define the composite primary key
+        modelBuilder.Entity<Employee_Branch>()
+            .HasKey(eb => new { eb.Employee_id, eb.Branch_id }); // Define the composite primary key
         //modelBuilder.Entity<Employee_Branch>()
         //    .HasOne(eb => eb.Employee_id) // Employee_Branch has one Employee
         //    .WithMany(e => e.EmployeeBranches) // Employee can have multiple Employee_Branches
@@ -34,7 +35,7 @@ public class Repository : DbContext
         modelBuilder.Entity<Employee_Login>();
 
         //TestData-Management
-        modelBuilder.Entity<Target_Audience>();
+        modelBuilder.Entity<TargetAudience>();
 
         //modelBuilder.Entity<Test>()
         //    .HasOne(t => t.Employee) // Test has one Employee
@@ -62,19 +63,19 @@ public class Repository : DbContext
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <returns>All the data from a table</returns>
-    public ObservableCollection<TEntity> GetDataFromTable<TEntity>() where TEntity : class
+    public IEnumerable<TEntity> Get<TEntity>() where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
         return new ObservableCollection<TEntity>(table.ToList());
     }
 
     /// <summary>
-    /// Get function to retrieve data from table where condition met
+    /// Base Get function to retrieve data from table where condition met
     /// </summary>
     /// <typeparam name="TEntity">The table to get from</typeparam>
     /// <param name="predicate">The condition to be met</param>
     /// <returns>The data from the table</returns>
-    public ObservableCollection<TEntity> GetDataFromTable<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
+    public ObservableCollection<TEntity> Get<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
         if (predicate != null)
@@ -98,7 +99,7 @@ public class Repository : DbContext
     }
 
     /// <summary>
-    /// Insert function with condition
+    /// Base Insert function with condition
     /// </summary>
     /// <typeparam name="TEntity">The table to be inserted into</typeparam>
     /// <param name="entity">The entity to be inserted</param>
@@ -114,9 +115,8 @@ public class Repository : DbContext
         }
     }
 
-
     /// <summary>
-    /// Insert statement with condition that returns a boolean
+    /// Base Insert statement with condition that returns a boolean
     /// </summary>
     /// <typeparam name="TEntity">The table to be inserted into</typeparam>
     /// <param name="entity">The entity to be inserted</param>
@@ -144,7 +144,7 @@ public class Repository : DbContext
     }
 
     /// <summary>
-    /// A function to try and update a record in the database.
+    /// Base function to try and update a record in the database.
     /// </summary>
     /// <typeparam name="TEntity">The table to be updated into</typeparam>
     /// <param name="updatedEntity">Object with new values</param>
@@ -173,11 +173,11 @@ public class Repository : DbContext
             return false;
         }
     }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //turn this on to get loggin in ouput window.
-        //optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);\
+        //optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.UseSqlServer(ConnectionString);
     }

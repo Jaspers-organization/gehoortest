@@ -1,4 +1,6 @@
-﻿using gehoortest.application_User.Interface.ViewModels;
+﻿using gehoortest.application_Repository;
+using gehoortest.application_Repository.Models.TestData_Management;
+using gehoortest.application_User.Interface.ViewModels;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,9 +37,13 @@ public partial class App : Application
                 services.AddSingleton(s => new MainWindow()
                 {
                     DataContext = s.GetRequiredService<MainWindowViewModel>()
-                });                
-
+                });
                 //db string, set value in appsettings.json
-                services.AddSingleton(new Repository(hostContext.Configuration.GetConnectionString("Default")));
+                string? connectionString = hostContext.Configuration.GetConnectionString("Default");
+
+                services.AddSingleton(new TargetAudienceRepository(connectionString));
+
+                //Add refrence to a Repository (Like above)
+
             });
 }

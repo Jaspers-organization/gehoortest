@@ -2,11 +2,17 @@
 
 namespace gehoortest.application_Repository.Models.LoginData_Management;
 
-[Table("client_login")]
-public class Client_Login
+[Table("employee_login")]
+public class EmployeeLoginRepository
 {
     [Column("id")]
-    public int Id{ get; set; }
+    public int id { get; set; }
+
+    [Column("fullname")]
+    public string? Fullname { get; set; }
+
+    [Column("employee_number")]
+    public string? Employee_number { get; set; }
 
     [Column("password_hash")]
     public string? Password_hash { get; set; }

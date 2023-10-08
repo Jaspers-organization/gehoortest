@@ -2,7 +2,7 @@
 
 namespace gehoortest.application_Repository.Models.TestData_Management;
 [Table("test_result")]
-public class Test_Result
+public class TestResultRepository
 {
     [Column("id")]
     public int Id { get; set; }

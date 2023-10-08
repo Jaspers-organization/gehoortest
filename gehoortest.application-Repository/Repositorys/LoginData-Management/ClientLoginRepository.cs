@@ -3,7 +3,7 @@
 namespace gehoortest.application_Repository.Models.LoginData_Management;
 
 [Table("client_login")]
-public class Client_Login
+public class ClientLoginRepository
 {
     [Column("id")]
     public int Id{ get; set; }
