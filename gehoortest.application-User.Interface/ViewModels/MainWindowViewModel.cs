@@ -1,20 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using gehoortest.application_Repository.Models.TestData_Management;
+using gehoortest.application_User.Interface.Commands;
 using gehoortest_application.Repository;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml;
 
 namespace gehoortest.application_User.Interface.ViewModels;
 
 public class MainWindowViewModel : ObservableObject
 {
-
     public MainWindowViewModel(Repository context)
     {
         TargetAudience = context.GetDataFromTable<Target_Audience>();

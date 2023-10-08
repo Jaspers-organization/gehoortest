@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gehoortest.application_Repository.Models.LoginData_Management;
 
@@ -30,5 +25,4 @@ public class Employee_Login
 
     [Column("active")]
     public bool Active { get; set; }
-
 }
