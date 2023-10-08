@@ -15,7 +15,7 @@ BEGIN
     );
 END;
 
-IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee')
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'employee_login')
 BEGIN
     CREATE TABLE employee_login (
         id INT NOT NULL IDENTITY(1,1),
@@ -68,7 +68,7 @@ BEGIN
     );
 END;
 
-IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client')
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'client_login')
 BEGIN
     CREATE TABLE client_login (
         id INT NOT NULL IDENTITY(1,1),

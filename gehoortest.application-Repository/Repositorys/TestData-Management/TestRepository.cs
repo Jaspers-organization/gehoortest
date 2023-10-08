@@ -12,10 +12,10 @@ public class TestRepository : Repository
     }
 
     //example for getting data as anoynmous type (if you want to select certain fields.)
-    public List<object> GetAllActiveTests(byte amount)
+    public List<object> GetAllActiveTests(int id)
     {
-        return Get<TargetAudience>(t => t.From < amount)
-            .Select(v => new { v.From, v.To })
+        return Get<Test>(t => t.Id == id)
+            .Select(v => new { v.Active, v.TestData })
             .ToList<object>();
     }
 

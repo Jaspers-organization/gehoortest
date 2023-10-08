@@ -58,10 +58,10 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    ///  Base Get function to retrieve all the data from a table
+    /// Retrieves all data from a specified table.
     /// </summary>
-    /// <typeparam name="TEntity">The table to get from</typeparam>
-    /// <returns>All the data from a table</returns>
+    /// <typeparam name="TEntity">The table to retrieve data from.</typeparam>
+    /// <returns>All data from the specified table.</returns>
     public List<TEntity> Get<TEntity>() where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -69,11 +69,11 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    /// Base Get function to retrieve data from table where condition met
+    /// Retrieves data from a table based on a specified condition.
     /// </summary>
-    /// <typeparam name="TEntity">The table to get from</typeparam>
-    /// <param name="predicate">The condition to be met</param>
-    /// <returns>The data from the table</returns>
+    /// <typeparam name="TEntity">The table to retrieve data from.</typeparam>
+    /// <param name="predicate">The condition to be met.</param>
+    /// <returns>The retrieved data from the table.</returns>
     public List<TEntity> Get<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -86,10 +86,40 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    /// Base Insert function to insert anything into a table
+    /// Retrieves all data from a specified table asynchronously.
     /// </summary>
-    /// <typeparam name="TEntity">The table to be inserted into</typeparam>
-    /// <param name="entity">The entity to be inserted</param>
+    /// <typeparam name="TEntity">The table to retrieve data from.</typeparam>
+    /// <returns>All data from the specified table.</returns>
+    public async Task<List<TEntity>> GetAsync<TEntity>() where TEntity : class
+    {
+        DbSet<TEntity> table = Set<TEntity>();
+        return await table.ToListAsync();
+    }
+
+    /// <summary>
+    /// Retrieves data from a table based on a specified condition asynchronously.
+    /// </summary>
+    /// <typeparam name="TEntity">The table to retrieve data from.</typeparam>
+    /// <param name="predicate">The condition to be met.</param>
+    /// <returns>The retrieved data from the table.</returns>
+    public async Task<List<TEntity>> GetAsync<TEntity>(Func<TEntity, bool>? predicate = null) where TEntity : class
+    {
+        DbSet<TEntity> table = Set<TEntity>();
+        IQueryable<TEntity> query = table;
+
+        if (predicate != null)
+        {
+            query = query.Where(predicate).AsQueryable();
+        }
+
+        return await query.ToListAsync();
+    }
+
+    /// <summary>
+    /// Inserts a record into a table.
+    /// </summary>
+    /// <typeparam name="TEntity">The table to insert into.</typeparam>
+    /// <param name="entity">The entity to be inserted.</param>
     public void Insert<TEntity>(TEntity entity) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -98,11 +128,11 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    /// Base Insert function with condition
+    /// Inserts a record into a table based on a specified condition.
     /// </summary>
-    /// <typeparam name="TEntity">The table to be inserted into</typeparam>
-    /// <param name="entity">The entity to be inserted</param>
-    /// <param name="predicate">The condition to be met</param>
+    /// <typeparam name="TEntity">The table to insert into.</typeparam>
+    /// <param name="entity">The entity to be inserted.</param>
+    /// <param name="predicate">The condition that must be met.</param>
     public void Insert<TEntity>(TEntity entity, Func<TEntity, bool>? predicate = null) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -115,12 +145,12 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    /// Base Insert statement with condition that returns a boolean
+    /// Inserts a record into a table based on a specified condition.
     /// </summary>
-    /// <typeparam name="TEntity">The table to be inserted into</typeparam>
-    /// <param name="entity">The entity to be inserted</param>
-    /// <param name="predicate">The condition to be met</param>
-    /// <returns>Returns if succeded or not</returns>
+    /// <typeparam name="TEntity">The table to insert into.</typeparam>
+    /// <param name="entity">The entity to be inserted.</param>
+    /// <param name="predicate">An optional condition that must be met for insertion (default is null).</param>
+    /// <returns>True if the operation succeeded, or false if the condition was not met or an error occurred.</returns>
     public bool TryInsert<TEntity>(TEntity entity, Func<TEntity, bool>? predicate = null) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -143,12 +173,12 @@ public abstract class Repository : DbContext
     }
 
     /// <summary>
-    /// Base function to try and update a record in the database.
+    /// Inserts a record into a table based on a specified condition and returns a boolean indicating success.
     /// </summary>
-    /// <typeparam name="TEntity">The table to be updated into</typeparam>
-    /// <param name="updatedEntity">Object with new values</param>
-    /// <param name="predicate">The condition to be met</param>
-    /// <returns>Returns true or false based on if the opteration was successful</returns>
+    /// <typeparam name="TEntity">The table to insert into.</typeparam>
+    /// <param name="entity">The entity to be inserted.</param>
+    /// <param name="predicate">The condition to be met.</param>
+    /// <returns>True if the operation succeeded; otherwise, false.</returns>
     public bool TryUpdate<TEntity>(TEntity updatedEntity, Func<TEntity, bool> predicate) where TEntity : class
     {
         DbSet<TEntity> table = Set<TEntity>();
@@ -175,10 +205,9 @@ public abstract class Repository : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //turn this on to get loggin in ouput window.
+        //turn this on/off to get loggin in ouput window.
         optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.UseSqlServer(ConnectionString);
     }
 }
-
