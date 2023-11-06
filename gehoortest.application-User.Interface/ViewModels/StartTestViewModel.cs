@@ -118,7 +118,6 @@ public class StartTestViewModel : ObservableObject
     {
         // Reset to defaults
         QuestionText = "Hidden";
-        RadioButtons.Clear();
 
         Question nextQuestion = TestProgressData.GetNextQuestion();
 
@@ -133,11 +132,13 @@ public class StartTestViewModel : ObservableObject
 
             if (textQuestion.IsMultipleSelect)
             {
-                RadioButtons.Clear();
+                List<string> tempRadioButtons = new();
                 foreach (string option in textQuestion.Options)
                 {
-                    RadioButtons.Add(option);
+                    tempRadioButtons.Add(option);
                 }
+
+                RadioButtons = tempRadioButtons;
                 QuestionRadioButtons = "Visible";
             }
 
@@ -171,8 +172,6 @@ public class StartTestViewModel : ObservableObject
         {
             answer = SelectedOption;
         }
-
-        RadioButtons.Clear();
 
         TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
         TestProgressData.TestAnswers.Add(testAnswer);
