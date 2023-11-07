@@ -1,7 +1,6 @@
-﻿using gehoortest.application_Repository;
-using gehoortest.application_Repository.Models.TestData_Management;
+﻿using gehoortest.application_Repository.Models.TestData_Management;
 using gehoortest.application_User.Interface.ViewModels;
-using gehoortest_application.Repository;
+using gehoortest.application_User.Interface.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +23,7 @@ public partial class App : Application
 
         App app = new();
         app.InitializeComponent();
-        app.MainWindow = host.Services.GetRequiredService<MainWindow>();
+        app.MainWindow = host.Services.GetRequiredService<StartTest>();
         app.MainWindow.Visibility = Visibility.Visible;
         app.Run();
     }
@@ -33,10 +32,10 @@ public partial class App : Application
             .ConfigureServices((hostContext, services) =>
             {
                 //Copy the 2 lines of code below to add new View and ViewModel.
-                services.AddSingleton<MainWindowViewModel>();
-                services.AddSingleton(s => new MainWindow()
+                services.AddSingleton<StartTestViewModel>();
+                services.AddSingleton(s => new StartTest()
                 {
-                    DataContext = s.GetRequiredService<MainWindowViewModel>()
+                    DataContext = s.GetRequiredService<StartTestViewModel>()
                 });
                 //db string, set value in appsettings.json
                 string? connectionString = hostContext.Configuration.GetConnectionString("Default");
