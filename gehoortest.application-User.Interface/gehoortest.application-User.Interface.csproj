@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\gehoortest.application-Repository\gehoortest.application-Repository.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\gehoorttest.application-Service\gehoorttest.application-Service.csproj" />
   </ItemGroup>
 

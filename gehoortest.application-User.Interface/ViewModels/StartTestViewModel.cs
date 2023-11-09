@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using gehoortest.application_Repository.Models.TestData_Management;
+using DataAccess.Repositories;
 using gehoortest.application_User.Interface.Commands;
 using gehoorttest.application_Service.Classes;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace gehoortest.application_User.Interface.ViewModels;
 public class StartTestViewModel : ObservableObject
 {
     public TestProgressData TestProgressData { get; set; }
-    private gehoorttest.application_Service.Classes.Test test = new();
+    private Test test = new();
 
     private List<string> _radioButtons = new();
     private string _selectedOption = "";
