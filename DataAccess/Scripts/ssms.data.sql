@@ -8,74 +8,115 @@ DECLARE @branchId1 AS INT, @branchId2 AS INT;
 SELECT @branchId1 = [id] FROM [branch] WHERE [name] = 'vestiging 1';
 SELECT @branchId2 = [id] FROM [branch] WHERE [name] = 'vestiging 2';
 
--- The password for all accounts is: Test1234!
-<<<<<<< Updated upstream:gehoortest.application-Repository/Database Scripts/ssms.data.sql
-INSERT INTO [employee] VALUES
-	('#0001', 'medewerker 1', 'medewerker1@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b', @branchId1, 1),
-	('#0002', 'medewerker 2', 'medewerker2@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b', @branchId2, 1);
-
-DECLARE @employeeId1 AS INT, @employeeId2 AS INT; 
-SELECT @employeeId1 = [id] FROM [employee] WHERE [email] = 'medewerker1@gehoortest.nl';
-SELECT @employeeId2 = [id] FROM [employee] WHERE [email] = 'medewerker2@gehoortest.nl';
-=======
 INSERT INTO [employee_login] VALUES
-	('medewerker1@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b'),
-	('medewerker2@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b');
+	('medewerker@gehoortest.nl', '', 0),
+	('administrator@gehoortest.nl', '', 1);
 
 DECLARE @employeeLoginId1 AS INT, @employeeLoginId2 AS INT; 
-SELECT @employeeLoginId1 = [id] FROM [employee_login] WHERE [email] = 'medewerker1@gehoortest.nl';
-SELECT @employeeLoginId2 = [id] FROM [employee_login] WHERE [email] = 'medewerker2@gehoortest.nl';
+SELECT @employeeLoginId1 = [id] FROM [employee_login] WHERE [email] = 'medewerker@gehoortest.nl';
+SELECT @employeeLoginId2 = [id] FROM [employee_login] WHERE [email] = 'administrator@gehoortest.nl';
 
 INSERT INTO [employee] VALUES
-	('#0001', 'medewerker', null, '1', @branchId1, @employeeLoginId1, 1),
-	('#0002', 'medewerker', null, '2', @branchId2, @employeeLoginId2, 1);
+	(@employeeLoginId1, '#001', 'medewerker', NULL, 'klaas', 1),
+	(@employeeLoginId2, '#002', 'administrator', NULL,  'anne', 1);
 
 DECLARE @employeeId1 AS INT, @employeeId2 AS INT; 
-SELECT @employeeId1 = [id] FROM [employee] WHERE [first_name] = 'medewerker' AND [last_name] = '1';
-SELECT @employeeId2 = [id] FROM [employee] WHERE [first_name] = 'medewerker' AND [last_name] = '2';
->>>>>>> Stashed changes:gehoortest.application-Repository/Database/ssms.data.sql
+SELECT @employeeId1 = [id] FROM [employee] WHERE [employee_number] = '#001';
+SELECT @employeeId2 = [id] FROM [employee] WHERE [employee_number] = '#001';
 
 INSERT INTO [target_audience] VALUES  
+  (60, 69, '50-59'),
   (60, 69, '60-69'),
-  (70, 79, '70-79'),
-  (80, 89, '80-89');
+  (70, 79, '70-79');
 
 DECLARE @targetAudienceId1 AS INT, @targetAudienceId2 AS INT;
-SELECT @targetAudienceId1 = [id] FROM [target_audience] WHERE [label] = '60-69';
-SELECT @targetAudienceId2 = [id] FROM [target_audience] WHERE [label] = '70-79';
+SELECT @targetAudienceId1 = [id] FROM [target_audience] WHERE [label] = '50-59';
+SELECT @targetAudienceId2 = [id] FROM [target_audience] WHERE [label] = '60-69';
 
-INSERT INTO [test] VALUES ('Gehoortest voor 60-69', @employeeId1, @targetAudienceId1, '[]', 1);
-INSERT INTO [test] VALUES ('Gehoortest voor 70-79', @employeeId2, @targetAudienceId2, '[]', 1);
+INSERT INTO [test] VALUES 
+	(@targetAudienceId1, @employeeId1, 'Gehoortest voor 50-59', 1),
+	(@targetAudienceId2, @employeeId1, 'Gehoortest voor 60-69', 1);
 
--- The password for all accounts is: Test1234!
-<<<<<<< Updated upstream:gehoortest.application-Repository/Database Scripts/ssms.data.sql
-INSERT INTO [client] VALUES 
-	('client 1', 'client1@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b'),
-	('client 2', 'client2@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b');
+DECLARE @testId1 AS INT, @testId2 AS INT; 
+SELECT @testId1 = [id] FROM [test] WHERE [target_audience_id] = @targetAudienceId1;
+SELECT @testId2 = [id] FROM [test] WHERE [target_audience_id] = @targetAudienceId2;
 
-DECLARE @clientId1 AS INT, @clientId2 AS INT; 
-SELECT @clientId1 = [id] FROM [client] WHERE [email] = 'client1@gehoortest.nl';
-SELECT @clientId2 = [id] FROM [client] WHERE [email] = 'client2@gehoortest.nl';
-=======
-INSERT INTO [client_login] VALUES 
-	('client1@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b'),
-	('client2@gehoortest.nl', '0fadf52a4580cfebb99e61162139af3d3a6403c1d36b83e4962b721d1c8cbd0b');
+INSERT INTO [tone_audiometry_question] VALUES 
+	(@testId1, 1, 250, 30),
+	(@testId1, 2, 500, 30),
+	(@testId1, 3, 1000, 30),
+	(@testId1, 4, 2000, 30),
+	(@testId1, 5, 4000, 30),
+	(@testId1, 6, 8000, 30),
+	(@testId2, 1, 250, 30),
+	(@testId2, 2, 500, 30),
+	(@testId2, 3, 1000, 30),
+	(@testId2, 4, 2000, 30),
+	(@testId2, 5, 4000, 30),
+	(@testId2, 6, 8000, 30);
 
-DECLARE @clientLoginId1 AS INT, @clientLoginId2 AS INT; 
-SELECT @clientLoginId1 = [id] FROM [client_login] WHERE [email] = 'client1@gehoortest.nl';
-SELECT @clientLoginId2 = [id] FROM [client_login] WHERE [email] = 'client2@gehoortest.nl';
+INSERT INTO [text_question] VALUES 
+	(@testId1, 1, 'Wat voor werk doet u (of heeft u gedaan)?', 0, 1, NULL),
+	(@testId1, 2, 'In wat voor omgeving woont u?', 0, 1, NULL),
+	(@testId2, 1, 'Wat voor werk doet u (of heeft u gedaan)?', 0, 1, NULL),
+	(@testId2, 2, 'In wat voor omgeving woont u?', 0, 1, NULL);
 
-INSERT INTO [client] VALUES
-	('client', null, '1', @clientLoginId1),
-	('client', null, '2', @clientLoginId2);
+DECLARE @testQuestionId1 AS INT, @testQuestionId2 AS INT, @testQuestionId3 AS INT, @testQuestionId4 AS INT; 
+SELECT @testQuestionId1 = [id] FROM [text_question] WHERE [test_id] = @testId1 AND [question_number] = 1;
+SELECT @testQuestionId2 = [id] FROM [text_question] WHERE [test_id] = @testId1 AND [question_number] = 2;
+SELECT @testQuestionId3 = [id] FROM [text_question] WHERE [test_id] = @testId2 AND [question_number] = 1;
+SELECT @testQuestionId4 = [id] FROM [text_question] WHERE [test_id] = @testId2 AND [question_number] = 2;
 
-DECLARE @clientId1 AS INT, @clientId2 AS INT; 
-SELECT @clientId1 = [id] FROM [client] WHERE [first_name] = 'client' AND [last_name] = '1';
-SELECT @clientId2 = [id] FROM [client] WHERE [first_name] = 'client' AND [last_name] = '2';
->>>>>>> Stashed changes:gehoortest.application-Repository/Database/ssms.data.sql
+INSERT INTO [text_question_option] VALUES 
+	(@testQuestionId1, 'Kantoorbaan'),
+	(@testQuestionId1, 'In de bouw'),
+	(@testQuestionId1, 'Verkoper'),
+	(@testQuestionId2, 'Grote stad'),
+	(@testQuestionId2, 'Kleine stad'),
+	(@testQuestionId2, 'Dorp'),
+	(@testQuestionId3, 'Kantoorbaan'),
+	(@testQuestionId3, 'In de bouw'),
+	(@testQuestionId3, 'Verkoper'),
+	(@testQuestionId4, 'Grote stad'),
+	(@testQuestionId4, 'Kleine stad'),
+	(@testQuestionId4, 'Dorp');
 
 INSERT INTO [test_result] VALUES 
-	(@branchId1, @clientId1, '2023-10-01 09:00:00', 130, '[]'),
-	(@branchId1, null, '2023-10-02 09:30:00', 145, '[]'),
-	(@branchId2, @clientId2, '2023-10-03 10:00:00', 90, '[]'),
-	(@branchId2, @clientId2, '2023-10-04 11:00:00', 150, '[]');
+	(@targetAudienceId1, @branchId1, '2023-11-09 09:30:00', 180);
+
+DECLARE @testResultId1 AS INT;
+SELECT @testResultId1 = [id] FROM [test_result] WHERE [target_audience_id] = @targetAudienceId1;
+
+INSERT INTO [tone_audiometry_question_result] VALUES 
+	(@testResultId1, 250, 0, 30, 30),
+	(@testResultId1, 500, 0, 30, 35),
+	(@testResultId1, 1000, 0, 30, 30),
+	(@testResultId1, 2000, 0, 30, 30),
+	(@testResultId1, 4000, 0, 30, 35),
+	(@testResultId1, 8000, 0, 30, 35),
+	(@testResultId1, 250, 1, 30, 35),
+	(@testResultId1, 500, 1, 30, 30),
+	(@testResultId1, 1000, 1, 30, 30),
+	(@testResultId1, 2000, 1, 30, 30),
+	(@testResultId1, 4000, 1, 30, 30),
+	(@testResultId1, 8000, 1, 30, 30);
+
+INSERT INTO [text_question_result] VALUES 
+	(@testResultId1, 'Wat voor werk doet u (of heeft u gedaan)?'),
+	(@testResultId1, 'In wat voor omgeving woont u?');
+
+DECLARE @testQuestionResultId1 AS INT, @testQuestionResultId2 AS INT; 
+SELECT @testQuestionResultId1 = [id] FROM [text_question_result] WHERE [question] = 'Wat voor werk doet u (of heeft u gedaan)?';
+SELECT @testQuestionResultId2 = [id] FROM [text_question_result] WHERE [question] = 'In wat voor omgeving woont u?';
+
+INSERT INTO [text_question_option_result] VALUES 
+	(@testQuestionResultId1, 'Kantoorbaan'),
+	(@testQuestionResultId1, 'In de bouw'),
+	(@testQuestionResultId1, 'Verkoper'),
+	(@testQuestionResultId2, 'Grote stad'),
+	(@testQuestionResultId2, 'Kleine stad'),
+	(@testQuestionResultId2, 'Dorp');
+
+INSERT INTO [text_question_answer_result] VALUES 
+	(@testQuestionResultId1, 'Kantoorbaan'),
+	(@testQuestionResultId2, 'Grote stad');

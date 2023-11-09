@@ -45,8 +45,8 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'target_audience')
 BEGIN
     CREATE TABLE target_audience (
         id INT NOT NULL IDENTITY(1,1),
-        [from] TINYINT NULL,
-        [to] TINYINT NULL,
+        [from] INT NOT NULL,
+        [to] INT NOT NULL,
         label NVARCHAR(50) NOT NULL,
         PRIMARY KEY (id)
     );
@@ -85,7 +85,7 @@ BEGIN
         id INT NOT NULL IDENTITY(1,1),
         test_id INT NOT NULL,
         question_number INT NOT NULL,
-        question NVARCHAR(50) NOT NULL,
+        question NVARCHAR(100) NOT NULL,
         is_multiple_select BIT NOT NULL DEFAULT 0,
         has_input_field BIT NOT NULL DEFAULT 0,
         [image] NVARCHAR(50) NULL,
@@ -116,5 +116,52 @@ BEGIN
         PRIMARY KEY (id),
         FOREIGN KEY (target_audience_id) REFERENCES target_audience (id),
         FOREIGN KEY (branch_id) REFERENCES branch (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'tone_audiometry_question_result')
+BEGIN
+    CREATE TABLE tone_audiometry_question_result (
+        id INT NOT NULL IDENTITY(1,1),
+        test_result_id INT NOT NULL,
+        frequecy INT NOT NULL,
+		ear INT NOT NULL,
+        starting_decibels INT NOT NULL,
+		answer INT NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (test_result_id) REFERENCES test_result (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'text_question_result')
+BEGIN
+    CREATE TABLE text_question_result (
+        id INT NOT NULL IDENTITY(1,1),
+        test_result_id INT NOT NULL,
+        question NVARCHAR(100) NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (test_result_id) REFERENCES test_result (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'text_question_option_result')
+BEGIN
+    CREATE TABLE text_question_option_result (
+        id INT NOT NULL IDENTITY(1,1),
+        test_question_result_id INT NOT NULL,
+        [option] NVARCHAR(50) NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (test_question_result_id) REFERENCES text_question_result (id)
+    );
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'text_question_answer_result')
+BEGIN
+    CREATE TABLE text_question_answer_result (
+        id INT NOT NULL IDENTITY(1,1),
+        test_question_result_id INT NOT NULL,
+        answer NVARCHAR(50) NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY (test_question_result_id) REFERENCES text_question_result (id)
     );
 END;

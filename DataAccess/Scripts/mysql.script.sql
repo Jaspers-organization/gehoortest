@@ -1,3 +1,7 @@
+---------------------------------------
+--            NOT UPDATED            --
+---------------------------------------
+
 CREATE SCHEMA IF NOT EXISTS `gehoortest` DEFAULT CHARACTER SET utf8;
 USE `gehoortest` ;
 
