@@ -27,7 +27,7 @@
                         <ListBox SelectedItem="{Binding SelectedOption}" FontSize="20" Height="200" ItemsSource="{Binding RadioButtons}"/>
                     </StackPanel>
 
-                    <TextBox Visibility="{Binding QuestionInput}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
                     <Button Style="{StaticResource PrimaryButton}" Grid.Row="3" Content="Volgende vraag" Command="{Binding SaveQuestionCommand}"/>
                     
                 </Grid>

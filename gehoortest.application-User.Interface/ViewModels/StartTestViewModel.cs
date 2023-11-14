@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using gehoortest.application_Repository.Models.TestData_Management;
 using gehoortest.application_User.Interface.Commands;
+using gehoorttest.application_Service;
 using gehoorttest.application_Service.Classes;
+using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace gehoortest.application_User.Interface.ViewModels;
@@ -17,9 +19,13 @@ public class StartTestViewModel : ObservableObject
     private string _selectedOption = "";
     private string _introText = "Visable";
     private string _questionText = "Hidden";
+    private string _questionAudio = "Hidden";
     private string _questionRadioButtons = "Hidden";
     private string _questionInput = "Hidden";
+    private string _testEnd = "Hidden";
     private string _textQuestion = "Vraag...";
+    private string _questionInputText = "";
+    private int frequency = 0;
 
     public string SelectedOption
     {
@@ -39,6 +45,17 @@ public class StartTestViewModel : ObservableObject
         set { _questionText = value; OnPropertyChanged(nameof(QuestionText)); }
     }
 
+    public string QuestionAudio
+    {
+        get { return _questionAudio; }
+        set { _questionAudio = value; OnPropertyChanged(nameof(QuestionAudio)); }
+    }
+
+    public string TestEnd
+    {
+        get { return _testEnd; }
+        set { _testEnd = value; OnPropertyChanged(nameof(TestEnd)); }
+    }
     public string IntroText
     {
         get { return _introText; }
@@ -63,47 +80,15 @@ public class StartTestViewModel : ObservableObject
         set { _textQuestion = value; OnPropertyChanged(nameof(TextQuestion)); }
     }
 
+    public string QuestionInputText
+    {
+        get { return _questionInputText; }
+        set { _questionInputText = value; OnPropertyChanged(nameof(QuestionInputText)); }
+    }
+
     public StartTestViewModel(TestRepository context)
     {
-        // Create dummy data
-
-        // Create questions text
-        List<string> agesList = new();
-        agesList.Add("-18");
-        agesList.Add("19-29");
-        agesList.Add("30-49");
-        agesList.Add("50-69");
-        agesList.Add("70-79");
-        agesList.Add("80-89");
-        TextQuestion textQuestion1 = new(1, "In welke leeftijdsgroep bevindt u zich?", agesList, true, false);
-        test.AddTextQuestion(textQuestion1);
-
-        List<string> optionsList = new();
-        TextQuestion textQuestion2 = new(2, "Wat is uw naam?", optionsList, false, true);
-        test.AddTextQuestion(textQuestion2);
-
-        List<string> workFieldList = new();
-        workFieldList.Add("Kantoor baan");
-        workFieldList.Add("Op de bouw");
-        TextQuestion textQuestion3 = new(3, "In welk werkgebied werkt u?", workFieldList, true, true);
-        test.AddTextQuestion(textQuestion3);
-
-        List<string> hearTypesList = new();
-        hearTypesList.Add("Uitstekend");
-        hearTypesList.Add("Goed");
-        hearTypesList.Add("Matig");
-        hearTypesList.Add("Slecht");
-        TextQuestion textQuestion4 = new(4, "Hoe omschrijft u uw gehoor?", hearTypesList, true, false);
-        test.AddTextQuestion(textQuestion4);
-
-
-        // Create questionsaudimetry
-        /* AudiometryQuestion audiometryQuestion1 = new(5, 500, 40);
-         test.AddAudiometryQuestion(audiometryQuestion1);
-
-         AudiometryQuestion audiometryQuestion2 = new(6, 1500, 30);
-         test.AddAudiometryQuestion(audiometryQuestion2);*/
-
+        test = TestRepository.GetTest();
 
         TestProgressData = new(test);
     }
@@ -114,12 +99,19 @@ public class StartTestViewModel : ObservableObject
         ShowNextQuestion();
     }
 
-    public void ShowNextQuestion()
+    public async void ShowNextQuestion()
     {
         // Reset to defaults
         QuestionText = "Hidden";
+        QuestionAudio = "Hidden";
 
-        Question nextQuestion = TestProgressData.GetNextQuestion();
+        Question? nextQuestion = TestProgressData.GetNextQuestion();
+
+        if (nextQuestion is null)
+        {
+            TestEnd = "Visible";
+            return;
+        }
 
         if (nextQuestion is TextQuestion textQuestion)
         {
@@ -137,13 +129,13 @@ public class StartTestViewModel : ObservableObject
                 {
                     tempRadioButtons.Add(option);
                 }
-
                 RadioButtons = tempRadioButtons;
                 QuestionRadioButtons = "Visible";
             }
 
             if (textQuestion.HasInputField)
             {
+                QuestionInputText = "";
                 QuestionInput = "Visible";
             }
             return;
@@ -151,12 +143,14 @@ public class StartTestViewModel : ObservableObject
 
         if (nextQuestion is AudiometryQuestion audiometryQuestion)
         {
-            MessageBox.Show("Audio");
+            QuestionAudio = "Visible";
+            frequency = audiometryQuestion.Frequency;
+
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            MakeSound(TestProgressData);
+
             return;
         }
-
-        MessageBox.Show("Alle vragen zijn voltooid!");
-        throw new System.Exception("No question found");
     }
 
     public void SaveQuestion(object test)
@@ -166,7 +160,7 @@ public class StartTestViewModel : ObservableObject
         if (SelectedOption == "")
         {
             // Change to input field
-            answer = "No answer";
+            answer = QuestionInputText;
         }
         else
         {
@@ -180,8 +174,23 @@ public class StartTestViewModel : ObservableObject
         ShowNextQuestion();
     }
 
+    public void SaveAudioQuestion(object parameter)
+    {
+        TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
+        ShowNextQuestion();
+    }
+
+    public void MakeSound(object test)
+    {
+        AudioManager.PlaySound(frequency, 700);
+    }
+
     public ICommand StartTestCommand => new CustomCommands(StartTest);
 
     public ICommand SaveQuestionCommand => new CustomCommands(SaveQuestion);
+
+    public ICommand MakeSoundCommand => new CustomCommands(MakeSound);
+
+    public ICommand SaveAudioQuestionCommand => new CustomCommands(SaveAudioQuestion);
 }
 

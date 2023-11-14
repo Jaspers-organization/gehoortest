@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ApplicationDefinition Remove="App.xaml" />
+    <None Remove="Images\play.png" />
     <None Remove="Images\test.png" />
     <Content Include="favicon.ico" />
 	  <Page Include="App.xaml" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\play.png" />
     <Resource Include="Images\test.png" />
   </ItemGroup>
 

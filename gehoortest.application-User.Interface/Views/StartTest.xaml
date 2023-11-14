@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local="clr-namespace:gehoortest.application_User.Interface.Views" 
-        xmlns:viewmodels="clr-namespace:gehoortest.application_User.Interface.ViewModels"
+        xmlns:viewmodels="clr-namespace:gehoortest.application_User.Interface.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:StartTestViewModel}"
         mc:Ignorable="d"
         Title="StartTest" Height="1080" Width="1920">
@@ -24,6 +24,11 @@
             <local:TestExplaination Grid.Column="1" HorizontalContentAlignment="Stretch" Visibility="{Binding IntroText}" />
 
             <local:Question Grid.Column="1" HorizontalContentAlignment="Stretch" Visibility="{Binding QuestionText}"/>
+
+            <local:AudiometryQuestion Grid.Column="1" HorizontalAlignment="Stretch" Visibility="{Binding QuestionAudio}"/>
+
+            <local:TestEnd Grid.Column="1" HorizontalAlignment="Stretch" Visibility="{Binding TestEnd}"/>
+
         </Grid>
 
         <Grid Background="#DA0063" Grid.Row="2">

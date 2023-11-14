@@ -38,17 +38,8 @@ public class TestProgressData
                 CurrentQuestion++;
                 return Test.AudiometryQuestions[AudimertryTestProgress - 1];
             }
-            else
-            {
-                throw new Exception("No more questions");
-            }
         }
-        else
-        {
-            throw new Exception("No more questions");
-        }
+        return null;
     }
-
-
 }
 

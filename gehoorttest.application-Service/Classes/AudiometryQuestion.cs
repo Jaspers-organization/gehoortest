@@ -2,8 +2,8 @@
 
 public class AudiometryQuestion : Question
 {
-    int Frequency { get; set; }
-    int StartingVolume { get; set; }
+    public int Frequency { get; set; }
+    public int StartingVolume { get; set; }
 
     public AudiometryQuestion() { }
 
