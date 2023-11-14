@@ -15,20 +15,20 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Style="{StaticResource Header}" Grid.Row="0" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
 
-                    <StackPanel Grid.Row="1" Visibility="{Binding QuestionRadioButtons}">
-                        <ListBox SelectedItem="{Binding SelectedOption}" FontSize="20" Height="200" ItemsSource="{Binding RadioButtons}"/>
-                    </StackPanel>
-
-                    <TextBox Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
-                    <Button Style="{StaticResource PrimaryButton}" Grid.Row="3" Content="Volgende vraag" Command="{Binding SaveQuestionCommand}"/>
+                    <Grid Grid.Row="1" >
+                        <StackPanel>
+                            <ListBox Visibility="{Binding QuestionRadioButtons}" SelectedItem="{Binding SelectedOption}" FontSize="20" Height="Auto" ItemsSource="{Binding RadioButtons}"/>
+                            <TextBox Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" HorizontalAlignment="Stretch" Height="30" FontSize="20" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                    <Button Style="{StaticResource PrimaryButton}" Grid.Row="2" Content="Volgende vraag" Command="{Binding SaveQuestionCommand}"/>
                     
                 </Grid>
                 <Image Grid.Column="1" Source="/gehoortest.application-User.Interface;component/Images/test.png"></Image>

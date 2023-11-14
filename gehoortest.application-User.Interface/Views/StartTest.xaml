@@ -14,6 +14,26 @@
             <RowDefinition Height="13*" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid  Grid.Column="0">
+                <Button Style="{StaticResource IconButton}" HorizontalAlignment="Left" Margin="10,0">
+                    <Image Source="{StaticResource ic_close_white}" Margin="10" />
+                </Button>
+                <TextBlock Style="{StaticResource TitleBarText}" Margin="70,0" VerticalAlignment="Center">Stoppen</TextBlock>
+            </Grid>
+            <Grid  Grid.Column="1">
+                <TextBlock Style="{StaticResource TitleBarText}" Margin="70,0" HorizontalAlignment="Right" VerticalAlignment="Center">Vergoot tekst</TextBlock>
+                <Button Style="{StaticResource IconButton}" HorizontalAlignment="Right" Margin="10,0">
+                    <Image Source="{StaticResource ic_text_size_white}" Margin="10" />
+                </Button>
+            </Grid>
+        </Grid>
+        
         <Grid Background="lightgray" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -31,7 +51,7 @@
 
         </Grid>
 
-        <Grid Background="#DA0063" Grid.Row="2">
+        <Grid Background="white" Grid.Row="2">
         </Grid>
     </Grid>
 </Window>

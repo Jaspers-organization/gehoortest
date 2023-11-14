@@ -14,7 +14,7 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock FontWeight="Bold" FontSize="22" Grid.Row="0" Text=" Einde van de test" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource Header}" Grid.Row="0" Text="Einde van de test" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
                 <Image Grid.Column="1" Source="/gehoortest.application-User.Interface;component/Images/test.png"></Image>
             </Grid>
