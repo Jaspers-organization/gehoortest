@@ -12,12 +12,5 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
-    }
-
-
-    private void Jallooo_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-        Test.Text = "test";
     }
 }

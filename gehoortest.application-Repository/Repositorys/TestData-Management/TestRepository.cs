@@ -38,9 +38,9 @@ public class TestRepository : Repository
         TextQuestion textQuestion1 = new(1, "In welke leeftijdsgroep bevindt u zich?", agesList, true, false);
         test.AddTextQuestion(textQuestion1);
 
-        List<string> optionsList = new();
-        TextQuestion textQuestion2 = new(2, "Wat is uw naam?", optionsList, false, true);
-        test.AddTextQuestion(textQuestion2);
+        //List<string> optionsList = new();
+        //TextQuestion textQuestion2 = new(2, "Wat is uw naam?", optionsList, false, true);
+        //test.AddTextQuestion(textQuestion2);
 
         List<string> workFieldList = new();
         workFieldList.Add("Kantoor baan");

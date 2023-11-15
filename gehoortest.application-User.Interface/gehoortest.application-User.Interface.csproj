@@ -11,14 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ApplicationDefinition Remove="App.xaml" />
-    <None Remove="Images\play.png" />
-    <None Remove="Images\test.png" />
-    <Content Include="favicon.ico" />
-	  <Page Include="App.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
@@ -30,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\play.png" />
-    <Resource Include="Images\test.png" />
+    <Resource Include="Assets\Images\play.png" />
+    <Resource Include="Assets\Images\test.png" />
   </ItemGroup>
 
   <ItemGroup>

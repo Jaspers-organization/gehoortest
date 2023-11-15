@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:gehoortest.application_User.Interface.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920">
-    <Grid>
-        <Border Grid.Column="1" BorderThickness="4" CornerRadius="10" BorderBrush="DarkGray" Margin="0,100" Padding="20" Background="white">
+             Height="650" Width="1450">
+    <Border CornerRadius="40" Background="white" Padding="20">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="1"  Color="#dcdcdc"/>
+        </Border.Effect>
+       
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
@@ -16,23 +19,24 @@
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Style="{StaticResource Header}" Grid.Row="0" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
 
                     <StackPanel Grid.Row="1" Visibility="{Binding QuestionRadioButtons}">
-                        <ListBox SelectedItem="{Binding SelectedOption}" FontSize="20" Height="200" ItemsSource="{Binding RadioButtons}"/>
+                    <ListBox SelectedItem="{Binding SelectedOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
                     </StackPanel>
 
-                    <TextBox Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
-                    <Button Style="{StaticResource PrimaryButton}" Grid.Row="3" Content="Volgende vraag" Command="{Binding SaveQuestionCommand}"/>
+                <TextBlock Text="Anders, namelijk:" Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding QuestionInput}" />
+                    <TextBox Margin="250 0 0 0" Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
+                    
+                    <Button Style="{StaticResource SecondaryButton}" Grid.Row="3" Content="Volgende vraag" Command="{Binding SaveQuestionCommand}"/>
                     
                 </Grid>
-                <Image Grid.Column="1" Source="/gehoortest.application-User.Interface;component/Images/test.png"></Image>
+                <Image Grid.Column="1" Source="/gehoortest.application-User.Interface;component/Assets/Images/test.png"></Image>
             </Grid>
         </Border>
-    </Grid>
 </UserControl>
