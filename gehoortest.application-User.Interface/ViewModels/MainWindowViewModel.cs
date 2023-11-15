@@ -1,23 +1,22 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using gehoortest.application_Repository.Models.TestData_Management;
-using gehoortest.application_User.Interface.Commands;
-using gehoortest_application.Repository;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
+﻿using gehoortest.application_User.Interface.Stores;
 
 namespace gehoortest.application_User.Interface.ViewModels;
 
-public class MainWindowViewModel : ObservableObject
+internal class MainWindowViewModel : ViewModelBase
 {
-    public MainWindowViewModel(TestRepository context)
+
+    private readonly NavigationStore? _navigationStore;
+
+    public ViewModelBase? CurrentViewModel => _navigationStore?.CurrentViewModel;
+
+    public MainWindowViewModel(NavigationStore navigationStore)
     {
-        // TargetAudience = new ObservableCollection<Test>(context.GetAllActiveTests());
-        TargetAudience = new ObservableCollection<Test>(context.GetAllActiveTests());
-
+        _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
     }
-    public ICommand TestCommand { get; }
 
-    //can this be generic?
-    public ObservableCollection<Test>? TargetAudience { get; }
+    private void OnCurrentViewModelChanged()
+    {
+        OnPropertyChanged(nameof(CurrentViewModel));
+    }
 }

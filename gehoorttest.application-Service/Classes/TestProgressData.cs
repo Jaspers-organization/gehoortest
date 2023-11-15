@@ -1,4 +1,6 @@
-﻿namespace gehoorttest.application_Service.Classes;
+﻿using gehoorttest.application_Service.IModels;
+
+namespace gehoorttest.application_Service.Classes;
 
 public class TestProgressData
 {
@@ -7,6 +9,7 @@ public class TestProgressData
     public int CurrentQuestion { get; set; }
     public int TextTestProgress { get; set; }
     public int AudimertryTestProgress { get; set; }
+    public List<ToneAudiometryAnswer> ToneAudiometryAnswers { get; set; }
 
     public TestProgressData(Test test)
     {
@@ -15,6 +18,7 @@ public class TestProgressData
         CurrentQuestion = 0;
         TextTestProgress = 0;
         AudimertryTestProgress = 0;
+        ToneAudiometryAnswers = new List<ToneAudiometryAnswer>();
     }
 
     public Question GetNextQuestion()

@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:gehoortest.application_User.Interface.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1000" d:DesignWidth="800">
-    <Grid>
-        <Border Grid.Column="1" BorderThickness="4" CornerRadius="10" BorderBrush="DarkGray" Margin="100,100" Padding="20" Background="white">
-            <Grid>
+             Height="650" Width="500">
+    <Border CornerRadius="40" Background="white" Padding="20">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="1"  Color="#dcdcdc"/>
+        </Border.Effect>
+        <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*"/>
                     <RowDefinition Height="*"/>
@@ -22,19 +24,18 @@
 
                     <Grid Grid.Row="0" Background="LightGray">
                         <Button Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" FontSize="20" Command="{Binding MakeSoundCommand}" Background="Transparent" BorderThickness="0">
-                            <Image Source="/gehoortest.application-User.Interface;component/Images/play.png" Width="70" Height="70"/>
+                            <Image Source="/gehoortest.application-User.Interface;component/Assets/Images/play.png" Width="70" Height="70"/>
                         </Button>
                     </Grid>
-                    <TextBlock  Grid.Row="1" HorizontalAlignment="Center"  FontSize="26" >Druk op play om het geluid te herhalen.</TextBlock>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Center"  >Druk op play om het geluid te herhalen.</TextBlock>
                 </Grid>
 
 
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="32">Heeft u het geluid gehoord?</TextBlock>
-                <Button Grid.Row="1" Foreground="White" Content="Ja" Height="50" Width="200" HorizontalAlignment="Left" Background="#DA0063"  FontSize="20" Command="{Binding SaveAudioQuestionCommand}" CommandParameter="true"/>
-                <Button Grid.Row="1" Foreground="White" Content="Nee" Height="50" Width="200" HorizontalAlignment="Right" Background="#DA0063"  FontSize="20" Command="{Binding SaveAudioQuestionCommand}" CommandParameter="false"/>
+                <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0 40 0 0">Heeft u het geluid gehoord?</TextBlock>
+                <Button Grid.Row="1" Style="{StaticResource SecondaryButton}" Content="Ja" Height="50" Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding SaveAudioQuestionCommand}" CommandParameter="true"/>
+                <Button Grid.Row="1" Style="{StaticResource SecondaryButton}" Content="Nee" Height="50" Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding SaveAudioQuestionCommand}" CommandParameter="false"/>
             </Grid>
         </Border>
-    </Grid>
 </UserControl>
 
     
