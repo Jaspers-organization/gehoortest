@@ -1,0 +1,47 @@
+﻿<Window x:Class="gehoortest.application_User.Interface.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:gehoortest.application_User.Interface.Views" 
+        xmlns:viewModels="clr-namespace:gehoortest.application_User.Interface.ViewModels"
+        mc:Ignorable="d"
+        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
+    <!--WindowStyle="None"-->
+
+    <Grid Background="lightgray">
+        <Grid.Resources>
+            <!-- Define all pages here -->
+            <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
+                <views:StartTest />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
+                <views:TestResultView />
+            </DataTemplate>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1450" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="650" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
+
+        <ContentControl Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
+
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
+        
+    </Grid>
+
+    <!--<Window.InputBindings>
+        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding}" />
+    </Window.InputBindings>-->
+</Window>
