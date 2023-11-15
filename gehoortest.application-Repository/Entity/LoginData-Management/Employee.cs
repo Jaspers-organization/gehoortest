@@ -6,6 +6,8 @@ namespace gehoortest.application_Repository.Models.LoginData_Management;
 [Table("employee")]
 public class Employee
 {
+    public enum role { employee, adminstrator } // in de interface
+
     [Column("id")]
     public int Id { get; set; }
 

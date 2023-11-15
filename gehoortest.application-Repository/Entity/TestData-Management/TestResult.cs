@@ -1,8 +1,7 @@
-﻿using gehoortest.application_Repository.Models.BusinessData_Management;
-using gehoortest.application_Repository.Models.LoginData_Management;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gehoortest.application_Repository.Models.TestData_Management;
+
 [Table("test_result")]
 public class TestResult
 {
@@ -10,10 +9,10 @@ public class TestResult
     public int Id { get; set; }
 
     [Column("branch_id")]
-    public int BranchId { get; set; }
+    internal int BranchId { get; set; }
 
     [Column("client_id")]
-    public int ClientId { get; set; }
+    internal int? ClientId { get; set; }
 
     [Column("start_date_time")]
     public DateTime StartDate { get; set; }
@@ -22,9 +21,9 @@ public class TestResult
     public int TestDuration { get; set; }
 
     [Column("test_answers")]
-    public string? Test_answers { get; set; }
+    public string? TestAnswers { get; set; }
 
-    public virtual Client? Client { get; set; }
+    //public virtual IClient? Client { get; set; }
 
-    public virtual Branch? Branch { get; set; }
+    //public virtual IBranch Branch { get; set; }
 }
