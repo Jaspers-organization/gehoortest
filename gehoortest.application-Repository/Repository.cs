@@ -30,29 +30,9 @@ public abstract class Repository : DbContext
         // TestData-Management
         modelBuilder.Entity<TargetAudience>();
 
-        modelBuilder.Entity<Test>()
-             .HasOne(t => t.Employee)
-             .WithMany()
-             .HasForeignKey(t => t.EmployeeId)
-             .IsRequired();
+        modelBuilder.Entity<Test>();
 
-        modelBuilder.Entity<Test>()
-            .HasOne(t => t.TargetAudience)
-            .WithMany()
-            .HasForeignKey(t => t.TargetAudienceId)
-            .IsRequired();
-
-        modelBuilder.Entity<TestResult>()
-            .HasOne(tr => tr.Branch)
-            .WithMany()
-            .HasForeignKey(tr => tr.BranchId)
-            .IsRequired();
-        
-        modelBuilder.Entity<TestResult>()
-            .HasOne(tr => tr.Client)
-            .WithMany()
-            .HasForeignKey(tr => tr.ClientId);
-
+        modelBuilder.Entity<TestResult>();
 
         base.OnModelCreating(modelBuilder);
     }

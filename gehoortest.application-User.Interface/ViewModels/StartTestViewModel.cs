@@ -1,8 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using gehoortest.application_Repository.Models.TestData_Management;
+﻿using gehoortest.application_Repository.Models.TestData_Management;
 using gehoortest.application_User.Interface.Commands;
+using gehoortest.application_User.Interface.Stores;
 using gehoorttest.application_Service;
 using gehoorttest.application_Service.Classes;
+using gehoorttest.application_Service.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,14 +11,15 @@ using System.Windows.Input;
 
 namespace gehoortest.application_User.Interface.ViewModels;
 
-public class StartTestViewModel : ObservableObject
+internal class StartTestViewModel : ViewModelBase
 {
+    private readonly NavigationStore navigationStore;
     public TestProgressData TestProgressData { get; set; }
     private gehoorttest.application_Service.Classes.Test test = new();
 
     private List<string> _radioButtons = new();
     private string _selectedOption = "";
-    private string _introText = "Visable";
+    private string _introText = "Visible";
     private string _questionText = "Hidden";
     private string _questionAudio = "Hidden";
     private string _questionRadioButtons = "Hidden";
@@ -26,31 +28,28 @@ public class StartTestViewModel : ObservableObject
     private string _textQuestion = "Vraag...";
     private string _questionInputText = "";
     private int frequency = 0;
+    private TestResultViewModel? _testResultViewModel = null;
 
     public string SelectedOption
     {
         get { return _selectedOption; }
         set { _selectedOption = value; OnPropertyChanged(nameof(SelectedOption)); }
     }
-
     public List<string> RadioButtons
     {
         get { return _radioButtons; }
         set { _radioButtons = value; OnPropertyChanged(nameof(RadioButtons)); }
     }
-
     public string QuestionText
     {
         get { return _questionText; }
         set { _questionText = value; OnPropertyChanged(nameof(QuestionText)); }
     }
-
     public string QuestionAudio
     {
         get { return _questionAudio; }
         set { _questionAudio = value; OnPropertyChanged(nameof(QuestionAudio)); }
     }
-
     public string TestEnd
     {
         get { return _testEnd; }
@@ -61,33 +60,35 @@ public class StartTestViewModel : ObservableObject
         get { return _introText; }
         set { _introText = value; OnPropertyChanged(nameof(IntroText)); }
     }
-
     public string QuestionRadioButtons
     {
         get { return _questionRadioButtons; }
         set { _questionRadioButtons = value; OnPropertyChanged(nameof(QuestionRadioButtons)); }
     }
-
     public string QuestionInput
     {
         get { return _questionInput; }
         set { _questionInput = value; OnPropertyChanged(nameof(QuestionInput)); }
     }
-
     public string TextQuestion
     {
         get { return _textQuestion; }
         set { _textQuestion = value; OnPropertyChanged(nameof(TextQuestion)); }
     }
-
     public string QuestionInputText
     {
         get { return _questionInputText; }
         set { _questionInputText = value; OnPropertyChanged(nameof(QuestionInputText)); }
     }
-
-    public StartTestViewModel(TestRepository context)
+    public TestResultViewModel? TestResultViewModel
     {
+        get { return _testResultViewModel; }
+        set { _testResultViewModel = value; OnPropertyChanged(nameof(TestResultViewModel)); }
+    }
+
+    public StartTestViewModel(NavigationStore navigationStore) {
+        this.navigationStore = navigationStore;
+
         test = TestRepository.GetTest();
 
         TestProgressData = new(test);
@@ -109,7 +110,7 @@ public class StartTestViewModel : ObservableObject
 
         if (nextQuestion is null)
         {
-            TestEnd = "Visible";
+            ShowTestResults();
             return;
         }
 
@@ -174,15 +175,30 @@ public class StartTestViewModel : ObservableObject
         ShowNextQuestion();
     }
 
+    public int questionNumber = 1; // TODO: Temporary for the demo
     public void SaveAudioQuestion(object parameter)
     {
         TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
+
+        // ========
+        // TODO: Temporary for the demo
+        int decibels = (testAnswer.Answer == "true") ? 30 : 65; 
+        TestProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(questionNumber, 250, Ear.Left, 30, decibels));
+        questionNumber++;
+        // =========
+
         ShowNextQuestion();
     }
 
     public void MakeSound(object test)
     {
         AudioManager.PlaySound(frequency, 700);
+    }
+
+    // TODO: maybe rewrite this to a command
+    public void ShowTestResults()
+    {
+        navigationStore.CurrentViewModel = new TestResultViewModel(navigationStore, TestProgressData);
     }
 
     public ICommand StartTestCommand => new CustomCommands(StartTest);

@@ -24,8 +24,8 @@ public class Test
     [Column("active")]
     public bool Active { get; set; }
        
-    public virtual Employee? Employee { get; set; }
+    //public virtual Employee? Employee { get; set; }
 
-    public virtual TargetAudience? TargetAudience { get; set; }
+    //public virtual TargetAudience? TargetAudience { get; set; }
 
 }
