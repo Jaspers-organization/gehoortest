@@ -14,7 +14,11 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-					<StackPanel>
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
                     <TextBlock Style="{StaticResource Header}" Text="Uitleg van de gehoortest!"/>
                     <TextBlock>
                         U staat op het punt te beginnen aan de gehoortest. Deze gehoortest bestaat uit 2 onderdelen.
@@ -30,8 +34,8 @@
                     <TextBlock>
                         Klik op start test als u klaar bent om te beginnen.
                     </TextBlock>
-                    <Button Style="{StaticResource PrimaryButton}" Content="Start test" Command="{Binding StartTestCommand}"/>
 					</StackPanel>
+                    <Button Grid.Row="1" Style="{StaticResource PrimaryButton}" Content="Start test" Command="{Binding StartTestCommand}"/>
 				</Grid>
                 <Image Grid.Column="1" Source="/gehoortest.application-User.Interface;component/Images/test.png"></Image>
             </Grid>
