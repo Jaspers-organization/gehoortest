@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gehoortest.application-User.Interface", "gehoortest.application-User.Interface\gehoortest.application-User.Interface.csproj", "{6C0FDB16-0AB8-4176-830F-BABBFCA1CA4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{6C0FDB16-0AB8-4176-830F-BABBFCA1CA4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gehoorttest.application-Service", "gehoorttest.application-Service\gehoorttest.application-Service.csproj", "{D131537D-8EE9-404F-85B7-385E6F870556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{D131537D-8EE9-404F-85B7-385E6F870556}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gehoortest.application-Repository", "gehoortest.application-Repository\gehoortest.application-Repository.csproj", "{391EF2F7-3B78-4FE4-9623-C9992C3F7D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{391EF2F7-3B78-4FE4-9623-C9992C3F7D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
