@@ -1,5 +1,5 @@
 # Gehoortest applicatie
-Dit project is bedoeld voor de module *OOSDD* van Hogeschool Windesheim Zwolle 2de jaars semester 1
+Dit project is bedoeld voor de module *OOSDD* van Hogeschool Windesheim Zwolle 2de jaar semester 1
 
 Binnen deze applicatie behandelen wij de casus;
 
