@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.DataMappings;
 
-internal class ToneAudiometryMapping
+public class ToneAudiometryMapping
 {
     private struct FrequencyMapping
     {
@@ -53,7 +53,7 @@ internal class ToneAudiometryMapping
         return mapping.Decibels;
     }
 
-    internal static (int min, int max) GetHearingLossRange(int frequency)
+    public static (int min, int max) GetHearingLossRange(int frequency)
     {
         AssertValidFrequency(frequency);
 
