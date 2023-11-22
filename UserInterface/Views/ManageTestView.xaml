@@ -5,66 +5,47 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:images="clr-namespace:UserInterface.Assets.Images"
              mc:Ignorable="d" 
-             Height="650" Width="1450">
-    <Border CornerRadius="40" Background="white">
+             Height="740" Width="1780">
+    <Border Padding="30" CornerRadius="40" Background="white">
         <Border.Effect>
             <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
         </Border.Effect>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="40" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="40" />
-            </Grid.ColumnDefinitions>
+        <StackPanel Height="auto" Width="auto">
+            <FlowDocumentReader Height="638">
+                <FlowDocument>
+                    <Table >
+                        <Table.Columns>
+                            <TableColumn/>
+                            <TableColumn/>
+                            <TableColumn/>
+                        </Table.Columns>
 
-            <!-- Left side -->
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <TextBlock 
-                Grid.Row="0" 
-                HorizontalAlignment="Center"
-                Style="{StaticResource Header}"
-                Text="Testresultaten" />
-
-                <TextBlock 
-                Grid.Row="2" 
-                Text="U heeft de test succesvol afgerond." />
-
-                <TextBlock 
-                Grid.Row="4" 
-                Style="{StaticResource SubHeader}"
-                Text="{Binding TestResultText}" />
-
-                <TextBlock 
-                Grid.Row="6" 
-                TextWrapping="Wrap"
-                Text="{Binding TestResultExplanation}" />
-
-                <!--<TextBlock 
-                Grid.Row="8" 
-                TextWrapping="Wrap"
-                Text="U kunt de resultaten vrijblijvend naar uw e-mail versturen of uitprinten." />-->
-            </Grid>
-
-            <images:TestResult Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" />
-        </Grid>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell ColumnSpan="3" Background="Cyan">
+                                    <Paragraph>This cell spans all three columns.</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell Background="LightGray">
+                                    <Paragraph>Cell 1</Paragraph>
+                                </TableCell>
+                                <TableCell Background="LightGray">
+                                    <Paragraph>Cell 2</Paragraph>
+                                </TableCell>
+                                <TableCell Background="LightGray">
+                                    <Paragraph>Cell 3</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                </FlowDocument>
+            </FlowDocumentReader>
+            <Button Content="dsa"/>
+        </StackPanel>
+            
+        
+        
     </Border>
+    
 </UserControl>
