@@ -3,8 +3,10 @@ using System.Windows.Input;
 
 namespace UserInterface.Commands;
 
-public abstract class CommandBase : ICommand
+internal abstract class CommandBase : ICommand
 {
+    protected Action? command;
+
     public event EventHandler? CanExecuteChanged;
 
     public virtual bool CanExecute(object? parameter)
@@ -12,10 +14,8 @@ public abstract class CommandBase : ICommand
         return true;
     }
 
-    public abstract void Execute(object? parameter);
-
-    protected void OnCanExecuteChanged(object? parameter)
+    public void Execute(object? parameter)
     {
-        CanExecuteChanged?.Invoke(this, new EventArgs());
+        command?.Invoke();
     }
 }

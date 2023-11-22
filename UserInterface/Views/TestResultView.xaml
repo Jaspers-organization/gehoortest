@@ -4,67 +4,119 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:images="clr-namespace:UserInterface.Assets.Images"
-             mc:Ignorable="d" 
-             Height="650" Width="1450">
-    <Border CornerRadius="40" Background="white">
+             mc:Ignorable="d">
+    <Border CornerRadius="40" Background="white" Padding="30" Height="740" Width="1580">
         <Border.Effect>
             <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
         </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="4*" />
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
 
-            <!-- Left side -->
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
+            <StackPanel
+                Grid.Row="0" 
+                Grid.Column="0"
+                Orientation="Vertical">
                 <TextBlock 
-                    Grid.Row="0" 
                     HorizontalAlignment="Center"
                     Style="{StaticResource Header}"
                     Text="Testresultaten" />
-
+                <TextBlock Text="U heeft de test succesvol afgerond." />
                 <TextBlock 
-                    Grid.Row="2" 
-                    Text="U heeft de test succesvol afgerond." />
-
-                <TextBlock 
-                    Grid.Row="4" 
                     Style="{StaticResource SubHeader}"
                     Text="{Binding TestResultText}" />
-
                 <TextBlock 
-                    Grid.Row="6" 
+                    Margin="0 30 0 0"
                     TextWrapping="Wrap"
                     Text="{Binding TestResultExplanation}" />
+            </StackPanel>
 
-                <!--<TextBlock 
-                    Grid.Row="8" 
-                    TextWrapping="Wrap"
-                    Text="U kunt de resultaten vrijblijvend naar uw e-mail versturen of uitprinten." />-->
-            </Grid>
+            <images:PositiveTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding PositiveTestResult}"/>
+            <images:NegativeTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding NegativeTestResult}"/>
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Padding="0 0 0 30"
+                TextWrapping="Wrap" 
+                Text="U kunt de testresultaten vrijblijvend naar uw e-mail versturen." />
+            <!--of uitprinten-->
+
+            <StackPanel 
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <TextBlock
+                    Visibility="{Binding EmailError}"
+                    Foreground="Red"
+                    FontSize="26"
+                    FontWeight="SemiBold"
+                    Text="Vul een geldige e-mail in"/>
+                <StackPanel Orientation="Horizontal">
+                    <Border 
+                        CornerRadius="15"
+                        Height="70"
+                        Width="820"
+                        Background="#E6E6E6">
+                        <TextBox
+                            FontSize="32"
+                            Padding="10 0 10 0"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            VerticalContentAlignment="Center"
+                            Text="{Binding Email}"/>
+                    </Border>
+                    <Border 
+                        CornerRadius="35" 
+                        Height="70" 
+                        Width="420" 
+                        Background="{StaticResource PrimaryColor}"
+                        Margin="30 0 0 0">
+                        <Button
+                            FontSize="32"
+                            FontWeight="SemiBold"
+                            Foreground="White"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Content="Verstuur e-mail"
+                            Command="{Binding SendEmailCommand}"/>
+                    </Border>
+                    <!--<Border 
+        CornerRadius="35" 
+        Height="70" 
+        Width="220" 
+        Background="{StaticResource PrimaryColor}"
+        Margin="30 0 0 0">
+        <Button
+            FontSize="32"
+            FontWeight="SemiBold"
+            Foreground="White"
+            Background="{x:Null}"
+            BorderBrush="{x:Null}"
+            Content="(icon) Print"/>
+    </Border>-->
+                </StackPanel>
+            </StackPanel>
             
-            <images:TestResult Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" />
         </Grid>
     </Border>
 </UserControl>
