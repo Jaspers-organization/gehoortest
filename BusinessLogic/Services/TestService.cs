@@ -15,7 +15,7 @@ public class TestService
     {
         this.testRepository = testRepository;
     }
-    public ITest GetTest(string id)
+    public ITest GetTest(ITargetAudience targetAudience)
     {
         return null;
     }

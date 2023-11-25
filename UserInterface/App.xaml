@@ -8,6 +8,9 @@
                 <ResourceDictionary Source="Assets/Styling/Colors.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/TextStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ListViewStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/GlobalStyling.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
