@@ -1,4 +1,4 @@
-﻿using Service.IModels;
+﻿using BusinessLogic.IModels;
 using System.Collections.Generic;
 using System.Windows.Input;
 using UserInterface.Commands;

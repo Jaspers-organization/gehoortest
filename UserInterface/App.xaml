@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Assets/Styling/ListViewStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ComboBoxStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/GlobalStyling.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ToggleButton.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

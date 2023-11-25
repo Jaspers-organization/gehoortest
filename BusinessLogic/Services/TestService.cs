@@ -1,12 +1,12 @@
-﻿using Service.IModels;
-using Service.IRepositories;
+﻿using BusinessLogic.IModels;
+using BusinessLogic.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Services;
+namespace BusinessLogic.Services;
 
 public class TestService
 {

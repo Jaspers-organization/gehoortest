@@ -1,10 +1,11 @@
 ﻿using DataAccess.Models.BusinessData_Management;
+using BusinessLogic.IModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models.LoginData_Management;
 
 [Table("employee")]
-public class Employee
+public class Employee : IEmployee
 {
     public enum role { employee, adminstrator } // in de interface
 
@@ -13,21 +14,28 @@ public class Employee
 
     [Column("employee_number")]
     public string? EmployeeNumber { get; set; }
+    
 
-    [Column("fullname")]
-    public string? Fullname { get; set; }
+    public int EmployeeId { get ; set ; }
+    public string? FirstName { get ; set ; }
+    public string? LastName { get ; set ; }
+    public string? Infix { get ; set ; }
 
-    [Column("email")]
-    public string? Email { get; set; }
 
-    [Column("password")]
-    public string? Password { get; set; }
+    public string Fullname
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Infix))
+            {
+                return $"{FirstName} {LastName}";
+            }
+            else
+            {
+                return $"{FirstName} {Infix} {LastName}";
+            }
+        }
+        
+    }
 
-    [Column("password_hash")]
-    public int? BranchId { get; set; }
-
-    [Column("active")]
-    public bool Active { get; set; }
-
-    public virtual Branch? Branch { get; set; }
 }

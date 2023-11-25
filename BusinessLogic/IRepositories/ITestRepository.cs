@@ -1,6 +1,6 @@
-﻿using Service.IModels;
+﻿using BusinessLogic.IModels;
 
-namespace Service.IRepositories;
+namespace BusinessLogic.IRepositories;
 
 public interface ITestRepository
 {

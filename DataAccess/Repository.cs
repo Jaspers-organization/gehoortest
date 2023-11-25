@@ -21,11 +21,11 @@ public abstract class Repository : DbContext
         // LoginData-Management
         modelBuilder.Entity<Client>();
 
-        modelBuilder.Entity<Employee>()
-            .HasOne(e => e.Branch)
-            .WithMany()
-            .HasForeignKey(e => e.BranchId)
-            .IsRequired();
+        //modelBuilder.Entity<Employee>()
+        //    .HasOne(e => e.Branch)
+        //    .WithMany()
+        //    .HasForeignKey(e => e.BranchId)
+        //    .IsRequired();
 
         // TestData-Management
         modelBuilder.Entity<TargetAudience>();

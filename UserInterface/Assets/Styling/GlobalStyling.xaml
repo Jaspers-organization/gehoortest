@@ -3,7 +3,7 @@
     <Style TargetType="Control">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="LightGray" />
+                <Setter Property="Background" Value="Pink" />
             </Trigger>
         </Style.Triggers>
     </Style>

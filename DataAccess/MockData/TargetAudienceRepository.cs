@@ -1,6 +1,6 @@
 ﻿using DataAccess.Models.TestData_Management;
-using Service.IModels;
-using Service.IRepositories;
+using BusinessLogic.IModels;
+using BusinessLogic.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

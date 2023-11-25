@@ -1,4 +1,4 @@
-﻿using Service.IModels;
+﻿using BusinessLogic.IModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models.TestData_Management;

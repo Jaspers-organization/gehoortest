@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IModels;
 
-namespace Service.IModels;
+namespace BusinessLogic.IModels;
 
 public interface ITargetAudience : IModel
 {

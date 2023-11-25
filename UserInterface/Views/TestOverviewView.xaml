@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UserInterface.Views"
+             xmlns:types="clr-namespace:BusinessLogic.Projections;assembly=BusinessLogic"
              mc:Ignorable="d"
              Height="740" Width="1780">
 
@@ -12,61 +13,86 @@
         <Border.Effect>
             <DropShadowEffect BlurRadius="20" ShadowDepth="1"  Color="#dcdcdc"/>
         </Border.Effect>
-    
 
-    <Grid>
+
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" Margin="31,17,0,0">
-                <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="844" />
-                <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70" ItemsSource="{Binding AudiencesList}" Text="Selecteer een doelgroep"  DisplayMemberPath="." Margin="31,0,73,0" />
-                <Button Grid.Row="1"  Width="420" Height="70" Style="{StaticResource SecondaryButton}" Content="Nieuwe test maken" Command="{Binding StartTestCommand}"/>
-            </StackPanel>
-        </Grid>
+                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="844" />
+                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70" ItemsSource="{Binding AudiencesList}" Text="Selecteer een doelgroep"  DisplayMemberPath="." Margin="31,0,78,0" />
+                    <Button Grid.Row="1"  Width="420" Height="70" Style="{StaticResource PrimaryButton}" Content="Nieuwe test maken" Command="{Binding StartTestCommand}"/>
+                </StackPanel>
+            </Grid>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!-- Another dirty solution but corner radius on the listview just wouldnt work. -->
+                <Rectangle Width="1729" Fill="{StaticResource PrimaryColor}" Margin="5,103,0,5" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+                    <Rectangle.Effect>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
+                    </Rectangle.Effect>
+                    <Rectangle.RadiusX>5</Rectangle.RadiusX>
+                    <Rectangle.RadiusY>5</Rectangle.RadiusY>
+                </Rectangle>
 
-                <ListView Width="1718" Height="580" ItemsSource="{Binding YourCollection}" Style="{StaticResource ListViewStyle}" Margin="11,97,0,0">
-                <ListView.View>
-                    <GridView>
-                        <GridView.ColumnHeaderContainerStyle>
-                            <Style TargetType="{x:Type GridViewColumnHeader}"
+                <ListView Width="1718" Height="580" Name="TestsList"  ItemsSource="{Binding TestCollection}" Style="{StaticResource ListViewStyle}" Margin="11,97,0,0">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}"
                                     BasedOn="{StaticResource ListViewHeaderStyle}" />
-                        </GridView.ColumnHeaderContainerStyle>
-                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
-                        <GridViewColumn Header="Made By" DisplayMemberBinding="{Binding MadeBy}" />
-                        <GridViewColumn Header="Status">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Status" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Button 1" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Button 2" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn Width="500" Header="Title" />
+                            <GridViewColumn Width="300" Header="Gemaakt door" />
+                            <GridViewColumn Width="100" Header="Status" />
+                            <GridViewColumn Width="250" Header="Tekst"   />
+                            <GridViewColumn Width="250" Header="Toon"  />
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Aanpassen" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="V" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type types:TestProjection}">
+                            <Grid Height="Auto" Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="500"/>
+                                    <ColumnDefinition Width="300"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="250"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Bindings to display data -->
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" TextWrapping="NoWrap"/>
+                                <TextBlock Grid.Column="1" Text="{Binding EmployeeName}"  TextWrapping="NoWrap"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Active}"  TextWrapping="NoWrap"/>
+                                <TextBlock Grid.Column="3" Text="{Binding AmountOfTextQuestions}"  TextWrapping="NoWrap"/>
+                                <TextBlock Grid.Column="4" Text="{Binding AmountOfToneAudiometryQuestions}"  TextWrapping="NoWrap"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
-    </Grid>
     </Border>
 </UserControl>
