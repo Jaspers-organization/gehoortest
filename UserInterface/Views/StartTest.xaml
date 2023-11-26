@@ -3,13 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:local="clr-namespace:UserInterface.Views" 
-        xmlns:viewmodels="clr-namespace:UserInterface.ViewModels" 
-        mc:Ignorable="d"
-        Height="650" Width="1450">
+        xmlns:Views="clr-namespace:UserInterface.Views" 
+        mc:Ignorable="d">
     <Grid>
-        <local:TestExplaination Visibility="{Binding IntroText}" />
-        <local:Question Visibility="{Binding QuestionText}" />
-        <local:AudiometryQuestion Visibility="{Binding QuestionAudio}" />
+        <Views:TestExplaination Visibility="{Binding IntroText}" />
+        <Views:Question Visibility="{Binding QuestionText}" />
+        <Views:AudiometryQuestion Visibility="{Binding QuestionAudio}" />
     </Grid>
 </UserControl>
