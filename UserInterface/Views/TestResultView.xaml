@@ -4,67 +4,101 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:images="clr-namespace:UserInterface.Assets.Images"
-             mc:Ignorable="d" 
-             Height="650" Width="1450">
-    <Border CornerRadius="40" Background="white">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
-        </Border.Effect>
+             mc:Ignorable="d">
+    <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="4*" />
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
 
-            <!-- Left side -->
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
+            <StackPanel
+                Grid.Row="0" 
+                Grid.Column="0"
+                Orientation="Vertical">
                 <TextBlock 
-                    Grid.Row="0" 
-                    HorizontalAlignment="Center"
                     Style="{StaticResource Header}"
-                    Text="Testresultaten" />
-
+                    HorizontalAlignment="Center"
+                    Text="Testresultaten"/>
                 <TextBlock 
-                    Grid.Row="2" 
-                    Text="U heeft de test succesvol afgerond." />
-
+                    Style="{StaticResource Text}" 
+                    Text="U heeft de test succesvol afgerond."/>
                 <TextBlock 
-                    Grid.Row="4" 
                     Style="{StaticResource SubHeader}"
-                    Text="{Binding TestResultText}" />
-
+                    Margin="0 30 0 0"
+                    Text="{Binding TestResultText}"/>
                 <TextBlock 
-                    Grid.Row="6" 
+                    Style="{StaticResource Text}"
+                    Margin="0 30 0 0"
                     TextWrapping="Wrap"
-                    Text="{Binding TestResultExplanation}" />
+                    Text="{Binding TestResultExplanation}"/>
+            </StackPanel>
 
-                <!--<TextBlock 
-                    Grid.Row="8" 
-                    TextWrapping="Wrap"
-                    Text="U kunt de resultaten vrijblijvend naar uw e-mail versturen of uitprinten." />-->
-            </Grid>
+            <images:PositiveTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding PositiveTestResult}"/>
+            <images:NegativeTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding NegativeTestResult}"/>
+
+            <TextBlock
+                Style="{StaticResource Text}"
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Padding="0 0 0 15"
+                TextWrapping="Wrap" 
+                Text="U kunt de testresultaten vrijblijvend naar uw e-mail versturen." />
+            <!--of uitprinten-->
+
+            <StackPanel 
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <TextBlock
+                    Style="{StaticResource Text}"
+                    Visibility="{Binding EmailError}"
+                    Foreground="Red"
+                    Padding="0 0 0 15"
+                    Text="Vul een geldige e-mail in"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox 
+                        Style="{StaticResource InputField_XXL}" 
+                        Text="{Binding Email}"/>
+                    <Button 
+                        Style="{StaticResource PrimaryButton_M}" 
+                        Margin="30 0 0 0"
+                        Content="Verstuur e-mail" 
+                        Command="{Binding SendEmailCommand}"/>
+                    <!--<Border 
+        CornerRadius="35" 
+        Height="70" 
+        Width="220" 
+        Background="{StaticResource PrimaryColor}"
+        Margin="30 0 0 0">
+        <Button
+            FontSize="32"
+            FontWeight="SemiBold"
+            Foreground="White"
+            Background="{x:Null}"
+            BorderBrush="{x:Null}"
+            Content="(icon) Print"/>
+    </Border>-->
+                </StackPanel>
+            </StackPanel>
             
-            <images:TestResult Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" />
         </Grid>
     </Border>
 </UserControl>

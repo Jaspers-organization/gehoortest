@@ -8,10 +8,15 @@
         mc:Ignorable="d"
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
-
-    <Grid Background="lightgray">
+    <Grid Background="{StaticResource SecondaryBackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="880"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Define all pages here -->
         <Grid.Resources>
-            <!-- Define all pages here -->
             <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
                 <views:StartTest />
             </DataTemplate>
@@ -20,27 +25,22 @@
             </DataTemplate>
         </Grid.Resources>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="1450" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="650" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
-        </Grid.RowDefinitions>
-        
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
+        <Rectangle 
+            Fill="{StaticResource PrimaryBackgroundColor}"
+            Grid.Row="0"/>
 
-        <ContentControl Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
+        <ContentControl 
+            Grid.Row="1"
+            Margin="70"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="{Binding CurrentViewModel}" />
 
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
-        
+        <Rectangle 
+            Fill="{StaticResource PrimaryBackgroundColor}"
+            Grid.Row="2"/>
     </Grid>
-
+    
     <!--<Window.InputBindings>
         <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding}" />
     </Window.InputBindings>-->
