@@ -6,9 +6,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Assets/Styling/Colors.xaml"/>
-                <ResourceDictionary Source="Assets/Styling/TextStyles.xaml"/>
-                <ResourceDictionary Source="Assets/Styling/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/TextStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/InputFieldStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ContentContainerStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
