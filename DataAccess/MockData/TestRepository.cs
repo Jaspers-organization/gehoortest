@@ -26,12 +26,12 @@ namespace DataAccess.MockData
                     TextQuestions = new List<ITextQuestion>{
                         new TextQuestion { Id = 1, Question = "Test test test", QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
                         new TextQuestion { Id = 2, Question = "Test 2 ", QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
-                        new TextQuestion { Id = 3, Question = "Test 3 ", QuestionNumber = 3, HasInputField = false, IsMultiSelect = true}
+                        new TextQuestion { Id = 3, Question = "Test 3 ", QuestionNumber = 3,  HasInputField = false, IsMultiSelect = true}
                     },
                     ToneAudiometryQuestions = new List<IToneAudiometryQuestion>{
-                        new ToneAudiometryQuestion { Id = 1, Frequency = 1000, QuestionNumber = 1},
-                        new ToneAudiometryQuestion { Id = 2, Frequency = 2000, QuestionNumber = 2},
-                        new ToneAudiometryQuestion { Id = 3, Frequency = 3000, QuestionNumber = 3}
+                        new ToneAudiometryQuestion { Id = 1, Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
+                        new ToneAudiometryQuestion { Id = 2, Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
+                        new ToneAudiometryQuestion { Id = 3, Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
                     },Employee =  _employee
                 },
             };

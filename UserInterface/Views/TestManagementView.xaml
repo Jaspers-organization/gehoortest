@@ -65,23 +65,34 @@
                         </Rectangle>
 
                         <!-- The ListView and its content -->
-                        <ListView Width="410" Name="AudioQuestions" ItemsSource="{Binding TestCollection}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                        <ListView Width="410" Name="AudioQuestions" ItemsSource="{Binding AudioQuestions}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource ListViewHeaderStyle}" />
                                     </GridView.ColumnHeaderContainerStyle>
-                                    <GridViewColumn Width="auto">
+                                    <GridViewColumn Width="50" Header="Nr">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Nr}" />
+                                                <TextBlock Style="{StaticResource Text}" Text="{Binding QuestionNumber}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="200">
+                                    <GridViewColumn Header="Hertz" Width="140">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Hz}" />
+                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Frequency}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                    <Button.Content>
+                                                        <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
+                                                    </Button.Content>
+                                                </Button>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -120,23 +131,34 @@
                         </Rectangle>
 
                         <!-- The ListView and its content -->
-                        <ListView Width="610" Name="TextQuestions" ItemsSource="{Binding TestCollection}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                        <ListView Width="610" Name="TextQuestions" ItemsSource="{Binding TextQuestions}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource ListViewHeaderStyle}" />
                                     </GridView.ColumnHeaderContainerStyle>
-                                    <GridViewColumn Width="auto">
+                                    <GridViewColumn Header="Nr" Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Nr}" />
+                                                <TextBlock Style="{StaticResource Text}" Text="{Binding QuestionNumber}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="400">
+                                    <GridViewColumn Header="Vraag" Width="340">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Vraag}" />
+                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Question}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                    <Button.Content>
+                                                        <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
+                                                    </Button.Content>
+                                                </Button>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
