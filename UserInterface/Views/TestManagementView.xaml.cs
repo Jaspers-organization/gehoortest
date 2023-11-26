@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UserInterface.Views
 {
     /// <summary>
-    /// Interaction logic for Tests.xaml
+    /// Interaction logic for TestManagementView.xaml
     /// </summary>
-    public partial class Tests : UserControl
+    public partial class TestManagementView : UserControl
     {
-        public Tests()
+        public TestManagementView()
         {
             InitializeComponent();
         }

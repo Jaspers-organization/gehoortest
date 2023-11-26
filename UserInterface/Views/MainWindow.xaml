@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:UserInterface.Views" 
         xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
         mc:Ignorable="d"
-        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
+        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized" >
     <!--WindowStyle="None"-->
 
     <Grid Background="lightgray">
@@ -20,6 +20,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
+                <views:TestManagementView />
             </DataTemplate>
         </Grid.Resources>
 

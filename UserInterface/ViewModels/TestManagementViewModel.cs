@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using UserInterface.Commands;
+using UserInterface.Commands.TestManagementCommands;
 using UserInterface.Stores;
 using UserInterface.Views;
 
@@ -11,14 +12,22 @@ internal class TestManagementViewModel : ViewModelBase
 {
     private readonly NavigationStore? _navigationStore;
     public ITest test { get; set; }
-    public List<ITest> tests { get; set; }
+    public ICommand SaveTestCommand { get; }
+    public ICommand DeleteTestCommand { get; }
 
     public TestManagementViewModel(NavigationStore navigationStore, ITest test)
     {
         _navigationStore = navigationStore;
         this.test = test;
-    }
+        SaveTestCommand = new SaveTestCommand(SaveTest);
+        DeleteTestCommand = new DeleteTestCommand(DeleteTest);
 
+    }
+    public TestManagementViewModel(NavigationStore navigationStore)
+    {
+        _navigationStore = navigationStore;
+        SaveTestCommand = new SaveTestCommand(SaveTest);
+    }
     public void CreateTest()
     {
 
@@ -47,20 +56,8 @@ internal class TestManagementViewModel : ViewModelBase
     {
 
     }
-    public void ToggleStatus()
+    public void SaveTest(ITest test)
     {
 
     }
-    public void SaveTest()
-    {
-
-    }
-
-
-    //public ICommand StartTestCommand => new CustomCommands();
-
-
-
-
-
 }

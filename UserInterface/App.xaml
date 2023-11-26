@@ -8,13 +8,14 @@
                 <ResourceDictionary Source="Assets/Styling/Colors.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/TextStyles.xaml"/>
-                <ResourceDictionary Source="Assets/Styling/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ListViewStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ComboBoxStyle.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/GlobalStyling.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ToggleButton.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/trashcan.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/wave-sine.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/message-question.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/InputFieldStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ContentContainerStyles.xaml"/>

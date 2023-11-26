@@ -3,19 +3,22 @@ using System.Windows.Input;
 
 namespace UserInterface.Commands;
 
-public abstract class CommandBase : ICommand
+public abstract class CommandBase<T> : ICommand
 {
     public event EventHandler? CanExecuteChanged;
+
+    protected Action<T>? command;
 
     public virtual bool CanExecute(object? parameter)
     {
         return true;
     }
 
-    public abstract void Execute(object? parameter);
-
-    protected void OnCanExecuteChanged(object? parameter)
+    public void Execute(object? parameter)
     {
-        CanExecuteChanged?.Invoke(this, new EventArgs());
+        if (parameter is T typedParameter && command != null)
+        {
+            command.Invoke(typedParameter);
+        }
     }
 }

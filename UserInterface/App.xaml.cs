@@ -22,7 +22,7 @@ public partial class App : Application
     {
         //MainWindow = new Sandbox();
  
-        _navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
+        //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
         //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
         _navigationStore.CurrentViewModel = new TestOverviewViewModel(_navigationStore);
         MainWindow = new MainWindow();

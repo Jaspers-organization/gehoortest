@@ -106,5 +106,5 @@
             </GeometryDrawing>
         </DrawingGroup>
     </DrawingGroup>
-    <DrawingImage Drawing="{StaticResource trashcan}" x:Key="di_trashcan_hover"/>
+    <DrawingImage Drawing="{StaticResource trashcan_hover}" x:Key="di_trashcan_hover"/>
 </ResourceDictionary>

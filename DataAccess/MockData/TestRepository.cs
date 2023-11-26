@@ -71,6 +71,16 @@ namespace DataAccess.MockData
 
             TestProjection testProjection = new TestProjection
             {
+                Id = test.Id,
+                Title = test.Title,
+                AmountOfTextQuestions = test.TextQuestions.Count,
+                AmountOfToneAudiometryQuestions = test.ToneAudiometryQuestions.Count,
+                Active = test.Active,
+                EmployeeName = test.Employee.Fullname
+            };
+            TestProjection testProjectionn = new TestProjection
+            {
+                Id = test.Id,
                 Title = test.Title,
                 AmountOfTextQuestions = test.TextQuestions.Count,
                 AmountOfToneAudiometryQuestions = test.ToneAudiometryQuestions.Count,
@@ -78,7 +88,7 @@ namespace DataAccess.MockData
                 EmployeeName = test.Employee.Fullname
             };
 
-            return new ObservableCollection<TestProjection> { testProjection, testProjection };
+            return new ObservableCollection<TestProjection> { testProjection, testProjectionn };
         }
 
         public void Update(ITest test)
