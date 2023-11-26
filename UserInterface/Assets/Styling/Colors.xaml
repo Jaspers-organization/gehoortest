@@ -6,6 +6,7 @@
     <SolidColorBrush x:Key="SecondaryColor_Highlight" Color="#E374A6"/>
     <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#E6E6E6"/>
+    <SolidColorBrush x:Key="SecondaryBackgroundColor_Highlight" Color="#C9C9C9"/>
     <Color x:Key="Shadow" A="255" R="220" G="220" B="220"/>
     
 </ResourceDictionary>

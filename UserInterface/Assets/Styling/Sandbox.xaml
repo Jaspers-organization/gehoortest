@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:UserInterface.Assets.Styling"
         mc:Ignorable="d"
         Title="Sandbox" Height="auto" Width="1920" WindowState="Maximized">
+
     <ScrollViewer>
         <StackPanel>
 
@@ -92,6 +93,43 @@
                         <TextBlock Style="{StaticResource Text}" Text="InputField_XL" Margin="10"/>
                         <TextBox Style="{StaticResource InputField_XL}" Margin="10"/>
                     </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Dropdown styles -->
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <ComboBox Style="{StaticResource Dropdown_XS}" Margin="10">
+                        <ComboBoxItem IsSelected="True">Option 1</ComboBoxItem>
+                        <ComboBoxItem>Option 2</ComboBoxItem>
+                        <ComboBoxItem>Option 3</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Style="{StaticResource Dropdown_S}" Margin="10">
+                        <ComboBoxItem IsSelected="True">Option 1</ComboBoxItem>
+                        <ComboBoxItem>Option 2</ComboBoxItem>
+                        <ComboBoxItem>Option 3</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Style="{StaticResource Dropdown_M}" Margin="10">
+                        <ComboBoxItem IsSelected="True">Option 1</ComboBoxItem>
+                        <ComboBoxItem>Option 2</ComboBoxItem>
+                        <ComboBoxItem>Option 3</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <ComboBox Style="{StaticResource Dropdown_L}" Margin="10">
+                        <ComboBoxItem IsSelected="True">Option 1</ComboBoxItem>
+                        <ComboBoxItem>Option 2</ComboBoxItem>
+                        <ComboBoxItem>Option 3</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Style="{StaticResource Dropdown_XL}" Margin="10">
+                        <ComboBoxItem IsSelected="True">Option 1</ComboBoxItem>
+                        <ComboBoxItem>Option 2</ComboBoxItem>
+                        <ComboBoxItem>Option 3</ComboBoxItem>
+                    </ComboBox>
                 </StackPanel>
             </Grid>
 

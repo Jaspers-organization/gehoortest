@@ -20,11 +20,11 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        //MainWindow = new Sandbox();
+        MainWindow = new Sandbox();
  
-        _navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
-        MainWindow = new MainWindow();
-        MainWindow.DataContext = new MainWindowViewModel(_navigationStore);
+        //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
+        //MainWindow = new MainWindow();
+        //MainWindow.DataContext = new MainWindowViewModel(_navigationStore);
 
         MainWindow.Show();
 
