@@ -1,4 +1,5 @@
-﻿using UserInterface.Stores;
+﻿using UserInterface.Assets.Styling;
+using UserInterface.Stores;
 using UserInterface.ViewModels;
 using UserInterface.Views;
 using System.Windows;
@@ -19,10 +20,14 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        //MainWindow = new Sandbox();
+ 
+        _navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
         //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
         _navigationStore.CurrentViewModel = new TestOverviewViewModel(_navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(_navigationStore);
+
         MainWindow.Show();
 
         base.OnStartup(e);
