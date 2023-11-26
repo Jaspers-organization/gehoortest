@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserInterface.Stores;
+using BusinessLogic.Classes;
 
 namespace UserInterface.ViewModels;
 
@@ -28,7 +29,7 @@ internal class TestOverviewViewModel: ViewModelBase
         _testRepository = new TestRepository(targetAudience);
 
         AudiencesList = _targetAudienceRepository.GetAllAudiences().Select(audience => audience.Label).ToList();
-        TestCollection = GetTests(targetAudience);
+        TestCollection = _testRepository.GetTestsProjectionForAudience(targetAudience.Id);
 
     }
     private List<string>? _audiencesList;
@@ -44,8 +45,12 @@ internal class TestOverviewViewModel: ViewModelBase
         get { return _testCollection; }
         set { _testCollection = value; OnPropertyChanged(nameof(TestCollection)); }
     }
-    public ObservableCollection<TestProjection> GetTests(ITargetAudience targetAudience)
+    
+    public void EditTest(int id)
     {
-         return _testRepository.GetTestsForAudience(targetAudience.Id);
+        ITest test = _testRepository.GetTest(id);
+        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, test);
+
     }
+    
 }

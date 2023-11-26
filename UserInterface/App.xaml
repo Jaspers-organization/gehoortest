@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Assets/Styling/GlobalStyling.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ToggleButton.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/trashcan.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

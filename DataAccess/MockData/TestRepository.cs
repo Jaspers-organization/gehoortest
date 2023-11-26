@@ -48,10 +48,19 @@ namespace DataAccess.MockData
         public TestProjection GetTests(int id)
         {
             ITest test = testDataList.Where(t => t.Id == id).First();
-                
-            return new TestProjection(test.Title, test.TextQuestions.Count, test.ToneAudiometryQuestions.Count, test.Active, test.Employee.Fullname);
+
+            return new TestProjection
+            {
+                Title = test.Title,
+                AmountOfTextQuestions = test.TextQuestions.Count,
+                AmountOfToneAudiometryQuestions = test.ToneAudiometryQuestions.Count,
+                Active = test.Active,
+                EmployeeName = test.Employee.Fullname
+            };
         }
-        public ObservableCollection<TestProjection> GetTestsForAudience(int id)
+        public ITest GetTest(int id) => testDataList.FirstOrDefault(t => t.Id == id);
+
+        public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
         {
             ITest test = testDataList.FirstOrDefault(t => t.Id == id);
 
@@ -60,13 +69,14 @@ namespace DataAccess.MockData
                 return new ObservableCollection<TestProjection>();
             }
 
-            TestProjection testProjection = new TestProjection(
-                test.Title,
-                test.TextQuestions.Count,
-                test.ToneAudiometryQuestions.Count,
-                test.Active,
-                test.Employee.Fullname
-            );
+            TestProjection testProjection = new TestProjection
+            {
+                Title = test.Title,
+                AmountOfTextQuestions = test.TextQuestions.Count,
+                AmountOfToneAudiometryQuestions = test.ToneAudiometryQuestions.Count,
+                Active = test.Active,
+                EmployeeName = test.Employee.Fullname
+            };
 
             return new ObservableCollection<TestProjection> { testProjection, testProjection };
         }

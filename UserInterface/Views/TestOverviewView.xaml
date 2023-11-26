@@ -49,48 +49,63 @@
                                 <Style TargetType="{x:Type GridViewColumnHeader}"
                                     BasedOn="{StaticResource ListViewHeaderStyle}" />
                             </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn Width="500" Header="Title" />
-                            <GridViewColumn Width="300" Header="Gemaakt door" />
-                            <GridViewColumn Width="100" Header="Status" />
-                            <GridViewColumn Width="250" Header="Tekst"   />
-                            <GridViewColumn Width="250" Header="Toon"  />
-                            <GridViewColumn>
+                            <GridViewColumn Width="700" Header="Title" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Aanpassen" />
+                                        <TextBlock Text="{Binding Title}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn>
+                            <GridViewColumn Width="400" Header="Gemaakt door" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="V" />
+                                        <TextBlock Text="{Binding EmployeeName}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="200" Header="Status" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton
+                                           Style="{StaticResource ToggleButtonStyle}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--<GridViewColumn Width="150" Header="Tekst"   >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding AmountOfTextQuestions}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="150" Header="Toon"  >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding AmountOfToneAudiometryQuestions}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>-->
+                            <GridViewColumn Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource PrimaryButton}"  Content="Aanpassen" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Width="50" Height="50" Style="{StaticResource PrimaryButton}">
+                                            <Button.Content>
+                                                <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
+                                            </Button.Content>
+                                        </Button>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type types:TestProjection}">
-                            <Grid Height="Auto" Margin="6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="500"/>
-                                    <ColumnDefinition Width="300"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="250"/>
-                                    <ColumnDefinition Width="250"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Bindings to display data -->
-                                <TextBlock Grid.Column="0" Text="{Binding Title}" TextWrapping="NoWrap"/>
-                                <TextBlock Grid.Column="1" Text="{Binding EmployeeName}"  TextWrapping="NoWrap"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Active}"  TextWrapping="NoWrap"/>
-                                <TextBlock Grid.Column="3" Text="{Binding AmountOfTextQuestions}"  TextWrapping="NoWrap"/>
-                                <TextBlock Grid.Column="4" Text="{Binding AmountOfToneAudiometryQuestions}"  TextWrapping="NoWrap"/>
-
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
                 </ListView>
             </Grid>
         </Grid>

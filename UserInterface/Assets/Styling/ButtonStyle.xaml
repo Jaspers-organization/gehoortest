@@ -95,4 +95,16 @@
         <Setter Property="Width" Value="30"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
+
+
+    <!--<Style x:Key="TrashCanButton" BasedOn="{StaticResource PrimaryButton}" TargetType="Button">
+        --><!-- Add any other modifications you want --><!--
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="i" Value="{StaticResource SecondaryColor}"/>
+                <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
+
+            </Trigger>
+        </Style.Triggers>
+    </Style>-->
 </ResourceDictionary>

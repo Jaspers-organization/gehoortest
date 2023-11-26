@@ -13,9 +13,10 @@ internal class TestManagementViewModel : ViewModelBase
     public ITest test { get; set; }
     public List<ITest> tests { get; set; }
 
-    public TestManagementViewModel(NavigationStore navigationStore)
+    public TestManagementViewModel(NavigationStore navigationStore, ITest test)
     {
         _navigationStore = navigationStore;
+        this.test = test;
     }
 
     public void CreateTest()
