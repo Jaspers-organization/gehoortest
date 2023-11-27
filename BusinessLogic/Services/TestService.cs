@@ -11,14 +11,16 @@ namespace BusinessLogic.Services;
 public class TestService
 {
     private ITestRepository testRepository;
+
     public TestService(ITestRepository testRepository)
     {
         this.testRepository = testRepository;
     }
     public ITest GetTest(ITargetAudience targetAudience)
     {
-        return null;
+        return testRepository.Get(targetAudience.Id);
     }
+    
     public void UpdateTest(ITest test)
     {
 

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Services;
 using DataAccess.MockData;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,39 @@ internal class TestManagementViewModel : ViewModelBase
     private readonly NavigationStore? _navigationStore;
     private readonly TestRepository _testRepository;
     private readonly TargetAudienceRepository _targetAudienceRepository;
-    private List<ITargetAudience> targetAudiences;
+    private readonly TestService _testSerivce;
+    private readonly TargetAudienceService _targetAudienceSerivce;
+
     public ITest test { get; set; }
     public ICommand SaveTestCommand { get; }
     public ICommand DeleteTestCommand { get; }
-
-    
     #region Propertys
-    private List<string>? _audiencesList;
-    public List<string>? AudiencesList
+    private List<ITargetAudience>? _audiencesList;
+    public List<ITargetAudience>? AudiencesList
     {
         get { return _audiencesList; }
         set { _audiencesList = value; OnPropertyChanged(nameof(AudiencesList)); }
     }
+    private ITargetAudience? _audience;
+    public ITargetAudience? Audience
+    {
+        get { return _audience; }
+        set { _audience = value; OnPropertyChanged(nameof(Audience)); }
+    }
+    //todo make it so that the right targetaudicence gets set
+    private int _selected;
+    public int Selected
+    {
+        get { return _selected; }
+        set { SetTargetAudience(value); }
+    }
 
+    private string? _testName;
+    public string? TestName
+    {
+        get { return _testName; }
+        set { _testName = value; OnPropertyChanged(nameof(TestName)); }
+    }
     private List<ITextQuestion>? _textQuestions;
     public List<ITextQuestion>? TextQuestions
     {
@@ -44,30 +64,34 @@ internal class TestManagementViewModel : ViewModelBase
     }
 
     #endregion
-    public TestManagementViewModel(NavigationStore navigationStore, ITest test)
+    public TestManagementViewModel(NavigationStore navigationStore, ITest test = null)
     {
-        //instantiate stuff 
         _navigationStore = navigationStore;
-        _testRepository = new TestRepository(test.TargetAudience);
+        _testRepository = new TestRepository();
         _targetAudienceRepository = new TargetAudienceRepository();
+        //services
+        _testSerivce = new TestService(_testRepository);
+        _targetAudienceSerivce = new TargetAudienceService(_targetAudienceRepository);
 
-        this.test = test;
-        AudioQuestions = test.ToneAudiometryQuestions.ToList();
-        TextQuestions = test.TextQuestions.ToList();
+        if (test != null)
+        {
+            this.test = test;
+            AudioQuestions = test.ToneAudiometryQuestions.ToList();
+            TextQuestions = test.TextQuestions.ToList();
 
-        //get Target audiences
-        targetAudiences = _targetAudienceRepository.GetAllAudiences();
-        AudiencesList = targetAudiences.Select(audience => audience.Label).ToList();
+            List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllAudiences();
+            AudiencesList = targetAudiences;
+            Audience = targetAudiences.FirstOrDefault(t => t.Id == test.TargetAudience.Id);
+            TestName = test.Title;
+        }
 
-        //create commands
+        // Commands initialization
         SaveTestCommand = new SaveTestCommand(SaveTest);
         DeleteTestCommand = new DeleteTestCommand(DeleteTest);
-
     }
-    public TestManagementViewModel(NavigationStore navigationStore)
+    private void SetTargetAudience(int id)
     {
-        _navigationStore = navigationStore;
-        SaveTestCommand = new SaveTestCommand(SaveTest);
+        _audience = _audiencesList.FirstOrDefault(t => t.Id == id);
     }
     public void CreateTest()
     {

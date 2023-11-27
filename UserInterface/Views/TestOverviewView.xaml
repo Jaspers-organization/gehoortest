@@ -18,7 +18,22 @@
 
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="844" />
-                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70" ItemsSource="{Binding AudiencesList}" Text="Selecteer een doelgroep"  DisplayMemberPath="." Margin="31,0,78,0" />
+                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
+                              SelectedValue="{Binding Audience.Label, Mode=TwoWay}"
+                              SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
+                              SelectedIndex="{Binding Selected, Mode=OneWayToSource}"
+                              Text="Selecteer een doelgroep" Margin="31,0,78,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Display content -->
+                                    <TextBlock Text="{Binding Label}" />
+                                    <!-- Id property (if available) -->
+                                    <TextBlock Text="{Binding Id}" Visibility="Collapsed" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Button Grid.Row="1"  Width="420" Height="70" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe test maken"/>
                 </StackPanel>
             </Grid>
@@ -66,23 +81,13 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="100">
-                                <GridViewColumn.Header>
+                            <GridViewColumn Width="200" Header="Aantal vragen">
+                                <!--<GridViewColumn.Header>
                                     <Image Source="{StaticResource di_wave_sine}" Width="40" Height="40"/>
-                                </GridViewColumn.Header>
+                                </GridViewColumn.Header>-->
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding AmountOfToneAudiometryQuestions}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100">
-                                <GridViewColumn.Header>
-                                    <Image Source="{StaticResource di_message_question}" Width="40" Height="40"/>
-                                </GridViewColumn.Header>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding AmountOfTextQuestions}" />
+                                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource Text}" Text="{Binding AmountOfQuestions}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -112,6 +117,7 @@
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
+                    
                 </ListView>
             </Grid>
         </Grid>

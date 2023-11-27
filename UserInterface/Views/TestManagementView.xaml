@@ -11,8 +11,8 @@
     <Border Style="{StaticResource ContentContainer_XXL}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="515"/>
-                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="520"/>
+                <ColumnDefinition Width="495"/>
                 <ColumnDefinition Width="675"/>
             </Grid.ColumnDefinitions>
 
@@ -28,11 +28,26 @@
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
                     <TextBlock Style="{StaticResource Text_Big}" VerticalAlignment="Center" Text="Naam test" Height="58" Width="auto"/>
-                    <TextBox Style="{StaticResource InputField_L}" ></TextBox>
+                    <TextBox Text="{Binding TestName}" Style="{StaticResource InputField_L}" ></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,70" Grid.RowSpan="2" >
                     <TextBlock Style="{StaticResource Text_Big}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
-                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70" ItemsSource="{Binding AudiencesList}" Text="Selecteer een doelgroep"  DisplayMemberPath="."  />
+                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
+                              SelectedValue="{Binding Audience.Label, Mode=TwoWay}"
+                              SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
+                              SelectedIndex="{Binding Selected, Mode=OneWayToSource}"
+                              Text="Selecteer een doelgroep" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Display content -->
+                                    <TextBlock Text="{Binding Label}" />
+                                    <!-- Id property (if available) -->
+                                    <TextBlock Text="{Binding Id}" Visibility="Collapsed" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5,0,1" Grid.RowSpan="2" >
                     <TextBlock Style="{StaticResource Text_Big}" Text="Status" Width="280"/>
