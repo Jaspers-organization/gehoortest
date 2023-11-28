@@ -22,6 +22,7 @@ internal class TestManagementViewModel : ViewModelBase
     public ITest test { get; set; }
     public ICommand SaveTestCommand { get; }
     public ICommand DeleteTestCommand { get; }
+    public ICommand OpenModalCommand { get; }
     #region Propertys
     private List<ITargetAudience>? _audiencesList;
     public List<ITargetAudience>? AudiencesList
@@ -67,6 +68,7 @@ internal class TestManagementViewModel : ViewModelBase
     public TestManagementViewModel(NavigationStore navigationStore, ITest test = null)
     {
         _navigationStore = navigationStore;
+        //_dialogService = new DialogService();
         _testRepository = new TestRepository();
         _targetAudienceRepository = new TargetAudienceRepository();
         //services
@@ -88,11 +90,18 @@ internal class TestManagementViewModel : ViewModelBase
         // Commands initialization
         SaveTestCommand = new SaveTestCommand(SaveTest);
         DeleteTestCommand = new DeleteTestCommand(DeleteTest);
+        OpenModalCommand = new OpenModalCommand(OpenModal);
+    }
+    public void OpenModal(object temp)
+    {
+        _navigationStore!.OpenModal();
+        _navigationStore.CurrentModalViewModel = new QuestionModalViewModel();
+       
     }
     private void SetTargetAudience(int id)
     {
         _audience = _audiencesList.FirstOrDefault(t => t.Id == id);
-    }
+    }    
     public void CreateTest()
     {
 

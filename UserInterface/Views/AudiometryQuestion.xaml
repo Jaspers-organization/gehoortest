@@ -23,9 +23,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Background="LightGray">
-                        <Button Style="{StaticResource PlayButton}" Grid.Row="0" Command="{Binding MakeSoundCommand}">
-                            <Image Source="{StaticResource ic_play_white}" Margin="30,20,20,20"/>
-                        </Button>
+                        
                     </Grid>
                     <TextBlock Grid.Row="1" HorizontalAlignment="Center"  >Druk op play om het geluid te herhalen.</TextBlock>
                 </Grid>

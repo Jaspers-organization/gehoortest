@@ -25,7 +25,6 @@ internal class TestOverviewViewModel : ViewModelBase
     public ICommand NewTestCommand { get; }
     public ICommand GetTestsCommand { get; }
 
-
     #region propertys
     private List<ITargetAudience>? _audiencesList;
     public List<ITargetAudience>? AudiencesList

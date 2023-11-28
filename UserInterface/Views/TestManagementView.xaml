@@ -103,7 +103,9 @@
                                     <GridViewColumn Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button Style="{StaticResource SecondaryButton_Icon}"
+                                                        Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                        CommandParameter="true">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -127,7 +129,7 @@
                         </ListView>
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_M}"
-                            Command="{Binding SaveTestCommand}"
+                            Command="{Binding OpenModalCommand}"
                             CommandParameter="{Binding Id }"
                             Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>
@@ -169,7 +171,9 @@
                                     <GridViewColumn Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button Style="{StaticResource SecondaryButton_Icon}"
+                                                        Command="{Binding DataContext.OpenDialogCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                        CommandParameter="{Binding Id }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -193,7 +197,7 @@
                         </ListView>
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_L}"
-             Command="{Binding SaveTestCommand}"
+             Command="{Binding OpenModalCommand}"
              CommandParameter="{Binding Id }"
              Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>

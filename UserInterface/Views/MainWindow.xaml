@@ -4,14 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:UserInterface.Views" 
-        xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
+        xmlns:viewModels="clr-namespace:UserInterface.ViewModels" 
+        xmlns:modalcontrol="clr-namespace:ModalControl;assembly=ModalControl"
         mc:Ignorable="d"
-        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized" >
+        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
 
     <Grid Background="lightgray">
         <Grid.Resources>
             <!-- Define all pages here -->
+            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
+                <views:TestManagementView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
                 <views:StartTest />
             </DataTemplate>
@@ -21,9 +25,10 @@
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
-                <views:TestManagementView />
+            <DataTemplate DataType="{x:Type viewModels:QuestionModalViewModel}">
+                <views:AudiometryQuestion />
             </DataTemplate>
+            
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -38,10 +43,19 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
+
+        
         
         <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
 
-        <ContentControl Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
+        <modalcontrol:Modal Grid.Column="1"  Grid.Row="2"  Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+            <modalcontrol:Modal.Background>
+                <SolidColorBrush Color="black" Opacity="0.5"/>
+            </modalcontrol:Modal.Background>
+            <ContentControl Content="{Binding CurrentModalViewModel}" />
+        </modalcontrol:Modal>
+        
+        <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
         

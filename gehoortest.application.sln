@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34301.259
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{6C0FDB16-0AB8-4176-830F-BABBFCA1CA4E}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{391EF2F7-3B78-4FE4-9623-C9992C3F7D38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{4C61779A-E312-47C0-9DFC-ADA636B2D9C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModalControl", "ModalControl\ModalControl.csproj", "{ECC9810A-163E-4F7E-B73E-5D51085B4585}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4C61779A-E312-47C0-9DFC-ADA636B2D9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C61779A-E312-47C0-9DFC-ADA636B2D9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C61779A-E312-47C0-9DFC-ADA636B2D9C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECC9810A-163E-4F7E-B73E-5D51085B4585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECC9810A-163E-4F7E-B73E-5D51085B4585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECC9810A-163E-4F7E-B73E-5D51085B4585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECC9810A-163E-4F7E-B73E-5D51085B4585}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
