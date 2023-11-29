@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Commands.TestManagementCommands;
 
-public class DeleteTestCommand : CommandBase<ITest>
+internal class ITestCommand : CommandBase<ITest>
 {
-    public DeleteTestCommand(Action<ITest> command)
+    public ITestCommand(Action<ITest> command)
     {
         this.command = command;
     }

@@ -52,6 +52,9 @@
                     <Rectangle.RadiusY>5</Rectangle.RadiusY>
                 </Rectangle>
                 <ListView Width="1708" Height="580" Name="TestsList"  ItemsSource="{Binding TestCollection}" Style="{StaticResource ListViewStyle}" Margin="5,103,0,0" d:ItemsSource="{d:SampleData ItemCount=5}">
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_1}" />
+                    </ListView.Resources>
                     <ListView.View>
                         <GridView >
                             <GridView.ColumnHeaderContainerStyle>
@@ -72,7 +75,6 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-
                             <GridViewColumn Width="200" Header="Status" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

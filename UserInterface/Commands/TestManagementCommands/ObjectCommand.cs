@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Commands.TestManagementCommands;
 
-class OpenModalCommand: CommandBase<object>
+internal class ObjectCommand : CommandBase<object>
 {
-    public OpenModalCommand(Action<object> command)
+    public ObjectCommand(Action<object> command)
     {
         this.command = command;
     }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views.Modals"
+             xmlns:modals="clr-namespace:UserInterface.Views.Modals"
              mc:Ignorable="d" >
     <Border Style="{StaticResource ModalContainer_ML}">
         <Grid >
@@ -17,7 +18,7 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
                 <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Vraag" Height="58" Width="auto" Margin="0,0,50,0"/>
-                <TextBox Text="{Binding TestName}" Style="{StaticResource InputField_XXL}" ></TextBox>
+                <TextBox Text="{Binding TestQuestion}" Style="{StaticResource InputField_XXL}" ></TextBox>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.ColumnDefinitions>
@@ -31,21 +32,21 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Meerkeuze" Height="58" Width="auto" Margin="0,0,197,0"/>
-                    <ToggleButton Style="{StaticResource ToggleButtonStyle}"/>
+                    <ToggleButton IsChecked="{Binding MultipleChoice}" Style="{StaticResource ToggleButtonStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1"  Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Open invoerveld" Height="58" Width="auto" Margin="0,0,120,0"/>
-                    <ToggleButton Style="{StaticResource ToggleButtonStyle}"/>
+                    <TextBlock  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Open invoerveld" Height="58" Width="auto" Margin="0,0,120,0"/>
+                    <ToggleButton IsChecked="{Binding HasInputField}" Style="{StaticResource ToggleButtonStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2"  Orientation="Horizontal" Margin="0,150,0,0">
                     <Button Style="{StaticResource PrimaryButton_S}"
-                             Command="{Binding OpenModalCommand}"
+                             Command="{Binding SaveQuestionCommand}"
                              CommandParameter="{Binding Id }"
                              Content="Opslaan"  Margin="0,0,50,0"/>
                     <Button Style="{StaticResource SecondaryButton_S}"
-                             Command="{Binding DeleteTestCommand}"
-                             CommandParameter="{Binding Id }"
+                             Command="{Binding CloseModalCommand}"
+                             CommandParameter="true"
                              Content="Annuleren" />
                 </StackPanel>
             </Grid>
@@ -53,7 +54,7 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <!-- TextBlocks or other elements -->
-                        <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Opties" Height="58" Width="auto" Margin="0,0,0,0"/>
+                        <TextBlock  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Opties" Height="58" Width="auto" Margin="0,0,0,0"/>
                     </StackPanel>
 
                     <!-- Rectangle placed behind the ListView -->
@@ -65,7 +66,7 @@
                         <Rectangle.RadiusY>5</Rectangle.RadiusY>
                     </Rectangle>
 
-                    <ListView Width="510" Height="255" Name="AudioQuestions" Margin="0,-40,0,0" ItemsSource="{Binding AudioQuestions}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                    <ListView Width="510" Height="255" Name="Options" Margin="0,-40,0,0" ItemsSource="{Binding Options}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
                         <ListView.View>
                             <GridView>
                                 <GridView.ColumnHeaderContainerStyle>
@@ -76,16 +77,18 @@
                                 <GridViewColumn Width="430">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Margin="5,0,0,0" Text="{Binding TestName}" Style="{StaticResource InputField_SM}" ></TextBox>
+                                            <TextBox Margin="5,0,0,0" Text="{Binding Path=.}" Style="{StaticResource InputField_SM}" IsEnabled="False"></TextBox>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Width="50">
+                                <GridViewColumn Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource SecondaryButton_Icon_NoBorder}">
+                                            <Button Style="{StaticResource SecondaryButton_Icon_NoBorder}" Margin="-5,0,0,0" 
+                                                    Command="{Binding DataContext.RemoveOptionCommand, RelativeSource={RelativeSource AncestorType={x:Type modals:TextQuestionModal}}}"
+                                                    CommandParameter="{Binding Path=.}">
                                                 <Button.Content>
-                                                    <Image Source="{StaticResource di_trashcan}" Width="30" Height="30" Margin="-25,0,0,0"/>
+                                                    <Image Source="{StaticResource di_trashcan}" Width="30" Height="30" />
                                                 </Button.Content>
                                             </Button>
                                         </DataTemplate>
@@ -93,6 +96,9 @@
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
+                        <ListView.Resources>
+                            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_2}" />
+                        </ListView.Resources>
                     </ListView>
                     <StackPanel Margin="5,0,5,5" Background="{StaticResource PrimaryBackgroundColor}" VerticalAlignment="Bottom">
                         <Grid Width="510">
@@ -101,8 +107,11 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Column="0" Style="{StaticResource InputField_SM}" Margin="-5,0,0,0" />
-                            <Button Grid.Column="1" Style="{StaticResource SecondaryButton_Icon_NoBorder}" Margin="0,10,10,10">
+                            <TextBox Grid.Column="0" Style="{StaticResource InputField_SM}" Margin="-5,0,0,0" Text="{Binding OptionText}" />
+                            <Button Grid.Column="1" Style="{StaticResource SecondaryButton_Icon_NoBorder}" 
+                                    Command="{Binding AddOptionCommand}"
+                                    CommandParameter="{Binding OptionText}"
+                                    Margin="0,10,10,10">
                                 <Image Source="{StaticResource di_plus}" Width="30" Height="30"/>
                             </Button>
                         </Grid>

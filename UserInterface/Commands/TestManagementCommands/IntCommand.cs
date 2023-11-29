@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Commands.TestManagementCommands;
 
-internal class CloseModalCommand : CommandBase<object>
+internal class IntCommand : CommandBase<int>
 {
-    public CloseModalCommand(Action<object> command)
+    public IntCommand(Action<int> command)
     {
         this.command = command;
     }

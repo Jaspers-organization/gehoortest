@@ -14,7 +14,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
 {
     private readonly NavigationStore navigationStore;
 
-    public ICommand CloseModalCommand => new CloseModalCommand(CloseModal);
+    public ICommand CloseModalCommand => new ObjectCommand(CloseModal);
     private readonly IToneAudiometryQuestion toneAudiometryQuestion;
     public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion)
     {

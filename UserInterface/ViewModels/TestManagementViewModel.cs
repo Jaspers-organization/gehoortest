@@ -92,19 +92,24 @@ internal class TestManagementViewModel : ViewModelBase
         }
 
         // Commands initialization
-        SaveTestCommand = new SaveTestCommand(SaveTest);
-        DeleteTestCommand = new DeleteTestCommand(DeleteTest);
-        OpenModalCommand = new OpenModalCommand(OpenModal);
+        SaveTestCommand = new ITestCommand(SaveTest);
+        DeleteTestCommand = new ITestCommand(DeleteTest);
+        OpenModalCommand = new IntCommand(OpenModal);
     }
 
 
-    public void OpenModal(object temp)
+    public void OpenModal(int id)
     {
-       // navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, "Haha jasper kanker gay"));
 
-        navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, test.TextQuestions[0], this));
+        ITextQuestion textQuestion = test.TextQuestions.First(q => q.Id == id);
+        navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, textQuestion, this));
     }
+    //public void OpenModal()
+    //{
 
+    //    ITextQuestion textQuestion = test.TextQuestions.First(q => q.Id == id);
+    //    navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, textQuestion, this));
+    //}
     private void SetTargetAudience(int id)
     {
         //_audience = _audiencesList.FirstOrDefault(t => t.Id == id);

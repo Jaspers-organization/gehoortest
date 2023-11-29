@@ -19,7 +19,7 @@ internal class ConfirmationModalViewModel : ViewModelBase
         set { _text = value; OnPropertyChanged(nameof(Text)); }
     }
 
-    public ICommand CloseModalCommand => new CloseModalCommand(CloseModal);
+    public ICommand CloseModalCommand => new ObjectCommand(CloseModal);
     public ConfirmationModalViewModel(NavigationStore navigationStore, string text)
     {
         this.navigationStore = navigationStore;

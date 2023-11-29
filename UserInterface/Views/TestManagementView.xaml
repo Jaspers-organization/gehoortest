@@ -69,7 +69,7 @@
 
             <Grid Grid.Column="1">
                 <StackPanel>
-                    <TextBlock Text="Toonaudiometrie" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
+                    <TextBlock Text="Toonaudiometrie vragen" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
                         <Rectangle Width="420" Fill="{StaticResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
@@ -81,6 +81,9 @@
 
                         <!-- The ListView and its content -->
                         <ListView Width="410" Name="AudioQuestions" ItemsSource="{Binding AudioQuestions}" Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}" >
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_1}" />
+                            </ListView.Resources>
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContainerStyle>
@@ -93,19 +96,27 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Hertz" Width="140">
+                                    <GridViewColumn Header="Hertz" Width="215">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Style="{StaticResource Text}" Text="{Binding Frequency}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="100">
+                                    <GridViewColumn Width="0">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}"
-                                                        Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
-                                                        CommandParameter="true">
+                                                <TextBlock Text="{Binding Id}" Visibility="Collapsed"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="80">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Margin="-35,0,0,0"
+                                                        Style="{StaticResource SecondaryButton_Icon}"
+                                                            Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                            CommandParameter="{Binding Id }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -113,10 +124,10 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="100">
+                                    <GridViewColumn Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -137,7 +148,7 @@
             <!-- Second column content (ListView in one row) -->
             <Grid Grid.Column="2">
                 <StackPanel>
-                    <TextBlock Text="Toonaudiometrie" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
+                    <TextBlock Text="Tekst vragen" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
                         <Rectangle Width="620" Fill="{StaticResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
@@ -161,18 +172,26 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Vraag" Width="340">
+                                    <GridViewColumn Header="Vraag" Width="400">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Style="{StaticResource Text}" Text="{Binding Question}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="100">
+                                    <GridViewColumn Width="0">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}"
-                                                        Command="{Binding DataContext.OpenDialogCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                <TextBlock Text="{Binding Id}" Visibility="Collapsed"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="80">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Margin="-35,0,0,0"
+                                                    Style="{StaticResource SecondaryButton_Icon}"
+                                                        Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
                                                         CommandParameter="{Binding Id }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
@@ -181,10 +200,10 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="100">
+                                    <GridViewColumn Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -194,12 +213,14 @@
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_1}" />
+                            </ListView.Resources>
                         </ListView>
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_L}"
-             Command="{Binding OpenModalCommand}"
-             CommandParameter="true"
-             Content="Toevoegen"  Margin="0,0,0,15"/>
+                             Command="{Binding OpenModalCommand}"
+                             Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>
             </Grid>
         </Grid>

@@ -60,8 +60,8 @@ internal class TestOverviewViewModel : ViewModelBase
         _navigationStore = navigationStore;
 
         //commands
-        OpenTestCommand = new OpenTestCommand(OpenTest);
-        GetTestsCommand = new GetTestsCommand(GetTests);
+        OpenTestCommand = new IntCommand(OpenTest);
+        GetTestsCommand = new IntCommand(GetTests);
 
         //repositories
         _targetAudienceRepository = new TargetAudienceRepository();

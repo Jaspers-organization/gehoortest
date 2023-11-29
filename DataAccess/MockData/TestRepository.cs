@@ -24,9 +24,9 @@ namespace DataAccess.MockData
             {
                 new Test { Id = 0, TargetAudience = new TargetAudience{ Id = 0, From = 0, To=18, Label="-18" }, Active = true, Title = "title van een test",
                     TextQuestions = new List<ITextQuestion>{
-                        new TextQuestion { Id = 1, Question = "Test test test", QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
-                        new TextQuestion { Id = 2, Question = "Test 2 ", QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
-                        new TextQuestion { Id = 3, Question = "Test 3 ", QuestionNumber = 3,  HasInputField = false, IsMultiSelect = true}
+                        new TextQuestion { Id = 1, Question = "Test test test", Options = new List<string>(), QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
+                        new TextQuestion { Id = 2, Question = "Test 2 ",Options = new List<string>(), QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
+                        new TextQuestion { Id = 3, Question = "Test 3 ", Options = new List<string>(),QuestionNumber = 3,  HasInputField = false, IsMultiSelect = true}
                     },
                     ToneAudiometryQuestions = new List<IToneAudiometryQuestion>{
                         new ToneAudiometryQuestion { Id = 1, Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
@@ -48,9 +48,9 @@ namespace DataAccess.MockData
                 },
                 new Test { Id = 2, TargetAudience = new TargetAudience{ Id = 1, From = 19, To=29, Label="19-29" }, Active = true, Title = "ik houd van testen en corona",
                     TextQuestions = new List<ITextQuestion>{
-                        new TextQuestion { Id = 1, Question = "dsadsadsadsa test test", QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
-                        new TextQuestion { Id = 2, Question = "zvxcvcxz 2 ", QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
-                        new TextQuestion { Id = 3, Question = "vzxcvczxv z 3 ", QuestionNumber = 3,  HasInputField = false, IsMultiSelect = true}
+                        new TextQuestion { Id = 1, Question = "dsadsadsadsa test test", Options = new List<string>(), QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
+                        new TextQuestion { Id = 2, Question = "zvxcvcxz 2 ",Options = new List<string>(),QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
+                        new TextQuestion { Id = 3, Question = "vzxcvczxv z 3 ",Options = new List<string>(), QuestionNumber = 3,  HasInputField = false, IsMultiSelect = true}
                     },
                     ToneAudiometryQuestions = new List<IToneAudiometryQuestion>{
                         new ToneAudiometryQuestion { Id = 1, Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},

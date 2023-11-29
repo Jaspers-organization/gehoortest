@@ -1,5 +1,4 @@
-﻿using BusinessLogic.IModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace UserInterface.Commands.TestManagementCommands;
 
-public class GetTestsCommand : CommandBase<int>
+internal class StringCommand : CommandBase<string>
 {
-    public GetTestsCommand(Action<int> command)
+    public StringCommand(Action<string> command)
     {
         this.command = command;
     }
 }
-
