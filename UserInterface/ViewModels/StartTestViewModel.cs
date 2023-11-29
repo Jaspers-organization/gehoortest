@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Extensions.Options;
 
 namespace UserInterface.ViewModels;
 
@@ -94,8 +95,9 @@ internal class StartTestViewModel : ViewModelBase
         TestProgressData = new(test);
     }
 
-    public void StartTest(object test)
+    public void StartTest(string test)
     {
+        //Options.Add(value);
         IntroText = "Hidden";
         ShowNextQuestion();
     }
@@ -168,8 +170,8 @@ internal class StartTestViewModel : ViewModelBase
             answer = SelectedOption;
         }
 
-        TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
-        TestProgressData.TestAnswers.Add(testAnswer);
+        //TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
+        //TestProgressData.TestAnswers.Add(testAnswer);
 
         // Continue to next question
         ShowNextQuestion();
@@ -178,12 +180,12 @@ internal class StartTestViewModel : ViewModelBase
     public int questionNumber = 1; // TODO: Temporary for the demo
     public void SaveAudioQuestion(object parameter)
     {
-        TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
+        //TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
 
-        // ========
-        // TODO: Temporary for the demo
-        int decibels = (testAnswer.Answer == "true") ? 30 : 65; 
-        TestProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(questionNumber, 250, Ear.Left, 30, decibels));
+        //// ========
+        //// TODO: Temporary for the demo
+        //int decibels = (testAnswer.Answer == "true") ? 30 : 65; 
+        //TestProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(questionNumber, 250, Ear.Left, 30, decibels));
         questionNumber++;
         // =========
 
@@ -201,8 +203,7 @@ internal class StartTestViewModel : ViewModelBase
         navigationStore.CurrentViewModel = new TestResultViewModel(navigationStore, TestProgressData);
     }
 
-    public ICommand StartTestCommand => new CustomCommands(StartTest);
-
+   // public ICommand StartTestCommand => new CustomCommands(StartTest);
     public ICommand SaveQuestionCommand => new CustomCommands(SaveQuestion);
 
     public ICommand MakeSoundCommand => new CustomCommands(MakeSound);

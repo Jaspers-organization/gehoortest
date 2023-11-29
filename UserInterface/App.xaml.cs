@@ -22,7 +22,8 @@ public partial class App : Application
     {
         //MainWindow = new Sandbox();
  
-        _navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
+       // _navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
+        _navigationStore.CurrentViewModel = new TestViewModel(_navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(_navigationStore);
 

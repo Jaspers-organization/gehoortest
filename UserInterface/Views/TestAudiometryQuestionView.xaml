@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="UserInterface.Views.TestAudiometryQuestionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views"
+             mc:Ignorable="d" >
+    
+    <Border Style="{StaticResource ContentContainer_XXS}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Rectangle 
+            Fill="{StaticResource SecondaryBackgroundColor}"
+            Grid.Row="0"
+            Margin="50"
+            Height="420"
+            Width="420"/>
+        <TextBlock 
+            Style="{StaticResource Text}"
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Text="Heeft u het geluid gehoord?"/>
+        <Grid Grid.Row="3" Margin="0 30 0 0">
+            <Button 
+                Style="{StaticResource PrimaryButton_S}" 
+                Content="Ja" 
+                HorizontalAlignment="Left" 
+                Command="{Binding SaveAudioQuestionCommand}" 
+                CommandParameter="true"/>
+            <Button 
+                Style="{StaticResource PrimaryButton_S}" 
+                Content="Nee" 
+                HorizontalAlignment="Right" 
+                Command="{Binding SaveAudioQuestionCommand}" 
+                CommandParameter="false"/>
+        </Grid>
+    </Grid>
+    </Border>
+</UserControl>

@@ -35,8 +35,8 @@ public class TestRepository : Repository
         agesList.Add("50-69");
         agesList.Add("70-79");
         agesList.Add("80-89");
-        TextQuestion textQuestion1 = new(1, "In welke leeftijdsgroep bevindt u zich?", agesList, true, false);
-        test.AddTextQuestion(textQuestion1);
+        //TextQuestion textQuestion1 = new(1, "In welke leeftijdsgroep bevindt u zich?", agesList, true, false);
+        //test.AddTextQuestion(textQuestion1);
 
         //List<string> optionsList = new();
         //TextQuestion textQuestion2 = new(2, "Wat is uw naam?", optionsList, false, true);
@@ -45,16 +45,16 @@ public class TestRepository : Repository
         List<string> workFieldList = new();
         workFieldList.Add("Kantoor baan");
         workFieldList.Add("Op de bouw");
-        TextQuestion textQuestion3 = new(3, "In welk werkgebied werkt u?", workFieldList, true, true);
-        test.AddTextQuestion(textQuestion3);
+        //TextQuestion textQuestion3 = new(3, "In welk werkgebied werkt u?", workFieldList, true, true);
+        //test.AddTextQuestion(textQuestion3);
 
         List<string> hearTypesList = new();
         hearTypesList.Add("Uitstekend");
         hearTypesList.Add("Goed");
         hearTypesList.Add("Matig");
         hearTypesList.Add("Slecht");
-        TextQuestion textQuestion4 = new(4, "Hoe omschrijft u uw gehoor?", hearTypesList, true, false);
-        test.AddTextQuestion(textQuestion4);
+        //TextQuestion textQuestion4 = new(4, "Hoe omschrijft u uw gehoor?", hearTypesList, true, false);
+        //test.AddTextQuestion(textQuestion4);
 
 
         // Create questionsaudimetry

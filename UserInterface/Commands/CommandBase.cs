@@ -3,19 +3,34 @@ using System.Windows.Input;
 
 namespace UserInterface.Commands;
 
-internal abstract class CommandBase : ICommand
+public abstract class CommandBase : ICommand
 {
-    protected Action? command;
-
     public event EventHandler? CanExecuteChanged;
+    protected Action? command;
+    protected Action<int>? intCommand;
+    protected Action<string>? stringCommand;
 
-    public virtual bool CanExecute(object? parameter)
-    {
-        return true;
-    }
+
+    public virtual bool CanExecute(object? parameter) => true;
 
     public void Execute(object? parameter)
     {
-        command?.Invoke();
+        if (command != null)
+        {
+            command.Invoke();
+            return;
+        }
+
+        if (intCommand != null)
+        {
+            intCommand.Invoke((int)parameter!);
+            return;
+        }
+
+        if (stringCommand != null)
+        {
+            stringCommand.Invoke((string)parameter!);
+            return;
+        }
     }
 }
