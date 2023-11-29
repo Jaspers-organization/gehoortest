@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
+using BusinessLogic.Projections;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +20,19 @@ public class TestService
     }
     public ITest GetTest(ITargetAudience targetAudience)
     {
-        return testRepository.Get(targetAudience.Id);
+        return testRepository.GetTest(targetAudience.Id);
     }
-    
+    public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
+    {
+        return testRepository.GetTestsProjectionForAudience(id);
+    }
+
     public void UpdateTest(ITest test)
     {
-
+        testRepository.Update(test);
     }
     public void CreateTest(ITest test)
     {
-        
+        testRepository.Create(test);
     }
 }

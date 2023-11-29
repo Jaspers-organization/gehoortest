@@ -1,11 +1,7 @@
 ﻿using BusinessLogic.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DataAccess.Entity.TestData_Management;
 using System.Windows.Input;
-using UserInterface.Commands.TestManagementCommands;
+using UserInterface.Commands;
 using UserInterface.Stores;
 
 namespace UserInterface.ViewModels.Modals;
@@ -13,16 +9,57 @@ namespace UserInterface.ViewModels.Modals;
 internal class AudioQuestionModalViewModel : ViewModelBase
 {
     private readonly NavigationStore navigationStore;
+    private readonly TestManagementViewModel testManagementViewModel;
 
-    public ICommand CloseModalCommand => new ObjectCommand(CloseModal);
     private readonly IToneAudiometryQuestion toneAudiometryQuestion;
-    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion)
+    private readonly bool newQuestion;
+
+    public ICommand CloseModalCommand => new Command(CloseModal);
+    public ICommand SaveQuestionCommand => new Command(SaveQuestion);
+
+
+    private int _frequency;
+    public int Frequency
     {
-        this.navigationStore = navigationStore;
-        this.toneAudiometryQuestion = toneAudiometryQuestion;
+        get { return _frequency; }
+        set
+        {
+            _frequency = value;
+            OnPropertyChanged(nameof(Frequency));
+        }
+    }
+    private int _startingDecibels;
+    public int StartingDecibels
+    {
+        get { return _startingDecibels; }
+        set
+        {
+            _startingDecibels = value;
+            OnPropertyChanged(nameof(StartingDecibels));
+        }
     }
 
-    private void CloseModal(object obj)
+    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    {
+        this.navigationStore = navigationStore;
+        this.testManagementViewModel = testManagementViewModel;
+        this.toneAudiometryQuestion = toneAudiometryQuestion;
+        this.newQuestion = newQuestion;
+        StartingDecibels = toneAudiometryQuestion.StartingDecibels;
+        Frequency = toneAudiometryQuestion.Frequency;
+    }
+    private void SaveQuestion()
+    {
+        IToneAudiometryQuestion question = new ToneAudiometryQuestion { Id = toneAudiometryQuestion.Id, StartingDecibels = StartingDecibels, Frequency = Frequency, QuestionNumber = toneAudiometryQuestion.QuestionNumber };
+
+        if (newQuestion)
+            testManagementViewModel.AddNewToneAudiometryQuestion(question);
+        else
+            testManagementViewModel.UpdateToneAudiometryQuestion(question);
+
+        CloseModal();
+    }
+    private void CloseModal()
     {
         navigationStore.CloseModal();
     }

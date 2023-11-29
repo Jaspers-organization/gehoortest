@@ -7,8 +7,6 @@
              xmlns:types="clr-namespace:BusinessLogic.Projections;assembly=BusinessLogic"
              xmlns:commandLocation="clr-namespace:UserInterface.Commands"
              mc:Ignorable="d">
-
-
     <Border Style="{StaticResource ContentContainer_XXL}">
         <Grid>
             <Grid>
@@ -34,7 +32,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Grid.Row="1"  Width="420" Height="70" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe test maken"/>
+                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Width="420" Height="70" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe test maken"/>
                 </StackPanel>
             </Grid>
 

@@ -34,6 +34,9 @@
             <DataTemplate DataType="{x:Type modalViewModels:ConfirmationModalViewModel}">
                 <modals:ConfirmationModal/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:AudioQuestionModalViewModel}">
+                <modals:AudioQuestionModal/>
+            </DataTemplate>
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>

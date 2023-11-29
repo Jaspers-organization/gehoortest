@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IModels;
+using DataAccess.Entity.TestData_Management;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UserInterface.Commands.TestManagementCommands;
+using UserInterface.Commands;
 using UserInterface.Stores;
 
 namespace UserInterface.ViewModels.Modals;
@@ -16,12 +17,18 @@ namespace UserInterface.ViewModels.Modals;
 internal class TextQuestionModalViewModel : ViewModelBase
 {
     private readonly NavigationStore navigationStore;
+    private readonly TestManagementViewModel testManagementViewModel;
+    private readonly ITextQuestion textQuestion;
+    private readonly bool newQuestion;
 
-    public ICommand AddOptionCommand => new StringCommand(AddOption);
-    public ICommand RemoveOptionCommand => new StringCommand(RemoveOption);
 
-    public ICommand CloseModalCommand => new ObjectCommand(CloseModal);
+    public ICommand AddOptionCommand => new Command(AddOption);
+    public ICommand RemoveOptionCommand => new Command(RemoveOption);
+    public ICommand CloseModalCommand => new Command(CloseModal);
+    public ICommand SaveQuestionCommand => new Command(SaveQuestion);
+    
 
+    #region Propertys
     private string _optionText;
     public string OptionText
     {
@@ -75,16 +82,14 @@ internal class TextQuestionModalViewModel : ViewModelBase
             OnPropertyChanged(nameof(HasInputField));
         }
     }
+    #endregion
 
-    private readonly ITextQuestion textQuestion;
-    private readonly TestManagementViewModel testManagementViewModel;
-
-    public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, TestManagementViewModel testManagementViewModel)
+    public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {
         this.navigationStore = navigationStore;
         this.textQuestion = textQuestion;
         this.testManagementViewModel = testManagementViewModel;
-
+        this.newQuestion = newQuestion;
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
@@ -100,7 +105,19 @@ internal class TextQuestionModalViewModel : ViewModelBase
         Options.Remove(value);
         OnPropertyChanged(nameof(Options));
     }
-    private void CloseModal(object obj)
+    public void SaveQuestion()
+    {
+        ITextQuestion question = new TextQuestion { Id = textQuestion.Id, HasInputField = HasInputField, IsMultiSelect = MultipleChoice, Question = TestQuestion, Options = Options.ToList(), QuestionNumber = textQuestion.QuestionNumber };
+        
+        if (newQuestion)
+            testManagementViewModel.AddNewTextQuestion(question);
+        else
+            testManagementViewModel.UpdateTextQuestion(question);
+
+        CloseModal();
+    }
+    
+    private void CloseModal()
     {
         navigationStore.CloseModal(testManagementViewModel);
     }

@@ -56,8 +56,7 @@
 
                 <StackPanel Grid.Row="4" Orientation="Vertical" >
                     <Button Style="{StaticResource PrimaryButton_M}"
-                         Command="{Binding OpenModalCommand}"
-                         CommandParameter="{Binding Id }"
+                         Command="{Binding SaveTestCommand}"
                          Content="Opslaan"  Margin="0,0,0,15"/>
                     <Button Style="{StaticResource SecondaryButton_M}"
                          Command="{Binding DeleteTestCommand}"
@@ -96,7 +95,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Hertz" Width="215">
+                                    <GridViewColumn Header="Hertz" Width="230">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Style="{StaticResource Text}" Text="{Binding Frequency}" />
@@ -106,7 +105,7 @@
                                     <GridViewColumn Width="0">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Id}" Visibility="Collapsed"/>
+                                                <TextBlock Text="{Binding QuestionNumber}" Visibility="Collapsed"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -115,8 +114,8 @@
                                             <DataTemplate>
                                                 <Button Margin="-35,0,0,0"
                                                         Style="{StaticResource SecondaryButton_Icon}"
-                                                            Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
-                                                            CommandParameter="{Binding Id }">
+                                                            Command="{Binding DataContext.OpenAudioModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                            CommandParameter="{Binding QuestionNumber }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -140,8 +139,7 @@
                         </ListView>
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_M}"
-                            Command="{Binding OpenModalCommand}"
-                            CommandParameter="{Binding Id }"
+                            Command="{Binding OpenNewAudioModalCommand}"
                             Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>
             </Grid>
@@ -165,7 +163,7 @@
                                     <GridView.ColumnHeaderContainerStyle>
                                         <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource ListViewHeaderStyle}" />
                                     </GridView.ColumnHeaderContainerStyle>
-                                    <GridViewColumn Header="Nr" Width="50">
+                                    <GridViewColumn Header="Nr" Width="80">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Style="{StaticResource Text}" Text="{Binding QuestionNumber}" />
@@ -182,7 +180,7 @@
                                     <GridViewColumn Width="0">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Id}" Visibility="Collapsed"/>
+                                                <TextBlock Text="{Binding QuestionNumber}" Visibility="Collapsed"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -191,8 +189,8 @@
                                             <DataTemplate>
                                                 <Button Margin="-35,0,0,0"
                                                     Style="{StaticResource SecondaryButton_Icon}"
-                                                        Command="{Binding DataContext.OpenModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
-                                                        CommandParameter="{Binding Id }">
+                                                        Command="{Binding DataContext.OpenTextModalCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                        CommandParameter="{Binding QuestionNumber }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -219,7 +217,7 @@
                         </ListView>
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_L}"
-                             Command="{Binding OpenModalCommand}"
+                             Command="{Binding OpenNewTextModalCommand}"
                              Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>
             </Grid>

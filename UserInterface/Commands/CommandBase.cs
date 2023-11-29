@@ -1,24 +1,41 @@
-﻿using System;
+﻿using BusinessLogic.IModels;
+using System;
 using System.Windows.Input;
 
 namespace UserInterface.Commands;
 
-public abstract class CommandBase<T> : ICommand
+public abstract class CommandBase : ICommand
 {
     public event EventHandler? CanExecuteChanged;
 
-    protected Action<T>? command;
+    protected Action? command;
+    protected Action<int>? intCommand;
+    protected Action<string>? stringCommand;
+    protected Action<ITest>? itestCommand;
 
-    public virtual bool CanExecute(object? parameter)
-    {
-        return true;
-    }
+    public virtual bool CanExecute(object? parameter)  => true;
 
     public void Execute(object? parameter)
     {
-        if (parameter is T typedParameter && command != null)
+        if (command != null)
         {
-            command.Invoke(typedParameter);
+            command.Invoke();
+            return;
+        }
+        if (intCommand != null)
+        {
+            intCommand.Invoke((int)parameter!);
+            return;
+        }
+        if (stringCommand != null)
+        {
+            stringCommand.Invoke((string)parameter!);
+            return;
+        }
+        if (itestCommand != null)
+        {
+            itestCommand.Invoke((ITest)parameter!);
+            return;
         }
     }
 }

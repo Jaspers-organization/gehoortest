@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using UserInterface.Commands.TestManagementCommands;
+using UserInterface.Commands;
 using UserInterface.Stores;
 
 namespace UserInterface.ViewModels.Modals;
@@ -19,15 +19,14 @@ internal class ConfirmationModalViewModel : ViewModelBase
         set { _text = value; OnPropertyChanged(nameof(Text)); }
     }
 
-    public ICommand CloseModalCommand => new ObjectCommand(CloseModal);
+    public ICommand CloseModalCommand => new Command(CloseModal);
     public ConfirmationModalViewModel(NavigationStore navigationStore, string text)
     {
         this.navigationStore = navigationStore;
-        _text = text;
-        Text = _text;
+        Text = text;
     }
 
-    private void CloseModal(object obj)
+    private void CloseModal()
     {
         navigationStore.CloseModal();
     }

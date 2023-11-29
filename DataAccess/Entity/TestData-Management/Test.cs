@@ -9,15 +9,9 @@ public class Test: ITest
 {
     [Column("id")]
     public int Id { get; set; }
-
     [Column("title")]
     public string? Title { get; set; }
-
-    [Column("target_audience_id")]
-    public int TargetAudienceId { get; set; }
-
     public ITargetAudience? TargetAudience { get; set; }
-
 
     [Column("active")]
     public bool Active { get; set; }
@@ -26,11 +20,5 @@ public class Test: ITest
 
     public List<IToneAudiometryQuestion>? ToneAudiometryQuestions { get; set ; }
     public IEmployee? Employee { get; set; }
-
-
-
-    //public virtual Employee? Employee { get; set; }
-
-    //public virtual TargetAudience? TargetAudience { get; set; }
 
 }

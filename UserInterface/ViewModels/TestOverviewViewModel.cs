@@ -6,10 +6,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UserInterface.Stores;
 using System.Windows.Input;
-using UserInterface.Commands.TestManagementCommands;
 using BusinessLogic.Services;
 using System.Windows.Documents;
 using System.Windows;
+using UserInterface.Commands;
 
 namespace UserInterface.ViewModels;
 
@@ -60,9 +60,9 @@ internal class TestOverviewViewModel : ViewModelBase
         _navigationStore = navigationStore;
 
         //commands
-        OpenTestCommand = new IntCommand(OpenTest);
-        GetTestsCommand = new IntCommand(GetTests);
-
+        OpenTestCommand = new Command(OpenTest);
+        GetTestsCommand = new Command(GetTests);
+        NewTestCommand = new Command(NewTest);
         //repositories
         _targetAudienceRepository = new TargetAudienceRepository();
         _testRepository = new TestRepository();
@@ -78,16 +78,16 @@ internal class TestOverviewViewModel : ViewModelBase
 
     public void GetTests(int id)
     {
-        TestCollection = this._testRepository.GetTestsProjectionForAudience(id);
+        TestCollection = _testSerivce.GetTestsProjectionForAudience(id);
 
     }
     public void OpenTest(int id)
     {
         ITest test = _testRepository.GetTest(id);
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, test);
+        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, test);
     }
     public void NewTest()
     {
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore);
+        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this);
     }
 }

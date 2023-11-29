@@ -1,11 +1,13 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Projections;
+using System.Collections.ObjectModel;
 
 namespace BusinessLogic.IRepositories;
 
 public interface ITestRepository
 {
-    public string Title { get; set; }
-    ITest Get(int  id);
+    ITest GetTest(int  id);
     void Update(ITest test);
     void Create(ITest test);
+    ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id);
 }
