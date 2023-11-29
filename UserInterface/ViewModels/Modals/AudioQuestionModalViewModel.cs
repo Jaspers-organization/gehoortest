@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.IModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,17 +8,18 @@ using System.Windows.Input;
 using UserInterface.Commands.TestManagementCommands;
 using UserInterface.Stores;
 
-namespace UserInterface.ViewModels;
+namespace UserInterface.ViewModels.Modals;
 
-internal class QuestionModalViewModel : ViewModelBase
+internal class AudioQuestionModalViewModel : ViewModelBase
 {
     private readonly NavigationStore navigationStore;
 
     public ICommand CloseModalCommand => new CloseModalCommand(CloseModal);
-
-    public QuestionModalViewModel(NavigationStore navigationStore)
+    private readonly IToneAudiometryQuestion toneAudiometryQuestion;
+    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion)
     {
         this.navigationStore = navigationStore;
+        this.toneAudiometryQuestion = toneAudiometryQuestion;
     }
 
     private void CloseModal(object obj)

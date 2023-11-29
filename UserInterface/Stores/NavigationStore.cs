@@ -6,12 +6,11 @@ namespace UserInterface.Stores;
 internal class NavigationStore
 {
     public event Action? CurrentViewModelChanged;
-    public event Action? CurrentModalViewModelChanged;
-    public event Action? IsModelOpenChanged;
+    public event Action? IsModalOpenChanged;
 
     private ViewModelBase? _currentViewModel;
     private ViewModelBase? _currentModalViewModel;
-    private bool _isModelOpen = false;
+    private bool _isModalOpen = false;
 
     public ViewModelBase? CurrentViewModel
     {
@@ -21,24 +20,31 @@ internal class NavigationStore
     public ViewModelBase? CurrentModalViewModel
     {
         get { return _currentModalViewModel; }
-        set { _currentModalViewModel = value; OnCurrentModalViewModelChanged(); }
+        set { _currentModalViewModel = value; }
     }
-    public bool IsModelOpen
+    public bool IsModalOpen
     {
-        get { return _isModelOpen; }
-        set { _isModelOpen = value; OnIsModelOpenChanged(); }
+        get { return _isModalOpen; }
+        set { _isModalOpen = value; OnIsModalOpenChanged(); }
     }
 
     public void OpenModal(ViewModelBase viewModal)
     {
         CurrentModalViewModel = viewModal;
-        IsModelOpen = true;
+        IsModalOpen = true;
     }
 
     public void CloseModal()
     {
         CurrentModalViewModel = null;
-        IsModelOpen = false;
+        IsModalOpen = false;
+    }
+
+    public void CloseModal(ViewModelBase viewModal)
+    {
+        CurrentModalViewModel = null;
+        CurrentViewModel = viewModal;
+        IsModalOpen = false;
     }
 
     private void OnCurrentViewModelChanged()
@@ -46,14 +52,8 @@ internal class NavigationStore
         CurrentViewModelChanged?.Invoke();
     }
 
-    private void OnCurrentModalViewModelChanged()
+    private void OnIsModalOpenChanged()
     {
-        CurrentModalViewModelChanged?.Invoke();
+        IsModalOpenChanged?.Invoke();
     }
-
-    private void OnIsModelOpenChanged()
-    {
-        IsModelOpenChanged?.Invoke();
-    }
-
 }

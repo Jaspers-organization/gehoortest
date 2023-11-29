@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Views.Modals
 {
     /// <summary>
-    /// Interaction logic for TestModal.xaml
+    /// Interaction logic for TextQuestionModal.xaml
     /// </summary>
-    public partial class TestModal : UserControl
+    public partial class TextQuestionModal : UserControl
     {
-        public TestModal()
+        public TextQuestionModal()
         {
             InitializeComponent();
         }

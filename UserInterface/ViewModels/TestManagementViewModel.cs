@@ -7,6 +7,7 @@ using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Commands.TestManagementCommands;
 using UserInterface.Stores;
+using UserInterface.ViewModels.Modals;
 using UserInterface.Views;
 
 namespace UserInterface.ViewModels;
@@ -99,7 +100,9 @@ internal class TestManagementViewModel : ViewModelBase
 
     public void OpenModal(object temp)
     {
-        navigationStore.OpenModal(new QuestionModalViewModel(navigationStore));
+       // navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, "Haha jasper kanker gay"));
+
+        navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, test.TextQuestions[0], this));
     }
 
     private void SetTargetAudience(int id)

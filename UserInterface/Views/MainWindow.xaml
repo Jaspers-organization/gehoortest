@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:UserInterface.Views" 
+        xmlns:views="clr-namespace:UserInterface.Views"
+        xmlns:modals="clr-namespace:UserInterface.Views.Modals" 
         xmlns:viewModels="clr-namespace:UserInterface.ViewModels" 
-        xmlns:modalcontrol="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:modalViewModels="clr-namespace:UserInterface.ViewModels.Modals" 
+
         mc:Ignorable="d"
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
@@ -27,8 +29,11 @@
             </DataTemplate>
             
             <!-- Define all modals here -->
-            <DataTemplate DataType="{x:Type viewModels:QuestionModalViewModel}">
-                <views:Modal />
+            <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">
+                <modals:TextQuestionModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:ConfirmationModalViewModel}">
+                <modals:ConfirmationModal/>
             </DataTemplate>
         </Grid.Resources>
 
@@ -53,13 +58,15 @@
             Panel.ZIndex="3"
             Content="{Binding CurrentModalViewModel}"
             Visibility="{Binding ShowModal}"/>
-
-        <!--<modalcontrol:Modal Grid.Column="1"  Grid.Row="2"  Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
-            <modalcontrol:Modal.Background>
-                <SolidColorBrush Color="black" Opacity="0.5"/>
-            </modalcontrol:Modal.Background>
-            <ContentControl Content="{Binding CurrentModalViewModel}" />
-        </modalcontrol:Modal>-->
+        <Rectangle 
+            Grid.Column="0" 
+            Grid.ColumnSpan="3"
+            Grid.Row="0" 
+            Grid.RowSpan="5"
+            Panel.ZIndex="2" 
+            Fill="Black" 
+            Opacity="0.3" 
+            Visibility="{Binding ShowModal}"/>
         
         <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 

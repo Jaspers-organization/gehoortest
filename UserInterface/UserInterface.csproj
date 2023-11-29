@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\ModalControl\ModalControl.csproj" />
   </ItemGroup>
 
   <ItemGroup>

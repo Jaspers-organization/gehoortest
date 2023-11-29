@@ -14,33 +14,20 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="ContentContainer_XXS" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="580" />
-    </Style>
-
-    <Style x:Key="ContentContainer_XS" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
+    <Style x:Key="ModalContainer_S" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
         <Setter Property="Width" Value="780" />
+        <Setter Property="Height" Value="300" />
     </Style>
-    
-    <Style x:Key="ContentContainer_S" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="980" />
-    </Style>
-
-    <Style x:Key="ContentContainer_M" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
+    <Style x:Key="ModalContainer_M" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
         <Setter Property="Width" Value="1180" />
+        <Setter Property="Height" Value="450" />
     </Style>
-
-    <Style x:Key="ContentContainer_L" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
+    <Style x:Key="ModalContainer_L" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
         <Setter Property="Width" Value="1380" />
+        <Setter Property="Height" Value="600" />
     </Style>
-
-    <Style x:Key="ContentContainer_XL" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="1580" />
+    <Style x:Key="ModalContainer_ML" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
+        <Setter Property="Width" Value="1100" />
+        <Setter Property="Height" Value="600" />
     </Style>
-
-    <Style x:Key="ContentContainer_XXL" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="1780" />
-    </Style>
-
 </ResourceDictionary>

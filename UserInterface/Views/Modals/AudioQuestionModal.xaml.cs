@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Views.Modals
 {
     /// <summary>
-    /// Interaction logic for Modal.xaml
+    /// Interaction logic for AudioQuestionModal.xaml
     /// </summary>
-    public partial class Modal : UserControl
+    public partial class AudioQuestionModal : UserControl
     {
-        public Modal()
+        public AudioQuestionModal()
         {
             InitializeComponent();
         }

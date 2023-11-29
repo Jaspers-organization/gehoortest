@@ -24,7 +24,7 @@ public partial class App : Application
  
         //_navigationStore.CurrentViewModel = new StartTestViewModel(navigationStore);
         //_navigationStore.CurrentViewModel = new StartTestViewModel(navigationStore);
-        navigationStore.CurrentViewModel = new TestManagementViewModel(navigationStore);
+        navigationStore.CurrentViewModel = new TestOverviewViewModel(navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(navigationStore);
 

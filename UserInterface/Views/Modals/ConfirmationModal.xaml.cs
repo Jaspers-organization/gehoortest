@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Views.Modals
 {
     /// <summary>
-    /// Interaction logic for test.xaml
+    /// Interaction logic for ConfirmationModal.xaml
     /// </summary>
-    public partial class test : UserControl
+    public partial class ConfirmationModal : UserControl
     {
-        public test()
+        public ConfirmationModal()
         {
             InitializeComponent();
         }
