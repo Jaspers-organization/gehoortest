@@ -5,52 +5,55 @@ namespace UserInterface.Stores;
 
 internal class NavigationStore
 {
-    #region ViewModel
-    private ViewModelBase? _currentViewModel;
-
     public event Action? CurrentViewModelChanged;
+    public event Action? CurrentModalViewModelChanged;
+    public event Action? IsModelOpenChanged;
+
+    private ViewModelBase? _currentViewModel;
+    private ViewModelBase? _currentModalViewModel;
+    private bool _isModelOpen = false;
 
     public ViewModelBase? CurrentViewModel
     {
         get { return _currentViewModel; }
         set { _currentViewModel = value; OnCurrentViewModelChanged(); }
     }
-    private void OnCurrentViewModelChanged()
-    {
-        CurrentViewModelChanged?.Invoke();
-    }
-    #endregion
-
-    #region ModalViewModel
-    public event Action? CurrentModalViewModelChanged;
-
-    private ViewModelBase? _currentModalViewModel;
     public ViewModelBase? CurrentModalViewModel
     {
         get { return _currentModalViewModel; }
         set { _currentModalViewModel = value; OnCurrentModalViewModelChanged(); }
     }
-
-    private bool IsOpen = false;
-
-    public bool returnModalState()
+    public bool IsModelOpen
     {
-        return IsOpen;
+        get { return _isModelOpen; }
+        set { _isModelOpen = value; OnIsModelOpenChanged(); }
     }
-    public void OpenModal()
+
+    public void OpenModal(ViewModelBase viewModal)
     {
-        IsOpen = true;
+        CurrentModalViewModel = viewModal;
+        IsModelOpen = true;
     }
 
     public void CloseModal()
     {
         CurrentModalViewModel = null;
-        IsOpen = false;
+        IsModelOpen = false;
     }
+
+    private void OnCurrentViewModelChanged()
+    {
+        CurrentViewModelChanged?.Invoke();
+    }
+
     private void OnCurrentModalViewModelChanged()
     {
         CurrentModalViewModelChanged?.Invoke();
     }
-    #endregion
+
+    private void OnIsModelOpenChanged()
+    {
+        IsModelOpenChanged?.Invoke();
+    }
 
 }

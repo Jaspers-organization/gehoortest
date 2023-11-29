@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="UserInterface.Views.test"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserInterface.Views"
+             mc:Ignorable="d">
+    <Border Padding="30" Background="{StaticResource PrimaryBackgroundColor}">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource Text}" Text="Vraag" VerticalAlignment="Center"/>
+                <TextBox Style="{StaticResource InputField_XXL}" Margin="30 0 0 0"/>
+            </StackPanel>
+
+            <Grid Margin="0 30 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource Text}" Text="Meerkeuze" VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource Text}" Text="Open invoerveld" VerticalAlignment="Center" Margin="0 30 0 0"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Column="0" Height="400">
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource PrimaryButton_S}" Content="Opslaan"/>
+                        <Button Style="{StaticResource SecondaryButton_S}" Content="Annuleren" Margin="30 0 0 0"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Height="400">
+                    <TextBlock Style="{StaticResource Text}" Text="Opties"/>
+
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+    </Border>
+</UserControl>

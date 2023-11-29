@@ -4,38 +4,39 @@ namespace UserInterface.ViewModels;
 
 internal class MainWindowViewModel : ViewModelBase
 {
+    private NavigationStore navigationStore;
 
-    private readonly NavigationStore? _navigationStore;
+    public ViewModelBase? CurrentViewModel => navigationStore?.CurrentViewModel;
+    public ViewModelBase? CurrentModalViewModel => navigationStore?.CurrentModalViewModel;
 
-    public ViewModelBase? CurrentViewModel => _navigationStore?.CurrentViewModel;
-    public ViewModelBase? CurrentModalViewModel => _navigationStore?.CurrentModalViewModel;
-
-    //public bool IsModalOpen => _navigationStore.returnModalState();
-
-    private bool _isModalOpen;
-    public bool IsModalOpen
+    private string _showModal = "Hidden";
+    public string ShowModal
     {
-        get { return _isModalOpen; }
-        set { _isModalOpen = value; OnPropertyChanged(nameof(IsModalOpen)); }
+        get { return _showModal; }
+        set { _showModal = value; OnPropertyChanged(nameof(ShowModal)); }
     }
-
 
     public MainWindowViewModel(NavigationStore navigationStore)
     {
-        _navigationStore = navigationStore;
-        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-        _navigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
-        IsModalOpen = _navigationStore.returnModalState();
+        this.navigationStore = navigationStore;
+
+        this.navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+        this.navigationStore.CurrentModalViewModelChanged += OnCurrentModalViewModelChanged;
+        this.navigationStore.IsModelOpenChanged += OnIsModelOpenChanged;
     }
 
     private void OnCurrentViewModelChanged()
     {
         OnPropertyChanged(nameof(CurrentViewModel));
     }
+
     private void OnCurrentModalViewModelChanged()
     {
         OnPropertyChanged(nameof(CurrentModalViewModel));
-        OnPropertyChanged(nameof(IsModalOpen));
+    }
 
+    private void OnIsModelOpenChanged()
+    {
+        ShowModal = navigationStore.IsModelOpen ? "Visible" : "Hidden";
     }
 }

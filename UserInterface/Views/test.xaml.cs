@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UserInterface.Views
 {
     /// <summary>
-    /// Interaction logic for Modal.xaml
+    /// Interaction logic for test.xaml
     /// </summary>
-    public partial class Modal : UserControl
+    public partial class test : UserControl
     {
-        public Modal()
+        public test()
         {
             InitializeComponent();
         }

@@ -56,7 +56,7 @@
 
                 <StackPanel Grid.Row="4" Orientation="Vertical" >
                     <Button Style="{StaticResource PrimaryButton_M}"
-                         Command="{Binding SaveTestCommand}"
+                         Command="{Binding OpenModalCommand}"
                          CommandParameter="{Binding Id }"
                          Content="Opslaan"  Margin="0,0,0,15"/>
                     <Button Style="{StaticResource SecondaryButton_M}"
@@ -198,7 +198,7 @@
                     </Grid>
                     <Button Style="{StaticResource PrimaryButton_L}"
              Command="{Binding OpenModalCommand}"
-             CommandParameter="{Binding Id }"
+             CommandParameter="true"
              Content="Toevoegen"  Margin="0,0,0,15"/>
                 </StackPanel>
             </Grid>

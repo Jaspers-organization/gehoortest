@@ -11,22 +11,22 @@ namespace UserInterface;
 /// </summary>
 public partial class App : Application
 {
-    private readonly NavigationStore _navigationStore;
+    private readonly NavigationStore navigationStore;
 
     public App()
     {
-        _navigationStore = new NavigationStore();
+        navigationStore = new NavigationStore();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         //MainWindow = new Sandbox();
  
-        //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
-        //_navigationStore.CurrentViewModel = new StartTestViewModel(_navigationStore);
-        _navigationStore.CurrentViewModel = new TestOverviewViewModel(_navigationStore);
+        //_navigationStore.CurrentViewModel = new StartTestViewModel(navigationStore);
+        //_navigationStore.CurrentViewModel = new StartTestViewModel(navigationStore);
+        navigationStore.CurrentViewModel = new TestManagementViewModel(navigationStore);
         MainWindow = new MainWindow();
-        MainWindow.DataContext = new MainWindowViewModel(_navigationStore);
+        MainWindow.DataContext = new MainWindowViewModel(navigationStore);
 
         MainWindow.Show();
 

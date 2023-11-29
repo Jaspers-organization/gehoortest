@@ -13,9 +13,6 @@
     <Grid Background="lightgray">
         <Grid.Resources>
             <!-- Define all pages here -->
-            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
-                <views:TestManagementView />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
                 <views:StartTest />
             </DataTemplate>
@@ -25,10 +22,14 @@
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:QuestionModalViewModel}">
-                <views:AudiometryQuestion />
+            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
+                <views:TestManagementView />
             </DataTemplate>
             
+            <!-- Define all modals here -->
+            <DataTemplate DataType="{x:Type viewModels:QuestionModalViewModel}">
+                <views:Modal />
+            </DataTemplate>
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -44,16 +45,21 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        
-        
         <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
 
-        <modalcontrol:Modal Grid.Column="1"  Grid.Row="2"  Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+        <ContentControl
+            Grid.Column="1" 
+            Grid.Row="2" 
+            Panel.ZIndex="3"
+            Content="{Binding CurrentModalViewModel}"
+            Visibility="{Binding ShowModal}"/>
+
+        <!--<modalcontrol:Modal Grid.Column="1"  Grid.Row="2"  Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
             <modalcontrol:Modal.Background>
                 <SolidColorBrush Color="black" Opacity="0.5"/>
             </modalcontrol:Modal.Background>
             <ContentControl Content="{Binding CurrentModalViewModel}" />
-        </modalcontrol:Modal>
+        </modalcontrol:Modal>-->
         
         <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 

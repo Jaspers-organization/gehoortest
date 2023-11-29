@@ -13,7 +13,7 @@ namespace UserInterface.ViewModels;
 
 internal class TestManagementViewModel : ViewModelBase
 {
-    private readonly NavigationStore? _navigationStore;
+    private readonly NavigationStore navigationStore;
     private readonly TestRepository _testRepository;
     private readonly TargetAudienceRepository _targetAudienceRepository;
     private readonly TestService _testSerivce;
@@ -23,6 +23,7 @@ internal class TestManagementViewModel : ViewModelBase
     public ICommand SaveTestCommand { get; }
     public ICommand DeleteTestCommand { get; }
     public ICommand OpenModalCommand { get; }
+
     #region Propertys
     private List<ITargetAudience>? _audiencesList;
     public List<ITargetAudience>? AudiencesList
@@ -65,9 +66,11 @@ internal class TestManagementViewModel : ViewModelBase
     }
 
     #endregion
+
     public TestManagementViewModel(NavigationStore navigationStore, ITest test = null)
     {
-        _navigationStore = navigationStore;
+        this.navigationStore = navigationStore;
+
         //_dialogService = new DialogService();
         _testRepository = new TestRepository();
         _targetAudienceRepository = new TargetAudienceRepository();
@@ -92,16 +95,18 @@ internal class TestManagementViewModel : ViewModelBase
         DeleteTestCommand = new DeleteTestCommand(DeleteTest);
         OpenModalCommand = new OpenModalCommand(OpenModal);
     }
+
+
     public void OpenModal(object temp)
     {
-        _navigationStore!.OpenModal();
-        _navigationStore.CurrentModalViewModel = new QuestionModalViewModel();
-       
+        navigationStore.OpenModal(new QuestionModalViewModel(navigationStore));
     }
+
     private void SetTargetAudience(int id)
     {
-        _audience = _audiencesList.FirstOrDefault(t => t.Id == id);
+        //_audience = _audiencesList.FirstOrDefault(t => t.Id == id);
     }    
+
     public void CreateTest()
     {
 
