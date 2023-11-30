@@ -105,7 +105,6 @@ internal class TextQuestionModalViewModel : ViewModelBase
                 default:
                     break;
             }
-
             return validationMessage ?? string.Empty;
         }
     }
