@@ -8,16 +8,20 @@ namespace UserInterface.ViewModels.Modals;
 
 internal class AudioQuestionModalViewModel : ViewModelBase
 {
+    #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
 
     private readonly IToneAudiometryQuestion toneAudiometryQuestion;
     private readonly bool newQuestion;
+    #endregion
 
+    #region Commands
     public ICommand CloseModalCommand => new Command(CloseModal);
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
+    #endregion
 
-
+    #region Propertys
     private int _frequency;
     public int Frequency
     {
@@ -38,6 +42,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
             OnPropertyChanged(nameof(StartingDecibels));
         }
     }
+    #endregion
 
     public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {

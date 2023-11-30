@@ -31,6 +31,71 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ButtonWarning" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource Warning}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBackgroundColor}"  />
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border 
+                x:Name="ButtonBorder" 
+                Height="70"
+                BorderBrush="Transparent"
+                Background="{StaticResource Warning}" 
+                BorderThickness="0" 
+                CornerRadius="35">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource WarningHover }"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Warning}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Warning}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SecondaryButtonNoBorder" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border 
+                x:Name="ButtonBorder" 
+                Height="70"
+                BorderBrush="Transparent"
+                Background="Transparent" 
+                BorderThickness="0" 
+                CornerRadius="35">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource SecondaryBackgroundColor }"/>
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryBackgroundColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource SecondaryBackgroundColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource SecondaryBackgroundColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="PrimaryButton_S" BasedOn="{StaticResource PrimaryButton}" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="220" />
     </Style>
@@ -38,7 +103,7 @@
     <Style x:Key="PrimaryButton_M" BasedOn="{StaticResource PrimaryButton}" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="420" />
     </Style>
-
+    
     <Style x:Key="PrimaryButton_L" BasedOn="{StaticResource PrimaryButton}" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="620" />
     </Style>
@@ -72,39 +137,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="SecondaryButtonNoBorder" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="Foreground" Value="Transparent" />
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FontSize" Value="32"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border 
-                    x:Name="ButtonBorder" 
-                    Height="70"
-                    BorderBrush="Transparent"
-                    Background="Transparent" 
-                    BorderThickness="0" 
-                    CornerRadius="35">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource SecondaryBackgroundColor }"/>
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryBackgroundColor}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource SecondaryBackgroundColor}"/>
-                            <Setter Property="Foreground" Value="{StaticResource SecondaryBackgroundColor}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="ButtonWarning_M" BasedOn="{StaticResource ButtonWarning}" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="420" />
     </Style>
+
+    
 
 
     <Style x:Key="SecondaryButton_Icon" BasedOn="{StaticResource SecondaryButton}" TargetType="{x:Type Button}">

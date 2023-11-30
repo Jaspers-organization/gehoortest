@@ -76,7 +76,7 @@
                             <GridViewColumn Width="200" Header="Status" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ToggleButton
+                                        <ToggleButton IsChecked="{Binding TestCollection.Active}"
                                            Style="{StaticResource ToggleButtonStyle}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -107,7 +107,9 @@
                             <GridViewColumn Width="100">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Style="{StaticResource SecondaryButton_Icon}">
+                                        <Button Style="{StaticResource SecondaryButton_Icon}"
+                                                Command="{Binding DataContext.DeleteTestCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestOverviewView}}}"
+                                                CommandParameter="{Binding Id }">
                                             <Button.Content>
                                                 <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                             </Button.Content>

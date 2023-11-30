@@ -6,7 +6,7 @@ using System;
 
 namespace UserInterface.ViewModels.Modals;
 
-internal class ConfirmationModalViewModel : ViewModelBase
+internal class ErrorModalViewModal : ViewModelBase
 {
     #region Dependencies
     private readonly NavigationStore _navigationStore;
@@ -27,28 +27,24 @@ internal class ConfirmationModalViewModel : ViewModelBase
     public ICommand DenyCommand => new Command(Deny);
     #endregion
 
-    private IConfirmation _confirmation;
 
 
-    public ConfirmationModalViewModel(NavigationStore navigationStore, string text , IConfirmation confirmation, Action action)
+    public ErrorModalViewModal(NavigationStore navigationStore, string text)
     {
         _navigationStore = navigationStore;
-        _confirmation = confirmation;
         Text = text;
-        _action = action;
     }
     public void Confirm()
     {
-        _confirmation.SetConfirmed(true);
         CloseModal();
     }
-    public void Deny() {
-        _confirmation.SetConfirmed(false);
+    public void Deny()
+    {
         CloseModal();
     }
     public void PerformAction()
     {
-        _action?.Invoke(); 
+        _action?.Invoke();
     }
     private void CloseModal()
     {

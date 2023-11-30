@@ -7,7 +7,9 @@ namespace BusinessLogic.IRepositories;
 public interface ITestRepository
 {
     ITest GetTest(int  id);
-    void Update(ITest test);
-    void Create(ITest test);
+    void UpdateTest(ITest test);
+    ITest CreateTest();
+    void SaveTest(ITest test);
+    void DeleteTest(ITest test);
     ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id);
 }

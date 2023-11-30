@@ -22,21 +22,22 @@
                     <RowDefinition Height="31*" />
                     <RowDefinition Height="28*"/>
                     <RowDefinition Height="18*"/>
-                    <RowDefinition Height="28*"/>
-                    <RowDefinition Height="31*"/>
+                    <RowDefinition Height="45*"/>
+                    <RowDefinition Height="14*"/>
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text_Big}" VerticalAlignment="Center" Text="Naam test" Height="58" Width="auto"/>
-                    <TextBox Text="{Binding TestName}" Style="{StaticResource InputField_L}" ></TextBox>
+                    <TextBlock Style="{StaticResource Text_Big}" VerticalAlignment="Center" Text="Test vraag" Height="58" Width="auto"/>
+                    <TextBox Text="{Binding TestName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_L}"/>
+
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,70" Grid.RowSpan="2" >
                     <TextBlock Style="{StaticResource Text_Big}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
-                              SelectedValue="{Binding Audience.Label, Mode=TwoWay}"
+                              SelectedValue="{Binding Audience.Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
-                              SelectedIndex="{Binding Selected, Mode=OneWayToSource}"
-                              Text="Selecteer een doelgroep" >
+                              SelectedIndex="{Binding SelectedIndexProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Text="Selecteer een doelgroep">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -54,15 +55,11 @@
                     <TextBlock Style="{StaticResource Text_Big}" Text="Actief" Width="160"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="4" Orientation="Vertical" >
-                    <Button Style="{StaticResource PrimaryButton_M}"
+
+                <Button Grid.Row="4" Style="{StaticResource PrimaryButton_M}"
                          Command="{Binding SaveTestCommand}"
-                         Content="Opslaan"  Margin="0,0,0,15"/>
-                    <Button Style="{StaticResource SecondaryButton_M}"
-                         Command="{Binding DeleteTestCommand}"
-                         CommandParameter="{Binding Id }"
-                         Content="Verwijderen" />
-                </StackPanel>
+                         Content="Opslaan"  Margin="50,0,50,0"/>
+
             </Grid>
 
 
@@ -126,7 +123,9 @@
                                     <GridViewColumn Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button  Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}" 
+                                                            Command="{Binding DataContext.DeleteAudioQuestionCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                            CommandParameter="{Binding QuestionNumber }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                                     </Button.Content>
@@ -201,7 +200,9 @@
                                     <GridViewColumn Width="50">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}">
+                                                <Button Margin="-35,0,0,0" Style="{StaticResource SecondaryButton_Icon}"
+                                                        Command="{Binding DataContext.DeleteTextQuestionCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestManagementView}}}"
+                                                        CommandParameter="{Binding QuestionNumber }">
                                                     <Button.Content>
                                                         <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                                     </Button.Content>

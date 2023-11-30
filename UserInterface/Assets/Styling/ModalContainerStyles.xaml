@@ -18,6 +18,12 @@
         <Setter Property="Width" Value="590" />
         <Setter Property="Height" Value="400" />
     </Style>
+    <Style x:Key="ModalContainer_Warning" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
+        <Setter Property="Width" Value="590" />
+        <Setter Property="Height" Value="400" />
+        <Setter Property="BorderBrush" Value="{StaticResource Warning}"/>
+        <Setter Property="BorderThickness" Value="4"/>
+    </Style>
     <Style x:Key="ModalContainer_S" BasedOn="{StaticResource ContentContainer}" TargetType="{x:Type Border}">
         <Setter Property="Width" Value="780" />
         <Setter Property="Height" Value="300" />

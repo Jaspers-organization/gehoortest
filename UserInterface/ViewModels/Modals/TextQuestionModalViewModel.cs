@@ -1,13 +1,7 @@
 ﻿using BusinessLogic.IModels;
 using DataAccess.Entity.TestData_Management;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -16,17 +10,19 @@ namespace UserInterface.ViewModels.Modals;
 
 internal class TextQuestionModalViewModel : ViewModelBase
 {
+    #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
     private readonly ITextQuestion textQuestion;
     private readonly bool newQuestion;
+    #endregion
 
-
+    #region Commands
     public ICommand AddOptionCommand => new Command(AddOption);
     public ICommand RemoveOptionCommand => new Command(RemoveOption);
     public ICommand CloseModalCommand => new Command(CloseModal);
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
-    
+    #endregion
 
     #region Propertys
     private string _optionText;

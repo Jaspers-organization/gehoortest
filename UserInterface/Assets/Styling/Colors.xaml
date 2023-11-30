@@ -7,6 +7,9 @@
     <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#E6E6E6"/>
     <SolidColorBrush x:Key="White" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Warning" Color="#FF0037"/>
+    <SolidColorBrush x:Key="WarningHover" Color="#FF747C"/>
+
 
     <Color x:Key="Shadow" A="255" R="220" G="220" B="220"/>
     

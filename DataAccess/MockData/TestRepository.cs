@@ -16,7 +16,7 @@ public class TestRepository : ITestRepository
     {
         testDataList = new List<ITest>
         {
-            new Test { Id = 0, TargetAudience = new TargetAudience{ Id = 0, From = 0, To=18, Label="-18" }, Active = true, Title = "title van een test",
+            new Test { Id = 0, TargetAudience = new TargetAudience{ Id = 0, From = 0, To=18, Label="-18" }, Active = false, Title = "title van een test",
                 TextQuestions = new List<ITextQuestion>{
                     new TextQuestion { Id = 0, Question = "Test test test", Options = new List<string>(), QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
                     new TextQuestion { Id = 1, Question = "Test 2 ",Options = new List<string>(), QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
@@ -40,7 +40,7 @@ public class TestRepository : ITestRepository
                     new ToneAudiometryQuestion { Id = 2, Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
                 },Employee =  new Employee { Id = 1, EmployeeNumber = "555", FirstName = "Dinny", Infix = "is", LastName = " wel grappig" }
             },
-            new Test { Id = 2, TargetAudience = new TargetAudience{ Id = 1, From = 19, To=29, Label="19-29" }, Active = true, Title = "ik houd van testen en corona",
+            new Test { Id = 2, TargetAudience = new TargetAudience{ Id = 1, From = 19, To=29, Label="19-29" }, Active = false, Title = "ik houd van testen en corona",
                 TextQuestions = new List<ITextQuestion>{
                     new TextQuestion { Id = 0, Question = "dsadsadsadsa test test", Options = new List<string>(), QuestionNumber = 1, HasInputField = false, IsMultiSelect = false},
                     new TextQuestion { Id = 1, Question = "zvxcvcxz 2 ",Options = new List<string>(),QuestionNumber = 2, HasInputField = true, IsMultiSelect = true},
@@ -54,9 +54,9 @@ public class TestRepository : ITestRepository
             },
         };
     }
-    public void Create(ITest test)
+    public ITest CreateTest()
     {
-        testDataList.Add(test);
+        return new Test();
     }
     
     public TestProjection GetTests(int id)
@@ -95,9 +95,18 @@ public class TestRepository : ITestRepository
         return new ObservableCollection<TestProjection>(projections);
     }
 
-    public void Update(ITest test)
+    public void DeleteTest(ITest test)
+    {
+        testDataList.Remove(test);
+    }
+    public void UpdateTest(ITest test)
     {
         int index = testDataList.FindIndex(t => t.Id == test.Id);
         testDataList[index] = test;
+    }
+
+    public void SaveTest(ITest test)
+    {
+        testDataList.Add(test);
     }
 }
