@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="UserInterface.Views.TestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Views="clr-namespace:UserInterface.Views" 
+             xmlns:viewmodels="clr-namespace:UserInterface.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:TestViewModel}"
+             mc:Ignorable="d">
+    <Grid>
+        <Views:TestExplanationView Visibility="{Binding ShowTestExplanationView}" />
+        <Views:TestTargetAudienceView Visibility="{Binding ShowTestTargetAudienceView}"/>
+        <Views:TestTextQuestionView Visibility="{Binding ShowTestTextQuestionView}" />
+        <Views:TestAudiometryQuestionView Visibility="{Binding ShowTestToneAudiometryView}"/>
+        <Views:TestResultView Visibility="{Binding ShowTestResultView}"/>
+
+        <!--<Views:TestExplanationView Visibility="{Binding IntroText}" />
+        <Views:TestTextQuestionView Visibility="{Binding QuestionText}" />
+        <Views:TestAudiometryQuestionView Visibility="{Binding QuestionAudio}"/>-->
+    </Grid>
+</UserControl>

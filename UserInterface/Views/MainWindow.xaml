@@ -16,12 +16,15 @@
         </Grid.RowDefinitions>
         
         <!-- Define all pages here -->
-        <Grid.Resources>
-            <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
+       <Grid.Resources>
+            <!-- <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
                 <views:StartTest />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
                 <views:TestResultView />
+            </DataTemplate>-->
+            <DataTemplate DataType="{x:Type viewModels:TestViewModel}">
+                <views:TestView/>
             </DataTemplate>
         </Grid.Resources>
 

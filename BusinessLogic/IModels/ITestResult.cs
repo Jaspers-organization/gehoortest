@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.IModels;
+﻿using Service.Interfaces.Models;
+
+namespace BusinessLogic.IModels;
 
 public interface ITestResult : IModel
 {

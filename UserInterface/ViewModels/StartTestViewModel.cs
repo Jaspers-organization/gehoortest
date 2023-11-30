@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Extensions.Options;
 
 namespace UserInterface.ViewModels;
 
@@ -91,69 +92,14 @@ internal class StartTestViewModel : ViewModelBase
 
         test = TestRepository.GetTest();
 
-        TestProgressData = new(test);
+      //  TestProgressData = new(test);
     }
 
-    public void StartTest(object test)
+    public void StartTest(string test)
     {
+        //Options.Add(value);
         IntroText = "Hidden";
-        ShowNextQuestion();
     }
-
-    public async void ShowNextQuestion()
-    {
-        // Reset to defaults
-        QuestionText = "Hidden";
-        QuestionAudio = "Hidden";
-
-        Question? nextQuestion = TestProgressData.GetNextQuestion();
-
-        if (nextQuestion is null)
-        {
-            ShowTestResults();
-            return;
-        }
-
-        if (nextQuestion is TextQuestion textQuestion)
-        {
-            // Reset to defaults
-            QuestionRadioButtons = "Hidden";
-            QuestionInput = "Hidden";
-            QuestionText = "Visible";
-
-            TextQuestion = textQuestion.Question;
-
-            if (textQuestion.IsMultipleSelect)
-            {
-                List<string> tempRadioButtons = new();
-                foreach (string option in textQuestion.Options)
-                {
-                    tempRadioButtons.Add(option);
-                }
-                RadioButtons = tempRadioButtons;
-                QuestionRadioButtons = "Visible";
-            }
-
-            if (textQuestion.HasInputField)
-            {
-                QuestionInputText = "";
-                QuestionInput = "Visible";
-            }
-            return;
-        }
-
-        if (nextQuestion is AudiometryQuestion audiometryQuestion)
-        {
-            QuestionAudio = "Visible";
-            frequency = audiometryQuestion.Frequency;
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            MakeSound(TestProgressData);
-
-            return;
-        }
-    }
-
     public void SaveQuestion(object test)
     {
         string answer;
@@ -168,26 +114,23 @@ internal class StartTestViewModel : ViewModelBase
             answer = SelectedOption;
         }
 
-        TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
-        TestProgressData.TestAnswers.Add(testAnswer);
-
+        //TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
+        //TestProgressData.TestAnswers.Add(testAnswer);
         // Continue to next question
-        ShowNextQuestion();
     }
 
     public int questionNumber = 1; // TODO: Temporary for the demo
     public void SaveAudioQuestion(object parameter)
     {
-        TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
+        //TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, parameter.ToString());
 
-        // ========
-        // TODO: Temporary for the demo
-        int decibels = (testAnswer.Answer == "true") ? 30 : 65; 
-        TestProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(questionNumber, 250, Ear.Left, 30, decibels));
+        //// ========
+        //// TODO: Temporary for the demo
+        //int decibels = (testAnswer.Answer == "true") ? 30 : 65; 
+        //TestProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(questionNumber, 250, Ear.Left, 30, decibels));
         questionNumber++;
         // =========
 
-        ShowNextQuestion();
     }
 
     public void MakeSound(object test)
@@ -201,8 +144,7 @@ internal class StartTestViewModel : ViewModelBase
         navigationStore.CurrentViewModel = new TestResultViewModel(navigationStore, TestProgressData);
     }
 
-    public ICommand StartTestCommand => new CustomCommands(StartTest);
-
+   // public ICommand StartTestCommand => new CustomCommands(StartTest);
     public ICommand SaveQuestionCommand => new CustomCommands(SaveQuestion);
 
     public ICommand MakeSoundCommand => new CustomCommands(MakeSound);
