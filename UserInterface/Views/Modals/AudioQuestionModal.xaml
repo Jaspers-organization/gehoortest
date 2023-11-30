@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
             
             <TextBlock  Grid.Row="0" Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
-            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding Frequency}" Style="{StaticResource InputField_XS}"  ></TextBox>
+            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}"  ></TextBox>
             <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Text}" VerticalAlignment="Center" Text="Start Decibel" Height="58" Width="auto"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding StartingDecibels}" Style="{StaticResource InputField_XS}" ></TextBox>
             <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource PrimaryButton_S}"

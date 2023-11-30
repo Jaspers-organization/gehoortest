@@ -3,13 +3,10 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using DataAccess.Entity.TestData_Management;
 using DataAccess.MockData;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -39,6 +36,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
     public ICommand OpenAudioModalCommand { get; }
     public ICommand OpenNewAudioModalCommand { get; }
+    public ICommand BackToTestOverviewCommand { get; }
+
     #endregion
 
     #region Propertys
@@ -60,6 +59,13 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         get { return _selected; }
         set { SetTargetAudience(value); }
+    }
+
+    private string? _status;
+    public string? Status
+    {
+        get { return _status; }
+        set { _status = value; OnPropertyChanged(nameof(Status)); }
     }
 
     private string? _testName;
@@ -85,8 +91,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region Errors
-    public static string ErrorTestQuestion => "Het invoerveld is leeg.\n Vul alsjeblieft een testvraag in.";
-    public static string ErrorAudience => "De doelgroep is leeg. \n Kies een doelgroep a.u.b.";
 
     public string this[string columnName]
     {
@@ -98,11 +102,13 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             {
                 case "TestName":
                     if (string.IsNullOrEmpty(TestName))
-                        validationMessage = ErrorTestQuestion;
+                        validationMessage = ErrorMessageStore.ErrorTestName;
+                    else if(TestName.Contains(ErrorMessageStore.IllegalCharacters))
+                        validationMessage = ErrorMessageStore.ErrorIllegalCharacters;
                     break;
                 case "Audience":
                     if (Audience == null || string.IsNullOrEmpty(Audience.Label))
-                        validationMessage = ErrorAudience;
+                        validationMessage = ErrorMessageStore.ErrorAudience;
                     break;
                 default:
                     break;
@@ -115,10 +121,12 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
     public bool IsConfirmed { get; set; }
     public ITest test { get; set; }
+    private ITargetAudience tempTargetAudience;
+
     private ErrorModalViewModal _errorModalViewModal { get; set; }
     private ConfirmationModalViewModel _confirmationModalViewModel { get; set; }
 
-    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel, ITest test = null)
+    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel,ITargetAudience targetAudience, ITest test = null)
     {
         //Dependencies initialization
         _testRepository = new TestRepository();
@@ -128,6 +136,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         _testOverviewViewModel = testOverviewViewModel;
         _navigationStore = navigationStore;
 
+        tempTargetAudience = targetAudience;
         //set values
         List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllAudiences();
         AudiencesList = targetAudiences;
@@ -138,6 +147,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         else
         {
             newTest = true;
+            Status = "Inactief";
             CreateTest();
         }
 
@@ -151,8 +161,18 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
         OpenAudioModalCommand = new Command(OpenAudioModal);
         OpenNewAudioModalCommand = new Command(OpenNewAudioModal);
-    }
 
+        BackToTestOverviewCommand =new Command(BackToTestOverview);
+    }
+    private void BackToTestOverview()
+    {
+        Action backAction = () =>
+        {
+            _navigationStore!.CurrentViewModel = new TestOverviewViewModel(_navigationStore, tempTargetAudience);
+        };
+
+        OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen worden ongedaan gemaakt.");
+    }
     private void OpenTextModal(int questionNumber)
     {
         ITextQuestion textQuestion = test.TextQuestions.First(q => q.QuestionNumber == questionNumber);
@@ -175,9 +195,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         audioQuestion.QuestionNumber = _testSerivce.GetNewHighestQuestionNumber(test,audioQuestion);
         _navigationStore.OpenModal(new AudioQuestionModalViewModel(_navigationStore, audioQuestion, true, this));
     }
+    //todo FIX THIS
     private void SetTargetAudience(int id)
     {
-        //_audience = _audiencesList.FirstOrDefault(t => t.Id == id);
+       // _audience = AudiencesList.FirstOrDefault(t => t.Id == id);
     }
     private void SetTestValues(ITest test)
     {
@@ -186,10 +207,13 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         TextQuestions = new ObservableCollection<ITextQuestion>(test.TextQuestions);
         Audience = AudiencesList.FirstOrDefault(t => t.Id == test.TargetAudience.Id);
         TestName = test.Title;
+        Status = test.Active ? "Actief" : "Inactief";
     }
     public void CreateTest()
     {
-        this.test = _testSerivce.CreateTest();
+        test = _testSerivce.CreateTest();
+        test.TextQuestions = new List<ITextQuestion>();
+        test.ToneAudiometryQuestions = new List<IToneAudiometryQuestion>();
     }
 
     public void DeleteTest(ITest test)
@@ -246,8 +270,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
     public ITextQuestion CreateTextQuestion()
     {
-        ITextQuestion textQuestion = new DataAccess.Entity.TestData_Management.TextQuestion();
-        textQuestion.Options = new List<string>();
+        ITextQuestion textQuestion = new TextQuestion
+        {
+            Options = new List<string>()
+        };
         return textQuestion;
     }
 

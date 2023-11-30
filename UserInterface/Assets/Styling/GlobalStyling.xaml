@@ -7,6 +7,23 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
-    
+
+    <!-- Define the pill style -->
+    <Style x:Key="PillStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <!-- Other properties you might want for the pill -->
+        <Setter Property="Height" Value="70"/>
+        <Setter Property="Width" Value="160"/>
+        <Style.Triggers>
+            <!-- Change the background color based on the text -->
+            <DataTrigger Binding="{Binding Text, ElementName=Status}" Value="Actief">
+                <Setter Property="Background" Value="#006400"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Text, ElementName=Status}" Value="Inactief">
+                <Setter Property="Background" Value="#d90000"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -15,7 +15,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="844" />
+                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="795" />
+                    <Button Grid.Row="1" Command="{Binding BackToMainMenuCommand}"  Style="{StaticResource SecondaryButton_Icon}"  Content=""/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
                               SelectedValue="{Binding Audience.Label, Mode=TwoWay}"
                               SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
@@ -32,7 +33,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Width="420" Height="70" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe test maken"/>
+                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Style="{StaticResource SecondaryButton_M}"  Content="Nieuwe test maken"/>
                 </StackPanel>
             </Grid>
 

@@ -1,7 +1,6 @@
 ﻿using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
-using BusinessLogic.Interfaces;
 using System;
 
 namespace UserInterface.ViewModels.Modals;
@@ -26,8 +25,6 @@ internal class ErrorModalViewModal : ViewModelBase
     public ICommand ConfirmCommand => new Command(Confirm);
     public ICommand DenyCommand => new Command(Deny);
     #endregion
-
-
 
     public ErrorModalViewModal(NavigationStore navigationStore, string text)
     {

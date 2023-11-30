@@ -1,14 +1,7 @@
-﻿using BusinessLogic.Classes;
-using BusinessLogic.IModels;
+﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Projections;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BusinessLogic.Services;
 
@@ -49,13 +42,18 @@ public class TestService
         switch (questionType)
         {
             case IToneAudiometryQuestion audioQuestion:
-                return test.ToneAudiometryQuestions.Max(q => q.QuestionNumber) + 1;
+                return test.ToneAudiometryQuestions.Any()
+                    ? test.ToneAudiometryQuestions.Max(q => q.QuestionNumber) + 1
+                    : 1; 
             case ITextQuestion textQuestion:
-                return test.TextQuestions.Max(q => q.QuestionNumber) + 1;
+                return test.TextQuestions.Any()
+                    ? test.TextQuestions.Max(q => q.QuestionNumber) + 1
+                    : 1; 
             default:
                 return 0;
         }
     }
+
     public int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
         return questions.FindIndex(q => q.QuestionNumber == questionNumber);

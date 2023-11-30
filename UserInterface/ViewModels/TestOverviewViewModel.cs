@@ -7,12 +7,12 @@ using System.Linq;
 using UserInterface.Stores;
 using System.Windows.Input;
 using BusinessLogic.Services;
-using System.Windows.Documents;
-using System.Windows;
 using UserInterface.Commands;
 using BusinessLogic.Interfaces;
 using System;
 using UserInterface.ViewModels.Modals;
+using System.Windows.Controls.Primitives;
+using DataAccess.Models.TestData_Management;
 
 namespace UserInterface.ViewModels;
 
@@ -31,6 +31,8 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand NewTestCommand { get; }
     public ICommand GetTestsCommand { get; }
     public ICommand DeleteTestCommand { get; }
+    public ICommand BackToMainMenuCommand { get; }
+
     #endregion
 
     #region propertys
@@ -44,13 +46,37 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ITargetAudience? Audience
     {
         get { return _audience; }
-        set { _audience = value; OnPropertyChanged(nameof(Audience)); }
+        set
+        {
+            _audience = value;
+            if (value != null)
+            {
+                // Set the Selected property to the Id if Audience is not null
+                Selected = value.Id;
+            }
+            else
+            {
+                // Set the Selected property to the Id of the first item in targetAudiences
+                var firstAudience = AudiencesList.FirstOrDefault();
+                if (firstAudience != null)
+                {
+                    Selected = firstAudience.Id;
+                }
+            }
+            OnPropertyChanged(nameof(Audience));
+        }
     }
+
     private int _selected;
     public int Selected
     {
         get { return _selected; }
-        set { GetTests(value); }
+        set
+        {
+            _selected = value;
+            GetTests(value); // Perform additional logic here if needed
+            OnPropertyChanged(nameof(Selected));
+        }
     }
 
     private  bool _active;
@@ -78,29 +104,51 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     #endregion
 
     private ConfirmationModalViewModel _confirmationModalViewModel { get; set; }
-    public TestOverviewViewModel(NavigationStore navigationStore)
+    public TestOverviewViewModel(NavigationStore navigationStore, ITargetAudience targetAudience = null)
     {
         _navigationStore = navigationStore;
 
-        //commands
+        // Commands
         OpenTestCommand = new Command(OpenTest);
         GetTestsCommand = new Command(GetTests);
         NewTestCommand = new Command(NewTest);
         DeleteTestCommand = new Command(DeleteTest);
+        BackToMainMenuCommand = new Command(BackToMainMenu);
 
-        //repositories
+        // Repositories
         _targetAudienceRepository = new TargetAudienceRepository();
         _testRepository = new TestRepository();
 
-        //services
+        // Services
         _testSerivce = new TestService(_testRepository);
         _targetAudienceSerivce = new TargetAudienceService(_targetAudienceRepository);
+        SetInitialValues(targetAudience);
+    }
+    private void SetInitialValues(ITargetAudience targetAudience)
+    {
 
         List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllAudiences();
         AudiencesList = targetAudiences;
-        Audience = targetAudiences.FirstOrDefault();
-    }
 
+        if (targetAudience != null)
+        {
+            Selected = targetAudience.Id;
+            Audience = targetAudience;
+        }
+        else
+        {
+            Audience = targetAudiences.FirstOrDefault();
+            if (Audience != null)
+            {
+                Selected = Audience.Id;
+            }
+        }
+    }
+    private void BackToMainMenu()
+    {
+        _navigationStore!.CurrentViewModel = new StartTestViewModel(_navigationStore);
+
+    }
     public void GetTests(int id)
     {
         UpdateCollection(id);
@@ -112,11 +160,11 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public void OpenTest(int id)
     {
         ITest test = _testSerivce.GetTest(id);
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, test);
+        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, Audience, test);
     }
     public void NewTest()
     {
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this);
+        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, Audience);
     }
    
     public void DeleteTest(int id)

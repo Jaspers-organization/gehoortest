@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.IModels;
 using DataAccess.Entity.TestData_Management;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Documents;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -80,6 +82,36 @@ internal class TextQuestionModalViewModel : ViewModelBase
     }
     #endregion
 
+    #region Errors
+    private string this[string columnName]
+    {
+        get
+        {
+            string? validationMessage = null;
+
+            switch (columnName)
+            {
+                case "TestQuestion":
+                    if (string.IsNullOrEmpty(TestQuestion))
+                        validationMessage = ErrorMessageStore.ErrorTestQuestion;
+                    break;
+                case "MultipleChoice":
+                case "HasInputField":
+                    if (!HasInputField && !MultipleChoice)
+                        validationMessage = ErrorMessageStore.ErrorQuestionAnwserType;
+                    if(MultipleChoice && Options.Count < 2)
+                        validationMessage = ErrorMessageStore.ErrorMultipleChoiceOptions;
+                    break;
+                default:
+                    break;
+            }
+
+            return validationMessage ?? string.Empty;
+        }
+    }
+    #endregion
+    private ErrorModalViewModal errorModalViewModal { get; set; }
+
     public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {
         this.navigationStore = navigationStore;
@@ -89,7 +121,12 @@ internal class TextQuestionModalViewModel : ViewModelBase
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(textQuestion.Options);
+        Options = new ObservableCollection<string>(textQuestion.Options ?? new List<string>());
+    }
+    public void OpenErrorModal(string text)
+    {
+        errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
+        navigationStore.OpenModal(errorModalViewModal);
     }
     public void AddOption(string value)
     {
@@ -103,6 +140,20 @@ internal class TextQuestionModalViewModel : ViewModelBase
     }
     public void SaveQuestion()
     {
+        string testQuestionValidation = this["TestQuestion"];
+        string anwserTypeValidation = this["MultipleChoice"];
+
+        if (!string.IsNullOrEmpty(testQuestionValidation))
+        {
+            OpenErrorModal(testQuestionValidation);
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(anwserTypeValidation))
+        {
+            OpenErrorModal(anwserTypeValidation);
+            return;
+        }
         ITextQuestion question = new TextQuestion { Id = textQuestion.Id, HasInputField = HasInputField, IsMultiSelect = MultipleChoice, Question = TestQuestion, Options = Options.ToList(), QuestionNumber = textQuestion.QuestionNumber };
         
         if (newQuestion)

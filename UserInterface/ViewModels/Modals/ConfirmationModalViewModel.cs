@@ -29,7 +29,6 @@ internal class ConfirmationModalViewModel : ViewModelBase
 
     private IConfirmation _confirmation;
 
-
     public ConfirmationModalViewModel(NavigationStore navigationStore, string text , IConfirmation confirmation, Action action)
     {
         _navigationStore = navigationStore;
