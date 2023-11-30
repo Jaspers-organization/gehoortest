@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <DrawingGroup x:Key="wave_sine">
+        <DrawingGroup.ClipGeometry>
+            <RectangleGeometry Rect="0.0,0.0,24.0,24.0"/>
+        </DrawingGroup.ClipGeometry>
+        <GeometryDrawing>
+            <GeometryDrawing.Pen>
+                <Pen Brush="{StaticResource White}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+            </GeometryDrawing.Pen>
+            <GeometryDrawing.Geometry>
+                <PathGeometry Figures="M 0.681863 12.9074 H 1.95112 c 0.56736 0 1.05476 -0.536949 1.11758 -1.25309 c 0.18785 -2.16158 0.475337 -3.75927 1.7446 -3.75927 c 1.26926 0 1.58657 2.24428 1.58657 5.01236 c 0 2.76807 0.317316 5.01236 1.58658 5.01236 c 1.26926 0 1.55611 -1.59581 1.7446 -3.75927 c 0.063467 -0.718647 0.550224 -1.25309 1.11885 -1.25309 h 1.26926" FillRule="Nonzero"/>
+            </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+        <DrawingGroup Transform="0.880135,0.0,0.0,0.919086,2.6272,0.269873">
+            <GeometryDrawing>
+                <GeometryDrawing.Pen>
+                    <Pen Brush="{StaticResource White}" LineJoin="Round" Thickness="2" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                </GeometryDrawing.Pen>
+                <GeometryDrawing.Geometry>
+                    <PathGeometry Figures="m 6 10 a 7 7 0 1 1 13 3.6 a 10 10 0 0 1 -2 2 a 8 8 0 0 0 -2 3 a 4.5 4.5 0 0 1 -6.8 1.4" FillRule="Nonzero"/>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingGroup>
+        <DrawingGroup Transform="0.880135,0.0,0.0,0.919086,2.6272,0.269873">
+            <GeometryDrawing>
+                <GeometryDrawing.Pen>
+                    <Pen Brush="{StaticResource White}"  LineJoin="Round" Thickness="2" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                </GeometryDrawing.Pen>
+                <GeometryDrawing.Geometry>
+                    <PathGeometry Figures="m 10 10 a 3 3 0 1 1 5 2.2" FillRule="Nonzero"/>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingGroup>
+    </DrawingGroup>
+    <DrawingImage Drawing="{StaticResource wave_sine}" x:Key="di_wave_sine"/>
+</ResourceDictionary>

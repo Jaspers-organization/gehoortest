@@ -1,31 +1,24 @@
 ﻿using DataAccess.Models.LoginData_Management;
+using BusinessLogic.IModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models.TestData_Management;
 
 [Table("test")]
-public class Test
+public class Test: ITest
 {
     [Column("id")]
     public int Id { get; set; }
-
     [Column("title")]
     public string? Title { get; set; }
-
-    [Column("employee_id")]
-    public int EmployeeId { get; set; }
-
-    [Column("target_audience_id")]
-    public int TargetAudienceId { get; set; }
-
-    [Column("test_data")]
-    public string? TestData { get; set; }
+    public ITargetAudience? TargetAudience { get; set; }
 
     [Column("active")]
     public bool Active { get; set; }
-       
-    //public virtual Employee? Employee { get; set; }
 
-    //public virtual TargetAudience? TargetAudience { get; set; }
+    public List<ITextQuestion>? TextQuestions { get; set; }
+
+    public List<IToneAudiometryQuestion>? ToneAudiometryQuestions { get; set ; }
+    public IEmployee? Employee { get; set; }
 
 }

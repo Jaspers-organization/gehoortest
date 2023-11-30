@@ -16,4 +16,8 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositorys\TestData-Management\" />
+  </ItemGroup>
+
 </Project>

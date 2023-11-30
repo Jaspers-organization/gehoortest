@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:UserInterface.Views" 
-        xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
+        xmlns:views="clr-namespace:UserInterface.Views"
+        xmlns:modals="clr-namespace:UserInterface.Views.Modals" 
+        xmlns:viewModels="clr-namespace:UserInterface.ViewModels" 
+        xmlns:modalViewModels="clr-namespace:UserInterface.ViewModels.Modals"
         mc:Ignorable="d"
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
@@ -17,20 +19,64 @@
         
         <!-- Define all pages here -->
        <Grid.Resources>
-            <!-- <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
-                <views:StartTest />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
-                <views:TestResultView />
-            </DataTemplate>-->
+            
             <DataTemplate DataType="{x:Type viewModels:TestViewModel}">
                 <views:TestView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
+                <views:TestOverviewView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
+                <views:TestManagementView />
+            </DataTemplate>
+            
+            <!-- Define all modals here -->
+            <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">
+                <modals:TextQuestionModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:ConfirmationModalViewModel}">
+                <modals:ConfirmationModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:AudioQuestionModalViewModel}">
+                <modals:AudioQuestionModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:ErrorModalViewModal}">
+                <modals:ErrorModal/>
+            </DataTemplate>
         </Grid.Resources>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
+
+        <ContentControl
+            Grid.Column="1" 
+            Grid.Row="2" 
+            Panel.ZIndex="3"
+            Content="{Binding CurrentModalViewModel}"
+            Visibility="{Binding ShowModal}"/>
         <Rectangle 
-            Fill="{StaticResource PrimaryBackgroundColor}"
-            Grid.Row="0"/>
+            Grid.Column="0" 
+            Grid.ColumnSpan="3"
+            Grid.Row="0" 
+            Grid.RowSpan="5"
+            Panel.ZIndex="2" 
+            Fill="Black" 
+            Opacity="0.3" 
+            Visibility="{Binding ShowModal}"/>
+        
+        <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
         <ContentControl 
             Grid.Row="1"

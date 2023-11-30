@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Extensions.Options;
 
+
 namespace UserInterface.ViewModels;
 
 internal class StartTestViewModel : ViewModelBase
@@ -90,7 +91,7 @@ internal class StartTestViewModel : ViewModelBase
     public StartTestViewModel(NavigationStore navigationStore) {
         this.navigationStore = navigationStore;
 
-        test = TestRepository.GetTest();
+       // test = TestRepository.GetTest();
 
       //  TestProgressData = new(test);
     }

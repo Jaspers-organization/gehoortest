@@ -13,10 +13,7 @@ public class CustomCommands : ICommand
         return true; // not implemented
     }
 
-    public void Execute(object parameter)
-    {
-        _executeAction?.Invoke(parameter);
-    }
+    public void Execute(object parameter) => _executeAction?.Invoke(parameter);
 
     public CustomCommands(Action<object> executeAction)
     {
