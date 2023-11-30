@@ -2,6 +2,12 @@
 using BusinessLogic.IRepositories;
 using BusinessLogic.Projections;
 using System.Collections.ObjectModel;
+using BusinessLogic.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Services;
 
@@ -13,9 +19,13 @@ public class TestService
     {
         this.testRepository = testRepository;
     }
-    public ITest GetTest(int id)
+    public List<ITest> GetAllTests()
     {
-        return testRepository.GetTest(id);
+        return testRepository.GetAllTests();
+    }
+    public ITest? GetTest(int targetAudienceId)
+    {
+        return testRepository.GetTest(targetAudienceId);
     }
     public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
     {

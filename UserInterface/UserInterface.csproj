@@ -11,19 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\Images\play.png" />
     <Resource Include="Assets\Images\test.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\Question.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

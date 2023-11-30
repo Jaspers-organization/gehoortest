@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.Projections;
+﻿using BusinessLogic.IModels;
+
+namespace BusinessLogic.Projections;
 
 public class TestProjection
 {
@@ -8,4 +10,8 @@ public class TestProjection
     public string EmployeeName { get; set; }
     public int AmountOfQuestions { get; set; }
    
+    public int TargetAudienceId { get; set; }
+    public List<ITextQuestion> TextQuestions { get; set; }
+    public List<IToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
+    
 }

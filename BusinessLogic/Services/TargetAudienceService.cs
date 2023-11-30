@@ -1,10 +1,6 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Interfaces;
+using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Services;
 
@@ -15,10 +11,12 @@ public class TargetAudienceService
     public TargetAudienceService(ITargetAudienceRepository targetAudienceRepository)
     {
         this.targetAudienceRepository = targetAudienceRepository;
-        
     }
-    public List<ITargetAudience> GetAllAudiences()
+        
+    public List<ITargetAudience> GetAllTargetAudiences()
     {
         return targetAudienceRepository.GetAllAudiences();
     }
+    
+
 }

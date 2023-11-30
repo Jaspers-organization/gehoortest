@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Assets.Images
 {
     /// <summary>
-    /// Interaction logic for TestEnd.xaml
+    /// Interaction logic for PositiveTestResult.xaml
     /// </summary>
-    public partial class TestEnd : UserControl
+    public partial class PositiveTestResult : UserControl
     {
-        public TestEnd()
+        public PositiveTestResult()
         {
             InitializeComponent();
         }

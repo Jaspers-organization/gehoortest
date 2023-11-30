@@ -10,15 +10,12 @@
         mc:Ignorable="d"
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
-
-    <Grid Background="lightgray">
-        <Grid.Resources>
-            <!-- Define all pages here -->
-            <DataTemplate DataType="{x:Type viewModels:StartTestViewModel}">
-                <views:StartTest />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
-                <views:TestResultView />
+    <Grid Background="{StaticResource SecondaryBackgroundColor}">
+        <!-- Define all pages here -->
+       <Grid.Resources>
+            
+            <DataTemplate DataType="{x:Type viewModels:TestViewModel}">
+                <views:TestView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
@@ -72,13 +69,12 @@
             Fill="Black" 
             Opacity="0.3" 
             Visibility="{Binding ShowModal}"/>
-        
+
         <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
-        
     </Grid>
-
+    
     <!--<Window.InputBindings>
         <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding}" />
     </Window.InputBindings>-->

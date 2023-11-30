@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Assets.Images
 {
     /// <summary>
-    /// Interaction logic for AudiometryQuestion.xaml
+    /// Interaction logic for NegativeTestResult.xaml
     /// </summary>
-    public partial class AudiometryQuestion : UserControl
+    public partial class NegativeTestResult : UserControl
     {
-        public AudiometryQuestion()
+        public NegativeTestResult()
         {
             InitializeComponent();
         }

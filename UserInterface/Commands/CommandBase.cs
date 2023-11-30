@@ -7,7 +7,6 @@ namespace UserInterface.Commands;
 public abstract class CommandBase : ICommand
 {
     public event EventHandler? CanExecuteChanged;
-
     protected Action? command;
     protected Action<int>? intCommand;
     protected Action<string>? stringCommand;

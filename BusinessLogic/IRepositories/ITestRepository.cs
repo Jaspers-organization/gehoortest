@@ -11,5 +11,6 @@ public interface ITestRepository
     ITest CreateTest();
     void SaveTest(ITest test);
     void DeleteTest(ITest test);
+    List<ITest> GetAllTests();
     ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id);
 }

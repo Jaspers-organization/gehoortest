@@ -1,13 +1,14 @@
 ﻿using System.Windows.Controls;
 
+
 namespace UserInterface.Views
 {
     /// <summary>
-    /// Interaction logic for TestExplaination.xaml
+    /// Interaction logic for TestView.xaml
     /// </summary>
-    public partial class TestExplaination : UserControl
+    public partial class TestView : UserControl
     {
-        public TestExplaination()
+        public TestView()
         {
             InitializeComponent();
         }

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositorys\TestData-Management\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
