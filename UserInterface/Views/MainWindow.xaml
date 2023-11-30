@@ -11,12 +11,6 @@
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
     <Grid Background="{StaticResource SecondaryBackgroundColor}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="880"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
-        
         <!-- Define all pages here -->
        <Grid.Resources>
             
@@ -75,19 +69,10 @@
             Fill="Black" 
             Opacity="0.3" 
             Visibility="{Binding ShowModal}"/>
-        
+
         <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
-        <ContentControl 
-            Grid.Row="1"
-            Margin="70"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Content="{Binding CurrentViewModel}" />
-
-        <Rectangle 
-            Fill="{StaticResource PrimaryBackgroundColor}"
-            Grid.Row="2"/>
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
     </Grid>
     
     <!--<Window.InputBindings>

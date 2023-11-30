@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="UserInterface.Views.TestExplaination"
+﻿<UserControl x:Class="UserInterface.Views.TestExplanationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             mc:Ignorable="d">
+             mc:Ignorable="d" >
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -29,12 +29,18 @@
                     <TextBlock Style="{StaticResource Text}" Text="Klik op start test als u klaar bent om te beginnen." Margin="0 30 0 0"/>
                 </StackPanel>
 
-                <Button 
-                    Style="{StaticResource PrimaryButton_L}" 
-                    Grid.Row="2"
-                    HorizontalAlignment="Left"
-                    Content="Start test" 
-                    Command="{Binding StartTestCommand}"/>
+                <StackPanel  Grid.Row="2" Orientation="Horizontal">
+                    <Button  Grid.Row="2" Style="{StaticResource PrimaryButton_L}" 
+                              HorizontalAlignment="Left"
+                              Content="Start test" 
+                              Command="{Binding StartTestCommand}"/>
+
+                    <Button Margin="50,0,0,0" Style="{StaticResource SecondaryButton_Icon}"
+                              HorizontalAlignment="Left"
+                              Content="" 
+                              Command="{Binding OpenTestManagementCommand}"/>
+                </StackPanel>
+                
             </Grid>
 
             <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>

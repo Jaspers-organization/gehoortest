@@ -1,18 +1,15 @@
-﻿using Azure;
-using BusinessLogic;
+﻿using BusinessLogic;
 using BusinessLogic.Classes;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Interfaces.Repositories;
-using DataAccess;
-using DataAccess.Models.TestData_Management;
-using DataAccess.Repositorys;
-using System;
+using BusinessLogic.IModels;
+using BusinessLogic.IRepositories;
+using BusinessLogic.Services;
+using DataAccess.MockData;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -29,15 +26,17 @@ namespace UserInterface.ViewModels
         private string _showTestResultView = "Hidden";
         private ObservableCollection<ITargetAudience> _targetAudiences;
         private ITest _test;
-        private  BusinessLogic.Services.TargetAudienceService targetAudienceService { get; set; }
+        private TargetAudienceService targetAudienceService { get; set; }
 
-        private BusinessLogic.Services.TestService testService { get;set; }
+        private TestService testService { get; set; }
         private TestProgressData testProgressData { get; set; }
-        public string ShowTestExplanationView 
+
+        #region Properties
+        public string ShowTestExplanationView
         {
             get { return _showTestExplanationView; }
-            set 
-            { 
+            set
+            {
                 _showTestExplanationView = value;
                 OnPropertyChanged(nameof(ShowTestExplanationView));
             }
@@ -99,7 +98,7 @@ namespace UserInterface.ViewModels
                 GetTest();
             }
         }
-        private int _selectedTargetAudience { get;set; }
+        private int _selectedTargetAudience { get; set; }
 
         public string TextQuestion
         {
@@ -160,36 +159,70 @@ namespace UserInterface.ViewModels
             get { return _selectedOption; }
             set { _selectedOption = value; OnPropertyChanged(nameof(SelectedOption)); }
         }
+        #endregion
+
         private string _selectedOption = "";
         public ICommand StartTestCommand => new Command(StartTest);
         public ICommand TargetAudienceSelectedCommand => new Command(GetTest);
         public ICommand PlayFrequencyCommand { get; }
         public ICommand SaveQuestionCommand => new Command(SaveAnswer);
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioQuestion);
+        public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
 
         public TestViewModel(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
             ShowTestExplanationView = "Visible";
             ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
-            targetAudienceService = new BusinessLogic.Services.TargetAudienceService(targetAudienceRepository);
+            targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
-            ITestRepository testRepository = new DataAccess.Repositorys.TestRepository();
-            testService = new BusinessLogic.Services.TestService(testRepository);
+            ITestRepository testRepository = new TestRepository();
+            testService = new TestService(testRepository);
         }
 
+        private void OpenTestManagement()
+        {
+            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
+
+        }
         public void StartTest()
         {
             ShowTestExplanationView = "Hidden";
             ShowTestTargetAudienceView = "Visible";
-            TargetAudiences = new ObservableCollection<ITargetAudience>(targetAudienceService.GetTargetAudiences());
+            TargetAudiences = GetAllTargetAudiencesWithTests();
             TextQuestion = "Wat is uw leeftijdsgroep?";
+        }
+
+        private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
+        {
+            var x = targetAudienceService.GetAllTargetAudiences();
+            var y = new ObservableCollection<ITest>(testService.GetAllTests());
+
+            var z = new ObservableCollection<ITargetAudience>();
+
+            foreach (var test in y)
+            {
+                foreach (var audience in x)
+                {
+                    if (test.TargetAudience.Id == audience.Id)
+                    {
+                        if (!z.Contains(audience))
+                        {
+                            z.Add(audience);
+                        }
+
+                    }
+                }
+            }
+
+            return z;
         }
         private void GetTest()
         {
             ShowTestTargetAudienceView = "Hidden";
             Test = testService.GetTest(selectedTargetAudience);
             testProgressData = new TestProgressData(Test);
+            testProgressData.CurrentQuestionNumber = 1;
             AskFirstQuestion();
         }
 
@@ -204,9 +237,12 @@ namespace UserInterface.ViewModels
         private void SaveAnswer()
         {
             List<string> answers = new();
-
+            if(Test == null)
+            {
+                return;
+            }
             //check type of question
-            if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultipleSelect)
+            if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultiSelect)
             {
                 //ABC question
                 answers.Add(SelectedOption);
@@ -237,17 +273,22 @@ namespace UserInterface.ViewModels
             //remove given answer + everything that's ugly
             NextQuestion();
         }
+        bool isDoneText = false;
+        bool isDoneAudio = false;
         private void NextQuestion()
         {
             ITextQuestion e = Test.TextQuestions.MaxBy(x => x.QuestionNumber);
-            if (testProgressData.CurrentQuestionNumber < e.QuestionNumber)
+            IToneAudiometryQuestion a = Test.ToneAudiometryQuestions.MaxBy(x => x.QuestionNumber);
+            
+
+            if (testProgressData.CurrentQuestionNumber <= e.QuestionNumber && !isDoneText)
             {
                 //Get new Question
                 testProgressData.CurrentQuestionNumber = testProgressData.CurrentQuestionNumber + 1;
                 TextQuestion = Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Question;
 
                 //check if multiselect
-                if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultipleSelect)
+                if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultiSelect)
                 {
                     QuestionInput = "Hidden";
                     List<string> tempRadioButtons = new();
@@ -258,14 +299,40 @@ namespace UserInterface.ViewModels
 
                     RadioButtons = tempRadioButtons;
                     QuestionRadioButtons = "Visible";
+                    return;
+                }
+                else if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).HasInputField)
+                {
+                    ShowTestTextQuestionView = "Visible";
+                    QuestionInput = "Visible";
+                    return;
                 }
 
                 //check if next question is audio question or not
+
+            }
+            else
+            {
+                if (!isDoneText)
+                {
+                    testProgressData.CurrentQuestionNumber = 1;
+                }
+                else
+                {
+                    testProgressData.CurrentQuestionNumber++;
+                }
+                isDoneText = true;
+                
+            }
+
+            if (testProgressData.CurrentQuestionNumber <= a.QuestionNumber && !isDoneAudio)
+            {
+                QuestionRadioButtons = "Hidden";
+                ShowTestTextQuestionView = "Hidden";
+                QuestionInput = "Hidden";
                 if (testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber) != null)
                 {
-
                     //yes there is an audio question
-                    ShowTestTextQuestionView = "Hidden";
                     ShowTestToneAudiometryView = "Visible";
 
                     IToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
@@ -273,6 +340,11 @@ namespace UserInterface.ViewModels
                 }
             }
             else
+            {
+                isDoneAudio = true;
+            }
+
+            if (isDoneAudio && isDoneText)
             {
                 ShowResults();
             }

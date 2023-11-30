@@ -22,12 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Question.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

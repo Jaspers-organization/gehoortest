@@ -10,10 +10,6 @@ public abstract class CommandBase : ICommand
     protected Action? command;
     protected Action<int>? intCommand;
     protected Action<string>? stringCommand;
-
-    protected Action? command;
-    protected Action<int>? intCommand;
-    protected Action<string>? stringCommand;
     protected Action<ITest>? itestCommand;
 
     public virtual bool CanExecute(object? parameter)  => true;

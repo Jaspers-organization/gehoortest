@@ -10,11 +10,7 @@ namespace DataAccess.MockData;
 
 public class TestRepository : ITestRepository
 {
-    public List<ITest> testDataList;
-
-    public TestRepository()
-    {
-        testDataList = new List<ITest>
+    public List<ITest> testDataList = new List<ITest>
         {
             new Test { Id = 0, TargetAudience = new TargetAudience{ Id = 0, From = 0, To=18, Label="-18" }, Active = false, Title = "Jongeren test",
                 TextQuestions = new List<ITextQuestion>{
@@ -52,6 +48,10 @@ public class TestRepository : ITestRepository
                 },Employee =  new Employee { Id = 1, EmployeeNumber = "543216789", FirstName = "Jasper", LastName = "Gräber" }
             },
         };
+
+    public TestRepository()
+    {
+        
     }
     public ITest CreateTest()
     {
@@ -93,7 +93,10 @@ public class TestRepository : ITestRepository
 
         return new ObservableCollection<TestProjection>(projections);
     }
-
+    public List<ITest> GetAllTests()
+    {
+        return testDataList;
+    }
     public void DeleteTest(ITest test)
     {
         testDataList.Remove(test);

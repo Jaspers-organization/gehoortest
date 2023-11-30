@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Projections
+namespace BusinessLogic.Projections;
+
+internal struct TextQuestionProjection
 {
-    internal struct TextQuestionProjection : ITestQuestion
-    {
-        public int QuestionNumber { get; set; }
-        public string Question { get; set; }
-        public List<string> Options { get; set; }
-        public bool IsMultipleSelect { get; set; }
-        public bool HasInputField { get; set; }
-    }
+    public int QuestionNumber { get; set; }
+    public string Question { get; set; }
+    public List<string> Options { get; set; }
+    public bool IsMultipleSelect { get; set; }
+    public bool HasInputField { get; set; }
 }

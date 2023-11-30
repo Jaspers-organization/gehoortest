@@ -1,6 +1,4 @@
 ﻿using BusinessLogic.IModels;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Projections;
 
 namespace BusinessLogic.Classes;
 

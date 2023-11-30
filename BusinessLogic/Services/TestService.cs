@@ -3,7 +3,6 @@ using BusinessLogic.IRepositories;
 using BusinessLogic.Projections;
 using System.Collections.ObjectModel;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,10 @@ public class TestService
     public TestService(ITestRepository testRepository)
     {
         this.testRepository = testRepository;
+    }
+    public List<ITest> GetAllTests()
+    {
+        return testRepository.GetAllTests();
     }
     public ITest? GetTest(int targetAudienceId)
     {

@@ -1,4 +1,6 @@
-﻿namespace BusinessLogic.Projections;
+﻿using BusinessLogic.IModels;
+
+namespace BusinessLogic.Projections;
 
 public class TestProjection
 {

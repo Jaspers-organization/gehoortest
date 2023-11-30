@@ -58,8 +58,4 @@
         <Setter Property="Width" Value="820"/>
     </Style>
 
-    <Style x:Key="InputField_XXL" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
-        <Setter Property="Width" Value="820"/>
-    </Style>
-
 </ResourceDictionary>

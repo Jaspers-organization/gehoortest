@@ -74,7 +74,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         set
         {
             _selected = value;
-            GetTests(value); // Perform additional logic here if needed
+            GetTests(value);
             OnPropertyChanged(nameof(Selected));
         }
     }
@@ -127,7 +127,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     private void SetInitialValues(ITargetAudience targetAudience)
     {
 
-        List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllAudiences();
+        List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllTargetAudiences();
         AudiencesList = targetAudiences;
 
         if (targetAudience != null)
@@ -146,7 +146,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     }
     private void BackToMainMenu()
     {
-        _navigationStore!.CurrentViewModel = new StartTestViewModel(_navigationStore);
+        _navigationStore!.CurrentViewModel = new TestViewModel(_navigationStore);
 
     }
     public void GetTests(int id)

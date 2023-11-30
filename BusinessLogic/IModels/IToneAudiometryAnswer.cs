@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Enums;
 
-namespace Service.Interfaces.Models;
+namespace BusinessLogic.IModels;
 
 public interface IToneAudiometryAnswer
 {

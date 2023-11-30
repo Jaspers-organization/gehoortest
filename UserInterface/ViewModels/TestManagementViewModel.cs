@@ -138,7 +138,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
         tempTargetAudience = targetAudience;
         //set values
-        List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllAudiences();
+        List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllTargetAudiences();
         AudiencesList = targetAudiences;
         if (test != null)
         {

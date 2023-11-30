@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Classes;
 using BusinessLogic.Projections;
-using BusinessLogic.Interfaces.Repositories;
+using BusinessLogic.IRepositories;
 
 namespace BusinessLogic.Controllers;
 
