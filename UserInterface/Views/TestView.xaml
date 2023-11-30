@@ -9,9 +9,10 @@
              mc:Ignorable="d">
     <Grid>
         <Views:TestExplanationView Visibility="{Binding ShowTestExplanationView}" />
+        <Views:TestTargetAudienceView Visibility="{Binding ShowTestTargetAudienceView}"/>
         <Views:TestTextQuestionView Visibility="{Binding ShowTestTextQuestionView}" />
         <Views:TestAudiometryQuestionView Visibility="{Binding ShowTestToneAudiometryView}"/>
-        <Views:TestTargetAudienceView Visibility="{Binding ShowTestTargetAudienceView}"/>
+        <Views:TestResultView Visibility="{Binding ShowTestResultView}"/>
 
         <!--<Views:TestExplanationView Visibility="{Binding IntroText}" />
         <Views:TestTextQuestionView Visibility="{Binding QuestionText}" />

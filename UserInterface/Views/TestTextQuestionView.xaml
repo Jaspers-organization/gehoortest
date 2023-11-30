@@ -26,7 +26,7 @@
                     <ListBox SelectedItem="{Binding SelectedOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
                 </StackPanel>
 
-                <TextBlock Style="{StaticResource Text}" Text="Anders, namelijk:" Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding QuestionInput}" />
+                <TextBlock Style="{StaticResource Text}"  Grid.Row="1" VerticalAlignment="Center" Visibility="{Binding QuestionInput}" />
                 <TextBox Margin="250 0 0 0" Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Width="200" VerticalAlignment="Center" FontSize="20"/>
 
                 <Button 

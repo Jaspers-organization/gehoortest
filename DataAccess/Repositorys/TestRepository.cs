@@ -39,20 +39,17 @@ namespace DataAccess.Repositorys
                 Active = true,
                 TextQuestions = new List<ITextQuestion>
                 {
-                    new TextQuestion(1,1,1, "In welke leeftijdsgroep bevindt u zich?",hearTypesList, true, false),
-                    new TextQuestion(2,1,2, "Wat is uw naam?",optionsList, true, false),
+                    new TextQuestion(2,1,2, "Wat is uw naam?", optionsList, true, false),
                     new TextQuestion(3,1,3, "In welk werkgebied werkt u?",workFieldList, true, false),
                     new TextQuestion(4,1,4, "Hoe omschrijft u uw gehoor?",hearTypesList, true, false),
                     new TextQuestion(5,1,5, "Hoe omschrijft u uw gehoor?",hearTypesList, true, false),
                     new TextQuestion(6,1,6, "Hoe omschrijft u uw gehoor?",hearTypesList, true, false),
-                    new TextQuestion(7,1,7, "Hoe omschrijft u uw gehoor?",hearTypesList, true, false),
                 },
                 ToneAudiometryQuestions = new List<IToneAudiometryQuestion>
                 {
                     new ToneAudiometryQuestion(1, 1, 4, 500, 40),
-                    new ToneAudiometryQuestion(2, 1, 5, 500, 40),
-                    new ToneAudiometryQuestion(3, 1, 6, 500, 40),
-                    new ToneAudiometryQuestion(4, 1, 7, 500, 40),
+                    new ToneAudiometryQuestion(2, 1, 5, 5500, 30),
+                    new ToneAudiometryQuestion(3, 1, 6, 750, 30),
                 }
             };
             return test;

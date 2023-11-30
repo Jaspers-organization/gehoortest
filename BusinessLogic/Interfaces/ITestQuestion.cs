@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Interfaces
 {
-    internal interface ITestQuestion
+    public interface ITestQuestion
     {
     }
 }

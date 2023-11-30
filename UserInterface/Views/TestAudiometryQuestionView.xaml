@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             mc:Ignorable="d" >
+             mc:Ignorable="d">
     
     <Border Style="{StaticResource ContentContainer_XXS}">
     <Grid>
@@ -14,13 +14,17 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Rectangle 
+            <Rectangle 
             Fill="{StaticResource SecondaryBackgroundColor}"
             Grid.Row="0"
             Margin="50"
             Height="420"
-            Width="420"/>
-        <TextBlock 
+            Width="420">
+        
+            </Rectangle>
+            <!--ContentRendered="Window_ContentRendered"
+            <ProgressBar Minimum="0" Maximum="100" Value="loadingStatus"/>-->
+            <TextBlock 
             Style="{StaticResource Text}"
             Grid.Row="2"
             HorizontalAlignment="Center"

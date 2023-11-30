@@ -92,70 +92,14 @@ internal class StartTestViewModel : ViewModelBase
 
         test = TestRepository.GetTest();
 
-        TestProgressData = new(test);
+      //  TestProgressData = new(test);
     }
 
     public void StartTest(string test)
     {
         //Options.Add(value);
         IntroText = "Hidden";
-        ShowNextQuestion();
     }
-
-    public async void ShowNextQuestion()
-    {
-        // Reset to defaults
-        QuestionText = "Hidden";
-        QuestionAudio = "Hidden";
-
-        Question? nextQuestion = TestProgressData.GetNextQuestion();
-
-        if (nextQuestion is null)
-        {
-            ShowTestResults();
-            return;
-        }
-
-        if (nextQuestion is TextQuestion textQuestion)
-        {
-            // Reset to defaults
-            QuestionRadioButtons = "Hidden";
-            QuestionInput = "Hidden";
-            QuestionText = "Visible";
-
-            TextQuestion = textQuestion.Question;
-
-            if (textQuestion.IsMultipleSelect)
-            {
-                List<string> tempRadioButtons = new();
-                foreach (string option in textQuestion.Options)
-                {
-                    tempRadioButtons.Add(option);
-                }
-                RadioButtons = tempRadioButtons;
-                QuestionRadioButtons = "Visible";
-            }
-
-            if (textQuestion.HasInputField)
-            {
-                QuestionInputText = "";
-                QuestionInput = "Visible";
-            }
-            return;
-        }
-
-        if (nextQuestion is AudiometryQuestion audiometryQuestion)
-        {
-            QuestionAudio = "Visible";
-            frequency = audiometryQuestion.Frequency;
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
-            MakeSound(TestProgressData);
-
-            return;
-        }
-    }
-
     public void SaveQuestion(object test)
     {
         string answer;
@@ -172,9 +116,7 @@ internal class StartTestViewModel : ViewModelBase
 
         //TestAnswer testAnswer = new(TestProgressData.CurrentQuestion, SelectedOption);
         //TestProgressData.TestAnswers.Add(testAnswer);
-
         // Continue to next question
-        ShowNextQuestion();
     }
 
     public int questionNumber = 1; // TODO: Temporary for the demo
@@ -189,7 +131,6 @@ internal class StartTestViewModel : ViewModelBase
         questionNumber++;
         // =========
 
-        ShowNextQuestion();
     }
 
     public void MakeSound(object test)

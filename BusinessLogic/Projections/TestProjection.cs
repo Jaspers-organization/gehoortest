@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Projections
 {
-    internal struct TestProjection
+    internal struct TestProjection 
     {
         public int TargetAudienceId { get; set; }
         public List<ITextQuestion> TextQuestions { get; set; }

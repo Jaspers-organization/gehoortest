@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Classes
 {
-    internal class TextAnswer
+    public class TextAnswer
     {
         public int Question { get; set; }
         public List<string> Options { get;set; }
