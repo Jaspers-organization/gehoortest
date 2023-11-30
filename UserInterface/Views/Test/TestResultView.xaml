@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="UserInterface.Views.TestResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:images="clr-namespace:UserInterface.Assets.Images"
+             mc:Ignorable="d">
+    <Border Style="{StaticResource ContentContainer_XL}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Row="0" 
+                Grid.Column="0"
+                Orientation="Vertical">
+                <TextBlock 
+                    Style="{StaticResource Header}"
+                    HorizontalAlignment="Center"
+                    Text="Testresultaten"/>
+                <TextBlock 
+                    Style="{StaticResource Text}" 
+                    Text="U heeft de test succesvol afgerond."/>
+                <TextBlock 
+                    Style="{StaticResource SubHeader}"
+                    Margin="0 30 0 0"
+                    Text="{Binding TestResultText}"/>
+                <TextBlock 
+                    Style="{StaticResource Text}"
+                    Margin="0 30 0 0"
+                    TextWrapping="Wrap"
+                    Text="{Binding TestResultExplanation}"/>
+            </StackPanel>
+
+            <images:PositiveTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding PositiveTestResult}"/>
+            <images:NegativeTestResult
+                Grid.Row="0" 
+                Grid.RowSpan="2" 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Visibility="{Binding NegativeTestResult}"/>
+
+            <TextBlock
+                Style="{StaticResource Text}"
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Padding="0 0 0 15"
+                TextWrapping="Wrap" 
+                Text="U kunt de testresultaten vrijblijvend naar uw e-mail versturen." />
+            <!--of uitprinten-->
+
+            <StackPanel 
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <TextBlock
+                    Style="{StaticResource Text}"
+                    Visibility="{Binding EmailError}"
+                    Foreground="Red"
+                    Padding="0 0 0 15"
+                    Text="Vul een geldige e-mail in"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox 
+                        Style="{StaticResource InputField_XXL}" 
+                        Text="{Binding Email}"/>
+                    <Button 
+                        Style="{StaticResource PrimaryButton_M}" 
+                        Margin="30 0 0 0"
+                        Content="Verstuur e-mail" 
+                        Command="{Binding SendEmailCommand}"/>
+                    <!--<Border 
+        CornerRadius="35" 
+        Height="70" 
+        Width="220" 
+        Background="{StaticResource PrimaryColor}"
+        Margin="30 0 0 0">
+        <Button
+            FontSize="32"
+            FontWeight="SemiBold"
+            Foreground="White"
+            Background="{x:Null}"
+            BorderBrush="{x:Null}"
+            Content="(icon) Print"/>
+    </Border>-->
+                </StackPanel>
+            </StackPanel>
+            
+        </Grid>
+    </Border>
+</UserControl>

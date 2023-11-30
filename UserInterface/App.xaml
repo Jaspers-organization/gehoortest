@@ -1,0 +1,28 @@
+﻿<Application x:Class="UserInterface.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:UserInterface">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assets/Styling/Colors.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/TextStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ListViewStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/GlobalStyling.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ToggleButton.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/trashcan.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/wave-sine.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/pencil.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/plus.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/message-question.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/InputFieldStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ContentContainerStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/ModalContainerStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
