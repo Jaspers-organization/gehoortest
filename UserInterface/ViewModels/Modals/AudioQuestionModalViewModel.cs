@@ -81,6 +81,10 @@ internal class AudioQuestionModalViewModel : ViewModelBase
                         if (Frequency <= 125 || Frequency >= 8000){
                             validationMessage = ErrorMessageStore.ErrorFrequencyLimit;
                         }
+                        else
+                        {
+                            this.Frequency = Frequency;
+                        }
                     }
                     else if(string.IsNullOrEmpty(FrequencyString)){
                         validationMessage = ErrorMessageStore.ErrorEmpty;
@@ -89,10 +93,14 @@ internal class AudioQuestionModalViewModel : ViewModelBase
                         validationMessage = ErrorMessageStore.ErrorNotValidInteger;
                     }
                     break;
-                case "StartingDecibels":
+                case "StartingDecibelsString":
                     if (int.TryParse(StartingDecibelsString, out int StartingDecibels)){
                         if (StartingDecibels <= 0 || StartingDecibels >= 120){
                             validationMessage = ErrorMessageStore.ErrorStartingDecibels;
+                        }
+                        else
+                        {
+                            this.StartingDecibels = StartingDecibels;
                         }
                     }
                     else if (string.IsNullOrEmpty(FrequencyString)){
@@ -129,7 +137,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     private void SaveQuestion()
     {
         string frequencyValidation = this["Frequency"];
-        string decibelValidation = this["StartingDecibels"];
+        string decibelValidation = this["Sta"];
 
         if (!string.IsNullOrEmpty(frequencyValidation))
         {

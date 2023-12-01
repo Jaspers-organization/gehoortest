@@ -8,27 +8,27 @@
     <Border Style="{StaticResource ModalContainer_XS}">
         <Grid >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="19*"/>
+                <ColumnDefinition Width="37*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            
-            <TextBlock  Grid.Row="0" Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
-            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}"  ></TextBox>
+
+            <TextBlock Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
+            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}" Margin="62,0,-12,0"  ></TextBox>
             <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Text}" VerticalAlignment="Center" Text="Start Decibel" Height="58" Width="auto"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding StartingDecibels}" Style="{StaticResource InputField_XS}" ></TextBox>
+            <TextBox Grid.Column="1" Text="{Binding StartingDecibelsString}" Style="{StaticResource InputField_XS}" Margin="62,113,-12,113" Grid.RowSpan="3" />
             <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource PrimaryButton_S}"
                         Command="{Binding SaveQuestionCommand}"
                         CommandParameter="{Binding Id}"
-                        Content="Opslaan"/>
+                        Content="Opslaan" Grid.ColumnSpan="2" Margin="0,0,300,0"/>
             <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource SecondaryButton_S}"
                         Command="{Binding CloseModalCommand}"
                         CommandParameter="true"
-                        Content="Annuleren" />
+                        Content="Annuleren" Margin="110,0,0,0" />
         </Grid>
     </Border>
 </UserControl>
