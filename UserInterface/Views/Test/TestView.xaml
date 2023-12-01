@@ -12,7 +12,6 @@
         <Views:TestTargetAudienceView Visibility="{Binding ShowTestTargetAudienceView}"/>
         <Views:TestTextQuestionView Visibility="{Binding ShowTestTextQuestionView}" />
         <Views:TestAudiometryQuestionView Visibility="{Binding ShowTestToneAudiometryView}"/>
-        <Views:TestResultView Visibility="{Binding ShowTestResultView}"/>
 
         <!--<Views:TestExplanationView Visibility="{Binding IntroText}" />
         <Views:TestTextQuestionView Visibility="{Binding QuestionText}" />

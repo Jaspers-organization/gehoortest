@@ -4,6 +4,7 @@ using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Services;
 using DataAccess.MockData;
+using DataAccess.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
@@ -88,17 +89,18 @@ namespace UserInterface.ViewModels
             }
         }
 
-        public int selectedTargetAudience
-        {
-            get { return _selectedTargetAudience; }
-            set
-            {
-                _selectedTargetAudience = value;
-                OnPropertyChanged(nameof(selectedTargetAudience));
-                GetTest();
-            }
-        }
-        private int _selectedTargetAudience { get; set; }
+        // toegevoegd door jasper
+        //public int selectedTargetAudience
+        //{
+        //    get { return _selectedTargetAudience; }
+        //    set
+        //    {
+        //        _selectedTargetAudience = value;
+        //        OnPropertyChanged(nameof(selectedTargetAudience));
+        //        GetTest();
+        //    }
+        //}
+        //private int _selectedTargetAudience { get; set; }
 
         public string TextQuestion
         {
@@ -191,9 +193,19 @@ namespace UserInterface.ViewModels
             ShowTestTargetAudienceView = "Visible";
             TargetAudiences = GetAllTargetAudiencesWithTests();
             TextQuestion = "Wat is uw leeftijdsgroep?";
+
+            // toegevoegd door jasper
+            List<string> tempTargetAudiences = new ();
+            foreach (ITargetAudience targetAudience in TargetAudiences) 
+            { 
+                tempTargetAudiences.Add(targetAudience.Label); 
+            }
+            RadioButtons = tempTargetAudiences;
+            QuestionRadioButtons = "Visible";
+            // =====
         }
 
-        private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
+    private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
         {
             var x = targetAudienceService.GetAllTargetAudiences();
             var y = new ObservableCollection<ITest>(testService.GetAllTests());
@@ -219,8 +231,13 @@ namespace UserInterface.ViewModels
         }
         private void GetTest()
         {
+            // toegevoegd door jasper
+            ITargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedOption);
+            if (selectedTargetAudience == null) return;
+            // =====
+
             ShowTestTargetAudienceView = "Hidden";
-            Test = testService.GetTest(selectedTargetAudience);
+            Test = testService.GetTest(selectedTargetAudience.Id); // toegevoegd door jasper
             testProgressData = new TestProgressData(Test);
             testProgressData.CurrentQuestionNumber = 1;
             AskFirstQuestion();
@@ -228,6 +245,11 @@ namespace UserInterface.ViewModels
 
         private void AskFirstQuestion()
         {
+            // toegevoegd door jasper
+            RadioButtons = new List<string>();
+            QuestionRadioButtons = "Hidden";
+            // =====
+
             TextQuestion = Test.TextQuestions.First().Question;
             testProgressData.CurrentQuestionNumber = Test.TextQuestions.First().QuestionNumber;
             ShowTestTextQuestionView = "Visible";
@@ -279,13 +301,14 @@ namespace UserInterface.ViewModels
         {
             ITextQuestion e = Test.TextQuestions.MaxBy(x => x.QuestionNumber);
             IToneAudiometryQuestion a = Test.ToneAudiometryQuestions.MaxBy(x => x.QuestionNumber);
-            
 
-            if (testProgressData.CurrentQuestionNumber <= e.QuestionNumber && !isDoneText)
+            // toegevoegd door jasper
+            bool isLastTextQuestion = testProgressData.CurrentQuestionNumber == e.QuestionNumber;
+            if (!isLastTextQuestion && !isDoneText)
             {
                 //Get new Question
                 testProgressData.CurrentQuestionNumber = testProgressData.CurrentQuestionNumber + 1;
-                TextQuestion = Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Question;
+                TextQuestion = Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber)?.Question; // toegevoegd door jasper
 
                 //check if multiselect
                 if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultiSelect)
@@ -361,7 +384,9 @@ namespace UserInterface.ViewModels
         {
             ShowTestTextQuestionView = "Hidden";
             ShowTestToneAudiometryView = "Hidden";
-            ShowTestResultView = "Visible";
+
+            // toegevoegd door jasper
+            navigationStore!.CurrentViewModel = new TestResultViewModel(navigationStore, testProgressData);
         }
     }
 }
