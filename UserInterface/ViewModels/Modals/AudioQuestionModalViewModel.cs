@@ -126,8 +126,8 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         this.testManagementViewModel = testManagementViewModel;
         this.toneAudiometryQuestion = toneAudiometryQuestion;
         this.newQuestion = newQuestion;
-        StartingDecibels = toneAudiometryQuestion.StartingDecibels;
-        Frequency = toneAudiometryQuestion.Frequency;
+        StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
+        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
     }
     public void OpenErrorModal(string text)
     {
