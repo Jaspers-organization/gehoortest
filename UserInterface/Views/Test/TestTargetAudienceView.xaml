@@ -34,21 +34,20 @@
                     </StackPanel>
 
 
-                    <ComboBox Name="targetAudiences"    
+                    <!--<ComboBox Name="targetAudiences"    
                                 Grid.Row="1" Grid.Column="0" Width="250" Height="80"
                                 ItemsSource="{Binding Path=TargetAudiences}"
                                 DisplayMemberPath="Label"
                                 SelectedValuePath="Id"
                                 SelectedValue="{Binding Path=selectedTargetAudience}">
-                    </ComboBox>
+                    </ComboBox>-->
 
                     <Button 
                          Style="{StaticResource PrimaryButton_L}" 
                          Grid.Row="3" 
                          HorizontalAlignment="Left"
                          Content="Volgende vraag" 
-                         Width="280"
-                         Command="{Binding SaveQuestionCommand}"/>
+                         Command="{Binding TargetAudienceSelectedCommand}"/>
                 </Grid>
                 <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
             </Grid>
