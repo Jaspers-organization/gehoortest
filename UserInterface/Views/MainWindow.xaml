@@ -17,6 +17,9 @@
             <DataTemplate DataType="{x:Type viewModels:TestViewModel}">
                 <views:TestView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
+                <views:TestResultView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
             </DataTemplate>

@@ -24,7 +24,10 @@ public class EmailService : IEmailService
     {
         AssertInitialized();
 
-        MailMessage email = new MailMessage(sender, reciever, subject, body);
+        MailMessage email = new MailMessage(sender, reciever, subject, body) 
+        { 
+            IsBodyHtml = true 
+        };
 
         client.Send(email);
     }
