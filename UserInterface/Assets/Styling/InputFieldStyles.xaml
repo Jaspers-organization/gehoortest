@@ -31,29 +31,33 @@
         </Setter>
     </Style>
 
-
-    <Style x:Key="InputField_XS" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
+    <Style x:Key="InputField_XXS" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="220"/>
     </Style>
 
-    <Style x:Key="InputField_S" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
+    <Style x:Key="InputField_XS" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="320"/>
+    </Style>
+    
+    <Style x:Key="InputField_S" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="420"/>
     </Style>
     <Style x:Key="InputField_SM" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="410"/>
     </Style>
 
     <Style x:Key="InputField_M" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
-        <Setter Property="Width" Value="420"/>
-    </Style>
-
-    <Style x:Key="InputField_L" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="520"/>
     </Style>
 
-    <Style x:Key="InputField_XL" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
+    <Style x:Key="InputField_L" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="620"/>
     </Style>
+
+    <Style x:Key="InputField_XL" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="720"/>
+    </Style>
+    
     <Style x:Key="InputField_XXL" BasedOn="{StaticResource InputField}" TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="820"/>
     </Style>
