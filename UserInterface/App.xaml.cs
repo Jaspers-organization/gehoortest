@@ -1,8 +1,7 @@
-﻿using UserInterface.Assets.Styling;
-using UserInterface.Stores;
-using UserInterface.ViewModels;
+﻿using UserInterface.Stores;
 using UserInterface.Views;
 using System.Windows;
+using UserInterface.ViewModels;
 
 namespace UserInterface;
 

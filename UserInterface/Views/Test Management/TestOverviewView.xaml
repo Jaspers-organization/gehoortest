@@ -18,16 +18,13 @@
                     <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="795" />
                     <Button Grid.Row="1" Command="{Binding BackToMainMenuCommand}"  Style="{StaticResource SecondaryButton_Icon}"  Content=""/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
-                              SelectedValue="{Binding Audience.Label, Mode=TwoWay}"
                               SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
                               SelectedIndex="{Binding Selected, Mode=OneWayToSource}"
                               Text="Selecteer een doelgroep" Margin="31,0,78,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <!-- Display content -->
                                     <TextBlock Text="{Binding Label}" />
-                                    <!-- Id property (if available) -->
                                     <TextBlock Text="{Binding Id}" Visibility="Collapsed" />
                                 </StackPanel>
                             </DataTemplate>

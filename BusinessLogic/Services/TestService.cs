@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserInterface.Stores;
 
 namespace BusinessLogic.Services;
 
@@ -92,5 +93,20 @@ public class TestService
         questions = ShiftQuestionNumbers(questions);
         return questions;
     }
-
+    public static bool ContatinsInvalidCharacters(string str)
+    {
+        return str.Contains(ErrorStore.IllegalCharacters);
+    }
+    public static bool IsValidHz(int hz)
+    {
+        return hz >= 125 && hz <= 8000;
+    }
+    public static bool IsValidDecibel(int decibel)
+    {
+        return decibel <= 0 && decibel > 120;
+    }
+    public static bool IsEmptyString(string str)
+    {
+        return string.IsNullOrEmpty(str);
+    }
 }

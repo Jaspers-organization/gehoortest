@@ -1,6 +1,6 @@
 ﻿namespace UserInterface.Stores;
 
-public class ErrorMessageStore
+public class ErrorStore
 {
     public static string IllegalCharacters = "!@#$%^&*()[]{};:'`|<>";
     public static string ErrorTestName => "Het invoerveld is leeg.\n Geef de test een naam a.u.b.";

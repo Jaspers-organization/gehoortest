@@ -33,16 +33,13 @@
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,00" Grid.RowSpan="2" >
                     <TextBlock Style="{StaticResource Text}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
-                              SelectedValue="{Binding Audience.Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
-                              SelectedIndex="{Binding SelectedIndexProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Text="Selecteer een doelgroep">
+                              SelectedIndex="{Binding Selected, Mode=TwoWay}"
+                              Text="Selecteer een doelgroep" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <!-- Display content -->
                                     <TextBlock Text="{Binding Label}" />
-                                    <!-- Id property (if available) -->
                                     <TextBlock Text="{Binding Id}" Visibility="Collapsed" />
                                 </StackPanel>
                             </DataTemplate>

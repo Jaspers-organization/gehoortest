@@ -1,5 +1,5 @@
-﻿using UserInterface.ViewModels;
-using System;
+﻿using System;
+using UserInterface.ViewModels;
 
 namespace UserInterface.Stores;
 

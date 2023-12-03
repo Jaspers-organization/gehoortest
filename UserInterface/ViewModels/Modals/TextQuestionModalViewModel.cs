@@ -1,9 +1,9 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Services;
 using DataAccess.Entity.TestData_Management;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -26,7 +26,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _optionText;
     public string OptionText
     {
@@ -92,21 +92,33 @@ internal class TextQuestionModalViewModel : ViewModelBase
             switch (columnName)
             {
                 case "TestQuestion":
-                    if (string.IsNullOrEmpty(TestQuestion))
-                        validationMessage = ErrorMessageStore.ErrorTestQuestion;
+                    validationMessage = ValidateTestQuestion();
                     break;
                 case "MultipleChoice":
                 case "HasInputField":
-                    if (!HasInputField && !MultipleChoice)
-                        validationMessage = ErrorMessageStore.ErrorQuestionAnwserType;
-                    if(MultipleChoice && Options.Count < 2)
-                        validationMessage = ErrorMessageStore.ErrorMultipleChoiceOptions;
+                    validationMessage = ValidateQuestionType();
                     break;
                 default:
                     break;
             }
             return validationMessage ?? string.Empty;
         }
+    }
+    private string ValidateTestQuestion()
+    {
+        if (TestService.IsEmptyString(TestQuestion))
+            return ErrorStore.ErrorTestQuestion;
+        else if (TestService.ContatinsInvalidCharacters(TestQuestion))
+            return ErrorStore.ErrorIllegalCharacters;
+        return string.Empty;
+    }
+    private string ValidateQuestionType()
+    {
+        if (!HasInputField && !MultipleChoice)
+            return ErrorStore.ErrorQuestionAnwserType;
+        if (MultipleChoice && Options.Count < 2)
+            return ErrorStore.ErrorMultipleChoiceOptions;
+        return string.Empty;
     }
     #endregion
     private ErrorModalViewModal errorModalViewModal { get; set; }
@@ -122,22 +134,23 @@ internal class TextQuestionModalViewModel : ViewModelBase
         TestQuestion = textQuestion.Question;
         Options = new ObservableCollection<string>(textQuestion.Options ?? new List<string>());
     }
-    public void OpenErrorModal(string text)
+
+    private void OpenErrorModal(string text)
     {
         errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
         navigationStore.OpenModal(errorModalViewModal);
     }
-    public void AddOption(string value)
+    private void AddOption(string value)
     {
         Options.Add(value);
         OnPropertyChanged(nameof(Options));
     }
-    public void RemoveOption(string value)
+    private void RemoveOption(string value)
     {
         Options.Remove(value);
         OnPropertyChanged(nameof(Options));
     }
-    public void SaveQuestion()
+    private bool CheckValidityInput()
     {
         string testQuestionValidation = this["TestQuestion"];
         string anwserTypeValidation = this["MultipleChoice"];
@@ -145,16 +158,31 @@ internal class TextQuestionModalViewModel : ViewModelBase
         if (!string.IsNullOrEmpty(testQuestionValidation))
         {
             OpenErrorModal(testQuestionValidation);
-            return;
+            return false;
         }
 
         if (!string.IsNullOrEmpty(anwserTypeValidation))
         {
             OpenErrorModal(anwserTypeValidation);
-            return;
+            return false;
         }
-        ITextQuestion question = new TextQuestion { Id = textQuestion.Id, HasInputField = HasInputField, IsMultiSelect = MultipleChoice, Question = TestQuestion, Options = Options.ToList(), QuestionNumber = textQuestion.QuestionNumber };
-        
+        return true;
+    }
+
+    private void SaveQuestion()
+    {
+        if (!CheckValidityInput())
+            return;
+
+        ITextQuestion question = new TextQuestion {
+            Id = textQuestion.Id, 
+            HasInputField = HasInputField, 
+            IsMultiSelect = MultipleChoice, 
+            Question = TestQuestion, 
+            Options = Options.ToList(), 
+            QuestionNumber = textQuestion.QuestionNumber 
+        };
+
         if (newQuestion)
             testManagementViewModel.AddNewTextQuestion(question);
         else

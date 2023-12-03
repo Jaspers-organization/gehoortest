@@ -11,18 +11,16 @@ using UserInterface.Commands;
 using BusinessLogic.Interfaces;
 using System;
 using UserInterface.ViewModels.Modals;
-using System.Windows.Controls.Primitives;
-using DataAccess.Models.TestData_Management;
 
 namespace UserInterface.ViewModels;
 
 internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
-    private readonly NavigationStore? _navigationStore;
-    private readonly TargetAudienceRepository _targetAudienceRepository;
-    private readonly TestRepository _testRepository;
-    private readonly TestService _testSerivce;
+    private readonly NavigationStore? navigationStore;
+    private readonly TargetAudienceRepository targetAudienceRepository;
+    private readonly TestRepository testRepository;
+    private readonly TestService testSerivce;
     private readonly TargetAudienceService _targetAudienceSerivce;
     #endregion
 
@@ -35,7 +33,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
     #endregion
 
-    #region propertys
+    #region properties
     private List<ITargetAudience>? _audiencesList;
     public List<ITargetAudience>? AudiencesList
     {
@@ -103,10 +101,10 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get ; set ; }
     #endregion
 
-    private ConfirmationModalViewModel _confirmationModalViewModel { get; set; }
+    private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
     public TestOverviewViewModel(NavigationStore navigationStore, ITargetAudience targetAudience = null)
     {
-        _navigationStore = navigationStore;
+        this.navigationStore = navigationStore;
 
         // Commands
         OpenTestCommand = new Command(OpenTest);
@@ -116,17 +114,16 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         BackToMainMenuCommand = new Command(BackToMainMenu);
 
         // Repositories
-        _targetAudienceRepository = new TargetAudienceRepository();
-        _testRepository = new TestRepository();
+        targetAudienceRepository = new TargetAudienceRepository();
+        testRepository = new TestRepository();
 
         // Services
-        _testSerivce = new TestService(_testRepository);
-        _targetAudienceSerivce = new TargetAudienceService(_targetAudienceRepository);
+        testSerivce = new TestService(testRepository);
+        _targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
         SetInitialValues(targetAudience);
     }
     private void SetInitialValues(ITargetAudience targetAudience)
     {
-
         List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllTargetAudiences();
         AudiencesList = targetAudiences;
 
@@ -146,40 +143,36 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     }
     private void BackToMainMenu()
     {
-        _navigationStore!.CurrentViewModel = new TestViewModel(_navigationStore);
+        navigationStore!.CurrentViewModel = new TestViewModel(navigationStore);
 
     }
-    public void GetTests(int id)
+    private void GetTests(int id)
     {
         UpdateCollection(id);
     }
     private void UpdateCollection(int id)
     {
-        TestCollection = _testSerivce.GetTestsProjectionForAudience(id);
+        TestCollection = testSerivce.GetTestsProjectionForAudience(id);
     }
-    public void OpenTest(int id)
+    private void OpenTest(int id)
     {
-        ITest test = _testSerivce.GetTest(id);
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, Audience, test);
+        ITest test = testSerivce.GetTest(id);
+        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, Audience, test);
     }
-    public void NewTest()
+    private void NewTest()
     {
-        _navigationStore!.CurrentViewModel = new TestManagementViewModel(_navigationStore, this, Audience);
+        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, Audience);
     }
-   
-    public void DeleteTest(int id)
+
+    private void DeleteTest(int id)
     {
         Action SaveAction = () =>
         {
-            ITest test = _testSerivce.GetTest(id);
-            _testSerivce.DeleteTest(test);
+            ITest test = testSerivce.GetTest(id);
+            testSerivce.DeleteTest(test);
             UpdateCollection(id);
         };
         OpenConfirmationModal(CreateAction(SaveAction), "Weet je zeker dat je deze test wilt verwijderen?");
-    }
-    public void SetConfirmed(bool value)
-    {
-        IsConfirmed = value;
     }
 
     public Action CreateAction(Action action)
@@ -193,7 +186,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
     public void OpenConfirmationModal(Action action, string text)
     {
-        _confirmationModalViewModel = new ConfirmationModalViewModel(_navigationStore, text, this, action);
-        _navigationStore.OpenModal(_confirmationModalViewModel);
+        confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
+        navigationStore.OpenModal(confirmationModalViewModel);
     }
 }

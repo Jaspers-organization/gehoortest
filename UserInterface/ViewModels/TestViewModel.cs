@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
+using UserInterface.ViewModels;
 
 namespace UserInterface.ViewModels
 {
@@ -195,17 +196,17 @@ namespace UserInterface.ViewModels
             TextQuestion = "Wat is uw leeftijdsgroep?";
 
             // toegevoegd door jasper
-            List<string> tempTargetAudiences = new ();
-            foreach (ITargetAudience targetAudience in TargetAudiences) 
-            { 
-                tempTargetAudiences.Add(targetAudience.Label); 
+            List<string> tempTargetAudiences = new();
+            foreach (ITargetAudience targetAudience in TargetAudiences)
+            {
+                tempTargetAudiences.Add(targetAudience.Label);
             }
             RadioButtons = tempTargetAudiences;
             QuestionRadioButtons = "Visible";
             // =====
         }
 
-    private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
+        private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
         {
             var x = targetAudienceService.GetAllTargetAudiences();
             var y = new ObservableCollection<ITest>(testService.GetAllTests());
@@ -259,7 +260,7 @@ namespace UserInterface.ViewModels
         private void SaveAnswer()
         {
             List<string> answers = new();
-            if(Test == null)
+            if (Test == null)
             {
                 return;
             }
@@ -345,7 +346,7 @@ namespace UserInterface.ViewModels
                     testProgressData.CurrentQuestionNumber++;
                 }
                 isDoneText = true;
-                
+
             }
 
             if (testProgressData.CurrentQuestionNumber <= a.QuestionNumber && !isDoneAudio)
