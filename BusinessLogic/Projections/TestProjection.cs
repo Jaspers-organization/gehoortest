@@ -3,30 +3,13 @@ using System.ComponentModel;
 
 namespace BusinessLogic.Projections;
 
-public class TestProjection : INotifyPropertyChanged
+public class TestProjection 
 {
     public int Id { get; set; }
     public string Title { get; set; }
-    public event PropertyChangedEventHandler PropertyChanged;
 
-    private bool _active;
-    public bool Active
-    {
-        get { return _active; }
-        set
-        {
-            if (_active != value)
-            {
-                _active = value;
-                OnPropertyChanged(nameof(Active));
-            }
-        }
-    }
+    public bool Active { get; set; }
 
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
     public string EmployeeName { get; set; }
     public int AmountOfQuestions { get; set; }
    
