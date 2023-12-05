@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Interfaces.Repositories;
+﻿using BusinessLogic.IRepositories;
 
 namespace DataAccess.MockData;
 

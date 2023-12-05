@@ -1,16 +1,17 @@
-﻿using BusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLogic.IModels;
 
-namespace BusinessLogic.Projections
+namespace BusinessLogic.Projections;
+
+public class TestProjection
 {
-    internal struct TestProjection 
-    {
-        public int TargetAudienceId { get; set; }
-        public List<ITextQuestion> TextQuestions { get; set; }
-        public List<IToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
-    }
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public bool Active { get; set; }
+    public string EmployeeName { get; set; }
+    public int AmountOfQuestions { get; set; }
+   
+    public int TargetAudienceId { get; set; }
+    public List<ITextQuestion> TextQuestions { get; set; }
+    public List<IToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
+    
 }

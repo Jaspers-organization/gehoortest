@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="UserInterface.Views.Modals.AudioQuestionModal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:modals="clr-namespace:UserInterface.Views.Modals"
+             mc:Ignorable="d">
+    <Border Style="{StaticResource ModalContainer_XS}">
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="19*"/>
+                <ColumnDefinition Width="37*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
+            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}" Margin="62,0,-12,0"  ></TextBox>
+            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Text}" VerticalAlignment="Center" Text="Start Decibel" Height="58" Width="auto"/>
+            <TextBox Grid.Column="1" Text="{Binding StartingDecibelsString}" Style="{StaticResource InputField_XS}" Margin="62,113,-12,113" Grid.RowSpan="3" />
+            <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource PrimaryButton_S}"
+                        Command="{Binding SaveQuestionCommand}"
+                        CommandParameter="{Binding Id}"
+                        Content="Opslaan" Grid.ColumnSpan="2" Margin="0,0,300,0"/>
+            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource SecondaryButton_S}"
+                        Command="{Binding CloseModalCommand}"
+                        CommandParameter="true"
+                        Content="Annuleren" Margin="110,0,0,0" />
+        </Grid>
+    </Border>
+</UserControl>
