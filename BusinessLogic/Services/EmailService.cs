@@ -6,11 +6,11 @@ namespace BusinessLogic.Services;
 
 public class EmailService
 {
-    private IEmailService emailService;
+    private IEmailProvider provider;
 
-    public EmailService(IEmailService emailService)
+    public EmailService(IEmailProvider provider)
     {
-        this.emailService = emailService;
+        this.provider = provider;
     }
 
     public void SendEmail(string reciever, TestResultProjection testResult)
@@ -21,7 +21,7 @@ public class EmailService
         string subject = $"Testresultaat {date}"; 
         string body = CreateEmailBody(date, testResult);
 
-        emailService.SendEmail(reciever, subject, body);
+        provider.SendEmail(reciever, subject, body);
     }
 
     private string CreateEmailBody(string date, TestResultProjection testResult)

@@ -1,7 +1,7 @@
 ﻿namespace BusinessLogic.Interfaces.Services;
 
-public interface IEmailService
+public interface IEmailProvider
 {
-    public IEmailService Initialize(string host, string email, string password);
+    public IEmailProvider Initialize(string host, string email, string password);
     public void SendEmail(string reciever, string subject, string body);
 }
