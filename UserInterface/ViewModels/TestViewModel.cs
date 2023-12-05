@@ -5,6 +5,7 @@ using BusinessLogic.IRepositories;
 using BusinessLogic.Services;
 using DataAccess.MockData;
 using DataAccess.Models.TestData_Management;
+using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace UserInterface.ViewModels
 
         private TestService testService { get; set; }
         private TestProgressData testProgressData { get; set; }
-
+        private readonly Repository repository;
         #region Properties
         public string ShowTestExplanationView
         {
@@ -172,20 +173,21 @@ namespace UserInterface.ViewModels
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioQuestion);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
 
-        public TestViewModel(NavigationStore navigationStore)
+        public TestViewModel(NavigationStore navigationStore, Repository repository)
         {
             this.navigationStore = navigationStore;
+            this.repository = repository;
             ShowTestExplanationView = "Visible";
-            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
+            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceMockRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
-            ITestRepository testRepository = new TestRepository();
+            ITestRepository testRepository = new TestMockRepository();
             testService = new TestService(testRepository);
         }
 
         private void OpenTestManagement()
         {
-            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
+            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore, repository);
 
         }
         public void StartTest()

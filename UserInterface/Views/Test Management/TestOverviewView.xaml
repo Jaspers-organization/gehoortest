@@ -74,15 +74,14 @@
                             <GridViewColumn Width="200" Header="Status" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ToggleButton IsChecked="{Binding TestCollection.Active}"
-                                           Style="{StaticResource ToggleButtonStyle}"/>
+                                        <ToggleButton IsChecked="{Binding IsTestActive, Mode=TwoWay}" Command="{Binding ToggleTestActiveCommand}" Style="{StaticResource ToggleButtonStyle}" />
+
+
+
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="200" Header="Aantal vragen">
-                                <!--<GridViewColumn.Header>
-                                    <Image Source="{StaticResource di_wave_sine}" Width="40" Height="40"/>
-                                </GridViewColumn.Header>-->
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Style="{StaticResource Text}" Text="{Binding AmountOfQuestions}" />
@@ -117,7 +116,6 @@
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    
                 </ListView>
             </Grid>
         </Grid>

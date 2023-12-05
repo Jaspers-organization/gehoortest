@@ -18,9 +18,9 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
-            <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}" Margin="62,0,-12,0"  ></TextBox>
-            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Text}" VerticalAlignment="Center" Text="Start Decibel" Height="58" Width="auto"/>
-            <TextBox Grid.Column="1" Text="{Binding StartingDecibelsString}" Style="{StaticResource InputField_XS}" Margin="62,113,-12,113" Grid.RowSpan="3" />
+            <TextBox ToolTip="Het aantal hertz moet tussen 125 en 8000 vallen."  Grid.Row="0" Grid.Column="1" Text="{Binding FrequencyString}" Style="{StaticResource InputField_XS}" Margin="62,0,-12,0"  ></TextBox>
+            <TextBlock  Grid.Row="1" Grid.Column="0" Style="{StaticResource Text}" VerticalAlignment="Center" Text="Start Decibel" Height="58" Width="auto"/>
+            <TextBox ToolTip="Het aantal decibel moet tussen 1 en 120 vallen." Grid.Column="1" Text="{Binding StartingDecibelsString}" Style="{StaticResource InputField_XS}" Margin="62,113,-12,113" Grid.RowSpan="3" />
             <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource PrimaryButton_S}"
                         Command="{Binding SaveQuestionCommand}"
                         CommandParameter="{Binding Id}"

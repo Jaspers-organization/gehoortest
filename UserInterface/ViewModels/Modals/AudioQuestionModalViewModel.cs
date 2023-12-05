@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.Services;
 using DataAccess.Entity.TestData_Management;
+using System;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -12,8 +13,6 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
-    private ErrorModalViewModal errorModalViewModal { get; set; }
-
     private readonly IToneAudiometryQuestion toneAudiometryQuestion;
     private readonly bool newQuestion;
     #endregion
@@ -110,49 +109,67 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     }
     private string ValidateFrequency()
     {
-        if (int.TryParse(FrequencyString, out int Frequency))
+        try
         {
-            if (!TestService.IsValidHz(Frequency))
+            if (int.TryParse(FrequencyString, out int frequency))
             {
-                return ErrorStore.ErrorFrequencyLimit;
+                if (!TestService.IsValidHz(frequency))
+                {
+                    return ErrorStore.ErrorFrequencyLimit;
+                }
+                else
+                {
+                    Frequency = frequency;
+                }
+            }
+            else if (TestService.IsEmptyString(FrequencyString))
+            {
+                return ErrorStore.ErrorEmpty;
             }
             else
             {
-                this.Frequency = Frequency;
+                return ErrorStore.ErrorNotValidInteger;
             }
         }
-        else if (TestService.IsEmptyString(FrequencyString))
+        catch (Exception ex)
         {
-            return ErrorStore.ErrorEmpty;
+            // Log or handle the exception as needed
+            return $"Er is wat misgegaan";
         }
-        else
-        {
-            return ErrorStore.ErrorNotValidInteger;
-        }
+
         return string.Empty;
     }
 
     private string ValidateDecibels()
     {
-        if (int.TryParse(StartingDecibelsString, out int StartingDecibels))
+        try
         {
-            if (!TestService.IsValidDecibel(StartingDecibels))
+            if (int.TryParse(StartingDecibelsString, out int startingDecibels))
             {
-                return ErrorStore.ErrorStartingDecibels;
+                if (!TestService.IsValidDecibel(startingDecibels))
+                {
+                    return ErrorStore.ErrorStartingDecibels;
+                }
+                else
+                {
+                    StartingDecibels = startingDecibels;
+                }
+            }
+            else if (TestService.IsEmptyString(StartingDecibelsString))
+            {
+                return ErrorStore.ErrorEmpty;
             }
             else
             {
-                this.StartingDecibels = StartingDecibels;
+                return ErrorStore.ErrorNotValidInteger;
             }
         }
-        else if (TestService.IsEmptyString(StartingDecibelsString))
+        catch (Exception ex)
         {
-            return ErrorStore.ErrorEmpty;
+            // Log or handle the exception as needed
+            return $"Er is wat misgegaan";
         }
-        else
-        {
-            return ErrorStore.ErrorNotValidInteger;
-        }
+
         return string.Empty;
     }
 
@@ -166,33 +183,49 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         this.newQuestion = newQuestion;
         StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
         FrequencyString = toneAudiometryQuestion.Frequency.ToString();
+
+        // Opens an error modal with the provided error text
     }
-    public void OpenErrorModal(string text)
-    {
-        errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
-        navigationStore.OpenModal(errorModalViewModal);
-    }
+    public void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
+
+
     private void SaveQuestion()
     {
-        if (!CheckValidityInput())
-            return;
+        try
+        {
+            // Checks the validity of input data before proceeding
+            if (!CheckValidityInput())
+                return;
 
-        IToneAudiometryQuestion question = new ToneAudiometryQuestion { 
-            Id = toneAudiometryQuestion.Id, 
-            StartingDecibels = StartingDecibels, 
-            Frequency = Frequency, 
-            QuestionNumber = toneAudiometryQuestion.QuestionNumber 
-        };
+            // Creates a new ToneAudiometryQuestion object based on the provided data
+            IToneAudiometryQuestion question = new ToneAudiometryQuestion
+            {
+                Id = toneAudiometryQuestion.Id,
+                StartingDecibels = StartingDecibels,
+                Frequency = Frequency,
+                QuestionNumber = toneAudiometryQuestion.QuestionNumber
+            };
 
-        if (newQuestion)
-            testManagementViewModel.AddNewToneAudiometryQuestion(question);
-        else
-            testManagementViewModel.UpdateToneAudiometryQuestion(question);
+            // Adds a new tone audiometry question if it's a new question, otherwise updates the existing one
+            if (newQuestion)
+                testManagementViewModel.AddNewToneAudiometryQuestion(question);
+            else
+                testManagementViewModel.UpdateToneAudiometryQuestion(question);
 
-        CloseModal();
+            // Closes the modal after successful question saving or updating
+            CloseModal();
+        }
+        catch (Exception ex)
+        {
+            // If an exception occurs during the saving process, opens an error modal
+            OpenErrorModal("Er is wat foutgegaan bij het opslaan van de vraag");
+        }
     }
+
     private void CloseModal()
     {
+        // Closes the current modal
         navigationStore.CloseModal();
     }
+
 }

@@ -29,8 +29,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Core\" />
-    <Folder Include="ViewModels\Test Management\" />
-    <Folder Include="ViewModels\Test\" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.MockData;
 
-public class TargetAudienceRepository : ITargetAudienceRepository
+public class TargetAudienceMockRepository : ITargetAudienceRepository
 {
     public List<ITargetAudience> GetAllAudiences()
     {

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace DataAccess.MockData;
 
-public class TestRepository : ITestRepository
+public class TestMockRepository : ITestRepository
 {
     public List<ITest> testDataList = new List<ITest>
         {
@@ -49,7 +49,7 @@ public class TestRepository : ITestRepository
             },
         };
 
-    public TestRepository()
+    public TestMockRepository()
     {
         
     }

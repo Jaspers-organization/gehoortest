@@ -1,4 +1,5 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Enums;
+using BusinessLogic.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ public class TextQuestion : ITextQuestion
     public bool IsMultiSelect { get ; set ; }
     public bool HasInputField { get ; set ; }
     public int QuestionNumber { get ; set ; }
-    
+
+    public QuestionType QuestionType { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.Services;
 using DataAccess.Entity.TestData_Management;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -120,6 +121,24 @@ internal class TextQuestionModalViewModel : ViewModelBase
             return ErrorStore.ErrorMultipleChoiceOptions;
         return string.Empty;
     }
+    private bool CheckValidityInput()
+    {
+        string testQuestionValidation = this["TestQuestion"];
+        string anwserTypeValidation = this["MultipleChoice"];
+
+        if (!string.IsNullOrEmpty(testQuestionValidation))
+        {
+            OpenErrorModal(testQuestionValidation);
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(anwserTypeValidation))
+        {
+            OpenErrorModal(anwserTypeValidation);
+            return false;
+        }
+        return true;
+    }
     #endregion
     private ErrorModalViewModal errorModalViewModal { get; set; }
 
@@ -142,53 +161,76 @@ internal class TextQuestionModalViewModel : ViewModelBase
     }
     private void AddOption(string value)
     {
-        Options.Add(value);
-        OnPropertyChanged(nameof(Options));
+        try
+        {
+            if (!TestService.IsEmptyString(value))
+            {
+                Options.Add(value);
+                OnPropertyChanged(nameof(Options));
+            }
+            else
+            {
+                OpenErrorModal("De optie mag niet leeg zijn.");
+            }
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal($"Er is wat fout gegaan tijdens het toevoegen van de optie. {ex.Message}");
+           
+        }
     }
+
     private void RemoveOption(string value)
     {
-        Options.Remove(value);
-        OnPropertyChanged(nameof(Options));
-    }
-    private bool CheckValidityInput()
-    {
-        string testQuestionValidation = this["TestQuestion"];
-        string anwserTypeValidation = this["MultipleChoice"];
-
-        if (!string.IsNullOrEmpty(testQuestionValidation))
+        try
         {
-            OpenErrorModal(testQuestionValidation);
-            return false;
+            if (!TestService.IsEmptyString(value) && Options.Contains(value))
+            {
+                Options.Remove(value);
+                OnPropertyChanged(nameof(Options));
+            }
+            else
+            {
+                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie."); 
+            }
         }
-
-        if (!string.IsNullOrEmpty(anwserTypeValidation))
+        catch (Exception ex)
         {
-            OpenErrorModal(anwserTypeValidation);
-            return false;
+            OpenErrorModal($"Er is wat fout gegaan bij het verwijderen van de optie");
         }
-        return true;
     }
+
+
 
     private void SaveQuestion()
     {
-        if (!CheckValidityInput())
-            return;
+        try
+        {
+            if (!CheckValidityInput())
+                return;
 
-        ITextQuestion question = new TextQuestion {
-            Id = textQuestion.Id, 
-            HasInputField = HasInputField, 
-            IsMultiSelect = MultipleChoice, 
-            Question = TestQuestion, 
-            Options = Options.ToList(), 
-            QuestionNumber = textQuestion.QuestionNumber 
-        };
+            ITextQuestion question = new TextQuestion
+            {
+                Id = textQuestion.Id,
+                HasInputField = HasInputField,
+                IsMultiSelect = MultipleChoice,
+                Question = TestQuestion,
+                Options = Options.ToList(),
+                QuestionNumber = textQuestion.QuestionNumber
+            };
 
-        if (newQuestion)
-            testManagementViewModel.AddNewTextQuestion(question);
-        else
-            testManagementViewModel.UpdateTextQuestion(question);
+            if (newQuestion)
+                testManagementViewModel.AddNewTextQuestion(question);
+            else
+                testManagementViewModel.UpdateTextQuestion(question);
 
-        CloseModal();
+            CloseModal();
+        }
+        catch(Exception ex)
+        {
+            OpenErrorModal("Er is wat fout gegaan bij het opslaan van de vraag.");
+        }
+        
     }
     
     private void CloseModal()

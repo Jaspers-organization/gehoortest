@@ -1,4 +1,5 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Enums;
+using BusinessLogic.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace DataAccess.Entity.TestData_Management
         public int Frequency { get ; set ; }
         public int StartingDecibels { get ; set ; }
         public int QuestionNumber { get ; set ; }
+        public QuestionType QuestionType { get; set; }
     }
 }

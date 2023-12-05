@@ -11,7 +11,7 @@ internal class TestResultViewModel : ViewModelBase
 {
     private readonly NavigationStore navigationStore;
     private readonly TestProgressData testProgressData;
-    private readonly TestResultRepository testResultRepository;
+    private readonly TestResultMockRepository testResultRepository;
     private readonly TestResultBusinessLogic testResultBusinessLogic;
 
     private string? _testResultText;
@@ -32,7 +32,7 @@ internal class TestResultViewModel : ViewModelBase
     {
         this.navigationStore = navigationStore;
         this.testProgressData = testProgressData;
-        testResultRepository = new TestResultRepository();
+        testResultRepository = new TestResultMockRepository();
         testResultBusinessLogic = new TestResultBusinessLogic(testResultRepository);
 
         // PopulateMockData();

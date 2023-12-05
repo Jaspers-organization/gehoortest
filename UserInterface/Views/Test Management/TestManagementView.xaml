@@ -35,6 +35,7 @@
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
                               SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
                               SelectedIndex="{Binding Selected, Mode=TwoWay}"
+                              SelectedValue=""
                               Text="Selecteer een doelgroep" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
