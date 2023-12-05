@@ -13,6 +13,7 @@ using System;
 using UserInterface.ViewModels.Modals;
 using gehoortest_application.Repository;
 using DataAccess.Repositories;
+using DataAccess.Models.TestData_Management;
 
 namespace UserInterface.ViewModels;
 
@@ -20,10 +21,10 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore? navigationStore;
-    private readonly TargetAudienceRepository targetAudienceRepository;
+    private readonly TargetAudienceMockRepository targetAudienceRepository;
     private readonly TestMockRepository testRepository;
-    private readonly TestService testSerivce;
-    private readonly TargetAudienceService targetAudienceSerivce;
+    private readonly TestService testService;
+    private readonly TargetAudienceService targetAudienceService;
     private readonly Repository repository;
 
     #endregion
@@ -34,117 +35,80 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand GetTestsCommand => new Command(GetTests);
     public ICommand DeleteTestCommand => new Command(DeleteTest);
     public ICommand BackToMainMenuCommand => new Command(BackToMainMenu);
+    public ICommand ToggleActiveStatusCommand => new Command(ToggleActiveStatus);
+
     #endregion
 
     #region properties
-    private List<ITargetAudience>? _audiencesList;
-    public List<ITargetAudience>? AudiencesList
+    private List<ITargetAudience>? _targetAudiences;
+    public List<ITargetAudience>? TargetAudiences
     {
-        get { return _audiencesList; }
-        set { _audiencesList = value; OnPropertyChanged(nameof(AudiencesList)); }
+        get { return _targetAudiences; }
+        set { _targetAudiences = value; OnPropertyChanged(nameof(TargetAudiences)); }
     }
-    private ITargetAudience? _audience;
-    public ITargetAudience? Audience
+
+    private ITargetAudience? _selectedTargetAudience;
+    public ITargetAudience? SelectedTargetAudience
     {
-        get { return _audience; }
-        set
-        {
-            _audience = value;
-            if (value != null)
-            {
-                // Set the Selected property to the Id if Audience is not null
-                Selected = value.Id;
-            }
-            else
-            {
-                // Set the Selected property to the Id of the first item in targetAudiences
-                var firstAudience = AudiencesList.FirstOrDefault();
-                if (firstAudience != null)
-                {
-                    Selected = firstAudience.Id;
-                }
-            }
-            OnPropertyChanged(nameof(Audience));
+        get { return _selectedTargetAudience; }
+        set { 
+            _selectedTargetAudience = value; 
+            OnPropertyChanged(nameof(SelectedTargetAudience));
+            GetTests();
         }
     }
 
-    private int _selected;
-    public int Selected
+    private List<ITest>? _tests;
+    public List<ITest>? Tests
     {
-        get { return _selected; }
-        set
-        {
-            _selected = value;
-            GetTests(value);
-            OnPropertyChanged(nameof(Selected));
-        }
-    }
-
-    private bool _active;
-    public bool Active
-    {
-        get { return _active; }
-        set
-        {
-            if (_active != value)
-            {
-                _active = value;
-                OnPropertyChanged(nameof(Active));
-            }
-        }
-    }
-
-    private ObservableCollection<TestProjection>? _testCollection;
-    public ObservableCollection<TestProjection>? TestCollection
-    {
-        get { return _testCollection; }
-        set { _testCollection = value; OnPropertyChanged(nameof(TestCollection)); }
+        get { return _tests; }
+        set { _tests = value; OnPropertyChanged(nameof(Tests)); }
     }
 
     public bool IsConfirmed { get; set; }
     #endregion
 
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
+
     public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience targetAudience = null)
     {
         this.navigationStore = navigationStore;
         this.repository = repository;
 
-        targetAudienceRepository = new TargetAudienceRepository(repository);
+        targetAudienceRepository = new TargetAudienceMockRepository();
         testRepository = new TestMockRepository();
         // Services
-        testSerivce = new TestService(testRepository);
-        targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
-        SetInitialValues(targetAudience);
+        testService = new TestService(testRepository);
+        targetAudienceService = new TargetAudienceService(targetAudienceRepository);
+
+        GetTargetAudiences(targetAudience);
     }
-    private void SetInitialValues(ITargetAudience targetAudience)
+
+    private void GetTargetAudiences(ITargetAudience? targetAudience)
     {
-        List<ITargetAudience> targetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
-        AudiencesList = targetAudiences;
+        TargetAudiences = targetAudienceService.GetAllTargetAudiences();
 
         if (targetAudience != null)
         {
-            Selected = targetAudience.Id;
-            Audience = targetAudience;
+            SelectedTargetAudience = TargetAudiences.First(t => t.Id == targetAudience.Id);
+            return;
         }
-        else
-        {
-            Audience = targetAudiences.FirstOrDefault();
-            if (Audience != null)
-            {
-                Selected = Audience.Id;
-            }
-        }
+
+        SelectedTargetAudience = TargetAudiences.FirstOrDefault();
     }
+
+    private void GetTests()
+    {
+        Tests = (SelectedTargetAudience == null)
+            ? null
+            : testService.GetTestsByTargetAudienceId(SelectedTargetAudience.Id);
+    }
+
     private void BackToMainMenu()
     {
         navigationStore!.CurrentViewModel = new TestViewModel(navigationStore, repository);
+    }
 
-    }
-    private void GetTests(int id)
-    {
-        UpdateCollection(id);
-    }
     //   private void SetActiveTest(TestProjection selectedTest)
     //{
     //    if (selectedTest != null)
@@ -156,35 +120,28 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     //    }
     //}
 
-    private ObservableCollection<TestProjection> GetTestData(int id)
-    {
-        return testSerivce.GetTestsProjectionForAudience(id);
-    }
-    private void UpdateCollection(int id)
-    {
-        TestCollection = GetTestData(id);
-    }
     private void OpenTest(int id)
     {
-        if (Audience == null)
-            return;
-        ITest test = testSerivce.GetTest(id);
-        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, Audience, repository, test);
+        if (SelectedTargetAudience == null) return;
+
+        ITest test = testService.GetTest(id);
+        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, SelectedTargetAudience, repository, test);
     }
+
     private void NewTest()
     {
-        if (Audience == null)
-            return;
-        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, Audience, repository);
+        if (SelectedTargetAudience == null) return;
+
+        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, SelectedTargetAudience, repository);
     }
 
     private void DeleteTest(int id)
     {
         Action SaveAction = () =>
         {
-            ITest test = testSerivce.GetTest(id);
-            testSerivce.DeleteTest(test);
-            UpdateCollection(id);
+            ITest test = testService.GetTest(id);
+            testService.DeleteTest(test);
+            //UpdateCollection(id);
         };
         OpenConfirmationModal(CreateAction(SaveAction), "Weet je zeker dat je deze test wilt verwijderen?");
     }
@@ -197,10 +154,33 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
             action?.Invoke();
         };
     }
+
     public void OpenConfirmationModal(Action action, string text)
     {
         confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
         navigationStore.OpenModal(confirmationModalViewModel);
     }
 
+    private void ToggleActiveStatus(int testId)
+    {
+        // might be better to move this to the business layer
+        ITest? test = testRepository.GetTestById(testId);
+        if (test == null) return;
+        test.Active = !test.Active;
+
+        if (!test.Active)
+        {
+            ITest? activeTest = testRepository.GetActiveTest();
+            if (activeTest != null)
+            {
+                activeTest.Active = false;
+                testRepository.UpdateTest(test);
+            }
+        }
+
+        test.Active = !test.Active;
+        testRepository.UpdateTest(test);
+
+        GetTests();
+    }
 }

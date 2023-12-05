@@ -24,40 +24,45 @@
                         </Border>
                     </Viewbox>
                     <ControlTemplate.Triggers>
-                        <EventTrigger RoutedEvent="Checked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                To="#DA0063"
-                                                Duration="0:0:0.1" />
-                                    <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                    Storyboard.TargetProperty="Margin"
-                                                    To="20 1 2 1"
-                                                    Duration="0:0:0.1" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Unchecked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                To="White"
-                                                Duration="0:0:0.1" />
-                                    <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                    Storyboard.TargetProperty="Margin"
-                                                    To="2 1 2 1"
-                                                    Duration="0:0:0.1" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <DataTrigger Binding="{Binding Active}" Value="True">
-                            <Setter Property="IsChecked" Value="True" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Active}" Value="False">
-                            <Setter Property="IsChecked" Value="False" />
-                        </DataTrigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#DA0063"
+                                            Duration="0:0:0"/>
+                                        <ThicknessAnimation 
+                                            Storyboard.TargetName="Ellipse"
+                                            Storyboard.TargetProperty="Margin"
+                                            To="20 1 2 1"
+                                            Duration="0:0:0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="false">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                            Storyboard.TargetName="Border"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="White"
+                                            Duration="0:0:0"/>
+                                        <ThicknessAnimation 
+                                            Storyboard.TargetName="Ellipse"
+                                            Storyboard.TargetProperty="Margin"
+                                            To="2 1 2 1"
+                                            Duration="0:0:0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                            
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
