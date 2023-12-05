@@ -1,4 +1,4 @@
-﻿using Service.Interfaces.Services;
+﻿using BusinessLogic.Interfaces.Services;
 using System.Net;
 using System.Net.Mail;
 

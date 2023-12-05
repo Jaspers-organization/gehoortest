@@ -5,7 +5,7 @@ using BusinessLogic.Controllers;
 using BusinessLogic.Projections;
 using UserInterface.Commands;
 using System.Windows.Input;
-using System.Text.RegularExpressions;
+using BusinessLogic.BusinessRules;
 
 namespace UserInterface.ViewModels;
 
@@ -15,7 +15,7 @@ internal class TestResultViewModel : ViewModelBase
     private readonly TestProgressData testProgressData;
     private readonly TestResultRepository testResultRepository;
     private readonly TestResultBusinessLogic testResultBusinessLogic;
-    private readonly Service.Services.EmailService emailService;
+    private readonly BusinessLogic.Services.EmailService emailService;
     private TestResultProjection testResult;
 
     private string? _testResultText;
@@ -70,7 +70,7 @@ internal class TestResultViewModel : ViewModelBase
         string host = "smtp.gmail.com";
         // ====================
 
-        emailService = new Service.Services.EmailService(new EmailService.EmailService().Initialize(host, email, key));
+        emailService = new BusinessLogic.Services.EmailService(new EmailService.EmailService().Initialize(host, email, key));
 
         GetTestResult();
     }
@@ -93,7 +93,7 @@ internal class TestResultViewModel : ViewModelBase
 
     private void SendEmail()
     {
-        if (!IsValidEmail())
+        if (!EmailBusinessRules.IsValidEmail(Email))
         {
             EmailError = "Visible";
             return;
@@ -101,13 +101,5 @@ internal class TestResultViewModel : ViewModelBase
 
         EmailError = "Hidden";
         emailService.SendEmail(Email, testResult);
-    }
-
-    private bool IsValidEmail()
-    {
-        if (string.IsNullOrEmpty(Email)) return false;
-
-        string emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        return Regex.Matches(Email, emailPattern).Count == 1;
     }
 }

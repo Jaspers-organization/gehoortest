@@ -1,8 +1,8 @@
 ﻿using BusinessLogic.Projections;
-using Service.Interfaces.Services;
-using System.Text.RegularExpressions;
+using BusinessLogic.BusinessRules;
+using BusinessLogic.Interfaces.Services;
 
-namespace Service.Services;
+namespace BusinessLogic.Services;
 
 public class EmailService
 {
@@ -15,7 +15,7 @@ public class EmailService
 
     public void SendEmail(string reciever, TestResultProjection testResult)
     {
-        AssertValidEmail(reciever);
+        EmailBusinessRules.AssertValidEmail(reciever);
 
         string date = DateTime.Now.ToString("dd-MM-yyyy");
         string subject = $"Testresultaat {date}"; 
@@ -47,13 +47,5 @@ public class EmailService
                 </body>
             </html>         
         ";
-    }
-
-    private void AssertValidEmail(string email)
-    {
-        if (string.IsNullOrEmpty(email)) throw new ArgumentException("Email is invalid");
-
-        string emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (Regex.Matches(email, emailPattern).Count != 1) throw new ArgumentException("Email is invalid");
     }
 }
