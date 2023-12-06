@@ -23,9 +23,9 @@ public class TestService
     {
         return testRepository.GetTest(targetAudienceId);
     }
-    public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
+    public List<ITest>? GetTestsByTargetAudienceId(int id)
     {
-        return testRepository.GetTestsProjectionForAudience(id);
+        return testRepository.GetTestsByTargetAudienceId(id);
     }
     public void SaveTest(ITest test)
     {

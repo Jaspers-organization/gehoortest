@@ -47,12 +47,25 @@ public class TestMockRepository : ITestRepository
                     new ToneAudiometryQuestion { Id = 2, Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
                 },Employee =  new Employee { Id = 1, EmployeeNumber = "543216789", FirstName = "Jasper", LastName = "Gräber" }
             },
+            new Test { Id = 3, TargetAudience = new TargetAudience{ Id = 1, From = 19, To=29, Label="19-29" }, Active = false, Title = "Jong-volwassen test #3",
+                TextQuestions = new List<ITextQuestion>{
+                    new TextQuestion { Id = 0, Question = "Gebruik je gehoorbescherming als je naar een festival gaat?", Options = new List<string>{"Ja", "Nee", "Ik ga nooit naar festivals" }, QuestionNumber = 1, HasInputField = true, IsMultiSelect = true},
+                    new TextQuestion { Id = 1, Question = "Heb je moeite met mensen verstaan in je omgeving?",Options = new List<string>{"Ja", "Nee", "Niet gemerkt" },QuestionNumber = 2, HasInputField = false, IsMultiSelect = true},
+                    new TextQuestion { Id = 2, Question = "Nog een vraag... ik weet het nog niet.",Options = new List<string>(), QuestionNumber = 3,  HasInputField = true, IsMultiSelect = false}
+                },
+                ToneAudiometryQuestions = new List<IToneAudiometryQuestion>{
+                    new ToneAudiometryQuestion { Id = 0, Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
+                    new ToneAudiometryQuestion { Id = 1, Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
+                    new ToneAudiometryQuestion { Id = 2, Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
+                },Employee =  new Employee { Id = 1, EmployeeNumber = "543216789", FirstName = "Jasper", LastName = "Gräber" }
+            },
         };
 
     public TestMockRepository()
     {
         
     }
+
     public ITest CreateTest()
     {
         return new Test();
@@ -111,4 +124,20 @@ public class TestMockRepository : ITestRepository
     {
         testDataList.Add(test);
     }
+
+    public List<ITest>? GetTestsByTargetAudienceId(int id)
+    {
+        return testDataList.Where(t => t.TargetAudience.Id == id).ToList();
+    }
+
+    public ITest? GetTestById(int id)
+    {
+        return testDataList.FirstOrDefault(t => t.Id == id);
+    }
+
+    public ITest? GetActiveTest()
+    {
+        return testDataList.FirstOrDefault(t => t.Active == true);
+    }
+
 }

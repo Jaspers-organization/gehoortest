@@ -18,8 +18,8 @@
                     <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="795" />
                     <Button Grid.Row="1" Command="{Binding BackToMainMenuCommand}"  Style="{StaticResource SecondaryButton_Icon}"  Content=""/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
-                              SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
-                              SelectedIndex="{Binding Selected, Mode=OneWayToSource}"
+                              SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
+                              SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"
                               Text="Selecteer een doelgroep" Margin="31,0,78,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -47,7 +47,7 @@
                     <Rectangle.RadiusX>5</Rectangle.RadiusX>
                     <Rectangle.RadiusY>5</Rectangle.RadiusY>
                 </Rectangle>
-                <ListView Width="1708" Height="580" Name="TestsList"  ItemsSource="{Binding TestCollection}" Style="{StaticResource ListViewStyle}" Margin="5,103,0,0" d:ItemsSource="{d:SampleData ItemCount=5}">
+                <ListView Width="1708" Height="580" Name="TestsList"  ItemsSource="{Binding Tests}" Style="{StaticResource ListViewStyle}" Margin="5,103,0,0" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_1}" />
                     </ListView.Resources>
@@ -74,10 +74,11 @@
                             <GridViewColumn Width="200" Header="Status" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ToggleButton IsChecked="{Binding IsTestActive, Mode=TwoWay}" Command="{Binding ToggleTestActiveCommand}" Style="{StaticResource ToggleButtonStyle}" />
-
-
-
+                                        <ToggleButton 
+                                            IsChecked="{Binding Active}" 
+                                            Command="{Binding DataContext.ToggleActiveStatusCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestOverviewView}}}" 
+                                            CommandParameter="{Binding Id}"
+                                            Style="{StaticResource ToggleButtonStyle}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

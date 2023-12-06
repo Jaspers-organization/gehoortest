@@ -6,11 +6,13 @@ namespace BusinessLogic.IRepositories;
 
 public interface ITestRepository
 {
-    ITest GetTest(int  id);
+    ITest GetTest(int id);
+    ITest? GetTestById(int id);
+    ITest? GetActiveTest();
     void UpdateTest(ITest test);
     ITest CreateTest();
     void SaveTest(ITest test);
     void DeleteTest(ITest test);
     List<ITest> GetAllTests();
-    ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id);
+    List<ITest>? GetTestsByTargetAudienceId(int id);
 }
