@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Projections;
-using System.Collections.ObjectModel;
 using UserInterface.Stores;
 using BusinessLogic.IModels;
 using BusinessLogic.Enums;
@@ -11,38 +10,43 @@ public class TestService
 {
     private ITestRepository testRepository;
 
-    public TestService(ITestRepository testRepository)
+    public TestService(ITestRepository testRepository)=> this.testRepository = testRepository;
+    
+    public List<ITest> GetAllTests()=> testRepository.GetAllTests();
+   
+    public ITest GetTestById(int id) => testRepository.GetTestById(id);
+   
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(int id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
+    
+    public ITest? GetTestByTargetAudienceId(int targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
+    
+    public void SaveTest(ITest test) => testRepository.SaveTest(test);
+   
+    public void DeleteTest(ITest test) => testRepository.DeleteTest(test);
+   
+    public void UpdateTest(ITest test) => testRepository.UpdateTest(test);
+  
+    public ITest CreateTest() => testRepository.CreateTest();
+
+    public void ToggleActiveStatus(int id)
     {
-        this.testRepository = testRepository;
-    }
-    public List<ITest> GetAllTests()
-    {
-        return testRepository.GetAllTests();
-    }
-    public ITest GetTest(int targetAudienceId)
-    {
-        return testRepository.GetTest(targetAudienceId);
-    }
-    public List<ITest>? GetTestsByTargetAudienceId(int id)
-    {
-        return testRepository.GetTestsByTargetAudienceId(id);
-    }
-    public void SaveTest(ITest test)
-    {
-        testRepository.SaveTest(test);
-    }
-    public void DeleteTest(ITest test)
-    {
-        testRepository.DeleteTest(test);
-    }
-    public void UpdateTest(ITest test)
-    {
+        ITest? test = GetTestById(id);
+        if (test == null) return;
+
+
+        if (!test.Active)
+        {
+            ITest? activeTest = testRepository.GetActiveTest();
+            if (activeTest != null)
+            {
+                activeTest.Active = false;
+                testRepository.UpdateTest(test);
+            }
+        }
+        test.Active = !test.Active;
         testRepository.UpdateTest(test);
     }
-    public ITest CreateTest()
-    {
-        return testRepository.CreateTest();
-    }
+
     /// <summary>
     /// Gets the new highest question number based on the test and question type.
     /// </summary>
@@ -69,6 +73,7 @@ public class TestService
                 return 0;
         }
     }
+
     /// <summary>
     /// Gets the index of a question based on its number within a list of questions.
     /// </summary>
@@ -206,4 +211,5 @@ public class TestService
     {
         return string.IsNullOrEmpty(str);
     }
+
 }

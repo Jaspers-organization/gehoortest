@@ -49,9 +49,23 @@
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal"  Grid.RowSpan="1" >
                     <TextBlock VerticalAlignment="Center" Style="{StaticResource Text}" Text="Status" Width="355"/>
-                    <Border Height="50"  Style="{StaticResource PillStyle}" >
-                        <TextBlock  x:Name="Status" Style="{StaticResource TextWhite}" Text="{Binding Status}" Width="160" HorizontalAlignment="Center"  TextAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Height="50">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="Actief">
+                                        <Setter Property="Background" Value="#006400"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Inactief">
+                                        <Setter Property="Background" Value="#d90000"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock x:Name="StatusText" Style="{StaticResource TextWhite}" Text="{Binding Status}" Width="160" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,85,0,0">

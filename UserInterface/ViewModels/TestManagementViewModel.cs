@@ -164,23 +164,23 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get; set; }
     public ITest Test { get; set; }
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
-    private ITargetAudience tempTargetAudience;
 
-    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel, ITargetAudience targetAudience,Repository repository, ITest test = null)
+    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel, Repository repository, ITest test = null)
     {
         //Dependencies initialization
         this.repository = repository;
+
         testRepository = new TestMockRepository();
         targetAudienceRepository = new TargetAudienceMockRepository();
         testService = new TestService(testRepository);
         targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
+
         this.testOverviewViewModel = testOverviewViewModel;
         this.navigationStore = navigationStore;
-        tempTargetAudience = targetAudience;
 
         //set values
-        List<ITargetAudience> targetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
-        AudiencesList = targetAudiences;
+        SetTargetAudiences();
+
         if (test != null)
         {
             SetTestValues(test);
@@ -190,9 +190,12 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             newTest = true;
             CreateTest();
             SetStatus(false);
-            SetSelected(0); //todo this is ugly
-           
+            SetSelected(0);
         }
+    }
+    private void SetTargetAudiences()
+    {
+        AudiencesList = targetAudienceSerivce.GetAllTargetAudiences(); 
     }
 
     #region Navigation
@@ -200,7 +203,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         Action backAction = () =>
         {
-            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore, repository, tempTargetAudience);
+            navigationStore!.CurrentViewModel = testOverviewViewModel;
         };
 
         OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen zullen ongedaan worden gemaakt.");
@@ -254,7 +257,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetTestName(string title) => TestName = title;
 
     // Sets the status of the test (Active/Inactive)
-    private void SetStatus(bool active) => Status = active ? "Active" : "Inactive";
+    private void SetStatus(bool active) => Status = active ? "Actief" : "Inactief";
 
     // Sets the selected target audience ID
     private void SetSelected(int id) => Selected = id;
@@ -290,7 +293,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         {
             // Create a new text question and set its number.
             ITextQuestion textQuestion = CreateTextQuestion();
-            textQuestion.QuestionNumber = testService.GetNewHighestQuestionNumber(Test, QuestionType.TextQuestion);
+            textQuestion.QuestionNumber = TestService.GetNewHighestQuestionNumber(Test, QuestionType.TextQuestion);
 
             // Open a modal for the new text question.
             navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, textQuestion, true, this));
@@ -331,7 +334,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         {
             // Create a new audio question and set its number.
             IToneAudiometryQuestion audioQuestion = CreateToneAudiometryQuestion();
-            audioQuestion.QuestionNumber = testService.GetNewHighestQuestionNumber(Test, QuestionType.AudioQuestion);
+            audioQuestion.QuestionNumber = TestService.GetNewHighestQuestionNumber(Test, QuestionType.AudioQuestion);
 
             // Open a modal for the new audio question.
             navigationStore.OpenModal(new AudioQuestionModalViewModel(navigationStore, audioQuestion, true, this));
@@ -421,7 +424,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         try
         {
-            Test.TextQuestions = testService.UpdateQuestion(Test.TextQuestions, question.QuestionNumber, question);
+            Test.TextQuestions = TestService.UpdateQuestion(Test.TextQuestions, question.QuestionNumber, question);
             UpdateTextQuestionListView();
         }
         catch (Exception ex)
@@ -444,7 +447,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         Action deleteAction = () =>
         {
-            Test.TextQuestions = testService.DeleteQuestion(Test.TextQuestions, questionNumber);
+            Test.TextQuestions = TestService.DeleteQuestion(Test.TextQuestions, questionNumber);
             UpdateTextQuestionListView();
         };
 
@@ -481,7 +484,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         try
         {
-            Test.ToneAudiometryQuestions = testService.UpdateQuestion(Test.ToneAudiometryQuestions, question.QuestionNumber, question);
+            Test.ToneAudiometryQuestions = TestService.UpdateQuestion(Test.ToneAudiometryQuestions, question.QuestionNumber, question);
             UpdateAudioQuestionListView();
         }
         catch (Exception ex)
@@ -504,7 +507,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         Action deleteAction = () =>
         {
-            Test.ToneAudiometryQuestions = testService.DeleteQuestion(Test.ToneAudiometryQuestions, questionNumber);
+            Test.ToneAudiometryQuestions = TestService.DeleteQuestion(Test.ToneAudiometryQuestions, questionNumber);
             UpdateAudioQuestionListView();
         };
 

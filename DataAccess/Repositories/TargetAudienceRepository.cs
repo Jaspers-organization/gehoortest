@@ -1,12 +1,7 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
-using DataAccess.Models.TestData_Management;
+using BusinessLogic.Models;
 using gehoortest_application.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories;
 
@@ -22,8 +17,9 @@ public class TargetAudienceRepository: ITargetAudienceRepository
     //omdat we met interfaces werken (ook in ITargetAudienceRepository) verwacht hij dat als return value. We moeten het dus casten anders huilt de interface.
     //Of we moeten een ander manier vinden
 
-    //public List<TargetAudience> GetAllAudiences()
-    //{
-    //    return repository.TargetAudiences.ToList();
-    //}
+    public List<TargetAudience> GetAllAudiences(int id)
+    {
+        return repository.TargetAudiences.ToList();
+    }
+
 }

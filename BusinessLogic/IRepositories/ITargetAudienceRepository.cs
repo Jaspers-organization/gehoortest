@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace BusinessLogic.IRepositories;
 
 public interface ITargetAudienceRepository
 {
-    List<ITargetAudience> GetAllAudiences();
-    
+    public List<ITargetAudience> GetAllAudiences();
+    public List<TargetAudience> GetAllAudiences(int id);
+
 }

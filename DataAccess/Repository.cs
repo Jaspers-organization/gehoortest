@@ -1,7 +1,8 @@
-﻿using DataAccess.Entity.TestData_Management;
+﻿using BusinessLogic.Classes;
+using BusinessLogic.Models;
+using DataAccess.Entity.TestData_Management;
 using DataAccess.Models.BusinessData_Management;
 using DataAccess.Models.LoginData_Management;
-using DataAccess.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -15,10 +16,9 @@ public class Repository : DbContext
     #region DbSets
     public virtual DbSet<TargetAudience> TargetAudiences { get; set; }
     public virtual DbSet<Test> Tests { get; set; }
-    public virtual DbSet<TextQuestion> TextQuestions { get; set; }
+    public virtual DbSet<DataAccess.Entity.TestData_Management.TextQuestion> TextQuestions { get; set; }
     public virtual DbSet<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
-
 
     #endregion
 
@@ -43,7 +43,7 @@ public class Repository : DbContext
 
         modelBuilder.Entity<Test>();
 
-        modelBuilder.Entity<TestResult>();
+        //modelBuilder.Entity<TestResult>();
 
         base.OnModelCreating(modelBuilder);
     }
@@ -52,7 +52,6 @@ public class Repository : DbContext
     {
         //turn this on/off to get loggin in ouput window.
         optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);
-        optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.UseSqlServer(ConnectionString);
     }
 }

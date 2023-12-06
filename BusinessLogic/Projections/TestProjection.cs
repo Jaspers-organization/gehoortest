@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.IModels;
-using System.ComponentModel;
 
 namespace BusinessLogic.Projections;
 

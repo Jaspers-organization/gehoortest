@@ -26,4 +26,9 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
       
         return audienceList;
     }
+
+    public List<BusinessLogic.Models.TargetAudience> GetAllAudiences(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

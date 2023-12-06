@@ -32,7 +32,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     #region Commands
     public ICommand OpenTestCommand => new Command(OpenTest);
     public ICommand NewTestCommand => new Command(NewTest);
-    public ICommand GetTestsCommand => new Command(GetTests);
     public ICommand DeleteTestCommand => new Command(DeleteTest);
     public ICommand BackToMainMenuCommand => new Command(BackToMainMenu);
     public ICommand ToggleActiveStatusCommand => new Command(ToggleActiveStatus);
@@ -51,15 +50,16 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ITargetAudience? SelectedTargetAudience
     {
         get { return _selectedTargetAudience; }
-        set { 
-            _selectedTargetAudience = value; 
+        set
+        {
+            _selectedTargetAudience = value;
             OnPropertyChanged(nameof(SelectedTargetAudience));
-            GetTests();
+            UpdateTestProjections(value!.Id);
         }
     }
 
-    private List<ITest>? _tests;
-    public List<ITest>? Tests
+    private List<TestProjection>? _tests;
+    public List<TestProjection>? Tests
     {
         get { return _tests; }
         set { _tests = value; OnPropertyChanged(nameof(Tests)); }
@@ -68,8 +68,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get; set; }
     #endregion
 
-    private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
-
     public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience targetAudience = null)
     {
         this.navigationStore = navigationStore;
@@ -77,6 +75,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
         targetAudienceRepository = new TargetAudienceMockRepository();
         testRepository = new TestMockRepository();
+
         // Services
         testService = new TestService(testRepository);
         targetAudienceService = new TargetAudienceService(targetAudienceRepository);
@@ -97,51 +96,29 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         SelectedTargetAudience = TargetAudiences.FirstOrDefault();
     }
 
-    private void GetTests()
-    {
-        Tests = (SelectedTargetAudience == null)
-            ? null
-            : testService.GetTestsByTargetAudienceId(SelectedTargetAudience.Id);
-    }
+    private void UpdateTestProjections(int id) => Tests = testService.GetTestProjectionsByTargetAudienceId(id);
 
-    private void BackToMainMenu()
-    {
-        navigationStore!.CurrentViewModel = new TestViewModel(navigationStore, repository);
-    }
 
-    //   private void SetActiveTest(TestProjection selectedTest)
-    //{
-    //    if (selectedTest != null)
-    //    {
-    //        foreach (var test in TestCollection)
-    //        {
-    //            test.IsActive = (test == selectedTest);
-    //        }
-    //    }
-    //}
+    private void BackToMainMenu() => navigationStore!.CurrentViewModel = new TestViewModel(navigationStore, repository);
+      
 
     private void OpenTest(int id)
     {
-        if (SelectedTargetAudience == null) return;
+        ITest test = testService.GetTestById(id);
 
-        ITest test = testService.GetTest(id);
-        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, SelectedTargetAudience, repository, test);
+        if(test != null)
+            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, repository, test);
     }
 
-    private void NewTest()
-    {
-        if (SelectedTargetAudience == null) return;
-
-        navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, SelectedTargetAudience, repository);
-    }
+    private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, repository);     
 
     private void DeleteTest(int id)
     {
         Action SaveAction = () =>
         {
-            ITest test = testService.GetTest(id);
+            ITest test = testService.GetTestById(id);
             testService.DeleteTest(test);
-            //UpdateCollection(id);
+            UpdateTestProjections(id);
         };
         OpenConfirmationModal(CreateAction(SaveAction), "Weet je zeker dat je deze test wilt verwijderen?");
     }
@@ -155,32 +132,18 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         };
     }
 
-    public void OpenConfirmationModal(Action action, string text)
-    {
-        confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
-        navigationStore.OpenModal(confirmationModalViewModel);
-    }
+    public void OpenConfirmationModal(Action action, string text) => navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
+
 
     private void ToggleActiveStatus(int testId)
     {
         // might be better to move this to the business layer
-        ITest? test = testRepository.GetTestById(testId);
-        if (test == null) return;
-        test.Active = !test.Active;
 
-        if (!test.Active)
-        {
-            ITest? activeTest = testRepository.GetActiveTest();
-            if (activeTest != null)
-            {
-                activeTest.Active = false;
-                testRepository.UpdateTest(test);
-            }
-        }
+        testService.ToggleActiveStatus(testId);
 
-        test.Active = !test.Active;
-        testRepository.UpdateTest(test);
+        if (SelectedTargetAudience == null)
+            return;
 
-        GetTests();
+        UpdateTestProjections(SelectedTargetAudience.Id);
     }
 }

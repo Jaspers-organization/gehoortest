@@ -61,15 +61,9 @@ public class TestMockRepository : ITestRepository
             },
         };
 
-    public TestMockRepository()
-    {
-        
-    }
+    public TestMockRepository() { }
 
-    public ITest CreateTest()
-    {
-        return new Test();
-    }
+    public ITest CreateTest() => new Test();
 
     public TestProjection GetTests(int id)
     {
@@ -84,15 +78,14 @@ public class TestMockRepository : ITestRepository
             EmployeeName = test.Employee.Fullname
         };
     }
-    public ITest GetTest(int id) => testDataList.FirstOrDefault(t => t.Id == id);
 
-    public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
+    public List<TestProjection> GetTestProjectionsByTargetAudienceId(int id)
     {
         var tests = testDataList.Where(t => t.TargetAudience.Id == id).ToList();
 
         if (tests == null || tests.Count == 0)
         {
-            return new ObservableCollection<TestProjection>();
+            return new List<TestProjection>();
         }
 
         List<TestProjection> projections = tests.Select(test => new TestProjection
@@ -104,40 +97,28 @@ public class TestMockRepository : ITestRepository
             EmployeeName = test.Employee.Fullname
         }).ToList();
 
-        return new ObservableCollection<TestProjection>(projections);
+        return projections;
     }
-    public List<ITest> GetAllTests()
-    {
-        return testDataList;
-    }
-    public void DeleteTest(ITest test)
-    {
-        testDataList.Remove(test);
-    }
+    public List<ITest> GetAllTests() => testDataList;
+
+    public void DeleteTest(ITest test) => testDataList.Remove(test);
+
     public void UpdateTest(ITest test)
     {
         int index = testDataList.FindIndex(t => t.Id == test.Id);
         testDataList[index] = test;
     }
 
-    public void SaveTest(ITest test)
-    {
-        testDataList.Add(test);
-    }
+    public void SaveTest(ITest test) => testDataList.Add(test);
 
-    public List<ITest>? GetTestsByTargetAudienceId(int id)
-    {
-        return testDataList.Where(t => t.TargetAudience.Id == id).ToList();
-    }
 
-    public ITest? GetTestById(int id)
-    {
-        return testDataList.FirstOrDefault(t => t.Id == id);
-    }
+    public List<ITest>? GetTestsByTargetAudienceId(int id) => testDataList.Where(t => t.TargetAudience.Id == id).ToList();
+    public ITest? GetTestByTargetAudienceId(int id) => testDataList.FirstOrDefault(t => t.TargetAudience.Id == id);
 
-    public ITest? GetActiveTest()
-    {
-        return testDataList.FirstOrDefault(t => t.Active == true);
-    }
+
+    public ITest? GetTestById(int id) => testDataList.FirstOrDefault(t => t.Id == id);
+
+
+    public ITest? GetActiveTest() => testDataList.FirstOrDefault(t => t.Active == true);
 
 }

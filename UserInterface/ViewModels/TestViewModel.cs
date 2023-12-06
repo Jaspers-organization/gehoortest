@@ -240,7 +240,7 @@ namespace UserInterface.ViewModels
             // =====
 
             ShowTestTargetAudienceView = "Hidden";
-            Test = testService.GetTest(selectedTargetAudience.Id); // toegevoegd door jasper
+            Test = testService.GetTestByTargetAudienceId(selectedTargetAudience.Id); // toegevoegd door jasper
             testProgressData = new TestProgressData(Test);
             testProgressData.CurrentQuestionNumber = 1;
             AskFirstQuestion();
