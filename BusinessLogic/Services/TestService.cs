@@ -48,7 +48,7 @@ public class TestService
     /// </summary>
     /// <param name="test">The test entity containing questions.</param>
     /// <param name="questionType">The type of question.</param>
-    public int GetNewHighestQuestionNumber(ITest test, QuestionType questionType)
+    public static int GetNewHighestQuestionNumber(ITest test, QuestionType questionType)
     {
         if (test == null)
         {
@@ -76,7 +76,7 @@ public class TestService
     /// <param name="questions">The list of questions to search through.</param>
     /// <param name="questionNumber">The number of the question to find.</param>
     /// <returns>The index of the question in the list, or -1 if not found.</returns>
-    public int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
+    public static int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
         AssertQuestions(questions);
 
@@ -89,7 +89,7 @@ public class TestService
     /// <typeparam name="T">The type of question.</typeparam>
     /// <param name="questions">The list of questions to renumber.</param>
     /// <returns>The updated list of questions with renumbered question numbers.</returns>
-    public List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
+    public static List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
     {
         AssertQuestions(questions);
         int newNumber = 1;
@@ -110,7 +110,7 @@ public class TestService
     /// <param name="questionNumber">The number of the question to update.</param>
     /// <param name="question">The updated question object.</param>
     /// <returns>The updated list of questions.</returns>
-    public List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
+    public static List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
     {
         AssertQuestions(questions);
         int index = GetQuestionNumberIndex(questions, questionNumber);
@@ -126,7 +126,7 @@ public class TestService
     /// </summary>
     /// <typeparam name="T">The type of question.</typeparam>
     /// <param name="questions">The list of questions to validate.</param>
-    private void AssertQuestions<T>(List<T> questions) where T: IQuestion 
+    private static void AssertQuestions<T>(List<T> questions) where T: IQuestion 
     {
         if (questions == null)
         {
@@ -154,7 +154,7 @@ public class TestService
     /// <param name="questions">The list of questions to delete from.</param>
     /// <param name="questionNumber">The number of the question to delete.</param>
     /// <returns>The updated list of questions after deletion and renumbering.</returns>
-    public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
+    public static List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
         AssertQuestions(questions);
 
@@ -172,7 +172,7 @@ public class TestService
     /// </summary>
     /// <param name="str">The string to check for invalid characters.</param>
     /// <returns>True if the string contains invalid characters; otherwise, false.</returns>
-    public static bool ContatinsInvalidCharacters(string str)
+    public  static bool ContatinsInvalidCharacters(string str)
     {
         return str.Contains(ErrorStore.IllegalCharacters);
     }
