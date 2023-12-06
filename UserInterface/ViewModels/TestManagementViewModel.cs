@@ -165,18 +165,17 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     public ITest Test { get; set; }
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
 
-    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel, Repository repository, ITest test = null)
+    public TestManagementViewModel(NavigationStore navigationStore, Repository repository, ITest? test = null)
     {
         //Dependencies initialization
         this.repository = repository;
+        this.navigationStore = navigationStore;
 
         testRepository = new TestMockRepository();
         targetAudienceRepository = new TargetAudienceMockRepository();
         testService = new TestService(testRepository);
         targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
 
-        this.testOverviewViewModel = testOverviewViewModel;
-        this.navigationStore = navigationStore;
 
         //set values
         SetTargetAudiences();
@@ -193,6 +192,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             SetSelected(0);
         }
     }
+
     private void SetTargetAudiences()
     {
         AudiencesList = targetAudienceSerivce.GetAllTargetAudiences(); 
@@ -203,7 +203,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         Action backAction = () =>
         {
-            navigationStore!.CurrentViewModel = testOverviewViewModel;
+            navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         };
 
         OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen zullen ongedaan worden gemaakt.");
@@ -515,7 +515,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     }
     #endregion
 
-
+    private TestOverviewViewModel CreateTestOverviewViewModel()
+    {
+        return new TestOverviewViewModel(navigationStore, repository);
+    }
     
     // Saves the test.
     private void SaveTest()
@@ -532,7 +535,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
                 testService.UpdateTest(Test);
 
             // Navigates to the test overview after the save/update operation.
-            navigationStore!.CurrentViewModel = testOverviewViewModel;
+            navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }
         catch (Exception ex)
         {

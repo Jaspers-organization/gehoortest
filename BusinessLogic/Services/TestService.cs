@@ -54,18 +54,18 @@ public class TestService
     /// <param name="questionType">The type of question.</param>
     public static int GetNewHighestQuestionNumber(ITest test, QuestionType questionType)
     {
-        if (test == null)
+        if (test == null || test.TextQuestions == null || test.ToneAudiometryQuestions == null)
         {
-            throw new ArgumentNullException("Test or QuestionType cannot be null");
+            throw new ArgumentNullException("Test, Textquestios, audioquestions or QuestionType cannot be null");
         }
 
         switch (questionType)
         {
-            case QuestionType.TextQuestion:
+            case QuestionType.AudioQuestion:
                 return test.ToneAudiometryQuestions.Any()
                     ? test.ToneAudiometryQuestions.Max(q => q.QuestionNumber) + 1
                     : 1;
-            case QuestionType.AudioQuestion:
+            case QuestionType.TextQuestion:
                 return test.TextQuestions.Any()
                     ? test.TextQuestions.Max(q => q.QuestionNumber) + 1
                     : 1;
@@ -199,7 +199,7 @@ public class TestService
     /// <returns>True if the decibel value is within a valid range; otherwise, false.</returns>
     public static bool IsValidDecibel(int decibel)
     {
-        return decibel <= 0 && decibel > 120;
+        return decibel >= 0 && decibel <= 120;
     }
 
     /// <summary>

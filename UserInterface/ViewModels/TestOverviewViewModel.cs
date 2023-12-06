@@ -68,7 +68,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get; set; }
     #endregion
 
-    public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience targetAudience = null)
+    public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience? targetAudience = null)
     {
         this.navigationStore = navigationStore;
         this.repository = repository;
@@ -107,10 +107,10 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         ITest test = testService.GetTestById(id);
 
         if(test != null)
-            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, repository, test);
+            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, repository, test);
     }
 
-    private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, this, repository);     
+    private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, repository);
 
     private void DeleteTest(int id)
     {

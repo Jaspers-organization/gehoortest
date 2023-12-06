@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessLogic.Models;
 
 [Table("target_audience")]
-public class TargetAudience
+public class TargetAudience : ITargetAudience
 {
     [Column("id")]
     public int Id { get; set; }
@@ -17,5 +17,6 @@ public class TargetAudience
 
     [Column("label")]
     public string? Label { get; set; }
-    
+
+    public int bullshit {  get; set; }
 }
