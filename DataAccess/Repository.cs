@@ -14,8 +14,11 @@ public class Repository : DbContext
     public virtual DbSet<TargetAudience> TargetAudiences { get; set; }
     public virtual DbSet<Test> Tests { get; set; }
     public virtual DbSet<TextQuestion> TextQuestions { get; set; }
-    public virtual DbSet<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }//todo
+    public virtual DbSet<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
+    public virtual DbSet<EmployeeLogin> EmployeeLogins { get; set; }
+    public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }
+
     public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }//todo
     public virtual DbSet<TestResult> TestResults { get; set; }
     public virtual DbSet<ToneAudiometryQuestionResult> ToneAudiometryQuestionResults { get; set; }
@@ -39,6 +42,8 @@ public class Repository : DbContext
         modelBuilder.ApplyConfiguration(new TextQuestionResultConfiguration());
         modelBuilder.ApplyConfiguration(new TextQuestionOptionResultConfiguration());
         modelBuilder.ApplyConfiguration(new TextQuestionAnswerResultConfiguration());
+        modelBuilder.ApplyConfiguration(new EmployeeLoginConfiguration());
+
 
         base.OnModelCreating(modelBuilder);
     }

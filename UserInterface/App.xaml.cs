@@ -22,7 +22,8 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         //MainWindow = new Sandbox();
-        navigationStore.CurrentViewModel = new TestViewModel(navigationStore);
+
+        navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(navigationStore);
 

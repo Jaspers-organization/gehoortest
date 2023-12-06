@@ -168,11 +168,12 @@ namespace UserInterface.ViewModels
         public ICommand PlayFrequencyCommand { get; }
         public ICommand SaveQuestionCommand => new Command(SaveAnswer);
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioQuestion);
-        public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
 
         public TestViewModel(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
+            this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
+
             ShowTestExplanationView = "Visible";
             ITargetAudienceRepository targetAudienceRepository = new TargetAudienceMockRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);
@@ -181,11 +182,7 @@ namespace UserInterface.ViewModels
             testService = new TestService(testRepository);
         }
 
-        private void OpenTestManagement()
-        {
-            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
 
-        }
         public void StartTest()
         {
             ShowTestExplanationView = "Hidden";

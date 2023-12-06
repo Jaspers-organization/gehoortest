@@ -3,10 +3,11 @@ using BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Reflection.Emit;
 
 namespace DataAccess.EntityConfiguration;
 
-public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
@@ -49,5 +50,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                .WithOne(t => t.Employee)
                .HasForeignKey(t => t.EmployeeId);
 
+        builder.HasOne(e => e.EmployeeLogin)
+               .WithOne(el => el.Employee)
+               .HasForeignKey<EmployeeLogin>(el => el.EmployeeId);
     }
 }

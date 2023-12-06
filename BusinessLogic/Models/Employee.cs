@@ -32,5 +32,7 @@ public class Employee : IModel
     }
 
     public ICollection<Test>? Tests { get; set; }
+    
+    public EmployeeLogin EmployeeLogin { get; set; }
 }
 
