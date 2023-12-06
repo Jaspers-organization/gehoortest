@@ -71,7 +71,8 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience? targetAudience = null)
     {
         this.navigationStore = navigationStore;
-        this.repository = repository;
+        //todo
+        this.repository = new Repository();
 
         targetAudienceRepository = new TargetAudienceMockRepository();
         testRepository = new TestMockRepository();

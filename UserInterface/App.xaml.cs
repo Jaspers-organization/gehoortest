@@ -18,7 +18,7 @@ public partial class App : Application
     {
         navigationStore = new NavigationStore();
         //todo make this config?
-        repository = new Repository("Server=localhost\\SQLEXPRESS;Database=gehoortest;TrustServerCertificate=True;Trusted_Connection=True;");
+        repository = new Repository();
     }
 
     protected override void OnStartup(StartupEventArgs e)
