@@ -15,7 +15,6 @@ public class Repository : DbContext
     public virtual DbSet<TextQuestionDTO> TextQuestions { get; set; }
     public virtual DbSet<ToneAudiometryQuestionDTO> ToneAudiometryQuestions { get; set; }
     public virtual DbSet<EmployeeDTO> Employees { get; set; }
-
     #endregion
 
     public Repository() { }
@@ -23,19 +22,19 @@ public class Repository : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<EmployeeDTO>()
-        .HasMany(e => e.Tests)
-        .WithOne(t => t.Employee)
-        .HasForeignKey(t => t.EmployeeId);
-        
-        modelBuilder.Entity<TestDTO>()
-        .HasOne(t => t.TargetAudience)
-        .WithMany(ta => ta.Tests)
-        .HasForeignKey(t => t.TargetAudienceId);
+            .HasMany(e => e.Tests)
+            .WithOne(t => t.Employee)
+            .HasForeignKey(t => t.EmployeeId);
 
         modelBuilder.Entity<TestDTO>()
-        .HasMany(t => t.TextQuestions)
-        .WithOne(tq => tq.Test)
-        .HasForeignKey(tq => tq.TestId);
+            .HasOne(t => t.TargetAudience)
+            .WithMany(ta => ta.Tests)
+            .HasForeignKey(t => t.TargetAudienceId);
+
+        modelBuilder.Entity<TestDTO>()
+            .HasMany(t => t.TextQuestions)
+            .WithOne(tq => tq.Test)
+            .HasForeignKey(tq => tq.TestId);
 
         modelBuilder.Entity<TestDTO>()
             .HasMany(t => t.ToneAudiometryQuestions)
@@ -43,9 +42,9 @@ public class Repository : DbContext
             .HasForeignKey(tq => tq.TestId);
 
         modelBuilder.Entity<TextQuestionDTO>()
-        .HasMany(tq => tq.Options)
-        .WithOne(o => o.TextQuestion)
-        .HasForeignKey(o => o.TextQuestionId);
+            .HasMany(tq => tq.Options)
+            .WithOne(o => o.TextQuestion)
+            .HasForeignKey(o => o.TextQuestionId);
 
         base.OnModelCreating(modelBuilder);
     }

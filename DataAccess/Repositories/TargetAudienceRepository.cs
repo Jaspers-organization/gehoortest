@@ -1,8 +1,6 @@
-﻿using BusinessLogic.DataTransferObjects;
-using BusinessLogic.IModels;
+﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Mapping;
-using BusinessLogic.Models;
 using gehoortest_application.Repository;
 
 namespace DataAccess.Repositories;

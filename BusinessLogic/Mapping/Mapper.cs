@@ -61,7 +61,7 @@ public static class Mapper
             From = targetAudience.From,
             Label = targetAudience.Label,
             To = targetAudience.To,
-        }).Cast<ITargetAudience>().ToList();
+        }).ToList<ITargetAudience>();
     }
 
 
