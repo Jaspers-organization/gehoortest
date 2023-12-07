@@ -12,5 +12,5 @@ public interface ITargetAudienceRepository
 {
     public List<ITargetAudience> GetAllAudiences();
     //public List<TargetAudience> GetAllAudiences(int id);
-
+    public void FillTargetAudiences();
 }

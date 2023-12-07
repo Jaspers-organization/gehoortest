@@ -11,6 +11,8 @@ using BusinessLogic.Interfaces;
 using System;
 using UserInterface.ViewModels.Modals;
 using gehoortest_application.Repository;
+using BusinessLogic.IRepositories;
+using DataAccess.Repositories;
 
 namespace UserInterface.ViewModels;
 
@@ -18,8 +20,8 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore? navigationStore;
-    private readonly TargetAudienceMockRepository targetAudienceRepository;
-    private readonly TestMockRepository testRepository;
+    private readonly ITargetAudienceRepository targetAudienceRepository;
+    private readonly ITestRepository testRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceService;
     private readonly Repository repository;
@@ -71,7 +73,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         //todo
         this.repository = new Repository();
 
-        targetAudienceRepository = new TargetAudienceMockRepository();
+        targetAudienceRepository = new TargetAudienceRepository(repository);
         testRepository = new TestMockRepository();
 
         // Services

@@ -141,6 +141,15 @@ public static class Mapper
         }).ToList<ITargetAudience>();
     }
 
+    public static ICollection<TargetAudienceDTO> MapToTargetAudiencesDTO(List<ITargetAudience> targetAudiences)
+    {
+        return targetAudiences.Select(targetAudience => new TargetAudienceDTO
+        {
+            From = targetAudience.From,
+            Label = targetAudience.Label,
+            To = targetAudience.To,
+        }).ToList();
+    }
     private static List<ITextQuestion> MapToTextQuestions(ICollection<TextQuestionDTO> textQuestions)
     {
         return textQuestions.Select(q => new TextQuestion
