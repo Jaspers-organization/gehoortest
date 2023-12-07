@@ -4,10 +4,7 @@ using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Services;
 using DataAccess.MockData;
-using DataAccess.Models.TestData_Management;
 using gehoortest_application.Repository;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
-using UserInterface.ViewModels;
 
 namespace UserInterface.ViewModels
 {

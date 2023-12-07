@@ -1,9 +1,7 @@
 ﻿using BusinessLogic.Enums;
 using BusinessLogic.IModels;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.Entity.TestData_Management;
-using DataAccess.Models.LoginData_Management;
-using DataAccess.Models.TestData_Management;
 
 namespace Tests;
 

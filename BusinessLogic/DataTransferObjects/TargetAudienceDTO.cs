@@ -1,10 +1,9 @@
-﻿using BusinessLogic.IModels;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Models.TestData_Management;
+namespace BusinessLogic.DataTransferObjects;
 
 [Table("target_audience")]
-public class TargetAudience : ITargetAudience
+public class TargetAudienceDTO
 {
     [Column("id")]
     public int Id { get; set; }
@@ -17,5 +16,7 @@ public class TargetAudience : ITargetAudience
 
     [Column("label")]
     public string? Label { get; set; }
-    
+
+    public virtual ICollection<TestDTO>? Tests { get; set; }
+
 }

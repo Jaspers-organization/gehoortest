@@ -2,7 +2,6 @@
 using BusinessLogic.IModels;
 using BusinessLogic.Projections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using UserInterface.Stores;
 using System.Windows.Input;
@@ -12,8 +11,6 @@ using BusinessLogic.Interfaces;
 using System;
 using UserInterface.ViewModels.Modals;
 using gehoortest_application.Repository;
-using DataAccess.Repositories;
-using DataAccess.Models.TestData_Management;
 
 namespace UserInterface.ViewModels;
 

@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.Entity.TestData_Management;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -176,7 +176,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         catch (Exception ex)
         {
             OpenErrorModal($"Er is wat fout gegaan tijdens het toevoegen van de optie. {ex.Message}");
-           
+
         }
     }
 
@@ -191,7 +191,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
             }
             else
             {
-                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie."); 
+                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie.");
             }
         }
         catch (Exception ex)
@@ -226,13 +226,13 @@ internal class TextQuestionModalViewModel : ViewModelBase
 
             CloseModal();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             OpenErrorModal("Er is wat fout gegaan bij het opslaan van de vraag.");
         }
-        
+
     }
-    
+
     private void CloseModal()
     {
         navigationStore.CloseModal(testManagementViewModel);

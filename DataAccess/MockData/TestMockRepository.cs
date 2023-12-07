@@ -1,9 +1,7 @@
 ﻿using BusinessLogic.Projections;
-using DataAccess.Entity.TestData_Management;
-using DataAccess.Models.LoginData_Management;
-using DataAccess.Models.TestData_Management;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
 
 namespace DataAccess.MockData;
 

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Models.LoginData_Management;
+namespace BusinessLogic.Models;
 
 [Table("client")]
 public class Client
 {
     [Column("id")]
-    public int Id{ get; set; }
+    public int Id { get; set; }
 
     [Column("full_name")]
     public string? FullName { get; set; }

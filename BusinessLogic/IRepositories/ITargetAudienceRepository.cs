@@ -11,6 +11,6 @@ namespace BusinessLogic.IRepositories;
 public interface ITargetAudienceRepository
 {
     public List<ITargetAudience> GetAllAudiences();
-    public List<TargetAudience> GetAllAudiences(int id);
+    //public List<TargetAudience> GetAllAudiences(int id);
 
 }

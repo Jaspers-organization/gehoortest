@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.Models.TestData_Management;
+namespace BusinessLogic.Models;
 
 [Table("test_result")]
 public class TestResult

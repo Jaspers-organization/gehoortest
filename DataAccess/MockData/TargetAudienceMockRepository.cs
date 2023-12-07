@@ -1,11 +1,11 @@
-﻿using DataAccess.Models.TestData_Management;
-using BusinessLogic.IModels;
+﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models;
 
 namespace DataAccess.MockData;
 
@@ -27,7 +27,7 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
         return audienceList;
     }
 
-    public List<BusinessLogic.Models.TargetAudience> GetAllAudiences(int id)
+    public List<TargetAudience> GetAllAudiences(int id)
     {
         throw new NotImplementedException();
     }
