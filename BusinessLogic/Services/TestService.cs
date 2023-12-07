@@ -3,6 +3,7 @@ using BusinessLogic.Projections;
 using UserInterface.Stores;
 using BusinessLogic.IModels;
 using BusinessLogic.Enums;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Services;
 
@@ -10,23 +11,40 @@ public class TestService
 {
     private ITestRepository testRepository;
 
-    public TestService(ITestRepository testRepository)=> this.testRepository = testRepository;
-    
-    public List<ITest> GetAllTests()=> testRepository.GetAllTests();
-   
+    public TestService(ITestRepository testRepository) => this.testRepository = testRepository;
+
+    public List<ITest> GetAllTests() => testRepository.GetAllTests();
+
     public ITest GetTestById(int id) => testRepository.GetTestById(id);
-   
+
     public List<TestProjection>? GetTestProjectionsByTargetAudienceId(int id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
-    
+
     public ITest? GetTestByTargetAudienceId(int targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
-    
+
     public void SaveTest(ITest test) => testRepository.SaveTest(test);
-   
+
     public void DeleteTest(ITest test) => testRepository.DeleteTest(test);
-   
+
     public void UpdateTest(ITest test) => testRepository.UpdateTest(test);
-  
-    public ITest CreateTest() => testRepository.CreateTest();
+
+    public ITest CreateTest()
+    {
+        ITest test = testRepository.CreateTest();
+
+        // Initializes the text questions for the test
+        test.TextQuestions = new List<ITextQuestion>();
+
+        // Initialize Targetaudience
+        test.TargetAudience = new TargetAudience();
+
+        //Initialize Employee
+        test.Employee = new Employee();
+
+        // Initializes the tone audiometry questions for the test
+        test.ToneAudiometryQuestions = new List<IToneAudiometryQuestion>();
+        return test;
+    }
+
 
     public void ToggleActiveStatus(int id)
     {
@@ -131,7 +149,7 @@ public class TestService
     /// </summary>
     /// <typeparam name="T">The type of question.</typeparam>
     /// <param name="questions">The list of questions to validate.</param>
-    private static void AssertQuestions<T>(List<T> questions) where T: IQuestion 
+    private static void AssertQuestions<T>(List<T> questions) where T : IQuestion
     {
         if (questions == null)
         {
@@ -177,7 +195,7 @@ public class TestService
     /// </summary>
     /// <param name="str">The string to check for invalid characters.</param>
     /// <returns>True if the string contains invalid characters; otherwise, false.</returns>
-    public  static bool ContatinsInvalidCharacters(string str)
+    public static bool ContatinsInvalidCharacters(string str)
     {
         return str.Contains(ErrorStore.IllegalCharacters);
     }

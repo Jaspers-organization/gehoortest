@@ -12,6 +12,6 @@ public class TargetAudienceRepository: ITargetAudienceRepository
 
     public List<ITargetAudience> GetAllAudiences()
     {
-        return Mapper.MapTargetAudiences(repository.TargetAudiences.ToList());
+        return Mapper.MapToTargetAudiences(repository.TargetAudiences.ToList());
     }
  }

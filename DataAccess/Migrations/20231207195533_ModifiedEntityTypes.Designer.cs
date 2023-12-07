@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gehoortest_application.Repository;
 
@@ -10,9 +11,11 @@ using gehoortest_application.Repository;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20231207195533_ModifiedEntityTypes")]
+    partial class ModifiedEntityTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,6 @@ namespace DataAccess.Migrations
                         .HasColumnName("from");
 
                     b.Property<string>("Label")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("label");
 
@@ -102,7 +104,6 @@ namespace DataAccess.Migrations
                         .HasColumnName("target_audience_id");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("title");
 

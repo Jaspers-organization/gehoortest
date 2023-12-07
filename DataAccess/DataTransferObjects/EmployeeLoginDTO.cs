@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BusinessLogic.DataTransferObjects;
+namespace DataAccess.DataTransferObjects;
 
 [Table("employee_login")]
 public class EmployeeLoginDTO 

@@ -1,9 +1,11 @@
 ﻿using BusinessLogic.Enums;
 using BusinessLogic.IModels;
 using BusinessLogic.Interfaces;
+using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.MockData;
+using DataAccess.Repositories;
 using gehoortest_application.Repository;
 using System;
 using System.Collections.Generic;
@@ -20,8 +22,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
-    private readonly TestMockRepository testRepository;
-    private readonly TargetAudienceMockRepository targetAudienceRepository;
+    private readonly ITestRepository testRepository;
+    private readonly ITargetAudienceRepository targetAudienceRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceSerivce;
     private readonly TestOverviewViewModel testOverviewViewModel;
@@ -168,7 +170,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         this.repository = repository;
         this.navigationStore = navigationStore;
 
-        testRepository = new TestMockRepository();
+        testRepository = new TestRepository(repository);
         targetAudienceRepository = new TargetAudienceMockRepository();
         testService = new TestService(testRepository);
         targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
@@ -516,7 +518,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         return new TestOverviewViewModel(navigationStore, repository);
     }
-    
+    private void FillEmployee()
+    {
+        Test.Employee = new Employee { EmployeeNumber = "12345", FirstName = "Dinny", Infix = "van", LastName = "Huizen" };
+    }
     // Saves the test.
     private void SaveTest()
     {
@@ -527,7 +532,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
             // Saves or updates the test, based on whether it's a new test or an update.
             if (newTest)
+            {
+                FillEmployee(); //temp to make employee filled
                 testService.SaveTest(Test);
+            }
             else
                 testService.UpdateTest(Test);
 
