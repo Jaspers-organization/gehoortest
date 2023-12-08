@@ -15,11 +15,11 @@ public class TestService
 
     public List<ITest> GetAllTests() => testRepository.GetAllTests();
 
-    public ITest GetTestById(int id) => testRepository.GetTestById(id);
+    public ITest GetTestById(Guid id) => testRepository.GetTestById(id);
 
-    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(int id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
 
-    public ITest? GetTestByTargetAudienceId(int targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
+    public ITest? GetTestByTargetAudienceId(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
 
     public void SaveTest(ITest test) => testRepository.SaveTest(test);
 
@@ -31,6 +31,7 @@ public class TestService
     {
         ITest test = testRepository.CreateTest();
 
+        test.Id = new Guid();
         // Initializes the text questions for the test
         test.TextQuestions = new List<ITextQuestion>();
 
@@ -46,7 +47,7 @@ public class TestService
     }
 
 
-    public void ToggleActiveStatus(int id)
+    public void ToggleActiveStatus(Guid id)
     {
         ITest? test = GetTestById(id);
         if (test == null) return;

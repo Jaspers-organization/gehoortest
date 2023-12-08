@@ -7,9 +7,8 @@ namespace DataAccess.DataTransferObjects;
 public class TestDTO
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id", TypeName = "int")]
-    public int Id { get; set; }
+    [Column("id", TypeName = "nvarchar(16)")]
+    public Guid Id { get; set; }
 
     [Column("title", TypeName = "varchar(50)")]
     public string Title { get; set; }
@@ -18,12 +17,12 @@ public class TestDTO
     public bool Active { get; set; }
 
     [Column("target_audience_id", TypeName = "int")]
-    public int TargetAudienceId { get; set; }
+    public Guid TargetAudienceId { get; set; }
 
     public virtual TargetAudienceDTO? TargetAudience { get; set; }
 
     [Column("employee_id", TypeName = "int")]
-    public int EmployeeId { get; set; }
+    public Guid EmployeeId { get; set; }
 
     public virtual EmployeeDTO? Employee { get; set; }
 

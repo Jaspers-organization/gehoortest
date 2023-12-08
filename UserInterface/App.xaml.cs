@@ -2,7 +2,6 @@
 using UserInterface.Views;
 using System.Windows;
 using UserInterface.ViewModels;
-using gehoortest_application.Repository;
 
 namespace UserInterface;
 
@@ -12,19 +11,17 @@ namespace UserInterface;
 public partial class App : Application
 {
     private readonly NavigationStore navigationStore;
-    private readonly Repository repository;
 
     public App()
     {
         navigationStore = new NavigationStore();
         //todo make this config?
-        repository = new Repository();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         //MainWindow = new Sandbox();
-        navigationStore.CurrentViewModel = new TestViewModel(navigationStore, repository);
+        navigationStore.CurrentViewModel = new TestViewModel(navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(navigationStore);
 

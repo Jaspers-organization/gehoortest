@@ -6,9 +6,8 @@ namespace DataAccess.DataTransferObjects;
 public class ToneAudiometryQuestionDTO
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id", TypeName = "int")]
-    public int Id { get; set; }
+    [Column("id", TypeName = "nvarchar(16)")]
+    public Guid Id { get; set; }
 
     [Column("frequency", TypeName = "int")]
     public int Frequency { get; set; }
@@ -20,7 +19,7 @@ public class ToneAudiometryQuestionDTO
     public int QuestionNumber { get; set; }
 
     [Column("test_id", TypeName = "int")]
-    public int TestId {  get; set; }
+    public Guid TestId {  get; set; }
 
     public virtual TestDTO? Test { get; set; }
 }

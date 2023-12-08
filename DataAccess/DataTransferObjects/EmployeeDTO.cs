@@ -9,9 +9,8 @@ public class EmployeeDTO
     //public enum role { employee, adminstrator } todo make conversion in fluent api to INT 
 
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id", TypeName = "int")]
-    public int Id { get; set; }
+    [Column("id", TypeName = "nvarchar(16)")]
+    public Guid Id { get; set; }
 
     [Column("employee_number", TypeName = "nvarchar(50)")]
     public string? EmployeeNumber { get; set; }

@@ -169,10 +169,9 @@ namespace UserInterface.ViewModels
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioQuestion);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
 
-        public TestViewModel(NavigationStore navigationStore, Repository repository)
+        public TestViewModel(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
-            this.repository = repository;
             ShowTestExplanationView = "Visible";
             ITargetAudienceRepository targetAudienceRepository = new TargetAudienceMockRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);

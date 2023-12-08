@@ -6,6 +6,8 @@ using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
+using DataAccess.Factorys;
+
 namespace DataAccess.Repositories
 {
     public class TestRepository : ITestRepository
@@ -31,26 +33,26 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public ITest? GetTestById(int id)
+        public ITest? GetTestById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public ITest? GetTestByTargetAudienceId(int id)
+        public ITest? GetTestByTargetAudienceId(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public List<TestProjection>? GetTestProjectionsByTargetAudienceId(int id)
+        public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id)
         {
             throw new NotImplementedException();
         }
 
         public void SaveTest(ITest test)
         {
-            repository.Tests.Add(Mapper.MapToTestDTO(test));
-            //repository.SaveChanges();
-            repository.SaveChangesWithIdentityInsert<TestDTO>();
+            repository.Tests.Add(DTOFactory.Create(test));
+            repository.SaveChanges();
+            //repository.SaveChangesWithIdentityInsert<TestDTO>();
 
         }
 

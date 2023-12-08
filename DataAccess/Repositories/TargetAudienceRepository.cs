@@ -13,13 +13,13 @@ public class TargetAudienceRepository : ITargetAudienceRepository
 
     public List<ITargetAudience> GetAllAudiences()
     {
-        return Mapper.MapToTargetAudiences(repository.TargetAudiences.ToList());
+        return ModelFactory.MapToTargetAudiences(repository.TargetAudiences.ToList());
     }
 
     public void FillTargetAudiences()
     {
 
-        repository.TargetAudiences.AddRange(Mapper.MapToTargetAudiencesDTO(new List<ITargetAudience>
+        repository.TargetAudiences.AddRange(ModelFactory.MapToTargetAudiencesDTO(new List<ITargetAudience>
         {
             new TargetAudience { From = 0, To = 18, Label = "0-18" },
             new TargetAudience { From = 19, To = 29, Label = "19-29" },

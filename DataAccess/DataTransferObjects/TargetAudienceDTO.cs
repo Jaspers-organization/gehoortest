@@ -7,9 +7,8 @@ namespace DataAccess.DataTransferObjects;
 public class TargetAudienceDTO
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id", TypeName = "int")]
-    public int Id { get; set; }
+    [Column("id", TypeName = "nvarchar(16)")]
+    public Guid Id { get; set; }
 
     [Column("from", TypeName = "int")]
     public int From { get; set; }

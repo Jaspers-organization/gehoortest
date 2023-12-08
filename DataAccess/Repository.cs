@@ -4,29 +4,29 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace gehoortest_application.Repository;
-public static class IdentityHelpers
-{
-    public static Task EnableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: true);
-    public static Task DisableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: false);
+//public static class IdentityHelpers
+//{
+//    public static Task EnableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: true);
+//    public static Task DisableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: false);
 
-    private static Task SetIdentityInsert<T>(DbContext context, bool enable)
-    {
-        var entityType = context.Model.FindEntityType(typeof(T));
-        var value = enable ? "ON" : "OFF";
-        return context.Database.ExecuteSqlRawAsync(
-            $"SET IDENTITY_INSERT {entityType.GetSchema()}.{entityType.GetTableName()} {value}");
-    }
+//    private static Task SetIdentityInsert<T>(DbContext context, bool enable)
+//    {
+//        var entityType = context.Model.FindEntityType(typeof(T));
+//        var value = enable ? "ON" : "OFF";
+//        return context.Database.ExecuteSqlRawAsync(
+//            $"SET IDENTITY_INSERT {entityType.GetSchema()}.{entityType.GetTableName()} {value}");
+//    }
 
-    public static void SaveChangesWithIdentityInsert<T>(this DbContext context)
-    {
-        using var transaction = context.Database.BeginTransaction();
-        context.EnableIdentityInsert<T>();
-        context.SaveChanges();
-        context.DisableIdentityInsert<T>();
-        transaction.Commit();
-    }
+//    public static void SaveChangesWithIdentityInsert<T>(this DbContext context)
+//    {
+//        using var transaction = context.Database.BeginTransaction();
+//        context.EnableIdentityInsert<T>();
+//        context.SaveChanges();
+//        context.DisableIdentityInsert<T>();
+//        transaction.Commit();
+//    }
 
-}
+//}
 public class Repository : DbContext
 {
     public readonly string ConnectionString = "Server=localhost\\SQLEXPRESS;Database=gehoortest;TrustServerCertificate=True;Trusted_Connection=True;";
@@ -44,12 +44,11 @@ public class Repository : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         #region Schema Definition
-        modelBuilder.Entity<EmployeeDTO>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
-        modelBuilder.Entity<TestDTO>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
-        modelBuilder.Entity<TextQuestionDTO>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
-        modelBuilder.Entity<ToneAudiometryQuestionDTO>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
-        modelBuilder.Entity<TargetAudienceDTO>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
-
+        modelBuilder.Entity<EmployeeDTO>().Property(e => e.Id).IsRequired();
+        modelBuilder.Entity<TestDTO>().Property(e => e.Id).IsRequired();
+        modelBuilder.Entity<TextQuestionDTO>().Property(e => e.Id).IsRequired();
+        modelBuilder.Entity<ToneAudiometryQuestionDTO>().Property(e => e.Id).IsRequired();
+        modelBuilder.Entity<TargetAudienceDTO>().Property(e => e.Id).IsRequired();
         #endregion
 
         #region Relations
