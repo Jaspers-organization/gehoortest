@@ -1,82 +1,36 @@
-﻿using DataAccess.DataTransferObjects;
+﻿using BusinessLogic.Models;
+using DataAccess.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace gehoortest_application.Repository;
-//public static class IdentityHelpers
-//{
-//    public static Task EnableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: true);
-//    public static Task DisableIdentityInsert<T>(this DbContext context) => SetIdentityInsert<T>(context, enable: false);
 
-//    private static Task SetIdentityInsert<T>(DbContext context, bool enable)
-//    {
-//        var entityType = context.Model.FindEntityType(typeof(T));
-//        var value = enable ? "ON" : "OFF";
-//        return context.Database.ExecuteSqlRawAsync(
-//            $"SET IDENTITY_INSERT {entityType.GetSchema()}.{entityType.GetTableName()} {value}");
-//    }
-
-//    public static void SaveChangesWithIdentityInsert<T>(this DbContext context)
-//    {
-//        using var transaction = context.Database.BeginTransaction();
-//        context.EnableIdentityInsert<T>();
-//        context.SaveChanges();
-//        context.DisableIdentityInsert<T>();
-//        transaction.Commit();
-//    }
-
-//}
 public class Repository : DbContext
 {
     public readonly string ConnectionString = "Server=localhost\\SQLEXPRESS;Database=gehoortest;TrustServerCertificate=True;Trusted_Connection=True;";
 
     #region DbSets
-    public virtual DbSet<TargetAudienceDTO> TargetAudiences { get; set; }
-    public virtual DbSet<TestDTO> Tests { get; set; }
-    public virtual DbSet<TextQuestionDTO> TextQuestions { get; set; }
-    public virtual DbSet<ToneAudiometryQuestionDTO> ToneAudiometryQuestions { get; set; }
-    public virtual DbSet<EmployeeDTO> Employees { get; set; }
+    public virtual DbSet<TargetAudience> TargetAudiences { get; set; }
+    public virtual DbSet<Test> Tests { get; set; }
+    public virtual DbSet<TextQuestion> TextQuestions { get; set; }
+    public virtual DbSet<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }//todo
+    public virtual DbSet<Employee> Employees { get; set; }
+    public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }//todo
+
     #endregion
 
     public Repository() { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        #region Schema Definition
-        modelBuilder.Entity<EmployeeDTO>().Property(e => e.Id).IsRequired();
-        modelBuilder.Entity<TestDTO>().Property(e => e.Id).IsRequired();
-        modelBuilder.Entity<TextQuestionDTO>().Property(e => e.Id).IsRequired();
-        modelBuilder.Entity<ToneAudiometryQuestionDTO>().Property(e => e.Id).IsRequired();
-        modelBuilder.Entity<TargetAudienceDTO>().Property(e => e.Id).IsRequired();
-        #endregion
+        modelBuilder.ApplyConfiguration(new TestConfiguration());
+        modelBuilder.ApplyConfiguration(new TargetAudienceConfiguration());
+        modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+        modelBuilder.ApplyConfiguration(new TextQuestionConfiguration());
+        modelBuilder.ApplyConfiguration(new ToneAudiometryQuestionConfiguration());
+        modelBuilder.ApplyConfiguration(new TextQuestionOptionConfiguration());
 
-        #region Relations
-        modelBuilder.Entity<EmployeeDTO>()
-           .HasMany(e => e.Tests)
-           .WithOne(t => t.Employee)
-           .HasForeignKey(t => t.EmployeeId);
-       
-        modelBuilder.Entity<TestDTO>()
-          .HasOne(t => t.TargetAudience)
-          .WithMany(ta => ta.Tests)
-          .HasForeignKey(t => t.TargetAudienceId);
-
-        modelBuilder.Entity<TestDTO>()
-            .HasMany(t => t.TextQuestions)
-            .WithOne(tq => tq.Test)
-            .HasForeignKey(tq => tq.TestId);
-
-        modelBuilder.Entity<TestDTO>()
-            .HasMany(t => t.ToneAudiometryQuestions)
-            .WithOne(tq => tq.Test)
-            .HasForeignKey(tq => tq.TestId);
-      
-        modelBuilder.Entity<TextQuestionDTO>()
-            .HasMany(tq => tq.Options)
-            .WithOne(o => o.TextQuestion)
-            .HasForeignKey(o => o.TextQuestionId);
-        #endregion
         base.OnModelCreating(modelBuilder);
     }
 

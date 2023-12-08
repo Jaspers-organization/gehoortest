@@ -1,44 +1,38 @@
-﻿using DataAccess.DataTransferObjects;
-using BusinessLogic.IModels;
-using BusinessLogic.IRepositories;
-using DataAccess.Mapping;
+﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using gehoortest_application.Repository;
-using Microsoft.EntityFrameworkCore;
-using DataAccess.Factorys;
 
 namespace DataAccess.Repositories
 {
     public class TestRepository : ITestRepository
     {
-        private readonly Repository repository;
-        public TestRepository(Repository repository) => this.repository = repository;
+        private readonly Repository repository = new Repository();
 
-        public ITest CreateTest() => new Test();
+        public Test CreateTest() => new Test();
 
 
-        public void DeleteTest(ITest test)
+        public void DeleteTest(Test test)
         {
             throw new NotImplementedException();
         }
 
-        public ITest? GetActiveTest()
+        public Test? GetActiveTest()
         {
             throw new NotImplementedException();
         }
 
-        public List<ITest> GetAllTests()
+        public List<Test> GetAllTests()
         {
             throw new NotImplementedException();
         }
 
-        public ITest? GetTestById(Guid id)
+        public Test? GetTestById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public ITest? GetTestByTargetAudienceId(Guid id)
+        public Test? GetTestByTargetAudienceId(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -48,15 +42,15 @@ namespace DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public void SaveTest(ITest test)
+        public void SaveTest(Test test)
         {
-            repository.Tests.Add(DTOFactory.Create(test));
+            repository.Tests.Add(test);
             repository.SaveChanges();
             //repository.SaveChangesWithIdentityInsert<TestDTO>();
 
         }
 
-        public void UpdateTest(ITest test)
+        public void UpdateTest(Test test)
         {
             throw new NotImplementedException();
         }

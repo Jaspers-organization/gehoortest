@@ -13,7 +13,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
-    private readonly IToneAudiometryQuestion toneAudiometryQuestion;
+    private readonly ToneAudiometryQuestion toneAudiometryQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -175,7 +175,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
 
     #endregion
 
-    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {
         this.navigationStore = navigationStore;
         this.testManagementViewModel = testManagementViewModel;
@@ -198,7 +198,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
                 return;
 
             // Creates a new ToneAudiometryQuestion object based on the provided data
-            IToneAudiometryQuestion question = new ToneAudiometryQuestion
+            ToneAudiometryQuestion question = new ToneAudiometryQuestion
             {
                 Id = toneAudiometryQuestion.Id,
                 StartingDecibels = StartingDecibels,

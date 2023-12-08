@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,12 +15,13 @@ namespace DataAccess.Migrations
                 name: "employee",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    employee_number = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    infix = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    employee_number = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    first_name = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    last_name = table.Column<string>(type: "nvarchar(10)", nullable: true),
+                    infix = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Fullname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,11 +32,10 @@ namespace DataAccess.Migrations
                 name: "target_audience",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
                     from = table.Column<int>(type: "int", nullable: false),
                     to = table.Column<int>(type: "int", nullable: false),
-                    label = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    label = table.Column<string>(type: "varchar(50)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,12 +46,11 @@ namespace DataAccess.Migrations
                 name: "test",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    title = table.Column<string>(type: "varchar(50)", nullable: false),
                     active = table.Column<bool>(type: "bit", nullable: false),
-                    target_audience_id = table.Column<int>(type: "int", nullable: false),
-                    employee_id = table.Column<int>(type: "int", nullable: false)
+                    target_audience_id = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    employee_id = table.Column<string>(type: "nvarchar(128)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,13 +73,13 @@ namespace DataAccess.Migrations
                 name: "text_question",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    question = table.Column<string>(type: "varchar(100)", nullable: false),
                     is_multi_select = table.Column<bool>(type: "bit", nullable: false),
                     has_input_field = table.Column<bool>(type: "bit", nullable: false),
                     question_number = table.Column<int>(type: "int", nullable: false),
-                    test_id = table.Column<int>(type: "int", nullable: false)
+                    QuestionType = table.Column<int>(type: "int", nullable: false),
+                    test_id = table.Column<string>(type: "nvarchar(128)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,19 +96,19 @@ namespace DataAccess.Migrations
                 name: "tone_audiometry_question",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
                     frequency = table.Column<int>(type: "int", nullable: false),
                     starting_decibels = table.Column<int>(type: "int", nullable: false),
                     question_number = table.Column<int>(type: "int", nullable: false),
-                    TestId = table.Column<int>(type: "int", nullable: false)
+                    QuestionType = table.Column<int>(type: "int", nullable: false),
+                    test_id = table.Column<string>(type: "nvarchar(128)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tone_audiometry_question", x => x.id);
                     table.ForeignKey(
-                        name: "FK_tone_audiometry_question_test_TestId",
-                        column: x => x.TestId,
+                        name: "FK_tone_audiometry_question_test_test_id",
+                        column: x => x.test_id,
                         principalTable: "test",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -118,10 +118,9 @@ namespace DataAccess.Migrations
                 name: "text_question_option",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    option = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    text_question_id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    option = table.Column<string>(type: "varchar(50)", nullable: false),
+                    text_question_id = table.Column<string>(type: "nvarchar(128)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,8 +129,7 @@ namespace DataAccess.Migrations
                         name: "FK_text_question_option_text_question_text_question_id",
                         column: x => x.text_question_id,
                         principalTable: "text_question",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -155,9 +153,9 @@ namespace DataAccess.Migrations
                 column: "text_question_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tone_audiometry_question_TestId",
+                name: "IX_tone_audiometry_question_test_id",
                 table: "tone_audiometry_question",
-                column: "TestId");
+                column: "test_id");
         }
 
         /// <inheritdoc />

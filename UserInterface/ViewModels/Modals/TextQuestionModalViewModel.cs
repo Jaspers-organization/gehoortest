@@ -1,5 +1,4 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Services;
 using System;
 using System.Collections.Generic;
@@ -15,8 +14,10 @@ internal class TextQuestionModalViewModel : ViewModelBase
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
+    private readonly TestService testService;
+
     private readonly TestManagementViewModel testManagementViewModel;
-    private readonly ITextQuestion textQuestion;
+    private readonly TextQuestion textQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -142,16 +143,17 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
     private ErrorModalViewModal errorModalViewModal { get; set; }
 
-    public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    public TextQuestionModalViewModel(NavigationStore navigationStore, TextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel, TestService testService)
     {
         this.navigationStore = navigationStore;
         this.textQuestion = textQuestion;
         this.testManagementViewModel = testManagementViewModel;
         this.newQuestion = newQuestion;
+        this.testService = testService;
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(textQuestion.Options ?? new List<string>());
+        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!));
     }
 
     private void OpenErrorModal(string text)
@@ -209,13 +211,13 @@ internal class TextQuestionModalViewModel : ViewModelBase
             if (!CheckValidityInput())
                 return;
 
-            ITextQuestion question = new TextQuestion
+            TextQuestion question = new TextQuestion
             {
                 Id = textQuestion.Id,
                 HasInputField = HasInputField,
                 IsMultiSelect = MultipleChoice,
                 Question = TestQuestion,
-                Options = Options.ToList(),
+                Options = testService.ConvertStringsToQuestionOptions(Options.ToList(), textQuestion.Id),
                 QuestionNumber = textQuestion.QuestionNumber
             };
 

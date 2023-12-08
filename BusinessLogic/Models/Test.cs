@@ -2,13 +2,20 @@
 
 namespace BusinessLogic.Models;
 
-public class Test : ITest
+public class Test : IModel
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Title { get; set; }
     public bool Active { get; set; }
-    public ITargetAudience TargetAudience { get; set; }
-    public List<ITextQuestion> TextQuestions { get; set; }
-    public List<IToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }
-    public IEmployee Employee { get; set; }
+
+    public Guid TargetAudienceId { get; set; }
+    public TargetAudience TargetAudience { get; set; }
+
+    public ICollection<TextQuestion> TextQuestions { get; set; } = new List<TextQuestion>();
+
+    public ICollection<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; } = new List<ToneAudiometryQuestion>();
+
+    public Guid EmployeeId { get; set; }
+    public Employee Employee { get; set; }
 }
+

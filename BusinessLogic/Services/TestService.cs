@@ -4,58 +4,103 @@ using UserInterface.Stores;
 using BusinessLogic.IModels;
 using BusinessLogic.Enums;
 using BusinessLogic.Models;
+using BusinessLogic.Classes;
 
 namespace BusinessLogic.Services;
 
 public class TestService
 {
+    private Test test;
+
     private ITestRepository testRepository;
 
     public TestService(ITestRepository testRepository) => this.testRepository = testRepository;
 
-    public List<ITest> GetAllTests() => testRepository.GetAllTests();
+    public List<Test> GetAllTests() => testRepository.GetAllTests();
 
-    public ITest GetTestById(Guid id) => testRepository.GetTestById(id);
+    public Test GetTestById(Guid id) => testRepository.GetTestById(id);
 
     public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
 
-    public ITest? GetTestByTargetAudienceId(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
+    public Test? GetTestByTargetAudienceId(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
 
-    public void SaveTest(ITest test) => testRepository.SaveTest(test);
+    public void SaveTest(Test test) => testRepository.SaveTest(test);
 
-    public void DeleteTest(ITest test) => testRepository.DeleteTest(test);
+    public void DeleteTest(Test test) => testRepository.DeleteTest(test);
 
-    public void UpdateTest(ITest test) => testRepository.UpdateTest(test);
+    public void UpdateTest(Test test) => testRepository.UpdateTest(test);
 
-    public ITest CreateTest()
+    public Test CreateTest()
     {
-        ITest test = testRepository.CreateTest();
-
-        test.Id = new Guid();
-        // Initializes the text questions for the test
-        test.TextQuestions = new List<ITextQuestion>();
-
-        // Initialize Targetaudience
-        test.TargetAudience = new TargetAudience();
-
-        //Initialize Employee
-        test.Employee = new Employee();
-
-        // Initializes the tone audiometry questions for the test
-        test.ToneAudiometryQuestions = new List<IToneAudiometryQuestion>();
+        test = testRepository.CreateTest();
         return test;
     }
 
+    public TextQuestionOption ConvertStringToQuestionOption(string text, Guid textQuestionId)
+    {
+        return new TextQuestionOption { Id = new Guid(), Option = text, TextQuestionId = textQuestionId };
+    }
+
+    public string ConvertQuestionOptionToString(TextQuestionOption questionOption)
+    {
+        return questionOption.Option;
+    }
+
+    public List<TextQuestionOption> ConvertStringsToQuestionOptions(List<string> texts, Guid textQuestionId)
+    {
+        return texts.Select(text => ConvertStringToQuestionOption(text, textQuestionId)).ToList();
+    }
+
+    public List<string> ConvertQuestionOptionsToStrings(List<TextQuestionOption> questionOptions)
+    {
+        return questionOptions.Select(ConvertQuestionOptionToString).ToList();
+    }
+
+    public void SaveOrUpdateTest(Test test, bool newTest)
+    {
+        if (newTest)
+            SaveTest(test);
+        else
+            UpdateTest(test);
+    }
+    public ToneAudiometryQuestion CreateToneAudiometryQuestion()
+    {
+        ToneAudiometryQuestion audioQuestion = new ToneAudiometryQuestion { Id = new Guid(), QuestionType = QuestionType.AudioQuestion };
+        audioQuestion.QuestionNumber = GetNewHighestQuestionNumber(test, QuestionType.AudioQuestion);
+        return audioQuestion;
+    }
+    public TextQuestion CreateTextQuestion()
+    {
+        TextQuestion textQuestion = new TextQuestion
+        {
+            Id = new Guid(),
+            Options = new List<TextQuestionOption>(),
+            QuestionType = QuestionType.TextQuestion
+        };
+        textQuestion.QuestionNumber = GetNewHighestQuestionNumber(test, QuestionType.TextQuestion);
+        return textQuestion;
+    }
+
+    public List<TextQuestion> AddTextQuestion(TextQuestion textQuestion)
+    {
+        test.TextQuestions.Add(textQuestion);
+        return test.TextQuestions.ToList();
+    }
+    public List<ToneAudiometryQuestion> AddToneAudiometryQuestion(ToneAudiometryQuestion audioQuestion)
+    {
+        test.ToneAudiometryQuestions.Add(audioQuestion);
+        return test.ToneAudiometryQuestions.ToList();
+    }
 
     public void ToggleActiveStatus(Guid id)
     {
-        ITest? test = GetTestById(id);
+        Test? test = GetTestById(id);
         if (test == null) return;
 
 
         if (!test.Active)
         {
-            ITest? activeTest = testRepository.GetActiveTest();
+            Test? activeTest = testRepository.GetActiveTest();
             if (activeTest != null)
             {
                 activeTest.Active = false;
@@ -66,12 +111,7 @@ public class TestService
         testRepository.UpdateTest(test);
     }
 
-    /// <summary>
-    /// Gets the new highest question number based on the test and question type.
-    /// </summary>
-    /// <param name="test">The test entity containing questions.</param>
-    /// <param name="questionType">The type of question.</param>
-    public static int GetNewHighestQuestionNumber(ITest test, QuestionType questionType)
+    public static int GetNewHighestQuestionNumber(Test test, QuestionType questionType)
     {
         if (test == null || test.TextQuestions == null || test.ToneAudiometryQuestions == null)
         {
@@ -93,13 +133,6 @@ public class TestService
         }
     }
 
-    /// <summary>
-    /// Gets the index of a question based on its number within a list of questions.
-    /// </summary>
-    /// <typeparam name="T">The type of question.</typeparam>
-    /// <param name="questions">The list of questions to search through.</param>
-    /// <param name="questionNumber">The number of the question to find.</param>
-    /// <returns>The index of the question in the list, or -1 if not found.</returns>
     public static int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
         AssertQuestions(questions);
@@ -107,12 +140,6 @@ public class TestService
         return questions.FindIndex(q => q.QuestionNumber == questionNumber);
     }
 
-    /// <summary>
-    /// Shifts the question numbers in a list of questions to consecutive numbers starting from 1.
-    /// </summary>
-    /// <typeparam name="T">The type of question.</typeparam>
-    /// <param name="questions">The list of questions to renumber.</param>
-    /// <returns>The updated list of questions with renumbered question numbers.</returns>
     public static List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
     {
         AssertQuestions(questions);
@@ -126,15 +153,7 @@ public class TestService
         return questions;
     }
 
-    /// <summary>
-    /// Updates a question in the list based on its number.
-    /// </summary>
-    /// <typeparam name="T">The type of question.</typeparam>
-    /// <param name="questions">The list of questions to update.</param>
-    /// <param name="questionNumber">The number of the question to update.</param>
-    /// <param name="question">The updated question object.</param>
-    /// <returns>The updated list of questions.</returns>
-    public static List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
+    public List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
     {
         AssertQuestions(questions);
         int index = GetQuestionNumberIndex(questions, questionNumber);
@@ -142,14 +161,20 @@ public class TestService
         {
             questions[index] = question;
         }
+
+        switch (question)
+        {
+            case TextQuestion:
+                test.TextQuestions = questions.Cast<TextQuestion>().ToList(); ;
+                break;
+            case AudiometryQuestion:
+                test.ToneAudiometryQuestions = questions.Cast<ToneAudiometryQuestion>().ToList(); ;
+                break;
+        }
+
         return questions;
     }
 
-    /// <summary>
-    /// Ensures the validity of the provided list of questions.
-    /// </summary>
-    /// <typeparam name="T">The type of question.</typeparam>
-    /// <param name="questions">The list of questions to validate.</param>
     private static void AssertQuestions<T>(List<T> questions) where T : IQuestion
     {
         if (questions == null)
@@ -171,14 +196,7 @@ public class TestService
         }
     }
 
-    /// <summary>
-    /// Deletes a question from the list based on its number and shifts the question numbers.
-    /// </summary>
-    /// <typeparam name="T">The type of question.</typeparam>
-    /// <param name="questions">The list of questions to delete from.</param>
-    /// <param name="questionNumber">The number of the question to delete.</param>
-    /// <returns>The updated list of questions after deletion and renumbering.</returns>
-    public static List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
+    public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
         AssertQuestions(questions);
 
@@ -187,48 +205,37 @@ public class TestService
         {
             questions.RemoveAt(index);
             questions = ShiftQuestionNumbers(questions);
+            switch (questions[index])
+            {
+                case TextQuestion:
+                    test.TextQuestions.ToList().RemoveAt(index);
+                    break;
+                case AudiometryQuestion:
+                    test.ToneAudiometryQuestions.ToList().RemoveAt(index);
+                    break;
+            }
         }
+
         return questions;
     }
 
-    /// <summary>
-    /// Checks whether the provided string contains invalid characters.
-    /// </summary>
-    /// <param name="str">The string to check for invalid characters.</param>
-    /// <returns>True if the string contains invalid characters; otherwise, false.</returns>
     public static bool ContatinsInvalidCharacters(string str)
     {
         return str.Contains(ErrorStore.IllegalCharacters);
     }
 
-    /// <summary>
-    /// Checks if the provided hertz value is within a valid range.
-    /// </summary>
-    /// <param name="hz">The hertz value to validate.</param>
-    /// <returns>True if the hertz value is within a valid range; otherwise, false.</returns>
     public static bool IsValidHz(int hz)
     {
         return hz >= 125 && hz <= 8000;
     }
 
-    /// <summary>
-    /// Checks if the provided decibel value is within a valid range.
-    /// </summary>
-    /// <param name="decibel">The decibel value to validate.</param>
-    /// <returns>True if the decibel value is within a valid range; otherwise, false.</returns>
     public static bool IsValidDecibel(int decibel)
     {
         return decibel >= 0 && decibel <= 120;
     }
 
-    /// <summary>
-    /// Checks if the provided string is empty or null.
-    /// </summary>
-    /// <param name="str">The string to check.</param>
-    /// <returns>True if the string is empty or null; otherwise, false.</returns>
     public static bool IsEmptyString(string str)
     {
         return string.IsNullOrEmpty(str);
     }
-
 }

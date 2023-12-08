@@ -13,6 +13,7 @@ using UserInterface.ViewModels.Modals;
 using gehoortest_application.Repository;
 using BusinessLogic.IRepositories;
 using DataAccess.Repositories;
+using BusinessLogic.Models;
 
 namespace UserInterface.ViewModels;
 
@@ -38,15 +39,15 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region properties
-    private List<ITargetAudience>? _targetAudiences;
-    public List<ITargetAudience>? TargetAudiences
+    private List<TargetAudience>? _targetAudiences;
+    public List<TargetAudience>? TargetAudiences
     {
         get { return _targetAudiences; }
         set { _targetAudiences = value; OnPropertyChanged(nameof(TargetAudiences)); }
     }
 
-    private ITargetAudience? _selectedTargetAudience;
-    public ITargetAudience? SelectedTargetAudience
+    private TargetAudience? _selectedTargetAudience;
+    public TargetAudience? SelectedTargetAudience
     {
         get { return _selectedTargetAudience; }
         set
@@ -67,13 +68,11 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get; set; }
     #endregion
 
-    public TestOverviewViewModel(NavigationStore navigationStore, Repository repository, ITargetAudience? targetAudience = null)
+    public TestOverviewViewModel(NavigationStore navigationStore, TargetAudience? targetAudience = null)
     {
         this.navigationStore = navigationStore;
-        //todo
-        this.repository = new Repository();
 
-        targetAudienceRepository = new TargetAudienceRepository(repository);
+        targetAudienceRepository = new TargetAudienceRepository();
         testRepository = new TestMockRepository();
 
         // Services
@@ -83,7 +82,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         GetTargetAudiences(targetAudience);
     }
 
-    private void GetTargetAudiences(ITargetAudience? targetAudience)
+    private void GetTargetAudiences(TargetAudience? targetAudience)
     {
         TargetAudiences = targetAudienceService.GetAllTargetAudiences();
 
@@ -96,27 +95,27 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         SelectedTargetAudience = TargetAudiences.FirstOrDefault();
     }
 
-    private void UpdateTestProjections(int id) => Tests = testService.GetTestProjectionsByTargetAudienceId(id);
+    private void UpdateTestProjections(Guid id) => Tests = testService.GetTestProjectionsByTargetAudienceId(id);
 
 
-    private void BackToMainMenu() => navigationStore!.CurrentViewModel = new TestViewModel(navigationStore, repository);
-      
+    private void BackToMainMenu() => navigationStore!.CurrentViewModel = new TestViewModel(navigationStore);
 
-    private void OpenTest(int id)
+
+    private void OpenTest(Guid id)
     {
-        ITest test = testService.GetTestById(id);
+        Test test = testService.GetTestById(id);
 
-        if(test != null)
-            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, repository, test);
+        if (test != null)
+            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore,  test);
     }
 
-    private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, repository);
+    private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore);
 
-    private void DeleteTest(int id)
+    private void DeleteTest(Guid id)
     {
         Action SaveAction = () =>
         {
-            ITest test = testService.GetTestById(id);
+            Test test = testService.GetTestById(id);
             testService.DeleteTest(test);
             UpdateTestProjections(id);
         };
@@ -135,10 +134,8 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public void OpenConfirmationModal(Action action, string text) => navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
 
 
-    private void ToggleActiveStatus(int testId)
+    private void ToggleActiveStatus(Guid testId)
     {
-        // might be better to move this to the business layer
-
         testService.ToggleActiveStatus(testId);
 
         if (SelectedTargetAudience == null)

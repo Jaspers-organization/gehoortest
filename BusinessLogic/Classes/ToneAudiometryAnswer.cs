@@ -3,7 +3,7 @@ using BusinessLogic.IModels;
 
 namespace BusinessLogic.Classes;
 
-public class ToneAudiometryAnswer : IToneAudiometryAnswer
+public class ToneAudiometryAnswer
 {
     public int QuestionNumber { get; set; }
     //public int Frequency { get; set; }

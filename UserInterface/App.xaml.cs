@@ -2,6 +2,7 @@
 using UserInterface.Views;
 using System.Windows;
 using UserInterface.ViewModels;
+using DataAccess.Repositories;
 
 namespace UserInterface;
 
@@ -15,6 +16,7 @@ public partial class App : Application
     public App()
     {
         navigationStore = new NavigationStore();
+       
         //todo make this config?
     }
 

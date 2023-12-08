@@ -1,35 +1,37 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
-using DataAccess.Mapping;
 using gehoortest_application.Repository;
 
 namespace DataAccess.Repositories;
 
 public class TargetAudienceRepository : ITargetAudienceRepository
 {
-    private readonly Repository repository;
-    public TargetAudienceRepository(Repository repository) => this.repository = repository;
+    private readonly Repository repository = new Repository();
 
-    public List<ITargetAudience> GetAllAudiences()
+    public List<TargetAudience> GetAllAudiences()
     {
-        return ModelFactory.MapToTargetAudiences(repository.TargetAudiences.ToList());
+        using (Repository context = repository)
+        {
+            
+            return context.TargetAudiences.OrderBy(audience => audience.From).ToList();
+
+        }
     }
 
     public void FillTargetAudiences()
     {
-
-        repository.TargetAudiences.AddRange(ModelFactory.MapToTargetAudiencesDTO(new List<ITargetAudience>
+        using (Repository context = repository)
         {
-            new TargetAudience { From = 0, To = 18, Label = "0-18" },
-            new TargetAudience { From = 19, To = 29, Label = "19-29" },
-            new TargetAudience { From = 30, To = 49, Label = "30-49" },
-            new TargetAudience { From = 50, To = 69, Label = "50-69" },
-            new TargetAudience { From = 70, To = 79, Label = "70-79" },
-          new TargetAudience { From = 80, To = 89, Label = "80-89" },
-        }));
-        repository.SaveChanges();
-
-
+            context.TargetAudiences.AddRange(new List<TargetAudience>{
+                new TargetAudience { Id = new Guid(), From = 0, To = 18, Label = "0-18" },
+                new TargetAudience { Id = new Guid(), From = 19, To = 29, Label = "19-29" },
+                new TargetAudience { Id = new Guid(), From = 30, To = 49, Label = "30-49" },
+                new TargetAudience { Id = new Guid(), From = 50, To = 69, Label = "50-69" },
+                new TargetAudience { Id = new Guid(), From = 70, To = 79, Label = "70-79" },
+                new TargetAudience { Id = new Guid(), From = 80, To = 89, Label = "80-89" },
+            });
+            context.SaveChanges();
+        }
     }
 }
