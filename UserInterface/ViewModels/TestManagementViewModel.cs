@@ -104,8 +104,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private bool CheckValidityInput()
     {
         // Check the validity of the input
-        string testNameValidation = TestService.ValidateInput("TestName", TestName!);
-        string audienceValidation = TestService.ValidateInput("Audience", Audience!);
+        string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
+        string audienceValidation = ErrorService.ValidateInput("Audience", Audience!);
 
         if (!string.IsNullOrEmpty(testNameValidation))
         {

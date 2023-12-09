@@ -2,6 +2,7 @@
 using BusinessLogic.IModels;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
+using UserInterface.Stores;
 
 namespace Tests;
 
@@ -72,7 +73,7 @@ public class TestManagementTests
     [InlineData("!@#$%^&*()[]{};:'`|<>", true)]
     public void ContainsInvalidCharacters_ReturnsValidString(string str, bool expectedResult)
     {
-        bool actualResult = TestService.ContatinsInvalidCharacters(str);
+        bool actualResult = ErrorService.ContatinsInvalidCharacters(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -84,7 +85,7 @@ public class TestManagementTests
     [InlineData(8001, false)]
     public void IsValidHz_ReturnsExpectedResult(int hz, bool expectedResult)
     {
-        bool actualResult = TestService.IsValidHz(hz);
+        bool actualResult = ErrorService.IsValidHz(hz);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -97,7 +98,7 @@ public class TestManagementTests
     [InlineData(121, false)]
     public void IsValidDecibel_ReturnsExpectedResult(int decibel, bool expectedResult)
     {
-        bool actualResult = TestService.IsValidDecibel(decibel);
+        bool actualResult = ErrorService.IsValidDecibel(decibel);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -108,7 +109,7 @@ public class TestManagementTests
     [InlineData("ValidString", false)]
     public void IsEmptyString_ReturnsExpectedResult(string str, bool expectedResult)
     {
-        bool actualResult = TestService.IsEmptyString(str);
+        bool actualResult = ErrorService.IsEmptyString(str);
 
         Assert.Equal(expectedResult, actualResult);
     }

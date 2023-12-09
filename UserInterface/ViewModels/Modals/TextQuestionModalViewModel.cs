@@ -15,7 +15,6 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestService testService;
-
     private readonly TestManagementViewModel testManagementViewModel;
     private readonly TextQuestion textQuestion;
     private readonly bool newQuestion;
@@ -85,11 +84,10 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
 
     #region Errors
-
     private bool CheckValidityInput()
     {
-        string testQuestionValidation = TestService.ValidateInput("TestQuestion", TestQuestion);
-        string anwserTypeValidation = TestService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
+        string testQuestionValidation = ErrorService.ValidateInput("TestQuestion", TestQuestion);
+        string anwserTypeValidation = ErrorService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
         if (!string.IsNullOrEmpty(testQuestionValidation))
         {
             OpenErrorModal(testQuestionValidation);
@@ -128,7 +126,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!TestService.IsEmptyString(value))
+            if (!ErrorService.IsEmptyString(value))
             {
                 Options.Add(value);
                 OnPropertyChanged(nameof(Options));
@@ -149,7 +147,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!TestService.IsEmptyString(value) && Options.Contains(value))
+            if (!ErrorService.IsEmptyString(value) && Options.Contains(value))
             {
                 Options.Remove(value);
                 OnPropertyChanged(nameof(Options));
@@ -164,8 +162,6 @@ internal class TextQuestionModalViewModel : ViewModelBase
             OpenErrorModal($"Er is wat fout gegaan bij het verwijderen van de optie");
         }
     }
-
-
 
     private void SaveQuestion()
     {

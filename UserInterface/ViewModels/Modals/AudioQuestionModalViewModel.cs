@@ -70,8 +70,8 @@ internal class AudioQuestionModalViewModel : ViewModelBase
 
     private bool CheckValidityInput()
     {
-        string frequencyValidation = TestService.ValidateInput("Frequency", FrequencyString);
-        string decibelValidation = TestService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
+        string frequencyValidation = ErrorService.ValidateInput("Frequency", FrequencyString);
+        string decibelValidation = ErrorService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
 
         if (!string.IsNullOrEmpty(frequencyValidation))
         {
@@ -80,7 +80,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         }
         else
         {
-            Frequency = TestService.ParseStringToInt(FrequencyString);
+            Frequency = ErrorService.ParseStringToInt(FrequencyString);//not sure of this.
         }
 
         if (!string.IsNullOrEmpty(decibelValidation))
@@ -90,7 +90,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         }
         else
         {
-            StartingDecibels = TestService.ParseStringToInt(StartingDecibelsString);
+            StartingDecibels = ErrorService.ParseStringToInt(StartingDecibelsString);
         }
         return true;
     }
