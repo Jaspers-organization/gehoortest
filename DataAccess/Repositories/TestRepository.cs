@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using gehoortest_application.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
@@ -11,48 +12,105 @@ namespace DataAccess.Repositories
 
         public Test CreateTest() => new Test();
 
-
         public void DeleteTest(Test test)
         {
-            throw new NotImplementedException();
+            var testWithQuestions = repository.Tests
+                .Include(t => t.TextQuestions)
+                    .ThenInclude(tq => tq.Options)
+                .FirstOrDefault(t => t.Id == test.Id);
+
+            if (testWithQuestions == null)
+                return;
+
+            foreach (var textQuestion in testWithQuestions.TextQuestions.ToList())
+            {
+                repository.TextQuestionsOptions.RemoveRange(textQuestion.Options.ToList());
+                repository.TextQuestions.Remove(textQuestion);
+            }
+            repository.Tests.Remove(testWithQuestions);
+            repository.SaveChanges();
         }
 
-        public Test? GetActiveTest()
+        private IQueryable<Test> IncludeTestRelations()
         {
-            throw new NotImplementedException();
+            return repository.Tests
+                .Include(test => test.TextQuestions)
+                .Include(test => test.ToneAudiometryQuestions)
+                .Include(test => test.Employee)
+                .Include(test => test.TargetAudience);
         }
 
         public List<Test> GetAllTests()
         {
-            throw new NotImplementedException();
+            var tests = IncludeTestRelations().ToList();
+            if (tests.Count == 0 || tests == null)
+                return new List<Test>();
+
+            return tests;
         }
 
         public Test? GetTestById(Guid id)
         {
-            throw new NotImplementedException();
+            var test = IncludeTestRelations()
+               .Where(test => test.Id == id)
+               .FirstOrDefault();
+
+            if (test == null)
+            {
+                return null; //error handeling 
+            }
+            return test;
         }
 
-        public Test? GetTestByTargetAudienceId(Guid id)
+        public Test? GetTestByTargetAudienceIdAndActive(Guid id)
         {
-            throw new NotImplementedException();
+            var test = IncludeTestRelations()
+               .Where(test => test.TargetAudienceId == id && test.Active)
+               .FirstOrDefault();
+
+            if (test == null)
+            {
+                return null; //error handeling 
+            }
+            return test;
         }
 
         public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id)
         {
-            throw new NotImplementedException();
+            var tests = IncludeTestRelations()
+                .Where(test => test.TargetAudienceId == id)
+                .ToList();
+
+            if (tests == null || tests.Count == 0)
+            {
+                return new List<TestProjection>();
+            }
+
+            List<TestProjection> projections = tests.Select(test => new TestProjection
+            {
+                Id = test.Id,
+                Title = test.Title,
+                AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
+                Active = test.Active,
+                EmployeeName = test.Employee.FullName
+            }).ToList();
+
+            return projections;
         }
 
         public void SaveTest(Test test)
         {
+            repository.Attach(test.TargetAudience);
+            repository.Attach(test.Employee);
+
             repository.Tests.Add(test);
             repository.SaveChanges();
-            //repository.SaveChangesWithIdentityInsert<TestDTO>();
-
         }
 
         public void UpdateTest(Test test)
         {
-            throw new NotImplementedException();
+            repository.Tests.Update(test);
+            repository.SaveChanges();
         }
     }
 }

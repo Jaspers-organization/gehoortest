@@ -85,48 +85,11 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
 
     #region Errors
-    private string this[string columnName]
-    {
-        get
-        {
-            string? validationMessage = null;
 
-            switch (columnName)
-            {
-                case "TestQuestion":
-                    validationMessage = ValidateTestQuestion();
-                    break;
-                case "MultipleChoice":
-                case "HasInputField":
-                    validationMessage = ValidateQuestionType();
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-    private string ValidateTestQuestion()
-    {
-        if (TestService.IsEmptyString(TestQuestion))
-            return ErrorStore.ErrorTestQuestion;
-        else if (TestService.ContatinsInvalidCharacters(TestQuestion))
-            return ErrorStore.ErrorIllegalCharacters;
-        return string.Empty;
-    }
-    private string ValidateQuestionType()
-    {
-        if (!HasInputField && !MultipleChoice)
-            return ErrorStore.ErrorQuestionAnwserType;
-        if (MultipleChoice && Options.Count < 2)
-            return ErrorStore.ErrorMultipleChoiceOptions;
-        return string.Empty;
-    }
     private bool CheckValidityInput()
     {
-        string testQuestionValidation = this["TestQuestion"];
-        string anwserTypeValidation = this["MultipleChoice"];
-
+        string testQuestionValidation = TestService.ValidateInput("TestQuestion", TestQuestion);
+        string anwserTypeValidation = TestService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
         if (!string.IsNullOrEmpty(testQuestionValidation))
         {
             OpenErrorModal(testQuestionValidation);

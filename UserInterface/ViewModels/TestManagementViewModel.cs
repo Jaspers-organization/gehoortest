@@ -26,8 +26,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private readonly ITargetAudienceRepository targetAudienceRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceSerivce;
-    private readonly TestOverviewViewModel testOverviewViewModel;
-
     private readonly bool newTest;
     #endregion
 
@@ -68,6 +66,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             _selected = value; OnPropertyChanged(nameof(Selected));
             TargetAudience audience = AudiencesList[value];
             Audience = audience;
+            Test.TargetAudienceId = audience.Id;
             Test.TargetAudience = audience;
         }
     }
@@ -102,49 +101,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region Errors
-    public string this[string columnName]
-    {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "TestName":
-                    // Check if the test name is empty or contains illegal characters
-                    validationMessage = ValidateTestName(TestName!);
-                    break;
-                case "Audience":
-                    // Validate if the audience is correctly selected
-                    validationMessage = ValidateAudience(Audience!);
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-    private string ValidateTestName(string str)
-    {
-        // Validate if the test name is empty or contains illegal characters
-        if (TestService.IsEmptyString(str!))
-            return ErrorStore.ErrorTestName;
-        else if (str.Contains(ErrorStore.IllegalCharacters))
-            return ErrorStore.ErrorIllegalCharacters;
-        return string.Empty;
-    }
-    private string ValidateAudience(TargetAudience targetAudience)
-    {
-        // Validate if the audience is correctly selected
-        if (targetAudience == null || TestService.IsEmptyString(targetAudience.Label))
-            return ErrorStore.ErrorAudience;
-        return string.Empty;
-    }
     private bool CheckValidityInput()
     {
         // Check the validity of the input
-        string testNameValidation = this["TestName"];
-        string audienceValidation = this["Audience"];
+        string testNameValidation = TestService.ValidateInput("TestName", TestName!);
+        string audienceValidation = TestService.ValidateInput("Audience", Audience!);
 
         if (!string.IsNullOrEmpty(testNameValidation))
         {
@@ -172,6 +133,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
         testRepository = new TestRepository();
         targetAudienceRepository = new TargetAudienceRepository();
+
         testService = new TestService(testRepository);
         targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
 
@@ -182,13 +144,14 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         if (test != null)
         {
             SetTestValues(test);
+            testService.SetTest(test);
         }
         else
         {
             newTest = true;
             CreateTest();
             SetStatus(false);
-            //SetSelected(new Guid()); todo
+            SetSelected(0);
         }
     }
 
@@ -491,6 +454,12 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         {
             if (!CheckValidityInput())
                 return;
+            //TEMP TODO WRITE AROUND
+            EmployeeRepository repository = new EmployeeRepository();
+            var Employee = repository.Get();
+            Test.EmployeeId = Employee.Id;
+            Test.Employee = Employee;
+            //
 
             testService.SaveOrUpdateTest(Test, newTest);
 

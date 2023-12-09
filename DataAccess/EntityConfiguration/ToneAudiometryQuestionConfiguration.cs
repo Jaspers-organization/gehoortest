@@ -10,30 +10,31 @@ internal class ToneAudiometryQuestionConfiguration : IEntityTypeConfiguration<To
     {
         builder.ToTable("tone_audiometry_question");
 
-        builder.HasKey(q => q.Id);
+        builder.HasKey(aq => aq.Id);
 
-        builder.Property(q => q.Id)
+        builder.Property(aq => aq.Id)
                .HasColumnName("id")
                .HasColumnType("nvarchar(128)");
 
-        builder.Property(q => q.Frequency)
-               .HasColumnName("frequency")
-               .HasColumnType("int");
-
-        builder.Property(q => q.StartingDecibels)
-               .HasColumnName("starting_decibels")
-               .HasColumnType("int");
-
-        builder.Property(q => q.QuestionNumber)
+        builder.Property(aq => aq.QuestionNumber)
                .HasColumnName("question_number")
                .HasColumnType("int");
 
-        builder.Property(q => q.TestId)
+        builder.Property(aq => aq.Frequency)
+               .HasColumnName("frequency")
+               .HasColumnType("int");
+
+        builder.Property(aq => aq.StartingDecibels)
+               .HasColumnName("starting_decibels")
+               .HasColumnType("int");
+        
+        builder.Property(aq => aq.TestId)
                .HasColumnName("test_id")
                .HasColumnType("nvarchar(128)");
+        builder.Ignore(aq => aq.QuestionType);
 
-        builder.HasOne(q => q.Test)
-               .WithMany(t => t.ToneAudiometryQuestions)
-               .HasForeignKey(q => q.TestId);
+        builder.HasOne(t => t.Test)
+               .WithMany(aq => aq.ToneAudiometryQuestions)
+               .HasForeignKey(tt => tt.TestId);
     }
 }

@@ -22,7 +22,7 @@ public class TestService
 
     public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
 
-    public Test? GetTestByTargetAudienceId(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceId(targetAudienceId);
+    public Test? GetTestByTargetAudienceIdAndActive(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceIdAndActive(targetAudienceId);
 
     public void SaveTest(Test test) => testRepository.SaveTest(test);
 
@@ -33,9 +33,13 @@ public class TestService
     public Test CreateTest()
     {
         test = testRepository.CreateTest();
+
         return test;
     }
-
+    public void SetTest(Test test)
+    {
+        this.test = test;
+    }
     public TextQuestionOption ConvertStringToQuestionOption(string text, Guid textQuestionId)
     {
         return new TextQuestionOption { Id = new Guid(), Option = text, TextQuestionId = textQuestionId };
@@ -97,10 +101,9 @@ public class TestService
         Test? test = GetTestById(id);
         if (test == null) return;
 
-
         if (!test.Active)
         {
-            Test? activeTest = testRepository.GetActiveTest();
+            Test? activeTest = testRepository.GetTestByTargetAudienceIdAndActive(test.TargetAudienceId);
             if (activeTest != null)
             {
                 activeTest.Active = false;
@@ -174,7 +177,133 @@ public class TestService
 
         return questions;
     }
+    public static int ParseStringToInt(string str)
+    {
+        int parsedInt;
+        bool success = int.TryParse(str, out parsedInt);
 
+        if (success)
+            return parsedInt;
+        else
+            return -1;
+
+    }
+    public static string ValidateDecibels(string StartingDecibelsString)
+    {
+        try
+        {
+            int startingDecibels = ParseStringToInt(StartingDecibelsString);
+
+            if (startingDecibels == -1)
+            {
+                return ErrorStore.ErrorNotValidInteger;
+            }
+
+            if (!TestService.IsValidDecibel(startingDecibels))
+            {
+                return ErrorStore.ErrorStartingDecibels;
+            }
+
+            return string.Empty; // No error, return empty string
+        }
+        catch (Exception ex)
+        {
+            // Log or handle the exception as needed
+            return "Er is wat misgegaan"; // Error message for exception
+        }
+    }
+
+    public static string ValidateFrequency(string FrequencyString)
+    {
+        try
+        {
+            int frequency = ParseStringToInt(FrequencyString);
+
+            if (frequency == -1)
+            {
+                return ErrorStore.ErrorNotValidInteger;
+            }
+
+            if (!TestService.IsValidHz(frequency))
+            {
+                return ErrorStore.ErrorFrequencyLimit;
+            }
+
+            return string.Empty; // No error, return empty string
+        }
+        catch (Exception ex)
+        {
+            // Log or handle the exception as needed
+            return "Er is wat misgegaan"; // Error message for exception
+        }
+    }
+      
+    public static string ValidateInput(string columnName, params object[] values)
+    {
+        string validationMessage = string.Empty;
+
+        switch (columnName)
+        {
+            case "TestName":
+                validationMessage = ValidateTestName((string)values[0]);
+                break;
+            case "Audience":
+                validationMessage = ValidateAudience((TargetAudience)values[0]);
+                break;
+            case "TestQuestion":
+                validationMessage = ValidateTestQuestion((string)values[0]);
+                break;
+            case "MultipleChoice":
+            case "HasInputField":
+                validationMessage = ValidateQuestionType((bool)values[0], (bool)values[1], (List<string>)values[2]);
+                break;
+            case "Frequency":
+                validationMessage = ValidateFrequency((string)values[0]);
+                break;
+            case "StartingDecibelsString":
+                validationMessage = ValidateDecibels((string)values[0]);
+                break;
+            default:
+                break;
+        }
+
+        return validationMessage;
+    }
+
+
+    public static string ValidateTestName(string str)
+    {
+        // Validate if the test name is empty or contains illegal characters
+        if (TestService.IsEmptyString(str!))
+            return ErrorStore.ErrorTestName;
+        else if (str.Contains(ErrorStore.IllegalCharacters))
+            return ErrorStore.ErrorIllegalCharacters;
+        return string.Empty;
+    }
+    public static string ValidateAudience(TargetAudience targetAudience)
+    {
+        // Validate if the audience is correctly selected
+        if (targetAudience == null || TestService.IsEmptyString(targetAudience.Label))
+            return ErrorStore.ErrorAudience;
+        return string.Empty;
+    }
+
+    public static string ValidateTestQuestion(string question)
+    {
+        if (IsEmptyString(question))
+            return ErrorStore.ErrorTestQuestion;
+        else if (ContatinsInvalidCharacters(question))
+            return ErrorStore.ErrorIllegalCharacters;
+        return string.Empty;
+    }
+    public static string ValidateQuestionType(bool inputField, bool multipleChoice, List<string> options)
+    {
+        if (!inputField && !multipleChoice)
+            return ErrorStore.ErrorQuestionAnwserType;
+        if (multipleChoice && options.Count < 2)
+            return ErrorStore.ErrorMultipleChoiceOptions;
+        return string.Empty;
+    }
     private static void AssertQuestions<T>(List<T> questions) where T : IQuestion
     {
         if (questions == null)

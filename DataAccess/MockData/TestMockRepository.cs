@@ -73,7 +73,7 @@ public class TestMockRepository : ITestRepository
             Title = test.Title,
             AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
             Active = test.Active,
-            EmployeeName = test.Employee.Fullname
+            EmployeeName = test.Employee.FullName
         };
     }
 
@@ -92,7 +92,7 @@ public class TestMockRepository : ITestRepository
             Title = test.Title,
             AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
             Active = test.Active,
-            EmployeeName = test.Employee.Fullname
+            EmployeeName = test.Employee.FullName
         }).ToList();
 
         return projections;
@@ -108,15 +108,8 @@ public class TestMockRepository : ITestRepository
     }
 
     public void SaveTest(Test test) => testDataList.Add(test);
-
-
     public List<Test>? GetTestsByTargetAudienceId(Guid id) => testDataList.Where(t => t.TargetAudience.Id == id).ToList();
-    public Test? GetTestByTargetAudienceId(Guid id) => testDataList.FirstOrDefault(t => t.TargetAudience.Id == id);
-
-
+    public Test? GetTestByTargetAudienceIdAndActive(Guid id) => testDataList.FirstOrDefault(t => t.TargetAudience.Id == id && t.Active);
     public Test? GetTestById(Guid id) => testDataList.FirstOrDefault(t => t.Id == id);
-
-
-    public Test? GetActiveTest() => testDataList.FirstOrDefault(t => t.Active == true);
 
 }

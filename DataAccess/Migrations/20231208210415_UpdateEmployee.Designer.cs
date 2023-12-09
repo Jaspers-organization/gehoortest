@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gehoortest_application.Repository;
 
@@ -10,9 +11,11 @@ using gehoortest_application.Repository;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20231208210415_UpdateEmployee")]
+    partial class UpdateEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,6 +135,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasColumnName("question_number");
 
+                    b.Property<int>("QuestionType")
+                        .HasColumnType("int");
+
                     b.Property<string>("TestId")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)")
@@ -182,6 +188,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("QuestionNumber")
                         .HasColumnType("int")
                         .HasColumnName("question_number");
+
+                    b.Property<int>("QuestionType")
+                        .HasColumnType("int");
 
                     b.Property<int>("StartingDecibels")
                         .HasColumnType("int")

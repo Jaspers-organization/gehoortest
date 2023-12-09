@@ -25,8 +25,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     private readonly ITestRepository testRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceService;
-    private readonly Repository repository;
-
     #endregion
 
     #region Commands
@@ -68,29 +66,27 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public bool IsConfirmed { get; set; }
     #endregion
 
-    public TestOverviewViewModel(NavigationStore navigationStore, TargetAudience? targetAudience = null)
+    public TestOverviewViewModel(NavigationStore navigationStore)
     {
         this.navigationStore = navigationStore;
 
         targetAudienceRepository = new TargetAudienceRepository();
-        testRepository = new TestMockRepository();
+        testRepository = new TestRepository();
 
         // Services
         testService = new TestService(testRepository);
         targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
-        GetTargetAudiences(targetAudience);
+        GetTargetAudiences();
     }
 
-    private void GetTargetAudiences(TargetAudience? targetAudience)
+    private void GetTargetAudiences()
     {
         TargetAudiences = targetAudienceService.GetAllTargetAudiences();
 
-        if (targetAudience != null)
-        {
-            SelectedTargetAudience = TargetAudiences.First(t => t.Id == targetAudience.Id);
+        if (TargetAudiences == null)
             return;
-        }
+        
 
         SelectedTargetAudience = TargetAudiences.FirstOrDefault();
     }

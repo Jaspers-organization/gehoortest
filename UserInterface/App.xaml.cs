@@ -16,8 +16,8 @@ public partial class App : Application
     public App()
     {
         navigationStore = new NavigationStore();
-       
-        //todo make this config?
+        //EmployeeRepository repository = new EmployeeRepository();
+        //repository.Insert();
     }
 
     protected override void OnStartup(StartupEventArgs e)

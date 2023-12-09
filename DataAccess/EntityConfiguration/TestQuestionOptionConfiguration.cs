@@ -28,6 +28,7 @@ internal class TextQuestionOptionConfiguration : IEntityTypeConfiguration<TextQu
             .WithMany(question => question.Options)
             .HasForeignKey(option => option.TextQuestionId)
             .IsRequired(false);
+        
 
     }
 }

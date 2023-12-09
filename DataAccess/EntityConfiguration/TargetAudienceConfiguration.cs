@@ -27,7 +27,6 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
                .HasColumnName("label")
                .HasColumnType("varchar(50)");
 
-        // Define relationships
         builder.HasMany(t => t.Tests)
                .WithOne(test => test.TargetAudience)
                .HasForeignKey(test => test.TargetAudienceId);

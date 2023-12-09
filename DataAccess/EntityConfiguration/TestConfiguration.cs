@@ -42,11 +42,15 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
 
         builder.HasMany(t => t.TextQuestions)
                .WithOne(tq => tq.Test)
-               .HasForeignKey(tq => tq.TestId);
+               .HasForeignKey(tq => tq.TestId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(t => t.ToneAudiometryQuestions)
                .WithOne(tq => tq.Test)
-               .HasForeignKey(tq => tq.TestId);
+               .HasForeignKey(tq => tq.TestId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+
     }
 }
 

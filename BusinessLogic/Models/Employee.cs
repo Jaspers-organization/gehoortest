@@ -5,13 +5,32 @@ namespace BusinessLogic.Models;
 public class Employee : IModel
 {
     public Guid Id { get; set; }
-    public enum role { employee, adminstrator } // in de interface TODO
+    public enum Role { Employee, Administrator } // Enum names are conventionally PascalCase
+
     public string? EmployeeNumber { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Infix { get; set; }
-    public string? Fullname { get; set; }
 
-    public Guid TestId {  get; set; }
-    public ICollection<Test>? Tests {  get; set; }
+    public string? FullName
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName))
+            {
+                if (!string.IsNullOrWhiteSpace(Infix))
+                {
+                    return $"{FirstName} {Infix} {LastName}";
+                }
+                else
+                {
+                    return $"{FirstName} {LastName}";
+                }
+            }
+            return null;
+        }
+    }
+
+    public ICollection<Test>? Tests { get; set; }
 }
+
