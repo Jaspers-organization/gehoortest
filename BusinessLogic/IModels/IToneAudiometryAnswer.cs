@@ -8,5 +8,5 @@ public interface IToneAudiometryAnswer
     public int Frequency { get; set; }
     public Ear Ear { get; set; }
     public int StartingDecibels { get; set; }
-    public int LowerLimit { get; set; }
+    public int LowestLimitDecibels { get; set; }
 }

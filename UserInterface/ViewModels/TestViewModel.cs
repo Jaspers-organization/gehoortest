@@ -1,5 +1,6 @@
 ﻿using BusinessLogic;
 using BusinessLogic.Classes;
+using BusinessLogic.Enums;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Services;
@@ -7,11 +8,13 @@ using DataAccess.MockData;
 using DataAccess.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 
@@ -19,20 +22,28 @@ namespace UserInterface.ViewModels
 {
     internal class TestViewModel : ViewModelBase
     {
+        #region Const
+        private const string NOTVISIBLE = "Hidden";
+        private const string VISIBLE = "Visibile";
+        #endregion Const
+
         private readonly NavigationStore navigationStore;
         private string _showTestExplanationView = "Hidden";
         private string _showTestTargetAudienceView = "Hidden";
         private string _showTestTextQuestionView = "Hidden";
         private string _showTestToneAudiometryView = "Hidden";
         private string _showTestResultView = "Hidden";
+
         private ObservableCollection<ITargetAudience> _targetAudiences;
         private ITest _test;
         private TargetAudienceService targetAudienceService { get; set; }
-
         private TestService testService { get; set; }
         private TestProgressData testProgressData { get; set; }
-
+        private int currentFrequency = 0;
+        private bool heard = false;
+        private bool finalDecibelToPlay = false;
         #region Properties
+
         public string ShowTestExplanationView
         {
             get { return _showTestExplanationView; }
@@ -123,7 +134,7 @@ namespace UserInterface.ViewModels
             }
         }
         private string questionInputText { get; set; }
-
+        private int playDecibel { get; set; }
         public ITest Test
         {
             get { return _test; }
@@ -141,7 +152,9 @@ namespace UserInterface.ViewModels
         }
 
         private string _questionRadioButtons { get; set; }
-
+        private int lowestDecibel = 0;
+        bool isDoneText = false;
+        bool isDoneAudio = false;
         public List<string> RadioButtons
         {
             get { return _radioButtons; }
@@ -167,67 +180,92 @@ namespace UserInterface.ViewModels
         public ICommand StartTestCommand => new Command(StartTest);
         public ICommand TargetAudienceSelectedCommand => new Command(GetTest);
         public ICommand PlayFrequencyCommand { get; }
-        public ICommand SaveQuestionCommand => new Command(SaveAnswer);
-        public ICommand SaveAudioQuestionCommand => new Command(SaveAudioQuestion);
+        public ICommand SaveQuestionCommand => new Command(SaveTextAnswer);
+        public ICommand SaveAudioQuestionCommand => new Command(SaveAudioAnswer);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
 
+        #region Constructor
         public TestViewModel(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
-            ShowTestExplanationView = "Visible";
+            SetTestExplanationView(VISIBLE);
             ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
             ITestRepository testRepository = new TestRepository();
             testService = new TestService(testRepository);
         }
-
+        #endregion Constructor
         private void OpenTestManagement()
         {
             navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
 
         }
-        public void StartTest()
-        {
-            ShowTestExplanationView = "Hidden";
-            ShowTestTargetAudienceView = "Visible";
-            TargetAudiences = GetAllTargetAudiencesWithTests();
-            TextQuestion = "Wat is uw leeftijdsgroep?";
 
-            // toegevoegd door jasper
-            List<string> tempTargetAudiences = new ();
-            foreach (ITargetAudience targetAudience in TargetAudiences) 
-            { 
-                tempTargetAudiences.Add(targetAudience.Label); 
-            }
-            RadioButtons = tempTargetAudiences;
-            QuestionRadioButtons = "Visible";
-            // =====
+        #region SetVisibility
+        private void SetTestExplanationView(string visibility)
+        {
+            ShowTestExplanationView = visibility;
+        }
+        private void SetTestTargetAudienceView(string visibility)
+        {
+            ShowTestTargetAudienceView = visibility;
+        }
+        private void SetTestToneAudiometryView(string visibility)
+        {
+            ShowTestToneAudiometryView = visibility;
+        }
+        private void SetQuestionRadioButtons(string visibility)
+        {
+            QuestionRadioButtons = visibility;
+        }
+        private void SetQuestionInput(string visibility)
+        {
+            QuestionInput = visibility;
         }
 
-    private ObservableCollection<ITargetAudience> GetAllTargetAudiencesWithTests()
+        private void SetTestTextQuestionView(string visibility)
         {
-            var x = targetAudienceService.GetAllTargetAudiences();
-            var y = new ObservableCollection<ITest>(testService.GetAllTests());
+            ShowTestTextQuestionView = visibility;
+        }
+        #endregion SetVisibility
 
-            var z = new ObservableCollection<ITargetAudience>();
+        private void StartTest()
+        {
+            SetTestExplanationView(NOTVISIBLE);
+            SetTestTargetAudienceView(VISIBLE);
+            GetTargetAudiencesWithTest();
+            TextQuestion = "Wat is uw leeftijdsgroep?";
+            SetQuestionRadioButtons(VISIBLE);
+        }
+        private void GetTargetAudiencesWithTest()
+        {
+            List<ITargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
+            List<ITest> tempTests = testService.GetAllTests();
+            List<ITargetAudience> finalList = new List<ITargetAudience>();
 
-            foreach (var test in y)
+            foreach (var test in tempTests)
             {
-                foreach (var audience in x)
+                foreach (var audience in tempTargetAudiences)
                 {
                     if (test.TargetAudience.Id == audience.Id)
                     {
-                        if (!z.Contains(audience))
+                        if (!finalList.Contains(audience))
                         {
-                            z.Add(audience);
+                            finalList.Add(audience);
                         }
 
                     }
                 }
             }
 
-            return z;
+            TargetAudiences = new ObservableCollection<ITargetAudience>(finalList);
+            List<string> TargetAudienceOptions = new();
+            foreach (ITargetAudience targetAudience in TargetAudiences)
+            {
+                TargetAudienceOptions.Add(targetAudience.Label);
+            }
+            RadioButtons = TargetAudienceOptions;
         }
         private void GetTest()
         {
@@ -236,30 +274,28 @@ namespace UserInterface.ViewModels
             if (selectedTargetAudience == null) return;
             // =====
 
-            ShowTestTargetAudienceView = "Hidden";
+            SetTestTargetAudienceView(NOTVISIBLE);
             Test = testService.GetTest(selectedTargetAudience.Id); // toegevoegd door jasper
             testProgressData = new TestProgressData(Test);
             testProgressData.CurrentQuestionNumber = 1;
             AskFirstQuestion();
         }
-
         private void AskFirstQuestion()
         {
             // toegevoegd door jasper
             RadioButtons = new List<string>();
-            QuestionRadioButtons = "Hidden";
             // =====
 
+            SetQuestionRadioButtons(NOTVISIBLE);
             TextQuestion = Test.TextQuestions.First().Question;
             testProgressData.CurrentQuestionNumber = Test.TextQuestions.First().QuestionNumber;
-            ShowTestTextQuestionView = "Visible";
-            QuestionInput = "Visible";
+            SetTestTextQuestionView(VISIBLE);
+            SetQuestionInput(VISIBLE);
         }
-
-        private void SaveAnswer()
+        private void SaveTextAnswer()
         {
             List<string> answers = new();
-            if(Test == null)
+            if (Test == null)
             {
                 return;
             }
@@ -283,20 +319,44 @@ namespace UserInterface.ViewModels
             QuestionInputText = string.Empty;
             NextQuestion();
         }
-        private void SaveAudioQuestion(string value)
+        private Ear DetermineWhichEar()
         {
-            List<string> answers = new();
-            answers.Add(value);
-
+            return Ear.Left;
+        }
+        private void SaveAudioAnswer(string value)
+        {
             //save answers to TestProgressData
             IToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-            testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.Frequency, q.StartingDecibels, 20, BusinessLogic.Enums.Ear.Left));
-
-            //remove given answer + everything that's ugly
-            NextQuestion();
+            testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.QuestionNumber, q.Frequency, DetermineWhichEar(), q.StartingDecibels, lowestDecibel, value));
+            DetermineNextStep(value);
         }
-        bool isDoneText = false;
-        bool isDoneAudio = false;
+        private void DetermineNextStep(string value)
+        {
+            if (finalDecibelToPlay)
+            {
+                finalDecibelToPlay = false;
+                lowestDecibel = 0;
+                NextQuestion();
+            }
+            else
+            {
+                DetermineNextDecibel(value);
+            }
+        }
+        private void DetermineNextDecibel(string answer)
+        {
+            if (answer == "true")
+            {
+                playDecibel = playDecibel - 10;
+            }
+            else
+            {
+                playDecibel = playDecibel + 5;
+                lowestDecibel = playDecibel;
+                finalDecibelToPlay = true;
+            }
+            PlayFrequency(currentFrequency, playDecibel);
+        }
         private void NextQuestion()
         {
             ITextQuestion e = Test.TextQuestions.MaxBy(x => x.QuestionNumber);
@@ -357,9 +417,10 @@ namespace UserInterface.ViewModels
                 {
                     //yes there is an audio question
                     ShowTestToneAudiometryView = "Visible";
-
                     IToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-                    PlayFrequency(q.Frequency);
+                    currentFrequency = q.Frequency;
+                    playDecibel = q.StartingDecibels;
+                    PlayFrequency(currentFrequency, playDecibel);
                 }
             }
             else
@@ -372,9 +433,15 @@ namespace UserInterface.ViewModels
                 ShowResults();
             }
         }
-        private void PlayFrequency(int frequency)
+        private void PlayFrequency(int frequency, int decibel)
         {
-            Task.Delay(2000).ContinueWith(_ =>
+            //NAUDIO!!
+            //add decibel as a variable to change
+
+            Random random = new Random();
+            int delay = random.Next(0, 3) * 1000;
+
+            Task.Delay(delay).ContinueWith(_ =>
             {
                 AudioManager.PlaySound(frequency, 700);
             });
@@ -382,8 +449,8 @@ namespace UserInterface.ViewModels
 
         private void ShowResults()
         {
-            ShowTestTextQuestionView = "Hidden";
-            ShowTestToneAudiometryView = "Hidden";
+            SetTestTextQuestionView(NOTVISIBLE);
+            SetTestToneAudiometryView(NOTVISIBLE);
 
             // toegevoegd door jasper
             navigationStore!.CurrentViewModel = new TestResultViewModel(navigationStore, testProgressData);

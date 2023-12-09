@@ -22,7 +22,7 @@ public class TestResultBusinessLogic
     private bool AnalyzeTestResult(TestProgressData testProgressData)
     {
         // Temporary for the demo
-        return testProgressData.ToneAudiometryAnswers.Where(answer => answer.LowerLimit == 65).Any();
+        return testProgressData.ToneAudiometryAnswers.Where(answer => answer.LowestLimitDecibels == 65).Any();
         // ======
 
         //int leftEarHearingLoss = calculateHearingLoss(answers.LeftEarAnswers);
