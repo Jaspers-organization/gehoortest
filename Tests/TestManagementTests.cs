@@ -23,39 +23,38 @@ public class TestManagementTests
         };
     }
 
-    //[Theory]
-    //[InlineData(0, 1, QuestionType.AudioQuestion)]
-    //[InlineData(2, 3, QuestionType.AudioQuestion)]
-    //[InlineData(56, 57, QuestionType.AudioQuestion)]
-    //[InlineData(0, 1, QuestionType.TextQuestion)]
-    //[InlineData(2, 3, QuestionType.TextQuestion)]
-    //[InlineData(56, 57, QuestionType.TextQuestion)]
-    //public void GetNewHighestQuestionNumber_ReturnsNextNumber_ForAudioQuestions(int existingQuestionsCount, int expectedNextNumber, QuestionType type)
-    //{
-    //    switch (type)
-    //    {
-    //        case QuestionType.AudioQuestion:
-    //            for (var i = 0; i < existingQuestionsCount; i++)
-    //            {
-    //                test.ToneAudiometryQuestions.Add(new ToneAudiometryQuestion { Id = i, Frequency = 1000 + i * 1000, StartingDecibels = 30 + i * 5, QuestionNumber = i + 1 });
-    //            }
-    //            break;
-    //        case QuestionType.TextQuestion:
+    [Theory]
+    [InlineData(0, 1, QuestionType.AudioQuestion)]
+    [InlineData(2, 3, QuestionType.AudioQuestion)]
+    [InlineData(56, 57, QuestionType.AudioQuestion)]
+    [InlineData(0, 1, QuestionType.TextQuestion)]
+    [InlineData(2, 3, QuestionType.TextQuestion)]
+    [InlineData(56, 57, QuestionType.TextQuestion)]
+    public void GetNewHighestQuestionNumber_ReturnsNextNumber_ForAudioQuestions(int existingQuestionsCount, int expectedNextNumber, QuestionType type)
+    {
+        switch (type)
+        {
+            case QuestionType.AudioQuestion:
+                for (var i = 0; i < existingQuestionsCount; i++)
+                {
+                    test.ToneAudiometryQuestions.Add(new ToneAudiometryQuestion { Id = new Guid(), Frequency = 1000 + i * 1000, StartingDecibels = 30 + i * 5, QuestionNumber = i + 1 });
+                }
+                break;
+            case QuestionType.TextQuestion:
 
-    //            for (var i = 0; i < existingQuestionsCount; i++)
-    //            {
-    //                test.TextQuestions.Add(new TextQuestion { Id = i, QuestionNumber = i + 1, HasInputField = false, IsMultiSelect = false, Options = new List<string>(), Question = "test" });
-    //            }
-    //            break;
-    //        default
-    //            :
-    //            return;
-    //    }
-        
-    //    var result = TestService.GetNewHighestQuestionNumber(test, type);
+                for (var i = 0; i < existingQuestionsCount; i++)
+                {
+                    test.TextQuestions.Add(new TextQuestion { Id = new Guid(), QuestionNumber = i + 1, HasInputField = false, IsMultiSelect = false, Options = [], Question = "test" });
+                }
+                break;
+            default:
+                return;
+        }
 
-    //    Assert.Equal(expectedNextNumber, result);
-    //}
+        var result = TestService.GetNewHighestQuestionNumber(test, type);
+
+        Assert.Equal(expectedNextNumber, result);
+    }
 
     [Theory]
     [InlineData(QuestionType.AudioQuestion)]
@@ -69,11 +68,11 @@ public class TestManagementTests
 
     [Theory]
     [InlineData("This is a valid string", false)]
-    [InlineData("ContainsInvalidCharacters!", false)]
-    [InlineData("!@#$%^&*()[]{};:'`|<>", true)]
-    public void ContainsInvalidCharacters_ReturnsValidString(string str, bool expectedResult)
+    [InlineData("ContainsInvalidCharacters", true)]
+    [InlineData("@#$%^&*()[]{};:'`|<>", true)]
+    public void ContainsInvalidCharacters_ReturnsInValidString(string str, bool expectedResult)
     {
-        bool actualResult = ErrorService.ContatinsInvalidCharacters(str);
+        bool actualResult = ErrorService.ContainsAnyCharacter(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -111,6 +110,19 @@ public class TestManagementTests
     {
         bool actualResult = ErrorService.IsEmptyString(str);
 
+        Assert.Equal(expectedResult, actualResult);
+    }
+
+    [Theory]
+    [InlineData(null, true)]
+    [InlineData("", true)]
+    [InlineData("ValidString", false)]
+    [InlineData("Invalid!Name", true)]
+    public void ValidateTestName_ReturnsExpectedResult(string str, bool expectedResult)
+    {
+        string result = ErrorService.ValidateTestName(str);
+
+        bool actualResult = result == ErrorService.ErrorTestName || result == ErrorService.ErrorIllegalCharacters;
         Assert.Equal(expectedResult, actualResult);
     }
 }

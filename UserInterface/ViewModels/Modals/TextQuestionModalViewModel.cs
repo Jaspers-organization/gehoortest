@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -111,6 +110,10 @@ internal class TextQuestionModalViewModel : ViewModelBase
         this.testManagementViewModel = testManagementViewModel;
         this.newQuestion = newQuestion;
         this.testService = testService;
+        SetValues();
+    }
+    private void SetValues()
+    {
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;

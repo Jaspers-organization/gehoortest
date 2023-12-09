@@ -1,6 +1,4 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Models;
-using BusinessLogic.Services;
+﻿using BusinessLogic.Models;
 using System;
 using System.Windows.Input;
 using UserInterface.Commands;
@@ -94,8 +92,6 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         }
         return true;
     }
-
-
     #endregion
 
     public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
@@ -105,13 +101,14 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         this.toneAudiometryQuestion = toneAudiometryQuestion;
         this.newQuestion = newQuestion;
 
-        StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
-        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
-
-        // Opens an error modal with the provided error text
+        SetValues();
     }
     public void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
-
+    public void SetValues()
+    {
+        StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
+        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
+    }
 
     private void SaveQuestion()
     {

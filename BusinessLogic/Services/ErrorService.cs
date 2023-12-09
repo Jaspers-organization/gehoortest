@@ -5,7 +5,7 @@ namespace UserInterface.Stores;
 
 public class ErrorService
 {
-    public const string IllegalCharacters = "!@#$%^&*()[]{};:'`|<>";
+    public const string IllegalCharacters = "@#$%^&*()[]{};:'`|<>";
     public const string ErrorTestName = "Het invoerveld is leeg.\n Geef de test een naam a.u.b.";
     public const string ErrorAudience = "De doelgroep is leeg. \n Kies een doelgroep a.u.b.";
     public const string ErrorTestQuestion = "De vraag is leeg.\n Vul alsjeblieft een vraag in.";
@@ -39,7 +39,6 @@ public class ErrorService
         }
     }
 
-
     public static string ValidateInput(string columnName, params object[] values)
     {
         string validationMessage = string.Empty;
@@ -71,6 +70,7 @@ public class ErrorService
 
         return validationMessage;
     }
+
     public static int ParseStringToInt(string str)
     {
         int parsedInt;
@@ -82,6 +82,7 @@ public class ErrorService
             return -1;
 
     }
+
     public static string ValidateDecibels(string StartingDecibelsString)
     {
         try
@@ -134,7 +135,7 @@ public class ErrorService
     {
         if (IsEmptyString(str!))
             return ErrorTestName;
-        else if (str.Contains(IllegalCharacters))
+        else if (ContainsAnyCharacter(str))
             return ErrorIllegalCharacters;
         return string.Empty;
     }
@@ -149,10 +150,11 @@ public class ErrorService
     {
         if (IsEmptyString(question))
             return ErrorTestQuestion;
-        else if (ContatinsInvalidCharacters(question))
+        else if (ContainsAnyCharacter(question))
             return ErrorIllegalCharacters;
         return string.Empty;
     }
+
     public static string ValidateQuestionType(bool inputField, bool multipleChoice, List<string> options)
     {
         if (!inputField && !multipleChoice)
@@ -162,9 +164,16 @@ public class ErrorService
         return string.Empty;
     }
 
-    public static bool ContatinsInvalidCharacters(string str)
+    public static bool ContainsAnyCharacter(string str)
     {
-        return str.Contains(IllegalCharacters);
+        foreach (char c in str)
+        {
+            if (IllegalCharacters.Contains(c))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static bool IsValidHz(int hz)
