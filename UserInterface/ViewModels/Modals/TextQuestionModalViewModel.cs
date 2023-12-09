@@ -1,6 +1,5 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.Entity.TestData_Management;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,8 +14,9 @@ internal class TextQuestionModalViewModel : ViewModelBase
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
+    private readonly TestService testService;
     private readonly TestManagementViewModel testManagementViewModel;
-    private readonly ITextQuestion textQuestion;
+    private readonly TextQuestion textQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -84,48 +84,10 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
 
     #region Errors
-    private string this[string columnName]
-    {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "TestQuestion":
-                    validationMessage = ValidateTestQuestion();
-                    break;
-                case "MultipleChoice":
-                case "HasInputField":
-                    validationMessage = ValidateQuestionType();
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-    private string ValidateTestQuestion()
-    {
-        if (TestService.IsEmptyString(TestQuestion))
-            return ErrorStore.ErrorTestQuestion;
-        else if (TestService.ContatinsInvalidCharacters(TestQuestion))
-            return ErrorStore.ErrorIllegalCharacters;
-        return string.Empty;
-    }
-    private string ValidateQuestionType()
-    {
-        if (!HasInputField && !MultipleChoice)
-            return ErrorStore.ErrorQuestionAnwserType;
-        if (MultipleChoice && Options.Count < 2)
-            return ErrorStore.ErrorMultipleChoiceOptions;
-        return string.Empty;
-    }
     private bool CheckValidityInput()
     {
-        string testQuestionValidation = this["TestQuestion"];
-        string anwserTypeValidation = this["MultipleChoice"];
-
+        string testQuestionValidation = ErrorService.ValidateInput("TestQuestion", TestQuestion);
+        string anwserTypeValidation = ErrorService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
         if (!string.IsNullOrEmpty(testQuestionValidation))
         {
             OpenErrorModal(testQuestionValidation);
@@ -142,16 +104,17 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
     private ErrorModalViewModal errorModalViewModal { get; set; }
 
-    public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    public TextQuestionModalViewModel(NavigationStore navigationStore, TextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel, TestService testService)
     {
         this.navigationStore = navigationStore;
         this.textQuestion = textQuestion;
         this.testManagementViewModel = testManagementViewModel;
         this.newQuestion = newQuestion;
+        this.testService = testService;
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(textQuestion.Options ?? new List<string>());
+        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!));
     }
 
     private void OpenErrorModal(string text)
@@ -163,7 +126,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!TestService.IsEmptyString(value))
+            if (!ErrorService.IsEmptyString(value))
             {
                 Options.Add(value);
                 OnPropertyChanged(nameof(Options));
@@ -176,7 +139,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         catch (Exception ex)
         {
             OpenErrorModal($"Er is wat fout gegaan tijdens het toevoegen van de optie. {ex.Message}");
-           
+
         }
     }
 
@@ -184,14 +147,14 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!TestService.IsEmptyString(value) && Options.Contains(value))
+            if (!ErrorService.IsEmptyString(value) && Options.Contains(value))
             {
                 Options.Remove(value);
                 OnPropertyChanged(nameof(Options));
             }
             else
             {
-                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie."); 
+                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie.");
             }
         }
         catch (Exception ex)
@@ -200,8 +163,6 @@ internal class TextQuestionModalViewModel : ViewModelBase
         }
     }
 
-
-
     private void SaveQuestion()
     {
         try
@@ -209,13 +170,13 @@ internal class TextQuestionModalViewModel : ViewModelBase
             if (!CheckValidityInput())
                 return;
 
-            ITextQuestion question = new TextQuestion
+            TextQuestion question = new TextQuestion
             {
                 Id = textQuestion.Id,
                 HasInputField = HasInputField,
                 IsMultiSelect = MultipleChoice,
                 Question = TestQuestion,
-                Options = Options.ToList(),
+                Options = testService.ConvertStringsToQuestionOptions(Options.ToList(), textQuestion.Id),
                 QuestionNumber = textQuestion.QuestionNumber
             };
 
@@ -226,13 +187,13 @@ internal class TextQuestionModalViewModel : ViewModelBase
 
             CloseModal();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             OpenErrorModal("Er is wat fout gegaan bij het opslaan van de vraag.");
         }
-        
+
     }
-    
+
     private void CloseModal()
     {
         navigationStore.CloseModal(testManagementViewModel);

@@ -1,33 +1,38 @@
-﻿using DataAccess.Models.TestData_Management;
-using BusinessLogic.IModels;
+﻿using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models;
 
 namespace DataAccess.MockData;
 
 public class TargetAudienceMockRepository : ITargetAudienceRepository
 {
-    public List<ITargetAudience> GetAllAudiences()
+    public void FillTargetAudiences()
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TargetAudience> GetAllAudiences()
     {
 
-        List<ITargetAudience> audienceList = new List<ITargetAudience>
+        List<TargetAudience> audienceList = new List<TargetAudience>
         {
-            new TargetAudience { Id = 0, From = 0, To = 18, Label = "0-18" },
-            new TargetAudience { Id = 1, From = 19, To = 29, Label = "19-29" },
-            new TargetAudience { Id = 2, From = 30, To = 49, Label = "30-49" },
-            new TargetAudience { Id = 3, From = 50, To = 69, Label = "50-69" },
-            new TargetAudience { Id = 4, From = 70, To = 79, Label = "70-79" },
-            new TargetAudience { Id = 5, From = 80, To = 89, Label = "80-89" },
+            new TargetAudience { Id = new Guid(), From = 0, To = 18, Label = "0-18" },
+            new TargetAudience { Id = new Guid(), From = 19, To = 29, Label = "19-29" },
+            new TargetAudience { Id = new Guid(), From = 30, To = 49, Label = "30-49" },
+            new TargetAudience { Id = new Guid(), From = 50, To = 69, Label = "50-69" },
+            new TargetAudience { Id = new Guid(), From = 70, To = 79, Label = "70-79" },
+            new TargetAudience { Id = new Guid(), From = 80, To = 89, Label = "80-89" },
         };
-      
+
         return audienceList;
     }
 
-    public List<BusinessLogic.Models.TargetAudience> GetAllAudiences(int id)
+    public List<TargetAudience> GetAllAudiences(int id)
     {
         throw new NotImplementedException();
     }

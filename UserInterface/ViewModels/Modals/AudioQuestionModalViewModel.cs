@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IModels;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.Entity.TestData_Management;
 using System;
 using System.Windows.Input;
 using UserInterface.Commands;
@@ -13,7 +13,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
-    private readonly IToneAudiometryQuestion toneAudiometryQuestion;
+    private readonly ToneAudiometryQuestion toneAudiometryQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -68,119 +68,43 @@ internal class AudioQuestionModalViewModel : ViewModelBase
 
     #region Errors
 
-    public string this[string columnName]
-    {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "Frequency":
-                    validationMessage = ValidateFrequency();
-                    break;
-                case "StartingDecibelsString":
-                    validationMessage = ValidateDecibels();
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-
     private bool CheckValidityInput()
     {
-        string testNameValidation = this["Frequency"];
-        string audienceValidation = this["StartingDecibelsString"];
+        string frequencyValidation = ErrorService.ValidateInput("Frequency", FrequencyString);
+        string decibelValidation = ErrorService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
 
-        if (!string.IsNullOrEmpty(testNameValidation))
+        if (!string.IsNullOrEmpty(frequencyValidation))
         {
-            OpenErrorModal(testNameValidation);
+            OpenErrorModal(frequencyValidation);
             return false;
         }
-
-        if (!string.IsNullOrEmpty(audienceValidation))
+        else
         {
-            OpenErrorModal(audienceValidation);
+            Frequency = ErrorService.ParseStringToInt(FrequencyString);//not sure of this.
+        }
+
+        if (!string.IsNullOrEmpty(decibelValidation))
+        {
+            OpenErrorModal(decibelValidation);
             return false;
+        }
+        else
+        {
+            StartingDecibels = ErrorService.ParseStringToInt(StartingDecibelsString);
         }
         return true;
     }
-    private string ValidateFrequency()
-    {
-        try
-        {
-            if (int.TryParse(FrequencyString, out int frequency))
-            {
-                if (!TestService.IsValidHz(frequency))
-                {
-                    return ErrorStore.ErrorFrequencyLimit;
-                }
-                else
-                {
-                    Frequency = frequency;
-                }
-            }
-            else if (TestService.IsEmptyString(FrequencyString))
-            {
-                return ErrorStore.ErrorEmpty;
-            }
-            else
-            {
-                return ErrorStore.ErrorNotValidInteger;
-            }
-        }
-        catch (Exception ex)
-        {
-            // Log or handle the exception as needed
-            return $"Er is wat misgegaan";
-        }
 
-        return string.Empty;
-    }
-
-    private string ValidateDecibels()
-    {
-        try
-        {
-            if (int.TryParse(StartingDecibelsString, out int startingDecibels))
-            {
-                if (!TestService.IsValidDecibel(startingDecibels))
-                {
-                    return ErrorStore.ErrorStartingDecibels;
-                }
-                else
-                {
-                    StartingDecibels = startingDecibels;
-                }
-            }
-            else if (TestService.IsEmptyString(StartingDecibelsString))
-            {
-                return ErrorStore.ErrorEmpty;
-            }
-            else
-            {
-                return ErrorStore.ErrorNotValidInteger;
-            }
-        }
-        catch (Exception ex)
-        {
-            // Log or handle the exception as needed
-            return $"Er is wat misgegaan";
-        }
-
-        return string.Empty;
-    }
 
     #endregion
 
-    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {
         this.navigationStore = navigationStore;
         this.testManagementViewModel = testManagementViewModel;
         this.toneAudiometryQuestion = toneAudiometryQuestion;
         this.newQuestion = newQuestion;
+
         StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
         FrequencyString = toneAudiometryQuestion.Frequency.ToString();
 
@@ -198,7 +122,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
                 return;
 
             // Creates a new ToneAudiometryQuestion object based on the provided data
-            IToneAudiometryQuestion question = new ToneAudiometryQuestion
+            ToneAudiometryQuestion question = new ToneAudiometryQuestion
             {
                 Id = toneAudiometryQuestion.Id,
                 StartingDecibels = StartingDecibels,

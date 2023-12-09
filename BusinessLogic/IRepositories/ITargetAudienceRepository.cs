@@ -1,16 +1,9 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLogic.Models;
 
 namespace BusinessLogic.IRepositories;
 
 public interface ITargetAudienceRepository
 {
-    public List<ITargetAudience> GetAllAudiences();
-    public List<TargetAudience> GetAllAudiences(int id);
-
+    public List<TargetAudience> GetAllAudiences();
+    //public void FillTargetAudiences();
 }

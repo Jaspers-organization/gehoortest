@@ -27,7 +27,7 @@
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
                     <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Test vraag" Height="58" Width="auto"/>
-                    <TextBox Text="{Binding TestName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_L}"/>
+                    <TextBox Text="{Binding TestName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
 
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,00" Grid.RowSpan="2" >

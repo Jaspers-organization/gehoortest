@@ -1,10 +1,11 @@
-﻿using BusinessLogic.IModels;
+﻿
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Classes;
 
 public class TestProgressData
 {
-    public ITest Test { get; set; }
+    public Test Test { get; set; }
     public int AudimertryTestProgress { get; set; }
 
 
@@ -14,7 +15,7 @@ public class TestProgressData
     public List<TextAnswer> TextAnswers { get; set; }
     public List<ToneAudiometryAnswer> ToneAudiometryAnswers { get; set; }
     #endregion Sisi
-    public TestProgressData(ITest test)
+    public TestProgressData(Test test)
     {
         Test = test;
         CurrentQuestionNumber = 0;
