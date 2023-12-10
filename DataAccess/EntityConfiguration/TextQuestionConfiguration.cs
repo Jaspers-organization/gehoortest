@@ -35,6 +35,7 @@ public class TextQuestionConfiguration : IEntityTypeConfiguration<TextQuestion>
         builder.Property(tq => tq.TestId)
                .HasColumnName("test_id")
                .HasColumnType("nvarchar(128)");
+
         builder.Ignore(tq => tq.QuestionType);
 
         // Define relationships

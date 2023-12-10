@@ -16,7 +16,7 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
         throw new NotImplementedException();
     }
 
-    public List<TargetAudience> GetAllAudiences()
+    public List<TargetAudience> GetAll()
     {
 
         List<TargetAudience> audienceList = new List<TargetAudience>

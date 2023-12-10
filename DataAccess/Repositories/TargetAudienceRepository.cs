@@ -9,7 +9,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
 {
     private readonly Repository repository = new Repository();
 
-    public List<TargetAudience> GetAllAudiences()
+    public List<TargetAudience> GetAll()
     {
         using (Repository context = repository)
         {

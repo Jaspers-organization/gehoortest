@@ -1,6 +1,8 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.Enums;
+using BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.EntityConfiguration;
 
@@ -8,6 +10,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
+
+        var converter = new EnumToStringConverter<Role>();
+
         builder.ToTable("employee");
 
         builder.HasKey(e => e.Id);
@@ -19,6 +24,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(e => e.FirstName)
                .HasColumnName("first_name")
                .HasColumnType("nvarchar(50)");
+
+        builder.Property(e => e.AccountType)
+                .HasColumnName("role")
+                .HasColumnType("nvarchar(15)")
+                .HasConversion(converter);
 
         builder.Property(e => e.Infix)
               .HasColumnName("infix")

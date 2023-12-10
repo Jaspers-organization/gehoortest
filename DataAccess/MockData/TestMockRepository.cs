@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Projections;
-using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 

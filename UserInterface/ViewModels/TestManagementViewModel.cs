@@ -1,12 +1,7 @@
-﻿using BusinessLogic.Enums;
-using BusinessLogic.IModels;
-using BusinessLogic.Interfaces;
-using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.MockData;
 using DataAccess.Repositories;
-using gehoortest_application.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,8 +17,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
-    private readonly ITestRepository testRepository;
-    private readonly ITargetAudienceRepository targetAudienceRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceSerivce;
     private readonly bool newTest;
@@ -45,32 +38,25 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region Properties
-    private List<TargetAudience>? _audiencesList;
-    public List<TargetAudience>? AudiencesList
+    private List<TargetAudience>? _targetAudiences;
+    public List<TargetAudience>? TargetAudiences
     {
-        get { return _audiencesList; }
-        set { _audiencesList = value; OnPropertyChanged(nameof(AudiencesList)); }
+        get { return _targetAudiences; }
+        set { _targetAudiences = value; OnPropertyChanged(nameof(TargetAudiences)); }
     }
-    private TargetAudience? _audience;
-    public TargetAudience? Audience
+    private TargetAudience initalTargetAudience;
+
+    private TargetAudience? _selectedTargetAudience;
+    public TargetAudience? SelectedTargetAudience
     {
-        get { return _audience; }
-        set { _audience = value; OnPropertyChanged(nameof(Audience)); }
-    }
-    private int _selected;
-    public int Selected
-    {
-        get { return _selected; }
+        get { return _selectedTargetAudience; }
         set
         {
-            _selected = value; OnPropertyChanged(nameof(Selected));
-            TargetAudience audience = AudiencesList[value];
-            Audience = audience;
-            Test.TargetAudienceId = audience.Id;
-            Test.TargetAudience = audience;
+            _selectedTargetAudience = value; OnPropertyChanged(nameof(SelectedTargetAudience));
+            Test.TargetAudienceId = _selectedTargetAudience.Id;
+            Test.TargetAudience = _selectedTargetAudience;
         }
     }
-
     private string? _status;
     public string? Status
     {
@@ -105,7 +91,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         // Check the validity of the input
         string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
-        string audienceValidation = ErrorService.ValidateInput("Audience", Audience!);
+        string audienceValidation = ErrorService.ValidateInput("Audience", SelectedTargetAudience!);
 
         if (!string.IsNullOrEmpty(testNameValidation))
         {
@@ -131,15 +117,13 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         //Dependencies initialization
         this.navigationStore = navigationStore;
 
-        testRepository = new TestRepository();
-        targetAudienceRepository = new TargetAudienceRepository();
-
-        testService = new TestService(testRepository);
-        targetAudienceSerivce = new TargetAudienceService(targetAudienceRepository);
-
+        testService = new TestService(new TestRepository());
+        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
 
         //set values
         SetTargetAudiences();
+        if (TargetAudiences == null)
+            return;
 
         if (test != null)
         {
@@ -155,8 +139,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         }
     }
 
-    private void SetTargetAudiences() => AudiencesList = targetAudienceSerivce.GetAllTargetAudiences();
-
+    private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
 
     #region Navigation
     private void BackToTestOverview()
@@ -169,7 +152,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen zullen ongedaan worden gemaakt.");
     }
     #endregion
-
 
     #region Initialization
     // Sets various properties based on the provided test data
@@ -185,10 +167,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions));
 
         // If there's a list of audiences available
-        if (AudiencesList != null)
+        if (TargetAudiences != null)
         {
             // Set the target audience for the test
-            SetAudience(AudiencesList.First(t => t.Id == test.TargetAudience.Id));
+            SetAudience(TargetAudiences.First(t => t.Id == test.TargetAudience.Id));
         }
 
         // Set the test name
@@ -198,8 +180,9 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         SetStatus(test.Active);
 
         // Set the selected target audience ID
+        SetSelected(TargetAudiences!.FindIndex(t => t.Id == test.TargetAudience.Id));
 
-        SetSelected(AudiencesList!.FindIndex(t => t.Id == test.TargetAudience.Id));
+        initalTargetAudience = test.TargetAudience;
     }
 
     // Sets the overall test
@@ -212,7 +195,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetAudioQuestions(ObservableCollection<ToneAudiometryQuestion> questions) => AudioQuestions = questions;
 
     // Sets the target audience for the test
-    private void SetAudience(TargetAudience audience) => Audience = audience;
+    private void SetAudience(TargetAudience audience) => SelectedTargetAudience = audience;
 
     // Sets the test name
     private void SetTestName(string title) => TestName = title;
@@ -221,7 +204,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetStatus(bool active) => Status = active ? "Actief" : "Inactief";
 
     // Sets the selected target audience ID
-    private void SetSelected(int id) => Selected = id;
+    private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
 
     // Creates a new test
     private void CreateTest()
@@ -447,19 +430,26 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         return new TestOverviewViewModel(navigationStore);
     }
-
+    private void CheckTargetAudienceChanged()
+    {
+        if (testService.TargetAudienceChanged(Test.TargetAudience, initalTargetAudience))
+            Test.Active = false;
+    }
     private void SaveTest()
     {
         try
         {
             if (!CheckValidityInput())
                 return;
+
             //TEMP TODO WRITE AROUND
             EmployeeRepository repository = new EmployeeRepository();
             var Employee = repository.Get();
             Test.EmployeeId = Employee.Id;
             Test.Employee = Employee;
             //
+
+            CheckTargetAudienceChanged();
 
             testService.SaveOrUpdateTest(Test, newTest);
 

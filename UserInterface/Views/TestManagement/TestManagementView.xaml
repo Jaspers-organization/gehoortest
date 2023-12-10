@@ -33,9 +33,9 @@
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,00" Grid.RowSpan="2" >
                     <TextBlock Style="{StaticResource Text}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
-                              SelectedValuePath="Label" ItemsSource="{Binding AudiencesList}"
-                              SelectedIndex="{Binding Selected, Mode=TwoWay}"
                               SelectedValue=""
+                              SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
+                              SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"
                               Text="Selecteer een doelgroep" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

@@ -40,7 +40,6 @@ public class TestService
     public void UpdateTest(Test test) => testRepository.UpdateTest(test);
     #endregion
 
-
     public void SetTest(Test test) => this.test = test;
 
     public void SaveOrUpdateTest(Test test, bool newTest)
@@ -49,6 +48,11 @@ public class TestService
             SaveTest(test);
         else
             UpdateTest(test);
+    }
+
+    public bool TargetAudienceChanged(TargetAudience currentTargetAudience, TargetAudience initalTargetAudience)
+    {
+        return currentTargetAudience == initalTargetAudience;
     }
 
     #region ???? not sure yet TODO

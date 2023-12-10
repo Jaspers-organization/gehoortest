@@ -16,7 +16,7 @@ public class TargetAudienceService
         
     public List<TargetAudience> GetAllTargetAudiences()
     {
-        return targetAudienceRepository.GetAllAudiences();
+        return targetAudienceRepository.GetAll();
     }
     
 

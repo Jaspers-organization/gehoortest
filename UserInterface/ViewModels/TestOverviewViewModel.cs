@@ -1,6 +1,4 @@
-﻿using DataAccess.MockData;
-using BusinessLogic.IModels;
-using BusinessLogic.Projections;
+﻿using BusinessLogic.Projections;
 using System.Collections.Generic;
 using System.Linq;
 using UserInterface.Stores;
@@ -10,8 +8,6 @@ using UserInterface.Commands;
 using BusinessLogic.Interfaces;
 using System;
 using UserInterface.ViewModels.Modals;
-using gehoortest_application.Repository;
-using BusinessLogic.IRepositories;
 using DataAccess.Repositories;
 using BusinessLogic.Models;
 
@@ -21,8 +17,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore? navigationStore;
-    private readonly ITargetAudienceRepository targetAudienceRepository;
-    private readonly ITestRepository testRepository;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceService;
     #endregion
@@ -33,7 +27,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand DeleteTestCommand => new Command(DeleteTest);
     public ICommand BackToMainMenuCommand => new Command(BackToMainMenu);
     public ICommand ToggleActiveStatusCommand => new Command(ToggleActiveStatus);
-
     #endregion
 
     #region properties
@@ -70,12 +63,9 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     {
         this.navigationStore = navigationStore;
 
-        targetAudienceRepository = new TargetAudienceRepository();
-        testRepository = new TestRepository();
-
         // Services
-        testService = new TestService(testRepository);
-        targetAudienceService = new TargetAudienceService(targetAudienceRepository);
+        testService = new TestService(new TestRepository());
+        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository());
 
         GetTargetAudiences();
     }
@@ -86,23 +76,21 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
         if (TargetAudiences == null)
             return;
-        
 
-        SelectedTargetAudience = TargetAudiences.FirstOrDefault();
+        SelectedTargetAudience = TargetAudiences.First();
     }
 
     private void UpdateTestProjections(Guid id) => Tests = testService.GetTestProjectionsByTargetAudienceId(id);
 
-
+    //todo rewrite this to employee portal.
     private void BackToMainMenu() => navigationStore!.CurrentViewModel = new TestViewModel(navigationStore);
-
 
     private void OpenTest(Guid id)
     {
-        Test test = testService.GetTestById(id);
+        Test? test = testService.GetTestById(id);
 
         if (test != null)
-            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore,  test);
+            navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, test);
     }
 
     private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore);
@@ -128,7 +116,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     }
 
     public void OpenConfirmationModal(Action action, string text) => navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
-
 
     private void ToggleActiveStatus(Guid testId)
     {

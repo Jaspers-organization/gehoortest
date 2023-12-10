@@ -9,5 +9,5 @@ public class TargetAudience : IModel
     public int To { get; set; }
     public string? Label { get; set; }
 
-    public ICollection<Test> Tests { get; set; }
+    public ICollection<Test>? Tests { get; set; }
 }

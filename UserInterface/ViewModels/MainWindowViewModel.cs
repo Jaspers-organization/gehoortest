@@ -6,19 +6,20 @@ internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
 
-    private ViewModelBase? currentViewModel;
-    private ViewModelBase? currentModalViewModel;
     private string showModal = "Hidden";
 
+    private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
-        get { return currentViewModel; }
-        set { currentViewModel = value; OnPropertyChanged(nameof(CurrentViewModel)); }
+        get { return _currentViewModel; }
+        set { _currentViewModel = value; OnPropertyChanged(nameof(CurrentViewModel)); }
     }
+
+    private ViewModelBase? _currentModalViewModel;
     public ViewModelBase? CurrentModalViewModel
     {
-        get { return currentModalViewModel; }
-        set { currentModalViewModel = value; OnPropertyChanged(nameof(CurrentModalViewModel)); }
+        get { return _currentModalViewModel; }
+        set { _currentModalViewModel = value; OnPropertyChanged(nameof(CurrentModalViewModel)); }
     }
     public string ShowModal
     {

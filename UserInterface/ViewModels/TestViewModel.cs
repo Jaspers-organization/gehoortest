@@ -1,6 +1,5 @@
 ﻿using BusinessLogic;
 using BusinessLogic.Classes;
-using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Services;

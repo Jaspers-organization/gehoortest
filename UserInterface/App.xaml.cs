@@ -2,7 +2,6 @@
 using UserInterface.Views;
 using System.Windows;
 using UserInterface.ViewModels;
-using DataAccess.Repositories;
 
 namespace UserInterface;
 
