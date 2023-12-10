@@ -1,12 +1,14 @@
-﻿using DataAccess.MockData;
+using DataAccess.MockData;
 using UserInterface.Stores;
 using BusinessLogic.Classes;
 using BusinessLogic.Controllers;
+using BusinessLogic.Enums;
 using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;
 using BusinessLogic.BusinessRules;
+
 
 namespace UserInterface.ViewModels;
 
@@ -15,10 +17,11 @@ internal class TestResultViewModel : ViewModelBase
     #region dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestProgressData testProgressData;
-    private readonly TestResultRepository testResultRepository;
+    private readonly TestResultMockRepository testResultRepository;
     private readonly TestResultBusinessLogic testResultBusinessLogic;
     private readonly EmailService emailService;
     #endregion
+
 
     #region properies
     private string? _testResultText;
@@ -66,11 +69,12 @@ internal class TestResultViewModel : ViewModelBase
 
     public ICommand SendEmailCommand => new Command(SendEmail);
 
+
     public TestResultViewModel(NavigationStore navigationStore, TestProgressData testProgressData)
     {
         this.navigationStore = navigationStore;
         this.testProgressData = testProgressData;
-        testResultRepository = new TestResultRepository();
+        testResultRepository = new TestResultMockRepository();
         testResultBusinessLogic = new TestResultBusinessLogic(testResultRepository);
 
         // TODO: move this to a config file
@@ -82,23 +86,22 @@ internal class TestResultViewModel : ViewModelBase
 
         emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
 
+
         GetTestResult();
     }
 
-    public void GetTestResult() {
-        testResult = testResultBusinessLogic.GetTestResult(testProgressData);
 
-        if (testResult.hasHearingLoss)
-        {
-            TestResultText = "Gehoorschade";
-            TestResultExplanation = "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens.";
-            NegativeTestResult = "Visible";
-            return;
-        }
+    public void GetTestResult()
+    {
+        TestResultProjection testResult = testResultBusinessLogic.GetTestResult(testProgressData);
 
-        TestResultText =  "Gezond gehoor";
-        TestResultExplanation = "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.";
-        PositiveTestResult = "Visible";
+        TestResultText = testResult.hasHearingLoss
+            ? "Gehoorschade"
+            : "Gezond gehoor";
+
+        TestResultExplanation = testResult.hasHearingLoss
+            ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
+            : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.";
     }
 
     private void SendEmail()
@@ -112,4 +115,5 @@ internal class TestResultViewModel : ViewModelBase
         EmailError = "Hidden";
         emailService.SendEmail(Email, testResult);
     }
+
 }

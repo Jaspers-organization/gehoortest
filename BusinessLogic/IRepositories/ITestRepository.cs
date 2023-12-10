@@ -1,16 +1,16 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Models;
 using BusinessLogic.Projections;
-using System.Collections.ObjectModel;
 
 namespace BusinessLogic.IRepositories;
 
 public interface ITestRepository
 {
-    ITest GetTest(int  id);
-    void UpdateTest(ITest test);
-    ITest CreateTest();
-    void SaveTest(ITest test);
-    void DeleteTest(ITest test);
-    List<ITest> GetAllTests();
-    ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id);
+    public Test? GetTestById(Guid id);
+    public void UpdateTest(Test test);
+    public Test CreateTest();
+    public void SaveTest(Test test);
+    public void DeleteTest(Test test);
+    public List<Test> GetAllTests();
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id);
+    public Test? GetTestByTargetAudienceIdAndActive(Guid id);
 }

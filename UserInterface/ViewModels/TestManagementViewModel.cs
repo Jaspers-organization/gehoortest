@@ -1,8 +1,7 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
-using DataAccess.Entity.TestData_Management;
-using DataAccess.MockData;
+using DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,50 +16,47 @@ namespace UserInterface.ViewModels;
 internal class TestManagementViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
-    private readonly NavigationStore _navigationStore;
-    private readonly TestRepository _testRepository;
-    private readonly TargetAudienceRepository _targetAudienceRepository;
-    private readonly TestService _testSerivce;
-    private readonly TargetAudienceService _targetAudienceSerivce;
-    private readonly TestOverviewViewModel _testOverviewViewModel;
+    private readonly NavigationStore navigationStore;
+    private readonly TestService testService;
+    private readonly TargetAudienceService targetAudienceSerivce;
     private readonly bool newTest;
     #endregion
 
     #region Commands
-    public ICommand SaveTestCommand { get; }
-    public ICommand DeleteTextQuestionCommand { get; }
-    public ICommand DeleteAudioQuestionCommand { get; }
+    public ICommand SaveTestCommand => new Command(SaveTest);
+    public ICommand BackToTestOverviewCommand => new Command(BackToTestOverview);
 
-    public ICommand OpenTextModalCommand { get; }
-    public ICommand OpenNewTextModalCommand { get; }
+    public ICommand OpenNewTextModalCommand => new Command(OpenNewTextModal);
+    public ICommand OpenTextModalCommand => new Command(OpenTextModal);
+    public ICommand DeleteTextQuestionCommand => new Command(DeleteTextQuestion);
 
-    public ICommand OpenAudioModalCommand { get; }
-    public ICommand OpenNewAudioModalCommand { get; }
-    public ICommand BackToTestOverviewCommand { get; }
+    public ICommand OpenNewAudioModalCommand => new Command(OpenNewAudioModal);
+    public ICommand OpenAudioModalCommand => new Command(OpenAudioModal);
+    public ICommand DeleteAudioQuestionCommand => new Command(DeleteAudioQuestion);
+
 
     #endregion
 
-    #region Propertys
-    private List<ITargetAudience>? _audiencesList;
-    public List<ITargetAudience>? AudiencesList
+    #region Properties
+    private List<TargetAudience>? _targetAudiences;
+    public List<TargetAudience>? TargetAudiences
     {
-        get { return _audiencesList; }
-        set { _audiencesList = value; OnPropertyChanged(nameof(AudiencesList)); }
+        get { return _targetAudiences; }
+        set { _targetAudiences = value; OnPropertyChanged(nameof(TargetAudiences)); }
     }
-    private ITargetAudience? _audience;
-    public ITargetAudience? Audience
-    {
-        get { return _audience; }
-        set { _audience = value; OnPropertyChanged(nameof(Audience)); }
-    }
-    //todo make it so that the right targetaudicence gets set
-    private int _selected;
-    public int Selected
-    {
-        get { return _selected; }
-        set { SetTargetAudience(value); }
-    }
+    private TargetAudience initalTargetAudience;
 
+    private TargetAudience? _selectedTargetAudience;
+    public TargetAudience? SelectedTargetAudience
+    {
+        get { return _selectedTargetAudience; }
+        set
+        {
+            _selectedTargetAudience = value; OnPropertyChanged(nameof(SelectedTargetAudience));
+            Test.TargetAudienceId = _selectedTargetAudience.Id;
+            Test.TargetAudience = _selectedTargetAudience;
+        }
+    }
     private string? _status;
     public string? Status
     {
@@ -72,17 +68,17 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     public string? TestName
     {
         get { return _testName; }
-        set { _testName = value; OnPropertyChanged(nameof(TestName)); test.Title = value; }
+        set { _testName = value; OnPropertyChanged(nameof(TestName)); Test.Title = value; }
     }
-    private ObservableCollection<ITextQuestion>? _textQuestions;
-    public ObservableCollection<ITextQuestion>? TextQuestions
+    private ObservableCollection<TextQuestion>? _textQuestions;
+    public ObservableCollection<TextQuestion>? TextQuestions
     {
         get { return _textQuestions; }
         set { _textQuestions = value; OnPropertyChanged(nameof(TextQuestions)); }
     }
 
-    private ObservableCollection<IToneAudiometryQuestion>? _audioQuestions;
-    public ObservableCollection<IToneAudiometryQuestion>? AudioQuestions
+    private ObservableCollection<ToneAudiometryQuestion>? _audioQuestions;
+    public ObservableCollection<ToneAudiometryQuestion>? AudioQuestions
     {
         get { return _audioQuestions; }
         set { _audioQuestions = value; OnPropertyChanged(nameof(AudioQuestions)); }
@@ -91,248 +87,382 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region Errors
-
-    public string this[string columnName]
+    private bool CheckValidityInput()
     {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "TestName":
-                    if (string.IsNullOrEmpty(TestName))
-                        validationMessage = ErrorMessageStore.ErrorTestName;
-                    else if(TestName.Contains(ErrorMessageStore.IllegalCharacters))
-                        validationMessage = ErrorMessageStore.ErrorIllegalCharacters;
-                    break;
-                case "Audience":
-                    if (Audience == null || string.IsNullOrEmpty(Audience.Label))
-                        validationMessage = ErrorMessageStore.ErrorAudience;
-                    break;
-                default:
-                    break;
-            }
-
-            return validationMessage ?? string.Empty;
-        }
-    }
-    #endregion
-
-    public bool IsConfirmed { get; set; }
-    public ITest test { get; set; }
-    private ITargetAudience tempTargetAudience;
-
-    private ErrorModalViewModal _errorModalViewModal { get; set; }
-    private ConfirmationModalViewModel _confirmationModalViewModel { get; set; }
-
-    public TestManagementViewModel(NavigationStore navigationStore, TestOverviewViewModel testOverviewViewModel,ITargetAudience targetAudience, ITest test = null)
-    {
-        //Dependencies initialization
-        _testRepository = new TestRepository();
-        _targetAudienceRepository = new TargetAudienceRepository();
-        _testSerivce = new TestService(_testRepository);
-        _targetAudienceSerivce = new TargetAudienceService(_targetAudienceRepository);
-        _testOverviewViewModel = testOverviewViewModel;
-        _navigationStore = navigationStore;
-
-        tempTargetAudience = targetAudience;
-        //set values
-        List<ITargetAudience> targetAudiences = _targetAudienceSerivce.GetAllTargetAudiences();
-        AudiencesList = targetAudiences;
-        if (test != null)
-        {
-            SetTestValues(test);
-        }
-        else
-        {
-            newTest = true;
-            Status = "Inactief";
-            CreateTest();
-        }
-
-        // Commands initialization
-        SaveTestCommand = new Command(SaveTest);
-        DeleteTextQuestionCommand = new Command(DeleteTextQuestion);
-        DeleteAudioQuestionCommand = new Command(DeleteAudioQuestion);
-
-        OpenTextModalCommand = new Command(OpenTextModal);
-        OpenNewTextModalCommand = new Command(OpenNewTextModal);
-
-        OpenAudioModalCommand = new Command(OpenAudioModal);
-        OpenNewAudioModalCommand = new Command(OpenNewAudioModal);
-
-        BackToTestOverviewCommand =new Command(BackToTestOverview);
-    }
-    private void BackToTestOverview()
-    {
-        Action backAction = () =>
-        {
-            _navigationStore!.CurrentViewModel = new TestOverviewViewModel(_navigationStore, tempTargetAudience);
-        };
-
-        OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen worden ongedaan gemaakt.");
-    }
-    private void OpenTextModal(int questionNumber)
-    {
-        ITextQuestion textQuestion = test.TextQuestions.First(q => q.QuestionNumber == questionNumber);
-        _navigationStore.OpenModal(new TextQuestionModalViewModel(_navigationStore, textQuestion, false, this));
-    }
-    private void OpenNewTextModal()
-    {
-        ITextQuestion textQuestion = CreateTextQuestion();
-        textQuestion.QuestionNumber = _testSerivce.GetNewHighestQuestionNumber(test,textQuestion);
-        _navigationStore.OpenModal(new TextQuestionModalViewModel(_navigationStore, textQuestion, true, this));
-    }
-    private void OpenAudioModal(int questionNumber)
-    {
-        IToneAudiometryQuestion audioQuestion = test.ToneAudiometryQuestions.First(q => q.QuestionNumber == questionNumber);
-        _navigationStore.OpenModal(new AudioQuestionModalViewModel(_navigationStore, audioQuestion, false, this));
-    }
-    private void OpenNewAudioModal()
-    {
-        IToneAudiometryQuestion audioQuestion = CreateToneAudiometryQuestion();
-        audioQuestion.QuestionNumber = _testSerivce.GetNewHighestQuestionNumber(test,audioQuestion);
-        _navigationStore.OpenModal(new AudioQuestionModalViewModel(_navigationStore, audioQuestion, true, this));
-    }
-    //todo FIX THIS
-    private void SetTargetAudience(int id)
-    {
-       // _audience = AudiencesList.FirstOrDefault(t => t.Id == id);
-    }
-    private void SetTestValues(ITest test)
-    {
-        this.test = test;
-        AudioQuestions = new ObservableCollection<IToneAudiometryQuestion>(test.ToneAudiometryQuestions);
-        TextQuestions = new ObservableCollection<ITextQuestion>(test.TextQuestions);
-        Audience = AudiencesList.FirstOrDefault(t => t.Id == test.TargetAudience.Id);
-        TestName = test.Title;
-        Status = test.Active ? "Actief" : "Inactief";
-    }
-    public void CreateTest()
-    {
-        test = _testSerivce.CreateTest();
-        test.TextQuestions = new List<ITextQuestion>();
-        test.ToneAudiometryQuestions = new List<IToneAudiometryQuestion>();
-    }
-
-    public void DeleteTest(ITest test)
-    {
-
-    }
-    public void OpenConfirmationModal(Action action, string text)
-    {
-        _confirmationModalViewModel = new ConfirmationModalViewModel(_navigationStore, text, this, action);
-        _navigationStore.OpenModal(_confirmationModalViewModel);
-    }
-    public void OpenErrorModal(string text)
-    {
-        _errorModalViewModal = new ErrorModalViewModal(_navigationStore, text);
-        _navigationStore.OpenModal(_errorModalViewModal);
-    }
-    private void DeleteTextQuestion(int questionNumber)
-    {
-        Action deleteAction = () =>
-        {
-            test.TextQuestions = _testSerivce.DeleteQuestion(test.TextQuestions, questionNumber);
-            UpdateTextQuestionListView();
-        };
-
-        OpenConfirmationModal(CreateAction(deleteAction), "Weet je zeker dat je deze vraag wilt verwijderen?");
-    }
-    private void UpdateTextQuestionListView()
-    {
-        TextQuestions = new ObservableCollection<ITextQuestion>(test.TextQuestions);
-    }
-    private void UpdateAudioQuestionListView()
-    {
-        AudioQuestions = new ObservableCollection<IToneAudiometryQuestion>(test.ToneAudiometryQuestions);
-    }
-    private void DeleteAudioQuestion(int questionNumber)
-    {
-        Action deleteAction = () =>
-        {
-            test.ToneAudiometryQuestions = _testSerivce.DeleteQuestion(test.ToneAudiometryQuestions, questionNumber);
-            UpdateAudioQuestionListView();
-        };
-
-        OpenConfirmationModal(CreateAction(deleteAction), "Weet je zeker dat je deze vraag wilt verwijderen?");
-    }
-
-    public Action CreateAction(Action action)
-    {
-        return () =>
-        {
-            if (!IsConfirmed) return;
-            action?.Invoke();
-        };
-    }
-
-    public ITextQuestion CreateTextQuestion()
-    {
-        ITextQuestion textQuestion = new TextQuestion
-        {
-            Options = new List<string>()
-        };
-        return textQuestion;
-    }
-
-    public IToneAudiometryQuestion CreateToneAudiometryQuestion()
-    {
-        return new ToneAudiometryQuestion();
-    }
-
-    public void AddNewToneAudiometryQuestion(IToneAudiometryQuestion question)
-    {
-        test.ToneAudiometryQuestions.Add(question);
-        UpdateAudioQuestionListView();
-    }
-    public void AddNewTextQuestion(ITextQuestion question)
-    {
-        test.TextQuestions.Add(question);
-        UpdateTextQuestionListView();
-    }
-    public void UpdateToneAudiometryQuestion(IToneAudiometryQuestion question)
-    {
-        test.ToneAudiometryQuestions = _testSerivce.UpdateQuestion(test.ToneAudiometryQuestions, question.QuestionNumber, question);
-        UpdateAudioQuestionListView();
-    }
-    public void UpdateTextQuestion(ITextQuestion question)
-    {
-        test.TextQuestions = _testSerivce.UpdateQuestion(test.TextQuestions, question.QuestionNumber, question);
-        UpdateTextQuestionListView();
-    }
-    
-    private void SaveTest()
-    {
-        string testNameValidation = this["TestName"];
-        string audienceValidation = this["Audience"];
+        // Check the validity of the input
+        string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
+        string audienceValidation = ErrorService.ValidateInput("Audience", SelectedTargetAudience!);
 
         if (!string.IsNullOrEmpty(testNameValidation))
         {
             OpenErrorModal(testNameValidation);
-            return;
+            return false;
         }
 
         if (!string.IsNullOrEmpty(audienceValidation))
         {
             OpenErrorModal(audienceValidation);
-            return;
+            return false;
         }
-        Action SaveAction = () =>
-        {
-            if (newTest)
-                _testSerivce.SaveTest(test);
-            else
-                _testSerivce.UpdateTest(test);
-
-            _navigationStore!.CurrentViewModel = _testOverviewViewModel;
-        };
-        OpenConfirmationModal(CreateAction(SaveAction), "Weet je zeker dat je deze test wilt opslaan?");
+        return true;
     }
+    #endregion
 
-    public void SetConfirmed(bool value)
+    public bool IsConfirmed { get; set; }
+    public Test Test { get; set; }
+    private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
+
+    public TestManagementViewModel(NavigationStore navigationStore, Test? test = null)
     {
-        IsConfirmed = value;
+        //Dependencies initialization
+        this.navigationStore = navigationStore;
+
+        testService = new TestService(new TestRepository());
+        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
+
+        //set values
+        SetTargetAudiences();
+        if (TargetAudiences == null)
+            return;
+
+        if (test != null)
+        {
+            SetTestValues(test);
+            testService.SetTest(test);
+        }
+        else
+        {
+            newTest = true;
+            CreateTest();
+            SetStatus(false);
+            SetSelected(0);
+        }
     }
+
+    private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
+
+    #region Navigation
+    private void BackToTestOverview()
+    {
+        Action backAction = () =>
+        {
+            navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
+        };
+
+        OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen zullen ongedaan worden gemaakt.");
+    }
+    #endregion
+
+    #region Initialization
+    // Sets various properties based on the provided test data
+    private void SetTestValues(Test test)
+    {
+        // Set the overall test
+        SetTest(test);
+
+        // Set audio questions based on provided test's tone audiometry questions
+        SetAudioQuestions(new ObservableCollection<ToneAudiometryQuestion>(test.ToneAudiometryQuestions));
+
+        // Set text questions based on provided test's text questions
+        SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions));
+
+        // If there's a list of audiences available
+        if (TargetAudiences != null)
+        {
+            // Set the target audience for the test
+            SetAudience(TargetAudiences.First(t => t.Id == test.TargetAudience.Id));
+        }
+
+        // Set the test name
+        SetTestName(test.Title);
+
+        // Set the status of the test (Active/Inactive)
+        SetStatus(test.Active);
+
+        // Set the selected target audience ID
+        SetSelected(TargetAudiences!.FindIndex(t => t.Id == test.TargetAudience.Id));
+
+        initalTargetAudience = test.TargetAudience;
+    }
+
+    // Sets the overall test
+    private void SetTest(Test test) => Test = test;
+
+    // Sets text questions for the test
+    private void SetTextQuestions(ObservableCollection<TextQuestion> questions) => TextQuestions = questions;
+
+    // Sets audio questions for the test
+    private void SetAudioQuestions(ObservableCollection<ToneAudiometryQuestion> questions) => AudioQuestions = questions;
+
+    // Sets the target audience for the test
+    private void SetAudience(TargetAudience audience) => SelectedTargetAudience = audience;
+
+    // Sets the test name
+    private void SetTestName(string title) => TestName = title;
+
+    // Sets the status of the test (Active/Inactive)
+    private void SetStatus(bool active) => Status = active ? "Actief" : "Inactief";
+
+    // Sets the selected target audience ID
+    private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
+
+    // Creates a new test
+    private void CreateTest()
+    {
+        // Creates a new test using the test service
+        Test = testService.CreateTest();
+    }
+    #endregion
+
+    #region Modals
+
+    #region Text
+    // Open a new modal for entering text questions.
+    private void OpenNewTextModal()
+    {
+        try
+        {
+            // Create a new text question and set its number.
+            TextQuestion textQuestion = testService.CreateTextQuestion();
+
+            // Open a modal for the new text question.
+            navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, textQuestion, true, this, testService));
+        }
+        catch (Exception ex)
+        {
+            // Log and display an error if opening the new text window fails.
+            OpenErrorModal("Er is iets fout gegaan bij het openen van de text modal");
+            Console.WriteLine("Error occurred: " + ex);
+        }
+    }
+
+    // Open a modal for an existing text question based on its question number.
+    private void OpenTextModal(int questionNumber)
+    {
+        try
+        {
+            // Retrieve the text question based on the question number.
+            TextQuestion textQuestion = Test.TextQuestions.First(q => q.QuestionNumber == questionNumber);
+
+            // Open a modal for the existing text question.
+            navigationStore.OpenModal(new TextQuestionModalViewModel(navigationStore, textQuestion, false, this, testService));
+        }
+        catch (Exception ex)
+        {
+            // Log and display an error if opening the text window fails.
+            OpenErrorModal("Er is iets fout gegaan bij het openen van de text modal");
+            Console.WriteLine("Error occurred: " + ex);
+        }
+    }
+    #endregion
+
+    #region Audio
+    // Open a new modal for entering audio questions.
+    private void OpenNewAudioModal()
+    {
+        try
+        {
+            // Create a new audio question and set its number.
+            ToneAudiometryQuestion audioQuestion = testService.CreateToneAudiometryQuestion();
+            // Open a modal for the new audio question.
+            navigationStore.OpenModal(new AudioQuestionModalViewModel(navigationStore, audioQuestion, true, this));
+        }
+        catch (Exception ex)
+        {
+            // Log and display an error if opening the new audio window fails.
+            OpenErrorModal("Er is iets fout gegaan bij het openen van de audio modal");
+            Console.WriteLine("Error occurred: " + ex);
+        }
+    }
+
+    // Open a modal for an existing audio question based on its question number.
+    private void OpenAudioModal(int questionNumber)
+    {
+        try
+        {
+            // Retrieve the audio question based on the question number.
+            ToneAudiometryQuestion audioQuestion = Test.ToneAudiometryQuestions.First(q => q.QuestionNumber == questionNumber);
+
+            // Open a modal for the existing audio question.
+            navigationStore.OpenModal(new AudioQuestionModalViewModel(navigationStore, audioQuestion, false, this));
+        }
+        catch (Exception ex)
+        {
+            // Log and display an error if opening the audio window fails.
+            OpenErrorModal("Er is iets fout gegaan bij het openen van de audio modal");
+            Console.WriteLine("Error occurred: " + ex);
+        }
+    }
+    #endregion
+
+    // Create an action that invokes the provided action only if confirmation is received.
+    public Action CreateAction(Action action)
+    {
+        return () =>
+        {
+            if (!IsConfirmed) return; // Do nothing if confirmation is not received.
+            action?.Invoke();
+        };
+    }
+
+    // Open a modal for confirming an action with the provided text.
+    public void OpenConfirmationModal(Action action, string text)
+    {
+        // Create a confirmation modal view model and open the confirmation modal.
+        confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
+        navigationStore.OpenModal(confirmationModalViewModel);
+    }
+
+    // Open a modal for displaying an error with the provided text.
+    private void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
+
+    #endregion
+
+    #region Test Modification
+    #region Text
+
+    // Adds a new text question to the test and updates the view.
+    public void AddNewTextQuestion(TextQuestion question)
+    {
+        try
+        {
+            Test.TextQuestions = testService.AddTextQuestion(question);
+            UpdateTextQuestionListView();
+        }
+        catch (Exception ex)
+        {
+            // Handles exceptions that occur during the addition of a text question.
+            OpenErrorModal("Er is een fout opgetreden bij het maken van de tekstvraag");
+            Console.WriteLine("Error occurred: " + ex);
+        }
+    }
+
+    // Updates a text question in the test and refreshes the view.
+    public void UpdateTextQuestion(TextQuestion question)
+    {
+        try
+        {
+            Test.TextQuestions = testService.UpdateQuestion(Test.TextQuestions.ToList(), question.QuestionNumber, question);
+            UpdateTextQuestionListView();
+        }
+        catch (Exception ex)
+        {
+            // Handles exceptions that occur during the update of a text question.
+            OpenErrorModal("Er is een fout opgetreden bij het bijwerken van de tekstvraag");
+            Console.WriteLine("Error occurred: " + ex);
+
+        }
+    }
+
+    // Refreshes the text question view.
+    private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions);
+
+
+    // Deletes a text question from the test.
+    private void DeleteTextQuestion(int questionNumber)
+    {
+        Action deleteAction = () =>
+        {
+            Test.TextQuestions = testService.DeleteQuestion(Test.TextQuestions.ToList(), questionNumber);
+            UpdateTextQuestionListView();
+        };
+
+        OpenConfirmationModal(CreateAction(deleteAction), "Weet u zeker dat u deze vraag wilt verwijderen?");
+    }
+    #endregion
+
+    #region Audio
+
+    // Adds a new tone audiometry question to the test and updates the view.
+    public void AddNewToneAudiometryQuestion(ToneAudiometryQuestion question)
+    {
+        try
+        {
+            Test.ToneAudiometryQuestions = testService.AddToneAudiometryQuestion(question);
+            UpdateAudioQuestionListView();
+        }
+        catch (Exception ex)
+        {
+            // Handles exceptions that occur during the addition of an audiometry question.
+            OpenErrorModal($"Er is een fout opgetreden bij het toevoegen van de nieuwe audiometrie vraag");
+            Console.WriteLine("Error occurred: " + ex);
+
+        }
+    }
+
+    // Updates a tone audiometry question in the test and refreshes the view.
+    public void UpdateToneAudiometryQuestion(ToneAudiometryQuestion question)
+    {
+        try
+        {
+            Test.ToneAudiometryQuestions = testService.UpdateQuestion(Test.ToneAudiometryQuestions.ToList(), question.QuestionNumber, question);
+            UpdateAudioQuestionListView();
+        }
+        catch (Exception ex)
+        {
+            // Handles exceptions that occur during the update of an audiometry question.
+            OpenErrorModal($"Er is een fout opgetreden bij het bijwerken van de audiometrie vraag");
+            Console.WriteLine("Error occurred: " + ex);
+
+        }
+    }
+
+    // Refreshes the audio question view.
+    private void UpdateAudioQuestionListView()
+    {
+        AudioQuestions = new ObservableCollection<ToneAudiometryQuestion>(Test.ToneAudiometryQuestions);
+    }
+
+    // Deletes an audio question from the test.
+    private void DeleteAudioQuestion(int questionNumber)
+    {
+        Action deleteAction = () =>
+        {
+            Test.ToneAudiometryQuestions = testService.DeleteQuestion(Test.ToneAudiometryQuestions.ToList(), questionNumber);
+            UpdateAudioQuestionListView();
+        };
+
+        OpenConfirmationModal(CreateAction(deleteAction), "Weet je zeker dat je deze vraag wilt verwijderen?");
+    }
+    #endregion
+
+    private TestOverviewViewModel CreateTestOverviewViewModel()
+    {
+        return new TestOverviewViewModel(navigationStore);
+    }
+    private void CheckTargetAudienceChanged()
+    {
+        if (testService.TargetAudienceChanged(Test.TargetAudience, initalTargetAudience))
+            Test.Active = false;
+    }
+    private void SaveTest()
+    {
+        try
+        {
+            if (!CheckValidityInput())
+                return;
+
+            //TEMP TODO WRITE AROUND
+            EmployeeRepository repository = new EmployeeRepository();
+            var Employee = repository.Get();
+            Test.EmployeeId = Employee.Id;
+            Test.Employee = Employee;
+            //
+
+            CheckTargetAudienceChanged();
+
+            testService.SaveOrUpdateTest(Test, newTest);
+
+            // Navigates to the test overview after the save/update operation.
+            navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
+        }
+        catch (Exception ex)
+        {
+            // Handles exceptions that occur during the save/update operation.
+            OpenErrorModal("Er is een fout opgetreden bij het opslaan van de test.");
+            Console.WriteLine("Error occurred: " + ex);
+
+        }
+    }
+    #endregion
 }

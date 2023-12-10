@@ -1,8 +1,7 @@
-﻿using UserInterface.Assets.Styling;
-using UserInterface.Stores;
-using UserInterface.ViewModels;
+﻿using UserInterface.Stores;
 using UserInterface.Views;
 using System.Windows;
+using UserInterface.ViewModels;
 
 namespace UserInterface;
 
@@ -16,12 +15,13 @@ public partial class App : Application
     public App()
     {
         navigationStore = new NavigationStore();
+        //EmployeeRepository repository = new EmployeeRepository();
+        //repository.Insert();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         //MainWindow = new Sandbox();
-
         navigationStore.CurrentViewModel = new TestViewModel(navigationStore);
         MainWindow = new MainWindow();
         MainWindow.DataContext = new MainWindowViewModel(navigationStore);
