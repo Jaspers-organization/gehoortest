@@ -1,15 +1,15 @@
-﻿using Service.Interfaces.Services;
+﻿using BusinessLogic.Interfaces.Services;
 using System.Net;
 using System.Net.Mail;
 
-namespace EmailService;
+namespace EmailProvider;
 
-public class EmailService : IEmailService
+public class EmailProvider : IEmailProvider
 {
     private SmtpClient? client;
     private string? sender;
 
-    public IEmailService Initialize(string host, string email, string password)
+    public IEmailProvider Initialize(string host, string email, string password)
     {
         sender = email;
         client = new SmtpClient(host, 587)

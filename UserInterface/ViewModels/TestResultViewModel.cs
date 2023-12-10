@@ -1,32 +1,74 @@
-﻿using DataAccess.MockData;
+using DataAccess.MockData;
 using UserInterface.Stores;
 using BusinessLogic.Classes;
 using BusinessLogic.Controllers;
 using BusinessLogic.Enums;
 using BusinessLogic.Projections;
+using BusinessLogic.Services;
+using UserInterface.Commands;
+using System.Windows.Input;
+using BusinessLogic.BusinessRules;
+
 
 namespace UserInterface.ViewModels;
 
 internal class TestResultViewModel : ViewModelBase
 {
+    #region dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestProgressData testProgressData;
     private readonly TestResultMockRepository testResultRepository;
     private readonly TestResultBusinessLogic testResultBusinessLogic;
+    private readonly EmailService emailService;
+    #endregion
 
+
+    #region properies
     private string? _testResultText;
-    private string? _testResultExplanation;
-
-    public string? TestResultText
-    {
+    public string? TestResultText {
         get { return _testResultText; }
         set { _testResultText = value; OnPropertyChanged(nameof(TestResultText)); }
     }
-    public string? TestResultExplanation
-    {
+
+    private string? _testResultExplanation;
+    public string? TestResultExplanation {
         get { return _testResultExplanation; }
         set { _testResultExplanation = value; OnPropertyChanged(nameof(TestResultExplanation)); }
     }
+
+    private string _positiveTestResult = "Hidden";
+    public string PositiveTestResult
+    {
+        get { return _positiveTestResult; }
+        set { _positiveTestResult = value; OnPropertyChanged(nameof(PositiveTestResult)); }
+    }
+
+    private string _negativeTestResult = "Hidden";
+    public string NegativeTestResult
+    {
+        get { return _negativeTestResult; }
+        set { _negativeTestResult = value; OnPropertyChanged(nameof(NegativeTestResult)); }
+    }
+
+    private string? _email;
+    public string? Email
+    {
+        get { return _email; }
+        set { _email = value; OnPropertyChanged(nameof(Email)); }
+    }
+
+    private string _emailError = "Hidden";
+    public string EmailError
+    {
+        get { return _emailError; }
+        set { _emailError = value; OnPropertyChanged(nameof(EmailError)); }
+    }
+    #endregion
+
+    private TestResultProjection testResult;
+
+    public ICommand SendEmailCommand => new Command(SendEmail);
+
 
     public TestResultViewModel(NavigationStore navigationStore, TestProgressData testProgressData)
     {
@@ -35,27 +77,19 @@ internal class TestResultViewModel : ViewModelBase
         testResultRepository = new TestResultMockRepository();
         testResultBusinessLogic = new TestResultBusinessLogic(testResultRepository);
 
-        // PopulateMockData();
+        // TODO: move this to a config file
+        string email = "gehoortestapplicatie@gmail.com";
+        string password = "f43^9%^Qh@8NLAb$wAkzd5mi";
+        string key = "xgob ckck toxn exkz";
+        string host = "smtp.gmail.com";
+        // ====================
+
+        emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
+
+
         GetTestResult();
     }
 
-    private void PopulateMockData()
-    {
-        /** positive test - based on Dinny */
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(1, 250, Ear.Left, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(2, 500, Ear.Left, 30, 35));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(3, 1000, Ear.Left, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(4, 2000, Ear.Left, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(5, 4000, Ear.Left, 30, 35));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(6, 8000, Ear.Left, 30, 35));
-
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(7, 250, Ear.Right, 30, 35));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(8, 500, Ear.Right, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(9, 1000, Ear.Right, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(10, 2000, Ear.Right, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(11, 4000, Ear.Right, 30, 30));
-        testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(12, 8000, Ear.Right, 30, 30));
-    }
 
     public void GetTestResult()
     {
@@ -69,4 +103,17 @@ internal class TestResultViewModel : ViewModelBase
             ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
             : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.";
     }
+
+    private void SendEmail()
+    {
+        if (!EmailBusinessRules.IsValidEmail(Email))
+        {
+            EmailError = "Visible";
+            return;
+        }
+
+        EmailError = "Hidden";
+        emailService.SendEmail(Email, testResult);
+    }
+
 }
