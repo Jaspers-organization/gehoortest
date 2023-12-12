@@ -17,7 +17,11 @@ public class Repository : DbContext
     public virtual DbSet<ToneAudiometryQuestion> ToneAudiometryQuestions { get; set; }//todo
     public virtual DbSet<Employee> Employees { get; set; }
     public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }//todo
-
+    public virtual DbSet<TestResult> TestResults { get; set; }
+    public virtual DbSet<ToneAudiometryQuestionResult> ToneAudiometryQuestionResults { get; set; }
+    public virtual DbSet<TextQuestionResult> TextQuestionResults { get; set; }
+    public virtual DbSet<TextQuestionOptionResult> TextQuestionOptionResults { get; set; }
+    public virtual DbSet<TextQuestionAnswerResult> TextQuestionAnswerResults { get; set; }
     #endregion
 
     public Repository() { }
@@ -30,6 +34,11 @@ public class Repository : DbContext
         modelBuilder.ApplyConfiguration(new TextQuestionConfiguration());
         modelBuilder.ApplyConfiguration(new ToneAudiometryQuestionConfiguration());
         modelBuilder.ApplyConfiguration(new TextQuestionOptionConfiguration());
+        modelBuilder.ApplyConfiguration(new TestResultConfiguration());
+        modelBuilder.ApplyConfiguration(new ToneAudiometryQuestionResultConfiguration());
+        modelBuilder.ApplyConfiguration(new TextQuestionResultConfiguration());
+        modelBuilder.ApplyConfiguration(new TextQuestionOptionResultConfiguration());
+        modelBuilder.ApplyConfiguration(new TextQuestionAnswerResultConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

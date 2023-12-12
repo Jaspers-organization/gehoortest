@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gehoortest_application.Repository;
 
@@ -11,9 +12,11 @@ using gehoortest_application.Repository;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20231212190709_add-testresult-1")]
+    partial class addtestresult1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,11 +134,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("has_hearing_loss");
 
-                    b.Property<string>("TargetAudience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("target_audience");
-
                     b.Property<DateTime>("TestDateTime")
                         .HasColumnType("datetime")
                         .HasColumnName("test_date_time");
@@ -181,30 +179,6 @@ namespace DataAccess.Migrations
                     b.ToTable("text_question", (string)null);
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionAnswerResult", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("answer");
-
-                    b.Property<string>("TextQuestionResultId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("text_question_result_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TextQuestionResultId");
-
-                    b.ToTable("text_question_answer_result", (string)null);
-                });
-
             modelBuilder.Entity("BusinessLogic.Models.TextQuestionOption", b =>
                 {
                     b.Property<string>("Id")
@@ -227,54 +201,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("TextQuestionId");
 
                     b.ToTable("text_question_option", (string)null);
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionOptionResult", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Option")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("option");
-
-                    b.Property<string>("TextQuestionResultId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("text_question_result_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TextQuestionResultId");
-
-                    b.ToTable("text_question_option_result", (string)null);
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionResult", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("question");
-
-                    b.Property<string>("TestResultId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("test_result_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestResultId");
-
-                    b.ToTable("text_question_result", (string)null);
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.ToneAudiometryQuestion", b =>
@@ -308,42 +234,6 @@ namespace DataAccess.Migrations
                     b.ToTable("tone_audiometry_question", (string)null);
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.ToneAudiometryQuestionResult", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Ear")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(5)")
-                        .HasColumnName("ear");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int")
-                        .HasColumnName("frequency");
-
-                    b.Property<int>("LowestDecibels")
-                        .HasColumnType("int")
-                        .HasColumnName("lowest_decibels");
-
-                    b.Property<int>("StartingDecibels")
-                        .HasColumnType("int")
-                        .HasColumnName("starting_decibels");
-
-                    b.Property<string>("TestResultId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("test_result_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestResultId");
-
-                    b.ToTable("tone_audiometry_question_result", (string)null);
-                });
-
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>
                 {
                     b.HasOne("BusinessLogic.Models.Employee", "Employee")
@@ -374,17 +264,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionAnswerResult", b =>
-                {
-                    b.HasOne("BusinessLogic.Models.TextQuestionResult", "TextQuestionResult")
-                        .WithMany("Answers")
-                        .HasForeignKey("TextQuestionResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TextQuestionResult");
-                });
-
             modelBuilder.Entity("BusinessLogic.Models.TextQuestionOption", b =>
                 {
                     b.HasOne("BusinessLogic.Models.TextQuestion", "TextQuestion")
@@ -393,26 +272,6 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("TextQuestion");
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionOptionResult", b =>
-                {
-                    b.HasOne("BusinessLogic.Models.TextQuestionResult", "TextQuestionResult")
-                        .WithMany("Options")
-                        .HasForeignKey("TextQuestionResultId");
-
-                    b.Navigation("TextQuestionResult");
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionResult", b =>
-                {
-                    b.HasOne("BusinessLogic.Models.TestResult", "TestResult")
-                        .WithMany("TextQuestions")
-                        .HasForeignKey("TestResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestResult");
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.ToneAudiometryQuestion", b =>
@@ -424,17 +283,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Test");
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.ToneAudiometryQuestionResult", b =>
-                {
-                    b.HasOne("BusinessLogic.Models.TestResult", "TestResult")
-                        .WithMany("ToneAudiometryQuestions")
-                        .HasForeignKey("TestResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestResult");
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Employee", b =>
@@ -454,22 +302,8 @@ namespace DataAccess.Migrations
                     b.Navigation("ToneAudiometryQuestions");
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.TestResult", b =>
-                {
-                    b.Navigation("TextQuestions");
-
-                    b.Navigation("ToneAudiometryQuestions");
-                });
-
             modelBuilder.Entity("BusinessLogic.Models.TextQuestion", b =>
                 {
-                    b.Navigation("Options");
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.TextQuestionResult", b =>
-                {
-                    b.Navigation("Answers");
-
                     b.Navigation("Options");
                 });
 #pragma warning restore 612, 618

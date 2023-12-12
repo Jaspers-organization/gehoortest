@@ -1,14 +1,14 @@
-using DataAccess.MockData;
 using UserInterface.Stores;
 using BusinessLogic.Classes;
-using BusinessLogic.Controllers;
-using BusinessLogic.Enums;
 using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;
 using BusinessLogic.BusinessRules;
-
+using BusinessLogic.Controllers;
+using DataAccess.Repositories;
+using System;
+using System.Windows;
 
 namespace UserInterface.ViewModels;
 
@@ -16,12 +16,9 @@ internal class TestResultViewModel : ViewModelBase
 {
     #region dependencies
     private readonly NavigationStore navigationStore;
-    private readonly TestProgressData testProgressData;
-    private readonly TestResultMockRepository testResultRepository;
-    private readonly TestResultBusinessLogic testResultBusinessLogic;
+    private readonly TestResultService testResultService;
     private readonly EmailService emailService;
     #endregion
-
 
     #region properies
     private string? _testResultText;
@@ -36,15 +33,15 @@ internal class TestResultViewModel : ViewModelBase
         set { _testResultExplanation = value; OnPropertyChanged(nameof(TestResultExplanation)); }
     }
 
-    private string _positiveTestResult = "Hidden";
-    public string PositiveTestResult
+    private Visibility _positiveTestResult = Visibility.Hidden;
+    public Visibility PositiveTestResult
     {
         get { return _positiveTestResult; }
         set { _positiveTestResult = value; OnPropertyChanged(nameof(PositiveTestResult)); }
     }
 
-    private string _negativeTestResult = "Hidden";
-    public string NegativeTestResult
+    private Visibility _negativeTestResult = Visibility.Hidden;
+    public Visibility NegativeTestResult
     {
         get { return _negativeTestResult; }
         set { _negativeTestResult = value; OnPropertyChanged(nameof(NegativeTestResult)); }
@@ -57,25 +54,24 @@ internal class TestResultViewModel : ViewModelBase
         set { _email = value; OnPropertyChanged(nameof(Email)); }
     }
 
-    private string _emailError = "Hidden";
-    public string EmailError
+    private Visibility _emailError = Visibility.Hidden;
+    public Visibility EmailError
     {
         get { return _emailError; }
         set { _emailError = value; OnPropertyChanged(nameof(EmailError)); }
     }
     #endregion
 
-    private TestResultProjection testResult;
-
+    #region commands
     public ICommand SendEmailCommand => new Command(SendEmail);
+    #endregion
 
+    private Guid testResultId;
 
     public TestResultViewModel(NavigationStore navigationStore, TestProgressData testProgressData)
     {
         this.navigationStore = navigationStore;
-        this.testProgressData = testProgressData;
-        testResultRepository = new TestResultMockRepository();
-        testResultBusinessLogic = new TestResultBusinessLogic(testResultRepository);
+        testResultService = new TestResultService(new TestResultRepository());
 
         // TODO: move this to a config file
         string email = "gehoortestapplicatie@gmail.com";
@@ -86,34 +82,27 @@ internal class TestResultViewModel : ViewModelBase
 
         emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
 
-
-        GetTestResult();
+        GetTestResult(testProgressData);
     }
 
-
-    public void GetTestResult()
+    public void GetTestResult(TestProgressData testProgressData)
     {
-        TestResultProjection testResult = testResultBusinessLogic.GetTestResult(testProgressData);
+        TestResultProjection testResult = testResultService.GetTestResult(testProgressData);
 
-        TestResultText = testResult.hasHearingLoss
-            ? "Gehoorschade"
-            : "Gezond gehoor";
-
-        TestResultExplanation = testResult.hasHearingLoss
-            ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
-            : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.";
+        testResultId = testResult.TestResultId;
+        TestResultText = testResult.TestResultText;
+        TestResultExplanation = testResult.TestResultExplanation;
     }
 
     private void SendEmail()
     {
         if (!EmailBusinessRules.IsValidEmail(Email))
         {
-            EmailError = "Visible";
+            EmailError = Visibility.Visible;
             return;
         }
 
-        EmailError = "Hidden";
-        emailService.SendEmail(Email, testResult);
+        EmailError = Visibility.Hidden;
+        emailService.SendEmail(Email, testResultId);
     }
-
 }

@@ -13,20 +13,20 @@ public class EmailService
         this.provider = provider;
     }
 
-    public void SendEmail(string reciever, TestResultProjection testResult)
+    public void SendEmail(string reciever, Guid testResultId)
     {
         EmailBusinessRules.AssertValidEmail(reciever);
 
         string date = DateTime.Now.ToString("dd-MM-yyyy");
         string subject = $"Testresultaat {date}"; 
-        string body = CreateEmailBody(date, testResult);
+        string body = CreateEmailBody(date);
 
         provider.SendEmail(reciever, subject, body);
     }
 
-    private string CreateEmailBody(string date, TestResultProjection testResult)
+    private string CreateEmailBody(string date)
     {
-        string result = testResult.hasHearingLoss ? "Mogelijke gehoorschade" : "Gezond gehoor";
+        string result = true ? "Mogelijke gehoorschade" : "Gezond gehoor";
 
         return $@"
             <html>
