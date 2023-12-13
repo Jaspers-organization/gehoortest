@@ -18,8 +18,6 @@ public class Repository : DbContext
     public virtual DbSet<Employee> Employees { get; set; }
     public virtual DbSet<EmployeeLogin> EmployeeLogins { get; set; }
     public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }
-
-    public virtual DbSet<TextQuestionOption> TextQuestionsOptions { get; set; }//todo
     public virtual DbSet<TestResult> TestResults { get; set; }
     public virtual DbSet<ToneAudiometryQuestionResult> ToneAudiometryQuestionResults { get; set; }
     public virtual DbSet<TextQuestionResult> TextQuestionResults { get; set; }
