@@ -8,13 +8,38 @@
              mc:Ignorable="d">
 
     <Border Style="{StaticResource ContentContainer_XL}">
-        
-        <StackPanel Orientation="Horizontal">
-            <Button Style="{StaticResource PrimaryButton_L}" 
-              HorizontalAlignment="Left"
-              Content="Start test" 
-              Command="{Binding StartTestCommand}"/>
-        </StackPanel>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource Header}"
+                    HorizontalAlignment="Center"
+                    Text="Gehoortest doen?"/>
+                <TextBlock
+                    Style="{StaticResource Text}"
+                    TextAlignment="Center"
+                    Margin="0 30 0 0"
+                    Width="450"
+                    Text="Meet uw gehoor binnen een paar minuten!"/>
+                <TextBlock
+                    Style="{StaticResource Text}"
+                    TextAlignment="Center"
+                    Margin="0 15 0 0"
+                    Width="450"
+                    Text="De test is vrijblijvend en u ziet uw resultaat direct na de test"/>
+                <Button 
+                    Style="{StaticResource PrimaryButton_L}" 
+                    HorizontalAlignment="Center"
+                    Margin="0 60 0 0"
+                    Content="Start test" 
+                    Command="{Binding StartTestCommand}"/>
+            </StackPanel>
+
+            <images:Home Grid.Column="1"/>
+        </Grid>
     </Border>
 </UserControl>
