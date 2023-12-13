@@ -11,5 +11,5 @@ public class TestResult : IModel
     public bool HasHearingLoss { get; set; }
 
     public ICollection<TextQuestionResult>? TextQuestions { get; set; }
-    public ICollection<ToneAudiometryQuestionResult>? ToneAudiometryQuestions { get; set; }
+    public ICollection<ToneAudiometryQuestionResult> ToneAudiometryQuestions { get; set; }
 }

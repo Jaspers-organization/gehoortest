@@ -1,8 +1,8 @@
-﻿using BusinessLogic.BusinessRules;
+﻿using BusinessLogic.Guards;
 
-namespace Tests.BusinessRules;
+namespace Tests.Guards;
 
-public class EmailBusinessRulesTest
+public class GuardTest
 {
     [Theory]
     [InlineData("test@email.com", true)]
@@ -20,7 +20,7 @@ public class EmailBusinessRulesTest
     [InlineData("@", false)]
     public void It_validates_the_email(string email, bool isValid)
     {
-        Assert.Equal(isValid, EmailBusinessRules.IsValidEmail(email));
+        Assert.Equal(isValid, Guard.IsValidEmail(email));
     }
 
     [Theory]
@@ -40,10 +40,10 @@ public class EmailBusinessRulesTest
     {
         if (!throwsException)
         {
-            EmailBusinessRules.AssertValidEmail(email);
+            Guard.AssertValidEmail(email);
             return;
         }
 
-        Assert.Throws<ArgumentException>(() => EmailBusinessRules.AssertValidEmail(email));
+        Assert.Throws<ArgumentException>(() => Guard.AssertValidEmail(email));
     }
 }
