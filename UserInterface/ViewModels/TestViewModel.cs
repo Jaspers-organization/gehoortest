@@ -5,6 +5,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.MockData;
 using gehoortest_application.Repository;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -236,6 +237,7 @@ namespace UserInterface.ViewModels
 
             ShowTestTargetAudienceView = "Hidden";
             Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id); // toegevoegd door jasper
+
             testProgressData = new TestProgressData(Test);
             testProgressData.CurrentQuestionNumber = 1;
             AskFirstQuestion();
