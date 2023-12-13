@@ -34,11 +34,6 @@
                               HorizontalAlignment="Left"
                               Content="Start test" 
                               Command="{Binding StartTestCommand}"/>
-
-                    <Button Margin="50,0,0,0" Style="{StaticResource SecondaryButton_Icon}"
-                              HorizontalAlignment="Left"
-                              Content="" 
-                              Command="{Binding OpenTestManagementCommand}"/>
                 </StackPanel>
                 
             </Grid>
