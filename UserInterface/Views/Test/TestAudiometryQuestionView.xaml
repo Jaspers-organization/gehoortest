@@ -20,10 +20,11 @@
             Margin="50"
             Height="420"
             Width="420">
-        
             </Rectangle>
-            <!--ContentRendered="Window_ContentRendered"
-            <ProgressBar Minimum="0" Maximum="100" Value="loadingStatus"/>-->
+
+            <ProgressBar Grid.Row="0" Width="350" Height="30" Name="ProgressBar" Background="{StaticResource PrimaryBackgroundColor}" Foreground="{StaticResource SecondaryColor}" Value="{Binding ProgressValue, Mode=OneWay}">
+            </ProgressBar>
+
             <TextBlock 
             Style="{StaticResource Text}"
             Grid.Row="2"
@@ -35,13 +36,15 @@
                 Content="Ja" 
                 HorizontalAlignment="Left" 
                 Command="{Binding SaveAudioQuestionCommand}" 
-                CommandParameter="true"/>
+                CommandParameter="true"
+                IsEnabled="{Binding AnswerButtonEnabled}"/>
             <Button 
                 Style="{StaticResource PrimaryButton_S}" 
                 Content="Nee" 
                 HorizontalAlignment="Right" 
                 Command="{Binding SaveAudioQuestionCommand}" 
-                CommandParameter="false"/>
+                CommandParameter="false"
+                IsEnabled="{Binding AnswerButtonEnabled}"/>
         </Grid>
     </Grid>
     </Border>
