@@ -1,15 +1,16 @@
-﻿using BusinessLogic.IModels;
+﻿
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Classes;
 
 public class TestProgressData
 {
-    public ITest Test { get; set; }
+    public Test Test { get; set; }
     public int CurrentQuestionNumber { get; set; }
     public List<TextAnswer> TextAnswers { get; set; }
     public List<ToneAudiometryAnswer> ToneAudiometryAnswers { get; set; }
 
-    public TestProgressData(ITest test)
+    public TestProgressData(Test test)
     {
         Test = test;
         CurrentQuestionNumber = 0;

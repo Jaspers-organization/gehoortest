@@ -8,11 +8,11 @@ namespace UserInterface.ViewModels.Modals;
 internal class ErrorModalViewModal : ViewModelBase
 {
     #region Dependencies
-    private readonly NavigationStore _navigationStore;
-    private readonly Action _action;
+    private readonly NavigationStore navigationStore;
+    private readonly Action action;
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _text;
     public string Text
     {
@@ -28,24 +28,24 @@ internal class ErrorModalViewModal : ViewModelBase
 
     public ErrorModalViewModal(NavigationStore navigationStore, string text)
     {
-        _navigationStore = navigationStore;
+        this.navigationStore = navigationStore;
         Text = text;
     }
-    public void Confirm()
+    private void Confirm()
     {
         CloseModal();
     }
-    public void Deny()
+    private void Deny()
     {
         CloseModal();
     }
-    public void PerformAction()
+    private void PerformAction()
     {
-        _action?.Invoke();
+        action?.Invoke();
     }
     private void CloseModal()
     {
-        _navigationStore.CloseModal();
+        navigationStore.CloseModal();
         PerformAction();
     }
 }

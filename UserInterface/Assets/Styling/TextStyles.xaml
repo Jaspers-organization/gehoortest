@@ -8,11 +8,8 @@
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
-    <Style x:Key="TextWhite" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="32"/>
-        <Setter Property="FontStyle" Value="Normal"/>
+    <Style x:Key="TextWhite"  BasedOn="{StaticResource Text}" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource White}"/>
-        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
     <Style x:Key="SubHeader" BasedOn="{StaticResource Text}" TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="40"/>

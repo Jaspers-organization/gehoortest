@@ -1,14 +1,15 @@
 ﻿using BusinessLogic;
 using BusinessLogic.Classes;
-using BusinessLogic.Enums;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.MockData;
-using DataAccess.Models.TestData_Management;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
 using NAudio.Utils;
+using System;
+using gehoortest_application.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,9 +40,11 @@ namespace UserInterface.ViewModels
         private string _showTestResultView = "Hidden";
         private int highestTextQuestionNumber;
         private int highestAudioQuestionNumber;
-        private ObservableCollection<ITargetAudience> _targetAudiences;
-        private ITest _test;
+
+
         private NAudioPlayer nAudioPlayer;
+        private ObservableCollection<TargetAudience> _targetAudiences;
+        private Test _test;
         private TargetAudienceService targetAudienceService { get; set; }
         private TestService testService { get; set; }
         private TestProgressData testProgressData { get; set; }
@@ -51,6 +54,7 @@ namespace UserInterface.ViewModels
         private bool testedRightEar = false;
         ITextQuestion currentTextQuestion;
         IToneAudiometryQuestion currentAudiometryQuestion;
+        private readonly Repository repository;
         #region Properties
 
         public string ShowTestExplanationView
@@ -99,7 +103,7 @@ namespace UserInterface.ViewModels
             }
         }
         public string ButtonsDisabled { get; set; }
-        public ObservableCollection<ITargetAudience> TargetAudiences
+        public ObservableCollection<TargetAudience> TargetAudiences
         {
             get { return _targetAudiences; }
             set
@@ -129,8 +133,10 @@ namespace UserInterface.ViewModels
             }
         }
         private string questionInputText { get; set; }
+
+   
         private int playDecibel { get; set; }
-        public ITest Test
+        public Test Test
         {
             get { return _test; }
             set
@@ -185,10 +191,13 @@ namespace UserInterface.ViewModels
         {
             this.navigationStore = navigationStore;
             SetTestExplanationView(VISIBLE);
-            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
+            this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
+
+
+            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceMockRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
-            ITestRepository testRepository = new TestRepository();
+            ITestRepository testRepository = new TestMockRepository();
             testService = new TestService(testRepository);
 
             nAudioPlayer = new BusinessLogic.Classes.NAudioPlayer();
@@ -382,7 +391,7 @@ namespace UserInterface.ViewModels
             }
 
             //save answers to TestProgressData
-            List<string> options = Test.TextQuestions.First(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Options;
+            List<string> options = testService.ConvertQuestionOptionsToStrings(Test.TextQuestions.First(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Options);
             testProgressData.TextAnswers.Add(new TextAnswer(testProgressData.CurrentQuestionNumber, options, answers));
             DetermineNextTextStep();
         }

@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="UserInterface.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:images="clr-namespace:UserInterface.Assets.Images"
+             mc:Ignorable="d">
+
+    <Border Style="{StaticResource ContentContainer_XL}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                    Style="{StaticResource Header}" 
+                    Grid.Row="0"
+                    HorizontalAlignment="Center" 
+                    Text="Vul uw inloggegevens in"/>
+
+                <Grid Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                        Style="{StaticResource Text}"
+                        Grid.Row="0" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Center" 
+                        Visibility="{Binding ShowInputError}"
+                        Foreground="Red"
+                        Text="Onjuiste e-mail of wachtwoord"/>
+                    <TextBlock 
+                        Style="{StaticResource Text}"
+                        Grid.Row="2" 
+                        Grid.Column="0" 
+                        VerticalAlignment="Center" 
+                        Text="E-mail"/>
+                    <TextBox 
+                        Style="{StaticResource InputField_S}"
+                        Grid.Row="2" 
+                        Grid.Column="1"
+                        Text="{Binding Email}"/>
+                    <TextBlock 
+                        Style="{StaticResource Text}"
+                        Grid.Row="4" 
+                        Grid.Column="0"
+                        VerticalAlignment="Center" 
+                        Text="Wachtwoord"/>
+                    <TextBox 
+                        Style="{StaticResource InputField_S}"
+                        Grid.Row="4" 
+                        Grid.Column="1"
+                        Text="{Binding Password}"/>
+                    <Button 
+                        Style="{StaticResource PrimaryButton_L}" 
+                        Grid.Row="6" 
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Command="{Binding LoginCommand}"
+                        Content="Inloggen"/>
+                </Grid>
+            </Grid>
+
+            <images:Login Grid.Column="1" VerticalAlignment="Center"/>
+        </Grid>
+    </Border>
+
+</UserControl>

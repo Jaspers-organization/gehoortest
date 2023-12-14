@@ -1,9 +1,8 @@
-﻿using BusinessLogic.IModels;
-using DataAccess.Entity.TestData_Management;
-using System.Collections.Generic;
+﻿using BusinessLogic.Models;
+using BusinessLogic.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -14,8 +13,9 @@ internal class TextQuestionModalViewModel : ViewModelBase
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
+    private readonly TestService testService;
     private readonly TestManagementViewModel testManagementViewModel;
-    private readonly ITextQuestion textQuestion;
+    private readonly TextQuestion textQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -26,7 +26,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _optionText;
     public string OptionText
     {
@@ -83,86 +83,120 @@ internal class TextQuestionModalViewModel : ViewModelBase
     #endregion
 
     #region Errors
-    private string this[string columnName]
+    private bool CheckValidityInput()
     {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "TestQuestion":
-                    if (string.IsNullOrEmpty(TestQuestion))
-                        validationMessage = ErrorMessageStore.ErrorTestQuestion;
-                    break;
-                case "MultipleChoice":
-                case "HasInputField":
-                    if (!HasInputField && !MultipleChoice)
-                        validationMessage = ErrorMessageStore.ErrorQuestionAnwserType;
-                    if(MultipleChoice && Options.Count < 2)
-                        validationMessage = ErrorMessageStore.ErrorMultipleChoiceOptions;
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-    #endregion
-    private ErrorModalViewModal errorModalViewModal { get; set; }
-
-    public TextQuestionModalViewModel(NavigationStore navigationStore, ITextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
-    {
-        this.navigationStore = navigationStore;
-        this.textQuestion = textQuestion;
-        this.testManagementViewModel = testManagementViewModel;
-        this.newQuestion = newQuestion;
-        MultipleChoice = textQuestion.IsMultiSelect;
-        HasInputField = textQuestion.HasInputField;
-        TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(textQuestion.Options ?? new List<string>());
-    }
-    public void OpenErrorModal(string text)
-    {
-        errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
-        navigationStore.OpenModal(errorModalViewModal);
-    }
-    public void AddOption(string value)
-    {
-        Options.Add(value);
-        OnPropertyChanged(nameof(Options));
-    }
-    public void RemoveOption(string value)
-    {
-        Options.Remove(value);
-        OnPropertyChanged(nameof(Options));
-    }
-    public void SaveQuestion()
-    {
-        string testQuestionValidation = this["TestQuestion"];
-        string anwserTypeValidation = this["MultipleChoice"];
-
+        string testQuestionValidation = ErrorService.ValidateInput("TestQuestion", TestQuestion);
+        string anwserTypeValidation = ErrorService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
         if (!string.IsNullOrEmpty(testQuestionValidation))
         {
             OpenErrorModal(testQuestionValidation);
-            return;
+            return false;
         }
 
         if (!string.IsNullOrEmpty(anwserTypeValidation))
         {
             OpenErrorModal(anwserTypeValidation);
-            return;
+            return false;
         }
-        ITextQuestion question = new TextQuestion { Id = textQuestion.Id, HasInputField = HasInputField, IsMultiSelect = MultipleChoice, Question = TestQuestion, Options = Options.ToList(), QuestionNumber = textQuestion.QuestionNumber };
-        
-        if (newQuestion)
-            testManagementViewModel.AddNewTextQuestion(question);
-        else
-            testManagementViewModel.UpdateTextQuestion(question);
-
-        CloseModal();
+        return true;
     }
-    
+    #endregion
+    private ErrorModalViewModal errorModalViewModal { get; set; }
+
+    public TextQuestionModalViewModel(NavigationStore navigationStore, TextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel, TestService testService)
+    {
+        this.navigationStore = navigationStore;
+        this.textQuestion = textQuestion;
+        this.testManagementViewModel = testManagementViewModel;
+        this.newQuestion = newQuestion;
+        this.testService = testService;
+        SetValues();
+    }
+    private void SetValues()
+    {
+        MultipleChoice = textQuestion.IsMultiSelect;
+        HasInputField = textQuestion.HasInputField;
+        TestQuestion = textQuestion.Question;
+        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!));
+    }
+
+    private void OpenErrorModal(string text)
+    {
+        errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
+        navigationStore.OpenModal(errorModalViewModal);
+    }
+    private void AddOption(string value)
+    {
+        try
+        {
+            if (!ErrorService.IsEmptyString(value))
+            {
+                Options.Add(value);
+                OnPropertyChanged(nameof(Options));
+            }
+            else
+            {
+                OpenErrorModal("De optie mag niet leeg zijn.");
+            }
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal($"Er is wat fout gegaan tijdens het toevoegen van de optie. {ex.Message}");
+
+        }
+    }
+
+    private void RemoveOption(string value)
+    {
+        try
+        {
+            if (!ErrorService.IsEmptyString(value) && Options.Contains(value))
+            {
+                Options.Remove(value);
+                OnPropertyChanged(nameof(Options));
+            }
+            else
+            {
+                OpenErrorModal("Er is wat fout gegaan bij het verwijderen van de optie.");
+            }
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal($"Er is wat fout gegaan bij het verwijderen van de optie");
+        }
+    }
+
+    private void SaveQuestion()
+    {
+        try
+        {
+            if (!CheckValidityInput())
+                return;
+
+            TextQuestion question = new TextQuestion
+            {
+                Id = textQuestion.Id,
+                HasInputField = HasInputField,
+                IsMultiSelect = MultipleChoice,
+                Question = TestQuestion,
+                Options = testService.ConvertStringsToQuestionOptions(Options.ToList(), textQuestion.Id),
+                QuestionNumber = textQuestion.QuestionNumber
+            };
+
+            if (newQuestion)
+                testManagementViewModel.AddNewTextQuestion(question);
+            else
+                testManagementViewModel.UpdateTextQuestion(question);
+
+            CloseModal();
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal("Er is wat fout gegaan bij het opslaan van de vraag.");
+        }
+
+    }
+
     private void CloseModal()
     {
         navigationStore.CloseModal(testManagementViewModel);

@@ -1,75 +1,166 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.IRepositories;
+﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Projections;
-using System.Collections.ObjectModel;
-using BusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessLogic.IModels;
+using BusinessLogic.Enums;
+using BusinessLogic.Models;
+using BusinessLogic.Classes;
+using UserInterface.Stores;
 
 namespace BusinessLogic.Services;
 
 public class TestService
 {
+    private Test test;
+
     private ITestRepository testRepository;
 
-    public TestService(ITestRepository testRepository)
+    public TestService(ITestRepository testRepository) => this.testRepository = testRepository;
+
+    #region Test Retrieval
+    public List<Test> GetAllTests() => testRepository.GetAllTests();
+
+    public Test GetTestById(Guid id) => testRepository.GetTestById(id);
+
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
+
+    public Test? GetTestByTargetAudienceIdAndActive(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceIdAndActive(targetAudienceId);
+    #endregion
+
+    #region CRUD Test
+    public Test CreateTest()
     {
-        this.testRepository = testRepository;
+        test = testRepository.CreateTest();
+        return test;
     }
-    public List<ITest> GetAllTests()
+
+    public void SaveTest(Test test) => testRepository.SaveTest(test);
+
+    public void DeleteTest(Test test) => testRepository.DeleteTest(test);
+
+    public void UpdateTest(Test test) => testRepository.UpdateTest(test);
+    #endregion
+
+    public void SetTest(Test test) => this.test = test;
+
+    public void SaveOrUpdateTest(Test test, bool newTest)
     {
-        return testRepository.GetAllTests();
+        if (newTest)
+            SaveTest(test);
+        else
+            UpdateTest(test);
     }
-    public ITest? GetTest(int targetAudienceId)
+
+    public bool TargetAudienceChanged(TargetAudience currentTargetAudience, TargetAudience initalTargetAudience)
     {
-        return testRepository.GetTest(targetAudienceId);
+        return currentTargetAudience == initalTargetAudience;
     }
-    public ObservableCollection<TestProjection> GetTestsProjectionForAudience(int id)
+
+    #region ???? not sure yet TODO
+    public TextQuestionOption ConvertStringToQuestionOption(string text, Guid textQuestionId)
     {
-        return testRepository.GetTestsProjectionForAudience(id);
+        return new TextQuestionOption { Id = new Guid(), Option = text, TextQuestionId = textQuestionId };
     }
-    public void SaveTest(ITest test)
+
+    public string ConvertQuestionOptionToString(TextQuestionOption questionOption)
     {
-        testRepository.SaveTest(test);
+        return questionOption.Option;
     }
-    public void DeleteTest(ITest test)
+
+    public List<TextQuestionOption> ConvertStringsToQuestionOptions(List<string> texts, Guid textQuestionId)
     {
-        testRepository.DeleteTest(test);
+        return texts.Select(text => ConvertStringToQuestionOption(text, textQuestionId)).ToList();
     }
-    public void UpdateTest(ITest test)
+
+    public List<string> ConvertQuestionOptionsToStrings(List<TextQuestionOption> questionOptions)
     {
+        return questionOptions.Select(ConvertQuestionOptionToString).ToList();
+    }
+    #endregion
+
+    #region Questions
+    public ToneAudiometryQuestion CreateToneAudiometryQuestion()
+    {
+        ToneAudiometryQuestion audioQuestion = new ToneAudiometryQuestion { Id = new Guid(), QuestionType = QuestionType.AudioQuestion };
+        audioQuestion.QuestionNumber = GetNewHighestQuestionNumber(test, QuestionType.AudioQuestion);
+        return audioQuestion;
+    }
+
+    public TextQuestion CreateTextQuestion()
+    {
+        TextQuestion textQuestion = new TextQuestion
+        {
+            Id = new Guid(),
+            Options = new List<TextQuestionOption>(),
+            QuestionType = QuestionType.TextQuestion
+        };
+        textQuestion.QuestionNumber = GetNewHighestQuestionNumber(test, QuestionType.TextQuestion);
+        return textQuestion;
+    }
+
+    public List<TextQuestion> AddTextQuestion(TextQuestion textQuestion)
+    {
+        test.TextQuestions.Add(textQuestion);
+        return test.TextQuestions.ToList();
+    }
+
+    public List<ToneAudiometryQuestion> AddToneAudiometryQuestion(ToneAudiometryQuestion audioQuestion)
+    {
+        test.ToneAudiometryQuestions.Add(audioQuestion);
+        return test.ToneAudiometryQuestions.ToList();
+    }
+    #endregion
+
+    #region Test Manipulation 
+    public void ToggleActiveStatus(Guid id)
+    {
+        Test? test = GetTestById(id);
+        if (test == null) return;
+
+        if (!test.Active)
+        {
+            Test? activeTest = testRepository.GetTestByTargetAudienceIdAndActive(test.TargetAudienceId);
+            if (activeTest != null)
+            {
+                activeTest.Active = false;
+                testRepository.UpdateTest(test);
+            }
+        }
+        test.Active = !test.Active;
         testRepository.UpdateTest(test);
     }
-    public ITest CreateTest()
+
+    public static int GetNewHighestQuestionNumber(Test test, QuestionType questionType)
     {
-       return testRepository.CreateTest();
-    }
-    public int GetNewHighestQuestionNumber(ITest test, IQuestion questionType)
-    {
+        if (test == null || test.TextQuestions == null || test.ToneAudiometryQuestions == null)
+        {
+            throw new ArgumentNullException("Test, Textquestios, audioquestions or QuestionType cannot be null");
+        }
+
         switch (questionType)
         {
-            case IToneAudiometryQuestion audioQuestion:
+            case QuestionType.AudioQuestion:
                 return test.ToneAudiometryQuestions.Any()
                     ? test.ToneAudiometryQuestions.Max(q => q.QuestionNumber) + 1
-                    : 1; 
-            case ITextQuestion textQuestion:
+                    : 1;
+            case QuestionType.TextQuestion:
                 return test.TextQuestions.Any()
                     ? test.TextQuestions.Max(q => q.QuestionNumber) + 1
-                    : 1; 
+                    : 1;
             default:
                 return 0;
         }
     }
 
-    public int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
+    public static int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
+        ErrorService.AssertQuestions(questions);
+
         return questions.FindIndex(q => q.QuestionNumber == questionNumber);
     }
-    public List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
+
+    public static List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
     {
+        ErrorService.AssertQuestions(questions);
         int newNumber = 1;
 
         foreach (IQuestion question in questions)
@@ -79,18 +170,48 @@ public class TestService
         }
         return questions;
     }
+
     public List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
     {
+        ErrorService.AssertQuestions(questions);
         int index = GetQuestionNumberIndex(questions, questionNumber);
-        questions[index] = question;
-        return questions;
-    }
-    public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
-    {
-        int index = GetQuestionNumberIndex(questions, questionNumber);
-        questions.RemoveAt(index);
-        questions = ShiftQuestionNumbers(questions);
+        if (index != -1)
+        {
+            questions[index] = question;
+        }
+        switch (question)
+        {
+            case TextQuestion:
+                test.TextQuestions = questions.Cast<TextQuestion>().ToList(); ;
+                break;
+            case AudiometryQuestion:
+                test.ToneAudiometryQuestions = questions.Cast<ToneAudiometryQuestion>().ToList(); ;
+                break;
+        }
         return questions;
     }
 
+    public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
+    {
+        ErrorService.AssertQuestions(questions);
+
+        int index = GetQuestionNumberIndex(questions, questionNumber);
+        if (index != -1)
+        {
+            questions.RemoveAt(index);
+            questions = ShiftQuestionNumbers(questions);
+            switch (questions[index])
+            {
+                case TextQuestion:
+                    test.TextQuestions.ToList().RemoveAt(index);
+                    break;
+                case AudiometryQuestion:
+                    test.ToneAudiometryQuestions.ToList().RemoveAt(index);
+                    break;
+            }
+        }
+
+        return questions;
+    }
+    #endregion
 }

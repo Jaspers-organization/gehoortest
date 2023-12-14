@@ -6,20 +6,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:UserInterface.Views"
         xmlns:modals="clr-namespace:UserInterface.Views.Modals" 
-        xmlns:viewModels="clr-namespace:UserInterface.ViewModels" 
+        xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
         xmlns:modalViewModels="clr-namespace:UserInterface.ViewModels.Modals"
         mc:Ignorable="d"
         Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
     <!--WindowStyle="None"-->
+
     <Grid Background="{StaticResource SecondaryBackgroundColor}">
-        <!-- Define all pages here -->
-       <Grid.Resources>
-            
+
+        <Grid.Resources>
+            <!-- Define all pages here -->
+            <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+                <views:HomeView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestViewModel}">
                 <views:TestView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestResultViewModel}">
                 <views:TestResultView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+                <views:LoginView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:EmployeePortalViewModel}">
+                <views:EmployeePortalView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
@@ -27,7 +37,7 @@
             <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
                 <views:TestManagementView />
             </DataTemplate>
-            
+
             <!-- Define all modals here -->
             <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">
                 <modals:TextQuestionModal/>
@@ -56,7 +66,33 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Fill="White" />
+        <Grid 
+            Grid.Column="0" 
+            Grid.ColumnSpan="3" 
+            Grid.Row="0"
+            Background="{StaticResource PrimaryBackgroundColor}">
+            <Button
+                Visibility="{Binding ShowLogoutButton}"
+                Style="{StaticResource PrimaryButton_S}"
+                Margin="15 0 0 0"
+                HorizontalAlignment="Left"
+                Command="{Binding LogoutCommand}"
+                Content="Uitloggen"/>
+            <Button
+                Visibility="{Binding ShowBackButton}"
+                Style="{StaticResource PrimaryButton_S}"
+                Margin="15 0 0 0"
+                HorizontalAlignment="Left"
+                Command="{Binding BackCommand}"
+                Content="Terug"/>
+            <Button
+                Visibility="{Binding ShowCloseApplicationButton}"
+                Style="{StaticResource PrimaryButton_S}"
+                Margin="0 0 15 0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseApplicationCommand}"
+                Content="Afsluiten"/>
+        </Grid>
 
         <ContentControl
             Grid.Column="1" 
@@ -76,10 +112,12 @@
 
         <ContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="2" Content="{Binding CurrentViewModel}" />
 
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="White" />
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Fill="{StaticResource PrimaryBackgroundColor}" />
     </Grid>
-    
-    <!--<Window.InputBindings>
-        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding}" />
-    </Window.InputBindings>-->
+
+    <Window.InputBindings>
+        <KeyBinding Key="M" Modifiers="Ctrl+Shift" Command="{Binding OpenLoginCommand}"/>
+        <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding DoNothingCommand}"/>
+    </Window.InputBindings>
+
 </Window>
