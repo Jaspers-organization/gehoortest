@@ -22,6 +22,7 @@ using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 using static System.Net.Mime.MediaTypeNames;
+using BusinessLogic.Enums;
 
 namespace UserInterface.ViewModels
 {
@@ -52,11 +53,40 @@ namespace UserInterface.ViewModels
         private bool finalDecibelToPlay = false;
         private bool testedLeftEar = false;
         private bool testedRightEar = false;
-        ITextQuestion currentTextQuestion;
-        IToneAudiometryQuestion currentAudiometryQuestion;
-        private readonly Repository repository;
+        TextQuestion currentTextQuestion;
+        ToneAudiometryQuestion currentAudiometryQuestion;
         #region Properties
+        private bool _answerButtonEnabled;
+        public bool AnswerButtonEnabled
+        {
+            get { return _answerButtonEnabled; }
+            set
+            {
+                _answerButtonEnabled = value;
+                OnPropertyChanged(nameof(AnswerButtonEnabled));
+            }
+        }
+        private int _progressValue;
+        public int ProgressValue
+        {
+            get { return _progressValue; }
+            set
+            {
+                _progressValue = value;
+                OnPropertyChanged(nameof(ProgressValue));
+            }
+        }
 
+        private string _progressTextBlock;
+        public string ProgressTextBlock
+        {
+            get { return _progressTextBlock; }
+            set
+            {
+                _progressTextBlock = value;
+                OnPropertyChanged(nameof(ProgressTextBlock));
+            }
+        }
         public string ShowTestExplanationView
         {
             get { return _showTestExplanationView; }
@@ -200,7 +230,7 @@ namespace UserInterface.ViewModels
             ITestRepository testRepository = new TestMockRepository();
             testService = new TestService(testRepository);
 
-            nAudioPlayer = new BusinessLogic.Classes.NAudioPlayer();
+            nAudioPlayer = new NAudioPlayer();
  
 
         }
@@ -232,37 +262,7 @@ namespace UserInterface.ViewModels
             ShowTestTextQuestionView = visibility;
         }
         #endregion SetVisibility
-        private bool _answerButtonEnabled;
-        public bool AnswerButtonEnabled
-        {
-            get { return _answerButtonEnabled; }
-            set
-            {
-                _answerButtonEnabled = value;
-                OnPropertyChanged(nameof(AnswerButtonEnabled));
-            }
-        }
-        private int _progressValue;
-        public int ProgressValue
-        {
-            get { return _progressValue; }
-            set
-            {
-                _progressValue = value;
-                OnPropertyChanged(nameof(ProgressValue));
-            }
-        }
-
-        private string _progressTextBlock;
-        public string ProgressTextBlock
-        {
-            get { return _progressTextBlock; }
-            set
-            {
-                _progressTextBlock = value;
-                OnPropertyChanged(nameof(ProgressTextBlock));
-            }
-        }
+        
         private void OpenTestManagement()
         {
             navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
@@ -280,9 +280,9 @@ namespace UserInterface.ViewModels
         }
         private void GetTargetAudiencesWithTest()
         {
-            List<ITargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
-            List<ITest> tempTests = testService.GetAllTests();
-            List<ITargetAudience> finalList = new List<ITargetAudience>();
+            List<TargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
+            List<Test> tempTests = testService.GetAllTests();
+            List<TargetAudience> finalList = new List<TargetAudience>();
 
             foreach (var test in tempTests)
             {
@@ -299,9 +299,9 @@ namespace UserInterface.ViewModels
                 }
             }
 
-            TargetAudiences = new ObservableCollection<ITargetAudience>(finalList);
+            TargetAudiences = new ObservableCollection<TargetAudience>(finalList);
             List<string> TargetAudienceOptions = new();
-            foreach (ITargetAudience targetAudience in TargetAudiences)
+            foreach (TargetAudience targetAudience in TargetAudiences)
             {
                 TargetAudienceOptions.Add(targetAudience.Label);
             }
@@ -309,11 +309,11 @@ namespace UserInterface.ViewModels
         }
         private void GetTest()
         {
-            ITargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedOption);
+            TargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedOption);
             if (selectedTargetAudience == null) return;
 
             SetTestTargetAudienceView(NOTVISIBLE);
-            Test = testService.GetTest(selectedTargetAudience.Id); 
+            Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id); 
             testProgressData = new TestProgressData(Test);
      
             if(Test.TextQuestions.Count() > 0)
@@ -350,8 +350,9 @@ namespace UserInterface.ViewModels
             if (currentTextQuestion.IsMultiSelect)
             {
                 SetQuestionInput(NOTVISIBLE);
+                List <string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options);
                 List<string> tempRadioButtons = new();
-                foreach (string option in currentTextQuestion.Options)
+                foreach (string option in options)
                 {
                     tempRadioButtons.Add(option);
                 }
@@ -398,7 +399,7 @@ namespace UserInterface.ViewModels
         private void SaveAudioAnswer(string value)
         {
             //save answers to TestProgressData
-            IToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
+            ToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
             testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.QuestionNumber, q.Frequency, currentAudioEar, q.StartingDecibels, lowestDecibel, value));
             DetermineNextAudioStep(value);
             AnswerButtonEnabled = false;

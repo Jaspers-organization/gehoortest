@@ -1,6 +1,4 @@
 ﻿using BusinessLogic.Enums;
-using BusinessLogic.IModels;
-
 namespace BusinessLogic.Classes;
 
 public class ToneAudiometryAnswer
@@ -21,10 +19,4 @@ public class ToneAudiometryAnswer
         LowestLimitDecibels = lowestLimitDecibels;
         Answer = answer;
     }
-  
-
-    
-
-    
-   
 }
