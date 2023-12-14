@@ -23,9 +23,11 @@ namespace UserInterface.Views
     /// </summary>
     public partial class TestAudiometryQuestionView : UserControl
     {
+        //public ViewModel ViewModel { get; set; }
         public TestAudiometryQuestionView()
         {
             InitializeComponent();
+          //  DataContext = ViewModel;
         }
 
         //private void Window_ContentRendered(object sender, EventArgs e)

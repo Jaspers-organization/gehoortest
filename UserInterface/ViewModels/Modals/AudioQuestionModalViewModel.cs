@@ -1,5 +1,5 @@
-﻿using BusinessLogic.IModels;
-using DataAccess.Entity.TestData_Management;
+﻿using BusinessLogic.Models;
+using System;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -11,9 +11,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     #region Dependencies
     private readonly NavigationStore navigationStore;
     private readonly TestManagementViewModel testManagementViewModel;
-    private ErrorModalViewModal errorModalViewModal { get; set; }
-
-    private readonly IToneAudiometryQuestion toneAudiometryQuestion;
+    private readonly ToneAudiometryQuestion toneAudiometryQuestion;
     private readonly bool newQuestion;
     #endregion
 
@@ -68,100 +66,87 @@ internal class AudioQuestionModalViewModel : ViewModelBase
 
     #region Errors
 
-    public string this[string columnName]
+    private bool CheckValidityInput()
     {
-        get
-        {
-            string? validationMessage = null;
-
-            switch (columnName)
-            {
-                case "Frequency":
-                    if (int.TryParse(FrequencyString, out int Frequency)){
-                        if (Frequency <= 125 || Frequency >= 8000){
-                            validationMessage = ErrorMessageStore.ErrorFrequencyLimit;
-                        }
-                        else
-                        {
-                            this.Frequency = Frequency;
-                        }
-                    }
-                    else if(string.IsNullOrEmpty(FrequencyString)){
-                        validationMessage = ErrorMessageStore.ErrorEmpty;
-                    }
-                    else{
-                        validationMessage = ErrorMessageStore.ErrorNotValidInteger;
-                    }
-                    break;
-                case "StartingDecibelsString":
-                    if (int.TryParse(StartingDecibelsString, out int StartingDecibels)){
-                        if (StartingDecibels <= 0 || StartingDecibels >= 120){
-                            validationMessage = ErrorMessageStore.ErrorStartingDecibels;
-                        }
-                        else
-                        {
-                            this.StartingDecibels = StartingDecibels;
-                        }
-                    }
-                    else if (string.IsNullOrEmpty(FrequencyString)){
-                        validationMessage = ErrorMessageStore.ErrorEmpty;
-                    }
-                    else{
-                        validationMessage = ErrorMessageStore.ErrorNotValidInteger;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return validationMessage ?? string.Empty;
-        }
-    }
-    #endregion
-
-
-
-    public AudioQuestionModalViewModel(NavigationStore navigationStore, IToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
-    {
-        this.navigationStore = navigationStore;
-        this.testManagementViewModel = testManagementViewModel;
-        this.toneAudiometryQuestion = toneAudiometryQuestion;
-        this.newQuestion = newQuestion;
-        StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
-        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
-    }
-    public void OpenErrorModal(string text)
-    {
-        errorModalViewModal = new ErrorModalViewModal(navigationStore, text);
-        navigationStore.OpenModal(errorModalViewModal);
-    }
-    private void SaveQuestion()
-    {
-        string frequencyValidation = this["Frequency"];
-        string decibelValidation = this["Sta"];
+        string frequencyValidation = ErrorService.ValidateInput("Frequency", FrequencyString);
+        string decibelValidation = ErrorService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
 
         if (!string.IsNullOrEmpty(frequencyValidation))
         {
             OpenErrorModal(frequencyValidation);
-            return;
+            return false;
+        }
+        else
+        {
+            Frequency = ErrorService.ParseStringToInt(FrequencyString);//not sure of this.
         }
 
         if (!string.IsNullOrEmpty(decibelValidation))
         {
             OpenErrorModal(decibelValidation);
-            return;
+            return false;
         }
-
-        IToneAudiometryQuestion question = new ToneAudiometryQuestion { Id = toneAudiometryQuestion.Id, StartingDecibels = StartingDecibels, Frequency = Frequency, QuestionNumber = toneAudiometryQuestion.QuestionNumber };
-
-        if (newQuestion)
-            testManagementViewModel.AddNewToneAudiometryQuestion(question);
         else
-            testManagementViewModel.UpdateToneAudiometryQuestion(question);
-
-        CloseModal();
+        {
+            StartingDecibels = ErrorService.ParseStringToInt(StartingDecibelsString);
+        }
+        return true;
     }
+    #endregion
+
+    public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
+    {
+        this.navigationStore = navigationStore;
+        this.testManagementViewModel = testManagementViewModel;
+        this.toneAudiometryQuestion = toneAudiometryQuestion;
+        this.newQuestion = newQuestion;
+
+        SetValues();
+    }
+    public void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
+    public void SetValues()
+    {
+        StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
+        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
+    }
+
+    private void SaveQuestion()
+    {
+        try
+        {
+            // Checks the validity of input data before proceeding
+            if (!CheckValidityInput())
+                return;
+
+            // Creates a new ToneAudiometryQuestion object based on the provided data
+            ToneAudiometryQuestion question = new ToneAudiometryQuestion
+            {
+                Id = toneAudiometryQuestion.Id,
+                StartingDecibels = StartingDecibels,
+                Frequency = Frequency,
+                QuestionNumber = toneAudiometryQuestion.QuestionNumber
+            };
+
+            // Adds a new tone audiometry question if it's a new question, otherwise updates the existing one
+            if (newQuestion)
+                testManagementViewModel.AddNewToneAudiometryQuestion(question);
+            else
+                testManagementViewModel.UpdateToneAudiometryQuestion(question);
+
+            // Closes the modal after successful question saving or updating
+            CloseModal();
+        }
+        catch (Exception ex)
+        {
+            // If an exception occurs during the saving process, opens an error modal
+            OpenErrorModal("Er is wat foutgegaan bij het opslaan van de vraag");
+        }
+    }
+
     private void CloseModal()
     {
+        // Closes the current modal
         navigationStore.CloseModal();
     }
+
 }

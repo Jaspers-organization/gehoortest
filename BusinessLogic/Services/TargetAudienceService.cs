@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Services;
 
@@ -13,9 +14,9 @@ public class TargetAudienceService
         this.targetAudienceRepository = targetAudienceRepository;
     }
         
-    public List<ITargetAudience> GetAllTargetAudiences()
+    public List<TargetAudience> GetAllTargetAudiences()
     {
-        return targetAudienceRepository.GetAllAudiences();
+        return targetAudienceRepository.GetAll();
     }
     
 

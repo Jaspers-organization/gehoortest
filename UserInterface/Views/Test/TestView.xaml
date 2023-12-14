@@ -13,8 +13,5 @@
         <Views:TestTextQuestionView Visibility="{Binding ShowTestTextQuestionView}" />
         <Views:TestAudiometryQuestionView Visibility="{Binding ShowTestToneAudiometryView}"/>
 
-        <!--<Views:TestExplanationView Visibility="{Binding IntroText}" />
-        <Views:TestTextQuestionView Visibility="{Binding QuestionText}" />
-        <Views:TestAudiometryQuestionView Visibility="{Binding QuestionAudio}"/>-->
     </Grid>
 </UserControl>

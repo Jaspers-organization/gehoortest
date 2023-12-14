@@ -1,11 +1,9 @@
 ﻿namespace BusinessLogic.Projections;
 
-public readonly struct TestResultProjection
+public struct TestResultProjection
 {
-    public readonly bool hasHearingLoss;
-
-    public TestResultProjection(bool hasHearingLoss)
-    {
-        this.hasHearingLoss = hasHearingLoss;
-    }
+    public Guid TestResultId { get; set; }
+    public string TestResultText { get; set; }
+    public string TestResultExplanation { get; set; }
+    public bool HasHearingLoss { get; set; }
 }

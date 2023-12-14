@@ -3,17 +3,18 @@ using UserInterface.Commands;
 using UserInterface.Stores;
 using BusinessLogic.Interfaces;
 using System;
+using BusinessLogic.Services;
 
 namespace UserInterface.ViewModels.Modals;
 
 internal class ConfirmationModalViewModel : ViewModelBase
 {
     #region Dependencies
-    private readonly NavigationStore _navigationStore;
-    private readonly Action _action;
+    private readonly NavigationStore navigationStore;
+    private readonly Action action;
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _text;
     public string Text
     {
@@ -27,31 +28,31 @@ internal class ConfirmationModalViewModel : ViewModelBase
     public ICommand DenyCommand => new Command(Deny);
     #endregion
 
-    private IConfirmation _confirmation;
+    private IConfirmation confirmation;
 
     public ConfirmationModalViewModel(NavigationStore navigationStore, string text , IConfirmation confirmation, Action action)
     {
-        _navigationStore = navigationStore;
-        _confirmation = confirmation;
+        this.navigationStore = navigationStore;
+        this.confirmation = confirmation;
         Text = text;
-        _action = action;
+        this.action = action;
     }
-    public void Confirm()
+    private void Confirm()
     {
-        _confirmation.SetConfirmed(true);
+        confirmation.IsConfirmed = true;
         CloseModal();
     }
-    public void Deny() {
-        _confirmation.SetConfirmed(false);
+    private void Deny() {
+        confirmation.IsConfirmed = false;
         CloseModal();
     }
-    public void PerformAction()
+    private void PerformAction()
     {
-        _action?.Invoke(); 
+        action?.Invoke(); 
     }
     private void CloseModal()
     {
-        _navigationStore.CloseModal();
+        navigationStore.CloseModal();
         PerformAction();
     }
 }

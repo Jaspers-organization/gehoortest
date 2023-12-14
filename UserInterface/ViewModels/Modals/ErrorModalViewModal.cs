@@ -1,18 +1,16 @@
 ﻿using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
-using System;
 
 namespace UserInterface.ViewModels.Modals;
 
 internal class ErrorModalViewModal : ViewModelBase
 {
     #region Dependencies
-    private readonly NavigationStore _navigationStore;
-    private readonly Action _action;
+    private readonly NavigationStore navigationStore;
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _text;
     public string Text
     {
@@ -28,24 +26,19 @@ internal class ErrorModalViewModal : ViewModelBase
 
     public ErrorModalViewModal(NavigationStore navigationStore, string text)
     {
-        _navigationStore = navigationStore;
+        this.navigationStore = navigationStore;
         Text = text;
     }
-    public void Confirm()
+    private void Confirm()
     {
         CloseModal();
     }
-    public void Deny()
+    private void Deny()
     {
         CloseModal();
-    }
-    public void PerformAction()
-    {
-        _action?.Invoke();
-    }
+    }   
     private void CloseModal()
     {
-        _navigationStore.CloseModal();
-        PerformAction();
+        navigationStore.CloseModal();
     }
 }
