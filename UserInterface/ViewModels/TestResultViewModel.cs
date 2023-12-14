@@ -92,6 +92,9 @@ internal class TestResultViewModel : ViewModelBase
         testResultId = testResult.TestResultId;
         TestResultText = testResult.TestResultText;
         TestResultExplanation = testResult.TestResultExplanation;
+
+        NegativeTestResult = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
+        PositiveTestResult = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void SendEmail()
