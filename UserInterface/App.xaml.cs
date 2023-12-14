@@ -2,6 +2,7 @@
 using UserInterface.Views;
 using System.Windows;
 using UserInterface.ViewModels;
+using DataAccess.Repositories;
 
 namespace UserInterface;
 
@@ -15,8 +16,8 @@ public partial class App : Application
     public App()
     {
         navigationStore = new NavigationStore();
-        //EmployeeRepository repository = new EmployeeRepository();
-        //repository.Insert();
+        //TargetAudienceRepository repository = new TargetAudienceRepository();
+        //repository.FillTargetAudiences();
     }
 
     protected override void OnStartup(StartupEventArgs e)

@@ -30,6 +30,5 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
         builder.HasMany(t => t.Tests)
                .WithOne(test => test.TargetAudience)
                .HasForeignKey(test => test.TargetAudienceId);
-
     }
 }

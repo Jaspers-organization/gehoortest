@@ -25,7 +25,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand OpenTestCommand => new Command(OpenTest);
     public ICommand NewTestCommand => new Command(NewTest);
     public ICommand DeleteTestCommand => new Command(DeleteTest);
-    public ICommand BackToMainMenuCommand => new Command(BackToMainMenu);
     public ICommand ToggleActiveStatusCommand => new Command(ToggleActiveStatus);
     #endregion
 
@@ -62,7 +61,8 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     public TestOverviewViewModel(NavigationStore navigationStore)
     {
         this.navigationStore = navigationStore;
-
+        this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
+        this.navigationStore.HideTopBar = false;
         // Services
         testService = new TestService(new TestRepository());
         targetAudienceService = new TargetAudienceService(new TargetAudienceRepository());
@@ -82,9 +82,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
     private void UpdateTestProjections(Guid id) => Tests = testService.GetTestProjectionsByTargetAudienceId(id);
 
-    //todo rewrite this to employee portal.
-    private void BackToMainMenu() => navigationStore!.CurrentViewModel = new TestViewModel(navigationStore);
-
     private void OpenTest(Guid id)
     {
         Test? test = testService.GetTestById(id);
@@ -92,7 +89,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         if (test != null)
             navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore, test);
     }
-
     private void NewTest() => navigationStore!.CurrentViewModel = new TestManagementViewModel(navigationStore);
 
     private void DeleteTest(Guid id)

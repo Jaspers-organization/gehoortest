@@ -53,7 +53,7 @@ internal class MainWindowViewModel : ViewModelBase
         set { _showCloseApplicationButton = value; OnPropertyChanged(nameof(ShowCloseApplicationButton)); }
     }
     #endregion
-    
+
     #region commands
     public ICommand OpenLoginCommand => new Command(OpenLogin);
     public ICommand LogoutCommand => new Command(Logout);
@@ -70,7 +70,7 @@ internal class MainWindowViewModel : ViewModelBase
         this.navigationStore.IsModalOpenChanged += OnIsModalOpenChanged;
         this.navigationStore.LoggedInEmployeeChanged += LoggedInEmployeeChanged;
         this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
-
+        this.navigationStore.HideTopBarChanged += ToggleTopBar;
         CurrentViewModel = this.navigationStore.CurrentViewModel;
     }
 
@@ -87,8 +87,23 @@ internal class MainWindowViewModel : ViewModelBase
         ShowLogoutButton = Visibility.Hidden;
         ShowCloseApplicationButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
-    }
+    }    
+    private void ToggleTopBar()
+    {
+        if (navigationStore.HideTopBar)
+        {
+            ShowBackButton = Visibility.Hidden;
+            ShowCloseApplicationButton = Visibility.Hidden;
+            ShowLogoutButton = Visibility.Hidden;
+        }
+        else
+        {
+            ShowLogoutButton = Visibility.Visible;
+            ShowBackButton = Visibility.Visible;
+            ShowCloseApplicationButton = Visibility.Visible;
+        }
 
+    }
     private void Back()
     {
         if (navigationStore.PreviousViewModel.Count == 0)
@@ -125,7 +140,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void LoggedInEmployeeChanged()
     {
-        ShowLogoutButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden: Visibility.Visible;
+        ShowLogoutButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
         ShowCloseApplicationButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
     }
 

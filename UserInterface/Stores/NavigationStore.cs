@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Projections;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using UserInterface.ViewModels;
@@ -13,6 +12,7 @@ internal class NavigationStore
     public event Action? IsModalOpenChanged;
     public event Action? LoggedInEmployeeChanged;
     public event Action? PreviousViewModelChanged;
+    public event Action? HideTopBarChanged;
 
     #region properties
     private ViewModelBase? _currentViewModel;
@@ -35,7 +35,12 @@ internal class NavigationStore
         get { return _isModalOpen; }
         set { _isModalOpen = value; OnIsModalOpenChanged(); }
     }
-
+    public bool _hideTopBar = false;
+    public bool HideTopBar
+    {
+        get { return _hideTopBar; }
+        set { _hideTopBar = value; OnHideTopBarChanged(); }
+    }
     private EmployeeProjection? _loggedInEmployee = null;
     public EmployeeProjection? LoggedInEmployee
     {
@@ -56,7 +61,8 @@ internal class NavigationStore
         CurrentModalViewModel = viewModal;
         IsModalOpen = true;
     }
-
+    
+    
     public void CloseModal()
     {
         CurrentModalViewModel = null;
@@ -90,4 +96,7 @@ internal class NavigationStore
     private void OnLoggedInEmployeeChanged() => LoggedInEmployeeChanged?.Invoke();
 
     private void OnPreviousViewModelChanged() => PreviousViewModelChanged?.Invoke();
+
+    private void OnHideTopBarChanged() => HideTopBarChanged?.Invoke();
+   
 }

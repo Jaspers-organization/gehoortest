@@ -19,3 +19,10 @@ public class Test : IModel
     public Employee Employee { get; set; }
 }
 
+
+/*
+-	Overerving
+-	Interfaces
+-	Static methods
+-	Generics
+*/

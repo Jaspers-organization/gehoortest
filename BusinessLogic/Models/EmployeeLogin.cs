@@ -11,5 +11,5 @@ public class EmployeeLogin : IModel
     public bool Active { get; set; }
 
     public Guid EmployeeId { get; set; }
-    public Employee Employee { get; set; }
+    public Employee? Employee { get; set; }
 }

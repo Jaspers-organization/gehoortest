@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
 using System;
@@ -19,6 +20,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private readonly NavigationStore navigationStore;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceSerivce;
+    private readonly EmployeeService employeeService;
+
     private readonly bool newTest;
     #endregion
 
@@ -116,8 +119,9 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         //Dependencies initialization
         this.navigationStore = navigationStore;
-
+        this.navigationStore.HideTopBar = true;
         testService = new TestService(new TestRepository());
+        employeeService = new EmployeeService(new EmployeeRepository());
         targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
 
         //set values
@@ -435,6 +439,12 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         if (testService.TargetAudienceChanged(Test.TargetAudience, initalTargetAudience))
             Test.Active = false;
     }
+    private void SetEmployee()
+    {
+        Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
+        Test.EmployeeId = EmployeeId;
+        Test.Employee = employeeService.GetEmployeeById(EmployeeId);
+    }
     private void SaveTest()
     {
         try
@@ -442,12 +452,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             if (!CheckValidityInput())
                 return;
 
-            //TEMP TODO WRITE AROUND
-            EmployeeRepository repository = new EmployeeRepository();
-            var Employee = repository.Get();
-            Test.EmployeeId = Employee.Id;
-            Test.Employee = Employee;
-            //
+            if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
+                SetEmployee();
 
             CheckTargetAudienceChanged();
 

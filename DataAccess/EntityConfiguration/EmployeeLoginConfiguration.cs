@@ -35,5 +35,9 @@ internal class EmployeeLoginConfiguration : IEntityTypeConfiguration<EmployeeLog
         builder.Property(e => e.EmployeeId)
                .HasColumnName("employee_id")
                .HasColumnType("nvarchar(128)");
+
+        builder.HasOne(el => el.Employee)
+           .WithOne(e => e.EmployeeLogin)
+           .HasForeignKey<EmployeeLogin>(el => el.EmployeeId);
     }
 }
