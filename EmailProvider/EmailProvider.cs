@@ -20,17 +20,52 @@ public class EmailProvider : IEmailProvider
         return this;
     }
 
-    public void SendEmail(string reciever, string subject, string body)
+    public bool SendEmail(string reciever, string subject, string body)
     {
         AssertInitialized();
 
-        MailMessage email = new MailMessage(sender, reciever, subject, body) 
-        { 
-            IsBodyHtml = true 
+        MailMessage email = new MailMessage(sender, reciever, subject, body)
+        {
+            IsBodyHtml = true
         };
 
-        client.Send(email);
+        try
+        {
+            client.Send(email);
+            return true;
+
+        }
+        catch(Exception ex)
+        {
+            //todo
+            return false;
+        }
+
+
     }
+
+    //public async Task<bool> SendEmail(string receiver, string subject, string body)
+    //{
+    //    AssertInitialized();
+
+    //    try
+    //    {
+    //        MailMessage email = new MailMessage(sender, receiver, subject, body)
+    //        {
+    //            IsBodyHtml = true
+    //        };
+
+    //        await client.SendMailAsync(email);
+    //        return true;
+    //    }
+    //    catch (Exception ex)
+    //    {
+
+    //        Console.WriteLine($"Failed to send email: {ex.Message}");
+    //        return false;
+    //    }
+    //}
+
 
     private void AssertInitialized()
     {

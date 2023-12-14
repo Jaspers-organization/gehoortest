@@ -60,6 +60,12 @@ internal class TestResultViewModel : ViewModelBase
         get { return _emailError; }
         set { _emailError = value; OnPropertyChanged(nameof(EmailError)); }
     }
+    private Visibility _emailSuccess = Visibility.Hidden;
+    public Visibility EmailSuccess
+    {
+        get { return _emailSuccess; }
+        set { _emailSuccess = value; OnPropertyChanged(nameof(EmailSuccess)); }
+    }
     #endregion
 
     #region commands
@@ -106,6 +112,20 @@ internal class TestResultViewModel : ViewModelBase
         }
 
         EmailError = Visibility.Hidden;
-        emailService.SendEmail(Email, testResultId);
+        bool result = emailService.SendEmail(Email, testResultId);
+        if (result)
+        {
+            ShowSuccess();
+        }
+        else
+        {
+            //show error voor jasper;
+        }
+
+    }
+    private void ShowSuccess()
+    {
+        EmailSuccess = Visibility.Visible;
+        
     }
 }

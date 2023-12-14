@@ -148,4 +148,8 @@ public class TestMockRepository : ITestRepository
     public Test? GetTestByTargetAudienceIdAndActive(Guid id) => testDataList.FirstOrDefault(t => t.TargetAudience.Id == id && t.Active);
     public Test? GetTestById(Guid id) => testDataList.FirstOrDefault(t => t.Id == id);
 
+    public void RemoveOptionsWhereId(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }

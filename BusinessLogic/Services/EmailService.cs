@@ -13,7 +13,7 @@ public class EmailService
         this.provider = provider;
     }
 
-    public void SendEmail(string reciever, Guid testResultId)
+    public bool SendEmail(string reciever, Guid testResultId)
     {
         EmailBusinessRules.AssertValidEmail(reciever);
 
@@ -21,7 +21,7 @@ public class EmailService
         string subject = $"Testresultaat {date}"; 
         string body = CreateEmailBody(date);
 
-        provider.SendEmail(reciever, subject, body);
+       return provider.SendEmail(reciever, subject, body);
     }
 
     private string CreateEmailBody(string date)
