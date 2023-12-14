@@ -25,11 +25,12 @@ public class TestResultService
         {
             TestResultId = testResult.Id,
             TestResultText = testResult.HasHearingLoss
-                ? "Gehoorschade" 
+                ? "Mogelijk gehoorschade" 
                 : "Gezond gehoor",
             TestResultExplanation = testResult.HasHearingLoss
                 ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
                 : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.",
+            HasHearingLoss = testResult.HasHearingLoss,
         };
     }
 
