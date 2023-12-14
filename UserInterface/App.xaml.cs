@@ -16,8 +16,8 @@ public partial class App : Application
     public App()
     {
         navigationStore = new NavigationStore();
-        //TargetAudienceRepository repository = new TargetAudienceRepository();
-        //repository.FillTargetAudiences();
+       // TargetAudienceRepository repository = new TargetAudienceRepository();
+       // repository.FillTargetAudiences();
     }
 
     protected override void OnStartup(StartupEventArgs e)

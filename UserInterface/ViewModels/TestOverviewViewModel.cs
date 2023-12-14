@@ -115,11 +115,22 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
     private void ToggleActiveStatus(Guid testId)
     {
-        testService.ToggleActiveStatus(testId);
+        try
+        {
+            var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
+            if (clickedTest!.AmountOfQuestions == 0)
+                return;
+            testService.ToggleActiveStatus(testId);
 
-        if (SelectedTargetAudience == null)
-            return;
+            if (SelectedTargetAudience == null)
+                return;
 
-        UpdateTestProjections(SelectedTargetAudience.Id);
+            UpdateTestProjections(SelectedTargetAudience.Id);
+        }
+        catch(Exception ex)
+        {
+            
+        }
+       
     }
 }
