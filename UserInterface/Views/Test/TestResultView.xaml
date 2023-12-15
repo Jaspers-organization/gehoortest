@@ -73,6 +73,12 @@
                     Foreground="Red"
                     Padding="0 0 0 15"
                     Text="Vul een geldige e-mail in"/>
+                <TextBlock
+      Style="{StaticResource Text}"
+      Visibility="{Binding EmailSuccess}"
+      Foreground="Green"
+      Padding="0 0 0 15"
+      Text="De mail is successvol verzonden!"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBox 
                         Style="{StaticResource InputField_XXL}" 
@@ -98,7 +104,7 @@
     </Border>-->
                 </StackPanel>
             </StackPanel>
-            
+
         </Grid>
     </Border>
 </UserControl>

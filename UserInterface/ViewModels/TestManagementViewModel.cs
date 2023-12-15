@@ -143,7 +143,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         }
     }
 
-    private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
 
     #region Navigation
     private void BackToTestOverview()
@@ -189,6 +188,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         initalTargetAudience = test.TargetAudience;
     }
 
+    //
+       private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
+
+
     // Sets the overall test
     private void SetTest(Test test) => Test = test;
 
@@ -205,7 +208,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetTestName(string title) => TestName = title;
 
     // Sets the status of the test (Active/Inactive)
-    private void SetStatus(bool active) => Status = active ? "Actief" : "Inactief";
+    private void SetStatus(bool active) {
+        Status = active ? "Actief" : "Inactief";
+        Test.Active = active;
+    } 
 
     // Sets the selected target audience ID
     private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
@@ -361,7 +367,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     // Refreshes the text question view.
     private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions);
 
-
     // Deletes a text question from the test.
     private void DeleteTextQuestion(int questionNumber)
     {
@@ -455,7 +460,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
                 SetEmployee();
 
-            CheckTargetAudienceChanged();
+            if(!newTest)
+                CheckTargetAudienceChanged();
 
             testService.SaveOrUpdateTest(Test, newTest);
 

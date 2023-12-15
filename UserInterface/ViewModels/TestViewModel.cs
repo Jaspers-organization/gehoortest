@@ -23,6 +23,7 @@ using UserInterface.Commands;
 using UserInterface.Stores;
 using static System.Net.Mime.MediaTypeNames;
 using BusinessLogic.Enums;
+using DataAccess.Repositories;
 
 namespace UserInterface.ViewModels
 {
@@ -224,10 +225,10 @@ namespace UserInterface.ViewModels
             this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
 
 
-            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceMockRepository();
+            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
             targetAudienceService = new TargetAudienceService(targetAudienceRepository);
 
-            ITestRepository testRepository = new TestMockRepository();
+            ITestRepository testRepository = new TestRepository();
             testService = new TestService(testRepository);
 
             nAudioPlayer = new NAudioPlayer();
@@ -280,6 +281,7 @@ namespace UserInterface.ViewModels
         }
         private void GetTargetAudiencesWithTest()
         {
+            //TODO ERROR HERE.
             List<TargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
             List<Test> tempTests = testService.GetAllTests();
             List<TargetAudience> finalList = new List<TargetAudience>();
