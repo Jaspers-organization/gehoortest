@@ -4,7 +4,7 @@ using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.DataMappings;
 
-namespace BusinessLogic.Controllers;
+namespace BusinessLogic.Services;
 
 public class TestResultService
 {
