@@ -56,11 +56,12 @@ public class TestResultService
         {
             if (hasHearingLoss == true) break;
 
-            int min = FrequencyDataMapping.GetMinHearingLossRange(answer.Frequency);
-            int max = FrequencyDataMapping.GetMaxHearingLossRange(answer.Frequency);
+            FrequencyMap frequencyMap = FrequencyMapping.Frequencies.First(x => x.Frequency == answer.Frequency);
+            int min = frequencyMap.HearingLoss.Min;
+            int max = frequencyMap.HearingLoss.Max;
 
-            hasHearingLoss = min <= answer.LowestLimitDecibels && answer.LowestLimitDecibels <= max;
-        }
+            if (min <= answer.LowestLimitDecibels && max >= answer.LowestLimitDecibels) hasHearingLoss = true;
+        } 
         
         return hasHearingLoss;
     }
