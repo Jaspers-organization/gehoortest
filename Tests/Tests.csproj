@@ -26,6 +26,7 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\EmailProvider\EmailProvider.csproj" />
+    <ProjectReference Include="..\HashingService\HashingService.csproj" />
   </ItemGroup>
 
 </Project>
