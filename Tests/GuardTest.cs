@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Guards;
 
-namespace Tests.Guards;
+namespace Tests;
 
 public class GuardTest
 {
@@ -36,7 +36,7 @@ public class GuardTest
     [InlineData("ab.", true)]
     [InlineData(".", true)]
     [InlineData("@", true)]
-    public void It_asserts_the_email(string email, bool throwsException)
+    public void It_throws_an_exception_when_the_email_is_invalid(string email, bool throwsException)
     {
         if (!throwsException)
         {

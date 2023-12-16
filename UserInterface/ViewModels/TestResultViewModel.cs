@@ -8,6 +8,7 @@ using DataAccess.Repositories;
 using System;
 using System.Windows;
 using BusinessLogic.Guards;
+using BusinessLogic.Projections;
 
 namespace UserInterface.ViewModels;
 
@@ -86,7 +87,7 @@ internal class TestResultViewModel : ViewModelBase
 
     public void GetTestResult(TestProgressData testProgressData)
     {
-        //TestResultProjection testResult = testResultService.GetTestResult(testProgressData);
+        TestResultProjection testResult = testResultService.GetTestResult(testProgressData);
 
         testResultId = testResult.TestResultId;
         TestResultText = testResult.TestResultText;
