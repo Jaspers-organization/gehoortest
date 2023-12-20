@@ -4,7 +4,6 @@ public class FrequencyMapping
 {
     public static readonly List<FrequencyMap> Frequencies = new()
     {
-        new FrequencyMap(125, 30, (0, 0), "125"),
         new FrequencyMap(250, 30, (10, 40), "250"),
         new FrequencyMap(500, 30, (20, 50), "500"),
         new FrequencyMap(750, 30, (20, 50), "750"),
@@ -14,6 +13,5 @@ public class FrequencyMapping
         new FrequencyMap(3000, 30, (20, 50), "3k"),
         new FrequencyMap(4000, 30, (15, 45), "4k"),
         new FrequencyMap(6000, 30, (10, 40), "6k"),
-        new FrequencyMap(8000, 30, (0, 0), "8k"),
     };
 }
