@@ -22,7 +22,13 @@
             Width="420">
             </Rectangle>
 
-            <ProgressBar Grid.Row="0" Width="350" Height="30" Name="ProgressBar" Background="{StaticResource PrimaryBackgroundColor}" Foreground="{StaticResource SecondaryColor}" Value="{Binding ProgressValue, Mode=OneWay}">
+            <ProgressBar Grid.Row="0" 
+                         Width="350" 
+                         Height="30" 
+                         Name="ProgressBar" 
+                         Background="{StaticResource PrimaryBackgroundColor}" 
+                         Foreground="{StaticResource SecondaryColor}" 
+                         Value="{Binding ProgressValue, Mode=OneWay}">
             </ProgressBar>
 
             <TextBlock 

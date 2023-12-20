@@ -9,7 +9,6 @@ public class TestProgressData
     public int CurrentQuestionNumber { get; set; }
     public List<TextAnswer> TextAnswers { get; set; }
     public List<ToneAudiometryAnswer> ToneAudiometryAnswers { get; set; }
-
     public TestProgressData(Test test)
     {
         Test = test;

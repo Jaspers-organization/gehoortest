@@ -184,7 +184,7 @@ public class TestService
             case TextQuestion:
                 test.TextQuestions = questions.Cast<TextQuestion>().ToList(); ;
                 break;
-            case AudiometryQuestion:
+            case ToneAudiometryQuestion:
                 test.ToneAudiometryQuestions = questions.Cast<ToneAudiometryQuestion>().ToList(); ;
                 break;
         }
@@ -205,7 +205,7 @@ public class TestService
                 case TextQuestion:
                     test.TextQuestions.ToList().RemoveAt(index);
                     break;
-                case AudiometryQuestion:
+                case ToneAudiometryQuestion:
                     test.ToneAudiometryQuestions.ToList().RemoveAt(index);
                     break;
             }
