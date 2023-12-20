@@ -1,4 +1,4 @@
-﻿using BusinessLogic;
+using BusinessLogic;
 using BusinessLogic.Classes;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
@@ -24,6 +24,7 @@ using UserInterface.Stores;
 using static System.Net.Mime.MediaTypeNames;
 using BusinessLogic.Enums;
 using DataAccess.Repositories;
+using System.Windows;
 
 namespace UserInterface.ViewModels
 {
@@ -35,7 +36,7 @@ namespace UserInterface.ViewModels
         #endregion Const
 
         private readonly NavigationStore navigationStore;
-        private string _showTestExplanationView = "Hidden";
+        private string _showTestExplanationView = Visibility.Hidden.ToString();
         private string _showTestTargetAudienceView = "Hidden";
         private string _showTestTextQuestionView = "Hidden";
         private string _showTestToneAudiometryView = "Hidden";
@@ -49,6 +50,7 @@ namespace UserInterface.ViewModels
         private Test _test;
         private TargetAudienceService targetAudienceService { get; set; }
         private TestService testService { get; set; }
+        private SettingService settingService {get;set;}
         private TestProgressData testProgressData { get; set; }
         private int currentFrequency = 0;
         private bool finalDecibelToPlay = false;
@@ -183,8 +185,6 @@ namespace UserInterface.ViewModels
         }
         private string _questionRadioButtons { get; set; }
         private int lowestDecibel = 0;
-        bool isDoneText = false;
-        bool isDoneAudio = false;
         public List<string> RadioButtons
         {
             get { return _radioButtons; }
@@ -205,18 +205,19 @@ namespace UserInterface.ViewModels
             set { _selectedOption = value; OnPropertyChanged(nameof(SelectedOption)); }
         }
         private Ear currentAudioEar;
+        public Decibel DecibelManager;
         #endregion
 
         #region Commands
         private string _selectedOption = "";
         public ICommand StartTestCommand => new Command(StartTest);
-        public ICommand TargetAudienceSelectedCommand => new Command(GetTest);
+        public ICommand TargetAudienceSelectedCommand => new Command(PrepTest);
         public ICommand PlayFrequencyCommand { get; }
         public ICommand SaveQuestionCommand => new Command(SaveTextAnswer);
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioAnswer);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
         #endregion Commands
-        private BackgroundWorker _worker;
+        private BackgroundWorker worker;
         #region Constructor
         public TestViewModel(NavigationStore navigationStore)
         {
@@ -231,9 +232,11 @@ namespace UserInterface.ViewModels
             ITestRepository testRepository = new TestRepository();
             testService = new TestService(testRepository);
 
-            nAudioPlayer = new NAudioPlayer();
- 
+            ISettingsRepository settingsRepository = new SettingsRepository();
+            settingService = new SettingService(settingsRepository);
 
+
+            nAudioPlayer = new NAudioPlayer();
         }
         #endregion Constructor
 
@@ -271,8 +274,6 @@ namespace UserInterface.ViewModels
         }
         private void StartTest()
         {
-            // nAudioPlayer.PlayFrequency(2000, 45, 0.9f);
-
             SetTestExplanationView(NOTVISIBLE);
             SetTestTargetAudienceView(VISIBLE);
             GetTargetAudiencesWithTest();
@@ -290,7 +291,7 @@ namespace UserInterface.ViewModels
             {
                 foreach (var audience in tempTargetAudiences)
                 {
-                    if (test.TargetAudience.Id == audience.Id)
+                    if (test.TargetAudience.Id == audience.Id && test.Active)
                     {
                         if (!finalList.Contains(audience))
                         {
@@ -309,20 +310,35 @@ namespace UserInterface.ViewModels
             }
             RadioButtons = TargetAudienceOptions;
         }
+
+        private void PrepTest()
+        {
+            SetTestTargetAudienceView(NOTVISIBLE);
+            GetTest();
+            CheckTestContent();
+        }
+
         private void GetTest()
         {
             TargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedOption);
             if (selectedTargetAudience == null) return;
-
-            SetTestTargetAudienceView(NOTVISIBLE);
             Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id); 
             testProgressData = new TestProgressData(Test);
-     
-            if(Test.TextQuestions.Count() > 0)
-                DetermineTextQuestion();
-            else if(Test.ToneAudiometryQuestions.Count() > 0)
-                DetermineAudioQuestion();
         }
+
+        private void CheckTestContent()
+        {
+            if (Test.TextQuestions.Count() > 0)
+            {
+                DetermineTextQuestion();
+                SetVisualsTextQuestion();
+            }
+            else if (Test.ToneAudiometryQuestions.Count() > 0)
+            {
+                DetermineAudioQuestion();
+            }
+        }
+
         private void DetermineTextQuestion()
         {
             if (testProgressData.CurrentQuestionNumber == 0)
@@ -341,7 +357,6 @@ namespace UserInterface.ViewModels
                 currentTextQuestion = Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
                 TextQuestion = currentTextQuestion?.Question;
             }
-            SetVisualsTextQuestion();
         }
         private void SetVisualsTextQuestion()
         {
@@ -400,9 +415,8 @@ namespace UserInterface.ViewModels
         }
         private void SaveAudioAnswer(string value)
         {
-            //save answers to TestProgressData
             ToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-            testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.QuestionNumber, q.Frequency, currentAudioEar, q.StartingDecibels, lowestDecibel, value));
+            testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.QuestionNumber, q.Frequency, currentAudioEar, q.StartingDecibels, DecibelManager.LowestDecibel, value));
             DetermineNextAudioStep(value);
             AnswerButtonEnabled = false;
         }
@@ -428,6 +442,7 @@ namespace UserInterface.ViewModels
             {
                 testProgressData.CurrentQuestionNumber = Test.ToneAudiometryQuestions.First().QuestionNumber;
                 highestAudioQuestionNumber = Test.ToneAudiometryQuestions.MaxBy(x => x.QuestionNumber).QuestionNumber;
+                DecibelManager = new Decibel();
                 DetermineWhichEar();
             }
             else
@@ -435,6 +450,7 @@ namespace UserInterface.ViewModels
                 if (testProgressData.CurrentQuestionNumber != highestAudioQuestionNumber)
                 {
                     testProgressData.CurrentQuestionNumber = testProgressData.CurrentQuestionNumber + 1;
+                    DecibelManager = new Decibel();
                     testedLeftEar = false;
                     testedRightEar = false;
                     DetermineWhichEar();
@@ -447,14 +463,14 @@ namespace UserInterface.ViewModels
             }
             currentAudiometryQuestion = Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
             currentFrequency = currentAudiometryQuestion.Frequency;
-            playDecibel = currentAudiometryQuestion.StartingDecibels;
+            DecibelManager.PlayDecibel = currentAudiometryQuestion.StartingDecibels;
             AskAudioQuestion();
         }
         private void AskAudioQuestion()
         {
             SetAudioVisuals();
             StartProgress();
-            PlayFrequency(currentFrequency, playDecibel, currentAudioEar);
+            PlayFrequency(currentFrequency, currentAudioEar);
         }
         private void DetermineWhichEar()
         {
@@ -473,10 +489,10 @@ namespace UserInterface.ViewModels
         }
         private void DetermineNextAudioStep(string value)
         {
-            if (finalDecibelToPlay)
+            if (DecibelManager.FinalDecibelToPlay)
             {
-                finalDecibelToPlay = false;
-                lowestDecibel = 0;
+                DecibelManager.FinalDecibelToPlay = false;
+                DecibelManager.LowestDecibel = 0;
 
                 if (testedRightEar && testedLeftEar) 
                 {
@@ -496,72 +512,56 @@ namespace UserInterface.ViewModels
                     }
                     currentAudiometryQuestion = Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
                     currentFrequency = currentAudiometryQuestion.Frequency;
-                    playDecibel = currentAudiometryQuestion.StartingDecibels;
+                    DecibelManager.PlayDecibel = currentAudiometryQuestion.StartingDecibels;
                     AskAudioQuestion();
                 }
             }
             else
             {
-                DetermineNextDecibel(value);
+                DecibelManager.DetermineNextDecibel(value);
+                StartProgress();
+                PlayFrequency(currentFrequency, currentAudioEar);
             }
         }
-        private void DetermineNextDecibel(string answer)
-        {
-            if (answer == "true")
-            {
-                playDecibel = playDecibel - 10;
-            }
-            else
-            {
-                playDecibel = playDecibel + 5;
-                lowestDecibel = playDecibel;
-                finalDecibelToPlay = true;
-            }
-            StartProgress();
-            PlayFrequency(currentFrequency, playDecibel, currentAudioEar);
-        }
+
         public void StartProgress()
         {
-            _worker = new BackgroundWorker();
-            _worker.RunWorkerCompleted += WorkCompleted;
-            _worker.WorkerReportsProgress = true;
-            _worker.DoWork += Worker_DoWork;
-            _worker.ProgressChanged += Worker_ProgressChanged;
-
-            _worker.RunWorkerAsync();
-
+            worker = new BackgroundWorker();
+            worker.RunWorkerCompleted += WorkCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += Worker_DoWork;
+            worker.ProgressChanged += Worker_ProgressChanged;
+            worker.RunWorkerAsync();
         }
         private void WorkCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ProgressValue = 100;
-            ProgressTextBlock = "";
-            _worker.Dispose();
+            worker.Dispose();
             AnswerButtonEnabled = true;
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             ProgressValue = e.ProgressPercentage;
-            ProgressTextBlock = (string)e.UserState;
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            worker.ReportProgress(100, String.Format("proces it 100."));
+            worker.ReportProgress(100, String.Format("process 100."));
             for (int i = 100; i >= 0; i = i - 20)
             {
-                Thread.Sleep(500); // Simulate a delay
-                _worker.ReportProgress(i - 10, string.Format("proc it {0}.", i - 10));
+                Thread.Sleep(500); 
+                worker.ReportProgress(i - 10, string.Format("process {0}.", i - 10));
             }
-            worker.ReportProgress(0, "doneeee");
+            worker.ReportProgress(0, "process done");
         }
-        private void PlayFrequency(int frequency, int decibel, Ear ear)
+        private void PlayFrequency(int frequency, Ear ear)
         {
             Random random = new Random();
             int delay = random.Next(0, 3) * 1000;
 
             Task.Delay(delay).ContinueWith(_ =>
             {
-                nAudioPlayer.PlayFrequency(frequency, decibel, ear);
+                nAudioPlayer.PlayFrequency(frequency, DecibelManager.PlayDecibel, ear);
             });
         }
         private void ShowResults()
