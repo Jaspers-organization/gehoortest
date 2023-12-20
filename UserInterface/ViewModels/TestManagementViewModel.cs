@@ -466,7 +466,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
                 SetEmployee();
 
-            if(!newTest)
+            if(!isNewTest)
                 CheckTargetAudienceChanged();
 
             testService.ProcessTest(Test, isNewTest);
