@@ -1,7 +1,6 @@
 ﻿using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
-using System;
 
 namespace UserInterface.ViewModels.Modals;
 
@@ -9,7 +8,6 @@ internal class ErrorModalViewModal : ViewModelBase
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
-    private readonly Action action;
     #endregion
 
     #region Properties
@@ -38,14 +36,9 @@ internal class ErrorModalViewModal : ViewModelBase
     private void Deny()
     {
         CloseModal();
-    }
-    private void PerformAction()
-    {
-        action?.Invoke();
-    }
+    }   
     private void CloseModal()
     {
         navigationStore.CloseModal();
-        PerformAction();
     }
 }

@@ -1,14 +1,8 @@
 ﻿using BusinessLogic.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.IRepositories;
 
 public interface IEmployeeRepository
 {
-    public void Insert();
-    public Employee Get();
+    public Employee GetEmployeeById(Guid id);
 }

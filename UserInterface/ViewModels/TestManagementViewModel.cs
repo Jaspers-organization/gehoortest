@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
 using System;
@@ -19,6 +20,8 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private readonly NavigationStore navigationStore;
     private readonly TestService testService;
     private readonly TargetAudienceService targetAudienceSerivce;
+    private readonly EmployeeService employeeService;
+
     private readonly bool newTest;
     #endregion
 
@@ -116,8 +119,9 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         //Dependencies initialization
         this.navigationStore = navigationStore;
-
+        this.navigationStore.HideTopBar = true;
         testService = new TestService(new TestRepository());
+        employeeService = new EmployeeService(new EmployeeRepository());
         targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
 
         //set values
@@ -139,7 +143,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         }
     }
 
-    private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
 
     #region Navigation
     private void BackToTestOverview()
@@ -185,6 +188,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         initalTargetAudience = test.TargetAudience;
     }
 
+    //
+       private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
+
+
     // Sets the overall test
     private void SetTest(Test test) => Test = test;
 
@@ -201,7 +208,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetTestName(string title) => TestName = title;
 
     // Sets the status of the test (Active/Inactive)
-    private void SetStatus(bool active) => Status = active ? "Actief" : "Inactief";
+    private void SetStatus(bool active) {
+        Status = active ? "Actief" : "Inactief";
+        Test.Active = active;
+    } 
 
     // Sets the selected target audience ID
     private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
@@ -357,7 +367,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     // Refreshes the text question view.
     private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions);
 
-
     // Deletes a text question from the test.
     private void DeleteTextQuestion(int questionNumber)
     {
@@ -435,6 +444,12 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         if (testService.TargetAudienceChanged(Test.TargetAudience, initalTargetAudience))
             Test.Active = false;
     }
+    private void SetEmployee()
+    {
+        Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
+        Test.EmployeeId = EmployeeId;
+        Test.Employee = employeeService.GetEmployeeById(EmployeeId);
+    }
     private void SaveTest()
     {
         try
@@ -442,14 +457,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             if (!CheckValidityInput())
                 return;
 
-            //TEMP TODO WRITE AROUND
-            EmployeeRepository repository = new EmployeeRepository();
-            var Employee = repository.Get();
-            Test.EmployeeId = Employee.Id;
-            Test.Employee = Employee;
-            //
+            if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
+                SetEmployee();
 
-            CheckTargetAudienceChanged();
+            if(!newTest)
+                CheckTargetAudienceChanged();
 
             testService.SaveOrUpdateTest(Test, newTest);
 

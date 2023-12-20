@@ -47,12 +47,25 @@ public class TestService
         if (newTest)
             SaveTest(test);
         else
+        {
+            RemoveOptionsWhereId();
             UpdateTest(test);
+        }
     }
 
+    public void RemoveOptionsWhereId()
+    {
+        if (test.TextQuestions.Count != 0 || test.TextQuestions == null)
+        {
+            foreach (var textQuestion in test.TextQuestions)
+            {
+                testRepository.RemoveOptionsWhereId(textQuestion.Id);
+            }
+        }
+    }
     public bool TargetAudienceChanged(TargetAudience currentTargetAudience, TargetAudience initalTargetAudience)
     {
-        return currentTargetAudience == initalTargetAudience;
+        return currentTargetAudience.Id != initalTargetAudience.Id;
     }
 
     #region ???? not sure yet TODO

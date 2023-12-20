@@ -59,6 +59,7 @@ public class TestManagementTests
     [Theory]
     [InlineData(QuestionType.AudioQuestion)]
     [InlineData(QuestionType.TextQuestion)]
+    [InlineData(null)]
     public void GetNewHighestQuestionNumber_ThrowsArgumentNullException_WhenTestIsNull(QuestionType type)
     {
         Test nullTest = null;
@@ -68,7 +69,8 @@ public class TestManagementTests
 
     [Theory]
     [InlineData("This is a valid string", false)]
-    [InlineData("ContainsInvalidCharacters", true)]
+    [InlineData("ContainsInvalidCharacters", false)]
+    [InlineData("ContainsInvalidCharacters @@!", true)]
     [InlineData("@#$%^&*()[]{};:'`|<>", true)]
     public void ContainsInvalidCharacters_ReturnsInValidString(string str, bool expectedResult)
     {

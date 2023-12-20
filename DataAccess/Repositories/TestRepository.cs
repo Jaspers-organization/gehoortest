@@ -35,11 +35,18 @@ namespace DataAccess.Repositories
         {
             return repository.Tests
                 .Include(test => test.TextQuestions)
+                    .ThenInclude(text => text.Options)
                 .Include(test => test.ToneAudiometryQuestions)
                 .Include(test => test.Employee)
                 .Include(test => test.TargetAudience);
         }
+        public void RemoveOptionsWhereId(Guid id) {
 
+            var optionsToRemove = repository.TextQuestionsOptions.Where(test => test.TextQuestionId == id);
+            repository.TextQuestionsOptions.RemoveRange(optionsToRemove);
+            repository.SaveChanges();
+        }
+        
         public List<Test> GetAllTests()
         {
             var tests = IncludeTestRelations().ToList();
@@ -102,7 +109,6 @@ namespace DataAccess.Repositories
         {
             repository.Attach(test.TargetAudience);
             repository.Attach(test.Employee);
-
             repository.Tests.Add(test);
             repository.SaveChanges();
         }

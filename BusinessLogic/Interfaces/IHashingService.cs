@@ -6,5 +6,5 @@ public interface IHashingService
 
     public string HashPassword(string salt, string password);
 
-    public bool VerifyPassword(string password, string hashedPassword);
+    public bool VerifyPassword(string password, string salt, string passwordToVerify);
 }

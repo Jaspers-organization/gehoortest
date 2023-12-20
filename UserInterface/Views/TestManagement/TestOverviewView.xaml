@@ -15,8 +15,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="795" />
-                    <Button Grid.Row="1" Command="{Binding BackToMainMenuCommand}"  Style="{StaticResource SecondaryButton_Icon}"  Content=""/>
+                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="865" />
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
                               SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
                               SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"

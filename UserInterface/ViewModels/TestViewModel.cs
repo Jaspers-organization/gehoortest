@@ -1,4 +1,4 @@
-﻿using BusinessLogic;
+using BusinessLogic;
 using BusinessLogic.Classes;
 using BusinessLogic.IModels;
 using BusinessLogic.IRepositories;
@@ -282,6 +282,7 @@ namespace UserInterface.ViewModels
         }
         private void GetTargetAudiencesWithTest()
         {
+            //TODO ERROR HERE.
             List<TargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
             List<Test> tempTests = testService.GetAllTests();
             List<TargetAudience> finalList = new List<TargetAudience>();

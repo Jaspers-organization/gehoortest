@@ -12,22 +12,17 @@ namespace DataAccess.Repositories;
 public class EmployeeRepository : IEmployeeRepository
 {
     private readonly Repository repository = new();
-    
-    public Employee Get()
+
+    public Employee GetEmployeeById(Guid id)
     {
-        using (var context = repository)
-        {
-            return repository.Employees.FirstOrDefault();
-            
-        }
-        
+        return repository.Employees.FirstOrDefault(e => e.Id == id);
     }
-    public void Insert()
-    {
-        using(var context = repository)
-        {
-            repository.Employees.Add(new Employee { Id= new Guid(), EmployeeNumber="333", FirstName= "Dinny", Infix= "van", LastName= "Huizen"});
-            repository.SaveChanges();
-        }
-    }
+    //public void Insert()
+    //{
+    //    using (var context = repository)
+    //    {
+    //        repository.Employees.Add(new Employee { Id = new Guid(), EmployeeNumber = "333", FirstName = "Dinny", Infix = "van", LastName = "Huizen" });
+    //        repository.SaveChanges();
+    //    }
+    //}
 }

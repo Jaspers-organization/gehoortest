@@ -1,14 +1,13 @@
 using UserInterface.Stores;
 using BusinessLogic.Classes;
-using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;
-using BusinessLogic.BusinessRules;
-using BusinessLogic.Controllers;
 using DataAccess.Repositories;
 using System;
 using System.Windows;
+using BusinessLogic.Guards;
+using BusinessLogic.Projections;
 
 namespace UserInterface.ViewModels;
 
@@ -60,6 +59,12 @@ internal class TestResultViewModel : ViewModelBase
         get { return _emailError; }
         set { _emailError = value; OnPropertyChanged(nameof(EmailError)); }
     }
+    private Visibility _emailSuccess = Visibility.Hidden;
+    public Visibility EmailSuccess
+    {
+        get { return _emailSuccess; }
+        set { _emailSuccess = value; OnPropertyChanged(nameof(EmailSuccess)); }
+    }
     #endregion
 
     #region commands
@@ -80,7 +85,7 @@ internal class TestResultViewModel : ViewModelBase
         string host = "smtp.gmail.com";
         // ====================
 
-        emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
+        emailService = new EmailService(new TestResultRepository(), new EmailProvider.EmailProvider().Initialize(host, email, key));
 
         GetTestResult(testProgressData);
     }
@@ -92,17 +97,33 @@ internal class TestResultViewModel : ViewModelBase
         testResultId = testResult.TestResultId;
         TestResultText = testResult.TestResultText;
         TestResultExplanation = testResult.TestResultExplanation;
+
+        NegativeTestResult = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
+        PositiveTestResult = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void SendEmail()
     {
-        if (!EmailBusinessRules.IsValidEmail(Email))
+        if (!Guard.IsValidEmail(Email))
         {
             EmailError = Visibility.Visible;
             return;
         }
 
         EmailError = Visibility.Hidden;
-        emailService.SendEmail(Email, testResultId);
+        bool result = emailService.SendEmail(Email, testResultId);
+        if (result)
+        {
+            ShowSuccess();
+        }
+        else
+        {
+            //show error voor jasper;
+        }
+
+    }
+    private void ShowSuccess()
+    {
+        EmailSuccess = Visibility.Visible;
     }
 }

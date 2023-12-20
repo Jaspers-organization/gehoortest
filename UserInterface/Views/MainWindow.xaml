@@ -9,8 +9,7 @@
         xmlns:viewModels="clr-namespace:UserInterface.ViewModels"
         xmlns:modalViewModels="clr-namespace:UserInterface.ViewModels.Modals"
         mc:Ignorable="d"
-        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized">
-    <!--WindowStyle="None"-->
+        Title="Gehoortest" Height="1080" Width="1920" WindowState="Maximized" WindowStyle="None">
 
     <Grid Background="{StaticResource SecondaryBackgroundColor}">
 
