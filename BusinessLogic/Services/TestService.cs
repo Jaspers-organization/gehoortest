@@ -42,7 +42,7 @@ public class TestService
 
     public void SetTest(Test test) => this.test = test;
 
-    public void SaveOrUpdateTest(Test test, bool newTest)
+    public void ProcessTest(Test test, bool newTest)
     {
         if (newTest)
             SaveTest(test);
@@ -63,9 +63,9 @@ public class TestService
             }
         }
     }
-    public bool TargetAudienceChanged(TargetAudience currentTargetAudience, TargetAudience initalTargetAudience)
+    public static bool TargetAudienceChanged(Guid currentTargetAudienceId, Guid initalTargetAudienceId)
     {
-        return currentTargetAudience.Id != initalTargetAudience.Id;
+        return currentTargetAudienceId != initalTargetAudienceId;
     }
 
     #region ???? not sure yet TODO

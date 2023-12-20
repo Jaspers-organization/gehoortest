@@ -127,4 +127,15 @@ public class TestManagementTests
         bool actualResult = result == ErrorService.ErrorTestName || result == ErrorService.ErrorIllegalCharacters;
         Assert.Equal(expectedResult, actualResult);
     }
+
+    [Theory]
+    [InlineData("d4a77f27-3d91-4a9a-8e61-94a6c6a2f5e1", "d4a77f27-3d91-4a9a-8e61-94a6c6a2f5e1", false)]
+    [InlineData("d4a77f27-3d91-4a9a-8e61-94a6c6a2f5e1", "7b2e5d8c-6f47-4c31-ba5f-8d27c9a0f3a2", true)]
+    public void ChangedTargetAudience_ReturnsExpectedResult(Guid currentTargetAudienceId, Guid newTargetAudienceId, bool expectedResult)
+    {
+        bool result = TestService.TargetAudienceChanged(currentTargetAudienceId, newTargetAudienceId);
+
+        Assert.Equal(expectedResult, result);
+    }
+
 }

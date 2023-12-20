@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
-using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
 using System;
@@ -22,7 +21,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private readonly TargetAudienceService targetAudienceSerivce;
     private readonly EmployeeService employeeService;
 
-    private readonly bool newTest;
+    private readonly bool isNewTest;
     #endregion
 
     #region Commands
@@ -120,6 +119,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         //Dependencies initialization
         this.navigationStore = navigationStore;
         this.navigationStore.HideTopBar = true;
+
         testService = new TestService(new TestRepository());
         employeeService = new EmployeeService(new EmployeeRepository());
         targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
@@ -136,7 +136,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         }
         else
         {
-            newTest = true;
+            isNewTest = true;
             CreateTest();
             SetStatus(false);
             SetSelected(0);
@@ -188,9 +188,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         initalTargetAudience = test.TargetAudience;
     }
 
-    //
-       private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
-
+    private void SetTargetAudiences() => TargetAudiences = targetAudienceSerivce.GetAllTargetAudiences();
 
     // Sets the overall test
     private void SetTest(Test test) => Test = test;
@@ -441,7 +439,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     }
     private void CheckTargetAudienceChanged()
     {
-        if (testService.TargetAudienceChanged(Test.TargetAudience, initalTargetAudience))
+        if(initalTargetAudience == null)
+            return;
+        
+        if (TestService.TargetAudienceChanged(Test.TargetAudience.Id, initalTargetAudience.Id))
             Test.Active = false;
     }
     private void SetEmployee()
@@ -449,6 +450,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
         Test.EmployeeId = EmployeeId;
         Test.Employee = employeeService.GetEmployeeById(EmployeeId);
+    }
+    private void CheckEmployee()
+    {
+        if (Test.Employee == null && Test.EmployeeId == Guid.Empty)
+            SetEmployee();
     }
     private void SaveTest()
     {
@@ -463,17 +469,14 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             if(!newTest)
                 CheckTargetAudienceChanged();
 
-            testService.SaveOrUpdateTest(Test, newTest);
+            testService.ProcessTest(Test, isNewTest);
 
-            // Navigates to the test overview after the save/update operation.
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }
         catch (Exception ex)
         {
-            // Handles exceptions that occur during the save/update operation.
             OpenErrorModal("Er is een fout opgetreden bij het opslaan van de test.");
             Console.WriteLine("Error occurred: " + ex);
-
         }
     }
     #endregion
