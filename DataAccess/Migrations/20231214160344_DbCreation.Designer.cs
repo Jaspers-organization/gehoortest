@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gehoortest_application.Repository;
 
@@ -11,9 +12,11 @@ using gehoortest_application.Repository;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20231214160344_DbCreation")]
+    partial class DbCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,38 +97,6 @@ namespace DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("employee_login", (string)null);
-                });
-
-            modelBuilder.Entity("BusinessLogic.Models.Settings", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("#DA0063")
-                        .HasColumnName("color");
-
-                    b.Property<int>("LoginInactiveTime")
-                        .HasColumnType("int")
-                        .HasColumnName("login_inactive_time");
-
-                    b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("logo");
-
-                    b.Property<int>("TestInactiveTime")
-                        .HasColumnType("int")
-                        .HasColumnName("test_inactive_time");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("settings", (string)null);
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
