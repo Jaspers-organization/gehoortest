@@ -226,11 +226,12 @@ namespace UserInterface.ViewModels
             this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
 
 
-            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
-            targetAudienceService = new TargetAudienceService(targetAudienceRepository);
-
             ITestRepository testRepository = new TestRepository();
             testService = new TestService(testRepository);
+
+            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
+            targetAudienceService = new TargetAudienceService(targetAudienceRepository, testRepository);
+
 
             ISettingsRepository settingsRepository = new SettingsRepository();
             settingService = new SettingService(settingsRepository);

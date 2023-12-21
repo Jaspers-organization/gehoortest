@@ -11,6 +11,16 @@ namespace DataAccess.MockData;
 
 public class TargetAudienceMockRepository : ITargetAudienceRepository
 {
+    public void Create(TargetAudience targetAudience)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
     public void FillTargetAudiences()
     {
         throw new NotImplementedException();
@@ -33,6 +43,11 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
     }
 
     public List<TargetAudience> GetAllAudiences(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(TargetAudience targetAudience)
     {
         throw new NotImplementedException();
     }

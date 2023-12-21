@@ -42,6 +42,10 @@
             <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
                 <views:TestManagementView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TargetAudienceOverviewViewModel}">
+                <views:TargetAudienceOverviewView />
+            </DataTemplate>
+            
 
             <!-- Define all modals here -->
             <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">
@@ -55,6 +59,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type modalViewModels:ErrorModalViewModal}">
                 <modals:ErrorModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:TargetAudienceFormViewModel}">
+                <modals:TargetAudienceFormView/>
             </DataTemplate>
         </Grid.Resources>
 

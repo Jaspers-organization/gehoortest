@@ -152,4 +152,9 @@ public class TestMockRepository : ITestRepository
     {
         throw new NotImplementedException();
     }
+
+    public Test? GetByTargetAudienceId(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }
