@@ -15,6 +15,8 @@ internal class EmployeePortalViewModel : ViewModelBase
 
     #region commands
     public ICommand OpenTestOverviewCommand => new Command(OpenTestOverview);
+    public ICommand OpenEmployeeOverviewCommand => new Command(OpenEmployeeOverview);
+
     #endregion
 
     #region properties
@@ -51,7 +53,10 @@ internal class EmployeePortalViewModel : ViewModelBase
             ShowAdminButtons = Visibility.Visible;
         }
     }
-
+    private void OpenEmployeeOverview()
+    {
+        navigationStore.CurrentViewModel = new EmployeeOverviewViewModel(navigationStore);
+    }
     private void OpenTestOverview()
     {
         navigationStore.CurrentViewModel = new TestOverviewViewModel(navigationStore);

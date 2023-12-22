@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.Models;
+using BusinessLogic.Projections;
 
 namespace UserInterface.Stores;
 
@@ -17,6 +18,7 @@ public class ErrorService
     public const string ErrorEmpty = "Alle velden moeten ingevuld worden.";
     public const string ErrorQuestionAnwserType = "Een van de twee antwoord types moet actief zijn.";
     public const string ErrorMultipleChoiceOptions = "Er moeten minstens 2 opties beschikbaar zijn voor een meerkeuze vraag.";
+    public const string ErrorAdministratorChanged = "Het is niet toegestaan uw eigen rol aan te passen.";
 
     public static void AssertQuestions<T>(List<T> questions) where T : IQuestion
     {
@@ -64,13 +66,24 @@ public class ErrorService
             case "StartingDecibelsString":
                 validationMessage = ValidateDecibels((string)values[0]);
                 break;
+            case "Admin":
+                validationMessage = ValidateAdministrator((EmployeeProjection)values[0], (Employee)values[1]);
+                break;
             default:
                 break;
         }
 
         return validationMessage;
     }
+    public static string ValidateAdministrator(EmployeeProjection projection, Employee employee)
+    {
+        if (projection.Id == employee.Id &&
+         !(projection.Role == BusinessLogic.Enums.Role.Employee &&
+           employee.AccountType == BusinessLogic.Enums.Role.Administrator))
+            return ErrorAdministratorChanged;
 
+        return string.Empty;
+    }
     public static int ParseStringToInt(string str)
     {
         int parsedInt;

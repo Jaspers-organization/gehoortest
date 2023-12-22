@@ -4,7 +4,7 @@ namespace BusinessLogic.Models;
 
 public class EmployeeLogin : IModel
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Email { get; set; }
     public string Password { get; set; }
     public string Salt { get; set; }

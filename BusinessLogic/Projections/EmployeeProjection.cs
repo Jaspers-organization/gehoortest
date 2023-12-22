@@ -8,4 +8,6 @@ public class EmployeeProjection
     public string EmployeeNumber { get; set; }
     public string FullName { get; set; }
     public Role Role { get; set; }
+    public int AmountOfTests { get; set; }
+    public bool Active { get; set; }
 }

@@ -50,7 +50,8 @@
                     <Button Style="{StaticResource SecondaryButton_L}" 
                         Visibility="{Binding ShowAdminButtons}"
                         Margin="0 30 0 0"
-                        IsEnabled="False"
+                        IsEnabled="True"
+                        Command="{Binding OpenEmployeeOverviewCommand}"
                         Content="Medewerkersbeheer"/>
                 </StackPanel>
 

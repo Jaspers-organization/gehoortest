@@ -5,7 +5,7 @@ namespace BusinessLogic.Models;
 
 public class Employee : IModel
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Role AccountType { get; set; }
     public string? EmployeeNumber { get; set; }
     public string FirstName { get; set; }

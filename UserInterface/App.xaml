@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Assets/Icons/wave-sine.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/pencil.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/plus.xaml"/>
+                <ResourceDictionary Source="Assets/Icons/refresh.xaml"/>
                 <ResourceDictionary Source="Assets/Icons/message-question.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/InputFieldStyles.xaml"/>
