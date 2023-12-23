@@ -8,6 +8,7 @@ public class TargetAudience : IModel
     public int From { get; set; }
     public int To { get; set; }
     public string Label { get; set; }
+    public bool Active { get; set; }
 
     public ICollection<Test>? Tests { get; set; }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
              mc:Ignorable="d">
-    <Border Style="{StaticResource ModalContainer_XS}" Height="460" Width="auto">
+    <Border Style="{StaticResource ModalContainer_XS}">
 
         <Grid>
             <Grid>
@@ -21,20 +21,6 @@
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBlock 
-                    Style="{StaticResource Text}"
-                    Grid.Row="0"
-                    Grid.Column="0" 
-                    VerticalAlignment="Center"
-                    Text="Naam"/>
-                <TextBox 
-                    Style="{StaticResource InputField_S}"
-                    Grid.Row="0"
-                    Grid.Column="2" 
-                    HorizontalAlignment="Left"
-                  
-                    Text="{Binding TargetAudience.Label}"/>
 
                 <TextBlock 
                     Style="{StaticResource Text}"

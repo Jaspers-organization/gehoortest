@@ -33,12 +33,12 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand CreateCommand => new Command(Create);
     public ICommand UpdateCommand => new Command(Update);
     public ICommand DeleteCommand => new Command(Delete);
+    public ICommand ToggleStatusCommand => new Command(ToggleStatus);
     #endregion
 
     public TargetAudienceOverviewViewModel(NavigationStore navigationStore)
     {
         this.navigationStore = navigationStore;
-        // TODO hide close application button
         this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
 
         service = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
@@ -53,23 +53,44 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
 
     private void Create()
     {
-        navigationStore.OpenModal(new TargetAudienceFormViewModel(navigationStore, null));
+        navigationStore.OpenModal(new TargetAudienceModalViewModel(navigationStore, null));
     }
 
     private void Update(TargetAudience targetAudience)
     {
-        navigationStore.OpenModal(new TargetAudienceFormViewModel(navigationStore, targetAudience));
+        navigationStore.OpenModal(new TargetAudienceModalViewModel(navigationStore, targetAudience));
     }
 
     private void Delete(Guid id)
     {
-        // TODO refresh list after deletion
+        try { 
+            Action confirmDeleteAction = () => {
+                service.Delete(id);
+                Get();
+            };
 
-        navigationStore.OpenModal(new ConfirmationModalViewModel(
-            navigationStore, 
-            "Weet je zeker dat je deze leeftijdsgroep wilt verwijderen?",
-            this,
-            () => service.Delete(id)
-        ));
+            navigationStore.OpenModal(new ConfirmationModalViewModel(
+                navigationStore,
+                "Weet je zeker dat je deze leeftijdsgroep wilt verwijderen?",
+                this,
+                confirmDeleteAction
+            ));
+        }
+        catch (Exception e)
+        {
+            navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
+        }
+    }
+
+    private void ToggleStatus(TargetAudience targetAudience)
+    {
+        try
+        {
+            service.Update(targetAudience);
+        }
+        catch (Exception e)
+        {
+            navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
+using BusinessLogic.BusinessRules;
 
 namespace BusinessLogic.Services;
 
@@ -17,7 +18,8 @@ public class TargetAudienceService
         this.targetAudienceRepository = targetAudienceRepository;
         this.testRepository = testRepository;
     }
-        
+
+    #region CRUD
     public List<TargetAudience> GetAllTargetAudiences()
     {
         return targetAudienceRepository.GetAll();
@@ -25,15 +27,19 @@ public class TargetAudienceService
 
     public void Create(TargetAudience targetAudience)
     {
-        AssertValidRange(targetAudience);
+        TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
+
+        targetAudience.Label = CreateLabel(targetAudience);
 
         targetAudienceRepository.Create(targetAudience);
     }
 
     public void Update(TargetAudience targetAudience)
     {
-        AssertValidRange(targetAudience);
+        TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
         AssertNotLinked(targetAudience.Id);
+
+        targetAudience.Label = CreateLabel(targetAudience);
 
         targetAudienceRepository.Update(targetAudience);
     }
@@ -44,26 +50,18 @@ public class TargetAudienceService
 
         targetAudienceRepository.Delete(id);
     }
+    #endregion
 
-    private void AssertValidRange(TargetAudience targetAudience) 
+    private string CreateLabel(TargetAudience targetAudience)
     {
-        List<TargetAudience> targetAudiences = targetAudienceRepository.GetAll();
-
-        foreach (TargetAudience item in targetAudiences)
-        {
-            if (item.From <= targetAudience.From && item.To >= targetAudience.To)
-            {
-                throw new Exception();
-            }
-        }
+        return $"{targetAudience.From}-{targetAudience.To}";
     }
 
     private void AssertNotLinked(Guid id)
     {
-        Test? test = testRepository.GetByTargetAudienceId(id);
-        if (test != null) 
+        if (testRepository.GetByTargetAudienceId(id) != null)
         {
-            throw new Exception();
+            throw new Exception("Je kunt deze leeftijdsgroep niet aanpassen, omdat hij is gekoppeld aan een test.");
         }
     }
 }

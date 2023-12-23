@@ -8,7 +8,7 @@ using UserInterface.Stores;
 
 namespace UserInterface.ViewModels.Modals;
 
-internal class TargetAudienceFormViewModel : ViewModelBase
+internal class TargetAudienceModalViewModel : ViewModelBase
 {
     #region dependencies
     private NavigationStore navigationStore;
@@ -31,7 +31,7 @@ internal class TargetAudienceFormViewModel : ViewModelBase
     public ICommand CancelCommand => new Command(Cancel);
     #endregion
 
-    public TargetAudienceFormViewModel(NavigationStore navigationStore, TargetAudience? targetAudience) 
+    public TargetAudienceModalViewModel(NavigationStore navigationStore, TargetAudience? targetAudience) 
     {
         this.navigationStore = navigationStore;
         service = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
@@ -64,10 +64,11 @@ internal class TargetAudienceFormViewModel : ViewModelBase
             {
                 service.Update(TargetAudience);
             }
-        } 
-        catch(Exception e)
+        }
+        catch (Exception e) 
         {
-            // TODO
+            navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
+            return;
         }
 
         navigationStore.CloseModal(new TargetAudienceOverviewViewModel(navigationStore));

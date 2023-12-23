@@ -60,7 +60,7 @@
             <DataTemplate DataType="{x:Type modalViewModels:ErrorModalViewModal}">
                 <modals:ErrorModal/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type modalViewModels:TargetAudienceFormViewModel}">
+            <DataTemplate DataType="{x:Type modalViewModels:TargetAudienceModalViewModel}">
                 <modals:TargetAudienceFormView/>
             </DataTemplate>
         </Grid.Resources>

@@ -15,6 +15,7 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
         builder.Property(t => t.Id)
               .HasColumnName("id")
               .HasColumnType("nvarchar(128)");
+
         builder.Property(t => t.From)
                .HasColumnName("from")
                .HasColumnType("int");
@@ -26,6 +27,10 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
         builder.Property(t => t.Label)
                .HasColumnName("label")
                .HasColumnType("varchar(50)");
+
+        builder.Property(t => t.Active)
+               .HasColumnName("active")
+               .HasColumnType("bit");
 
         builder.HasMany(t => t.Tests)
                .WithOne(test => test.TargetAudience)
