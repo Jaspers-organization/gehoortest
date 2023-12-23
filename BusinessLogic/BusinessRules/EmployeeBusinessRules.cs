@@ -45,7 +45,7 @@ public class EmployeeBusinessRules
     }
     public static bool IsValidStringMayBeNull(string str)
     {
-        return IsLettersOnly(str) && str.Length <= 50;
+        return (IsLettersOnly(str) && str.Length <= 50) || string.IsNullOrEmpty(str);
     }
     private static bool IsNumeric(string input)
     {
