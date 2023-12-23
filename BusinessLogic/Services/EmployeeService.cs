@@ -67,7 +67,7 @@ public class EmployeeService
 
     public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged)
     {
-        EmployeeBusinessRules.ValidateEmployee(employee.EmployeeNumber, employee.FirstName, employee.Infix, employee.LastName, employee.EmployeeLogin.Email);
+        EmployeeBusinessRules.ValidateEmployee(employee);
         if (employeeLoginRepository.EmailExists(employee.EmployeeLogin.Email))
             throw new Exception(ErrorMessageStore.ErrorEmailInUse);
 
@@ -95,7 +95,7 @@ public class EmployeeService
 
         if (employeeLogin == null) throw new Exception(ErrorMessageStore.ErrorEmployeeStatusGeneric);
 
-        if (employee.Id == LoggedInEmployee) throw new Exception(ErrorMessageStore.ErrorEmployeeStatusGeneric);
+        if (employee.Id == LoggedInEmployee) throw new Exception(ErrorMessageStore.ErrorEmployeeStatus);
         employeeLogin.Active = !employeeLogin.Active;
 
         employee.EmployeeLogin = employeeLogin;

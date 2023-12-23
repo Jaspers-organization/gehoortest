@@ -8,13 +8,13 @@ namespace BusinessLogic.BusinessRules;
 
 public class EmployeeBusinessRules
 {
-    public static void ValidateEmployee(string employeeNumber, string firstName, string infix, string lastName, string email)
+    public static void ValidateEmployee(Employee employee)
     {
-        AssertEmployeeNumber(employeeNumber);
-        EmailBusinessRules.AssertValidEmail(email);
-        AssertValidInfix(infix);
-        AssertValidLastName(lastName);
-        AssertValidFirstName(firstName);
+        AssertEmployeeNumber(employee.EmployeeNumber);
+        EmailBusinessRules.AssertValidEmail(employee.EmployeeLogin.Email);
+        AssertValidInfix(employee.Infix);
+        AssertValidLastName(employee.LastName);
+        AssertValidFirstName(employee.FirstName);
     }
     public static void AssertAdministrator(EmployeeProjection projection, Employee employee)
     {
@@ -22,7 +22,7 @@ public class EmployeeBusinessRules
          !(projection.Role == Role.Employee &&
            employee.AccountType == Role.Administrator))
             throw new Exception(ErrorMessageStore.ErrorAdministratorChanged);
-    }
+    }    
     public static void AssertEmployeeNumber(string employeeNumber)
     {
         if (!IsNumeric(employeeNumber)) throw new Exception(ErrorMessageStore.ErrorEmployeeNumber);
