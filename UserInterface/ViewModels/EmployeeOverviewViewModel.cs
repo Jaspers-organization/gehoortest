@@ -85,7 +85,7 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
         //todo check if employee has any tests.
         if(!employeeService.AbleToDeleteEmployee(id))
         {
-            OpenErrorModal("Het verwijderen van deze medewerker is niet toegestaan omdat ze de eigenaar zijn van één of meer testen.");
+            OpenErrorModal(ErrorMessageStore.ErrorDeleteEmployee);
             return;
         }
         Action DeleteAction = () =>

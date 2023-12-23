@@ -27,5 +27,6 @@ public class ErrorMessageStore
     public const string ErrorEmployeeStatus = "Het is niet mogelijk om je eigen account op inactief te zetten.";
     public const string ErrorEmployeeStatusGeneric = "Er is wat misgegaan bij het activieren/deactiveren van het account.";
     public const string ErrorEmailInUse = "Het opgegeven email adres is al in gebruik.";
+    public const string ErrorDeleteEmployee = "Het verwijderen van deze medewerker is niet toegestaan omdat ze de eigenaar zijn van één of meer testen.";
 
 }
