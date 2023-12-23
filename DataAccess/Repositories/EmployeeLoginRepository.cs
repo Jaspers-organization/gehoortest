@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DataAccess.Repositories;
 
@@ -20,20 +21,8 @@ public class EmployeeLoginRepository : IEmployeeLoginRepository
     {
         return repository.EmployeeLogins.Where(el => el.EmployeeId == id).FirstOrDefault();
     }
-    public void DeleteEmployeeLogin(EmployeeLogin entity)
+    public bool EmailExists(string email)
     {
-        repository.EmployeeLogins.Remove(entity);
-        repository.SaveChanges();
-    }
-    public void SaveEmployeeLogin(EmployeeLogin entity)
-    {
-        repository.EmployeeLogins.Add(entity);
-        repository.SaveChanges();
-    }
-
-    public void UpdateEmployeeLogin(EmployeeLogin entity)
-    {
-        repository.Update(entity);
-        repository.SaveChanges();
+        return repository.EmployeeLogins.Where(el => el.Email == email).Any();
     }
 }

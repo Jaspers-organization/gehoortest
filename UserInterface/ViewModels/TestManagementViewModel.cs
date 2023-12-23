@@ -88,28 +88,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
     #endregion
 
-    #region Errors
-    private bool CheckValidityInput()
-    {
-        // Check the validity of the input
-        string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
-        string audienceValidation = ErrorService.ValidateInput("Audience", SelectedTargetAudience!);
-
-        if (!string.IsNullOrEmpty(testNameValidation))
-        {
-            OpenErrorModal(testNameValidation);
-            return false;
-        }
-
-        if (!string.IsNullOrEmpty(audienceValidation))
-        {
-            OpenErrorModal(audienceValidation);
-            return false;
-        }
-        return true;
-    }
-    #endregion
-
     public bool IsConfirmed { get; set; }
     public Test Test { get; set; }
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
@@ -141,6 +119,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             SetStatus(false);
             SetSelected(0);
         }
+        SetEmployee();
     }
 
 
@@ -437,46 +416,22 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         return new TestOverviewViewModel(navigationStore);
     }
-    private void CheckTargetAudienceChanged()
-    {
-        if(initalTargetAudience == null)
-            return;
-        
-        if (TestService.TargetAudienceChanged(Test.TargetAudience.Id, initalTargetAudience.Id))
-            Test.Active = false;
-    }
     private void SetEmployee()
     {
         Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
         Test.EmployeeId = EmployeeId;
         Test.Employee = employeeService.GetEmployeeById(EmployeeId);
     }
-    private void CheckEmployee()
-    {
-        if (Test.Employee == null && Test.EmployeeId == Guid.Empty)
-            SetEmployee();
-    }
     private void SaveTest()
     {
         try
         {
-            if (!CheckValidityInput())
-                return;
-
-            if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
-                SetEmployee();
-
-            if(!isNewTest)
-                CheckTargetAudienceChanged();
-
-            testService.ProcessTest(Test, isNewTest);
-
+            testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }
         catch (Exception ex)
         {
-            OpenErrorModal("Er is een fout opgetreden bij het opslaan van de test.");
-            Console.WriteLine("Error occurred: " + ex);
+            OpenErrorModal(ex.Message);
         }
     }
     #endregion

@@ -74,7 +74,7 @@ public class TestManagementTests
     [InlineData("@#$%^&*()[]{};:'`|<>", true)]
     public void ContainsInvalidCharacters_ReturnsInValidString(string str, bool expectedResult)
     {
-        bool actualResult = ErrorService.ContainsAnyCharacter(str);
+        bool actualResult = ErrorMessageStore.ContainsAnyCharacter(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -86,7 +86,7 @@ public class TestManagementTests
     [InlineData(8001, false)]
     public void IsValidHz_ReturnsExpectedResult(int hz, bool expectedResult)
     {
-        bool actualResult = ErrorService.IsValidHz(hz);
+        bool actualResult = ErrorMessageStore.IsValidHz(hz);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -99,7 +99,7 @@ public class TestManagementTests
     [InlineData(121, false)]
     public void IsValidDecibel_ReturnsExpectedResult(int decibel, bool expectedResult)
     {
-        bool actualResult = ErrorService.IsValidDecibel(decibel);
+        bool actualResult = ErrorMessageStore.IsValidDecibel(decibel);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -110,7 +110,7 @@ public class TestManagementTests
     [InlineData("ValidString", false)]
     public void IsEmptyString_ReturnsExpectedResult(string str, bool expectedResult)
     {
-        bool actualResult = ErrorService.IsEmptyString(str);
+        bool actualResult = ErrorMessageStore.IsEmptyString(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -122,9 +122,9 @@ public class TestManagementTests
     [InlineData("Invalid!Name", true)]
     public void ValidateTestName_ReturnsExpectedResult(string str, bool expectedResult)
     {
-        string result = ErrorService.ValidateTestName(str);
+        string result = ErrorMessageStore.ValidateTestName(str);
 
-        bool actualResult = result == ErrorService.ErrorTestName || result == ErrorService.ErrorIllegalCharacters;
+        bool actualResult = result == ErrorMessageStore.ErrorTestName || result == ErrorMessageStore.ErrorIllegalCharacters;
         Assert.Equal(expectedResult, actualResult);
     }
 

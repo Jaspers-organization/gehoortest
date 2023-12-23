@@ -3,8 +3,7 @@ using BusinessLogic.Projections;
 using BusinessLogic.IModels;
 using BusinessLogic.Enums;
 using BusinessLogic.Models;
-using BusinessLogic.Classes;
-using UserInterface.Stores;
+using BusinessLogic.BusinessRules;
 
 namespace BusinessLogic.Services;
 
@@ -42,8 +41,12 @@ public class TestService
 
     public void SetTest(Test test) => this.test = test;
 
-    public void ProcessTest(Test test, bool newTest)
+    public void ProcessTest(Test test, bool newTest, Guid initalId)
     {
+        TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
+        if (TargetAudienceChanged(test.TargetAudience.Id, initalId))
+            test.Active = false;
+
         if (newTest)
             SaveTest(test);
         else
@@ -52,7 +55,6 @@ public class TestService
             UpdateTest(test);
         }
     }
-
     public void RemoveOptionsWhereId()
     {
         if (test.TextQuestions.Count != 0 || test.TextQuestions == null)
@@ -135,7 +137,7 @@ public class TestService
             if (activeTest != null)
             {
                 activeTest.Active = false;
-                testRepository.UpdateTest(test);
+                testRepository.UpdateTest(activeTest);
             }
         }
         test.Active = !test.Active;
@@ -166,14 +168,14 @@ public class TestService
 
     public static int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
 
         return questions.FindIndex(q => q.QuestionNumber == questionNumber);
     }
 
     public static List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
         int newNumber = 1;
 
         foreach (IQuestion question in questions)
@@ -186,7 +188,7 @@ public class TestService
 
     public List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
         int index = GetQuestionNumberIndex(questions, questionNumber);
         if (index != -1)
         {
@@ -206,7 +208,7 @@ public class TestService
 
     public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
 
         int index = GetQuestionNumberIndex(questions, questionNumber);
         if (index != -1)

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System;
+using BusinessLogic.Interfaces;
 namespace BusinessLogic.Services;
 
 public class PasswordService
@@ -36,7 +37,11 @@ public class PasswordService
         "Schaap", "Hond", "Kat", "Paard", "Vis", "Boom", "Huis", "Auto", "Boot", "Vliegtuig", "Fiets", "Pop", "Bal"
     };
 
-
+    public static (string salt, string hashedPassword) GenerateLogin(string password, IHashingService hashingService)
+    {
+        string salt = hashingService.GenerateSalt();
+        return (salt, hashingService.HashPassword(password, salt));
+    }
     public static string GeneratePassword()
     {
         Random random = new Random();

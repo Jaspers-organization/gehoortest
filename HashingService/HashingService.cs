@@ -18,4 +18,5 @@ public class HashingService : IHashingService
     {
         return password.Equals(hashedPassword);
     }
+   
 }

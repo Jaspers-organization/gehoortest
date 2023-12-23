@@ -11,4 +11,5 @@ public interface IEmployeeRepository
     public void SaveEmployee(Employee employee);
     public void DeleteEmployee(Employee employee);
     public void UpdateEmployee(Employee employee);
+    public bool AbleToDeleteEmployee(Guid id);
 }

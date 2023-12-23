@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.BusinessRules;
+using BusinessLogic.Models;
 using System;
 using System.Windows.Input;
 using UserInterface.Commands;
@@ -20,7 +21,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
     #endregion
 
-    #region Propertys
+    #region Properties
     private string _frequencyString;
     public string FrequencyString
     {
@@ -64,36 +65,6 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     }
     #endregion
 
-    #region Errors
-
-    private bool CheckValidityInput()
-    {
-        string frequencyValidation = ErrorService.ValidateInput("Frequency", FrequencyString);
-        string decibelValidation = ErrorService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
-
-        if (!string.IsNullOrEmpty(frequencyValidation))
-        {
-            OpenErrorModal(frequencyValidation);
-            return false;
-        }
-        else
-        {
-            Frequency = ErrorService.ParseStringToInt(FrequencyString);//not sure of this.
-        }
-
-        if (!string.IsNullOrEmpty(decibelValidation))
-        {
-            OpenErrorModal(decibelValidation);
-            return false;
-        }
-        else
-        {
-            StartingDecibels = ErrorService.ParseStringToInt(StartingDecibelsString);
-        }
-        return true;
-    }
-    #endregion
-
     public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
     {
         this.navigationStore = navigationStore;
@@ -114,9 +85,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            // Checks the validity of input data before proceeding
-            if (!CheckValidityInput())
-                return;
+            TestBusinessRules.ValidateToneaudiometryValues(StartingDecibelsString, FrequencyString);
 
             // Creates a new ToneAudiometryQuestion object based on the provided data
             ToneAudiometryQuestion question = new ToneAudiometryQuestion
@@ -139,7 +108,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         catch (Exception ex)
         {
             // If an exception occurs during the saving process, opens an error modal
-            OpenErrorModal("Er is wat foutgegaan bij het opslaan van de vraag");
+            OpenErrorModal(ex.Message);
         }
     }
 

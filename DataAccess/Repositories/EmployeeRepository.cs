@@ -46,9 +46,12 @@ public class EmployeeRepository : IEmployeeRepository
 
     public void SaveEmployee(Employee entity)
     {
-        repository.Attach(entity.EmployeeLogin);
         repository.Employees.Add(entity);
         repository.SaveChanges();
+    }
+    public bool AbleToDeleteEmployee(Guid id)
+    {
+        return !repository.Employees.Where(e => e.Id == id).SelectMany(e => e.Tests).Any();
     }
 
     public void DeleteEmployee(Employee entity)

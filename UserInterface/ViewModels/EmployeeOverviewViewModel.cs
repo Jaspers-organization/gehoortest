@@ -6,11 +6,10 @@ using DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
+using UserInterface.ViewModels.Modals;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace UserInterface.ViewModels;
@@ -19,10 +18,7 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore? navigationStore;
-    private readonly TestService testService;
-    private readonly TargetAudienceService targetAudienceService;
     private readonly EmployeeService employeeService;
-    private readonly EmployeeLoginService employeeLoginService;
 
     #endregion
 
@@ -43,6 +39,7 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
 
     public bool IsConfirmed { get; set; }
     #endregion
+    private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
 
     public EmployeeOverviewViewModel(NavigationStore navigationStore)
     {
@@ -50,10 +47,7 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
         this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
         this.navigationStore.HideTopBar = false;
         // Services
-        testService = new TestService(new TestRepository());
-        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository());
-        employeeService = new EmployeeService(new EmployeeRepository());
-        employeeLoginService = new EmployeeLoginService(new EmployeeLoginRepository());
+        employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeLoginRepository());
 
         GetEmployees();
     }
@@ -61,42 +55,46 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
     private void OpenEmployee(Guid id)
     {
         Employee? employee = employeeService.GetEmployeeById(id);
-        EmployeeLogin? employeeLogin = employeeLoginService.GetByEmployeeId(id);
+        EmployeeLogin? employeeLogin = employeeService.GetEmployeeLoginById(id);
 
         if (employee != null && employeeLogin != null)
             navigationStore!.CurrentViewModel = new EmployeeManagementViewModel(navigationStore,employeeLogin,employee);
     }
     private void NewEmployee() => navigationStore!.CurrentViewModel = new EmployeeManagementViewModel(navigationStore);
 
-    private void ToggleActiveStatus(Guid testId)
+    private void ToggleActiveStatus(Guid employeeId)
     {
-        //try
-        //{
-        //    var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
-        //    if (clickedTest!.AmountOfQuestions == 0)
-        //        return;
-        //    testService.ToggleActiveStatus(testId);
+        try
+        {
+            var clickedEmployee = Employees?.Where(t => t.Id == employeeId).FirstOrDefault();
+            if (clickedEmployee == null)
+                return;
 
-        //    if (SelectedTargetAudience == null)
-        //        return;
-
-        //    UpdateTestProjections(SelectedTargetAudience.Id);
-        //}
-        //catch (Exception ex)
-        //{
-
-        //}
-
+            employeeService.ToggleActiveStatus(clickedEmployee.Id, navigationStore!.LoggedInEmployee!.Id);
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal(ex.Message);
+        }
     }
+
+    private void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
+
     private void DeleteEmployee(Guid id)
     {
-        //Action SaveAction = () =>
-        //{
-        //    Test test = testService.GetTestById(id);
-        //    testService.DeleteTest(test);
-        //    UpdateTestProjections(id);
-        //};
-        //OpenConfirmationModal(CreateAction(SaveAction), "Weet je zeker dat je deze test wilt verwijderen?");
+        //todo check if employee has any tests.
+        if(!employeeService.AbleToDeleteEmployee(id))
+        {
+            OpenErrorModal("Het verwijderen van deze medewerker is niet toegestaan omdat ze de eigenaar zijn van één of meer testen.");
+            return;
+        }
+        Action DeleteAction = () =>
+        {
+            Employee employee = employeeService.GetEmployeeById(id);
+            employeeService.DeleteEmployee(employee);
+            GetEmployees();
+        };
+        OpenConfirmationModal(CreateAction(DeleteAction), "Weet je zeker dat je deze medewerker wilt verwijderen?");
     }
 
     private void GetEmployees()
@@ -106,11 +104,16 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
 
     public Action CreateAction(Action action)
     {
-        throw new NotImplementedException();
+        return () =>
+        {
+            if (!IsConfirmed) return;
+            action?.Invoke();
+        };
     }
 
     public void OpenConfirmationModal(Action action, string text)
     {
-        throw new NotImplementedException();
+        confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
+        navigationStore.OpenModal(confirmationModalViewModel);
     }
 }

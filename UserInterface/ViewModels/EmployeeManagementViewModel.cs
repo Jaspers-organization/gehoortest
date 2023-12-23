@@ -4,11 +4,6 @@ using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
@@ -20,10 +15,7 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
 {
     #region Dependencies
     private readonly NavigationStore navigationStore;
-    private readonly TestService testService;
-    private readonly TargetAudienceService targetAudienceSerivce;
     private readonly EmployeeService employeeService;
-    private readonly EmployeeLoginService employeeLoginService;
 
     private readonly bool isNewEmployee;
     #endregion
@@ -95,24 +87,6 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
 
     #endregion
 
-    #region Errors
-    private bool CheckValidityInput()
-    {
-        // Check the validity of the input
-        //string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
-        //string audienceValidation = ErrorService.ValidateInput("Audience", SelectedTargetAudience!);
-        string adminValidation = ErrorService.ValidateInput("Admin", navigationStore.LoggedInEmployee, Employee);
-
-        if (!string.IsNullOrEmpty(adminValidation))
-        {
-            OpenErrorModal(adminValidation);
-            return false;
-        }
-
-       
-        return true;
-    }
-    #endregion
     private bool PasswordChanged { get; set; }
     public bool IsConfirmed { get; set; }
     public EmployeeLogin EmployeeLogin { get; set; }
@@ -125,12 +99,8 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
         this.navigationStore = navigationStore;
         this.navigationStore.HideTopBar = true;
 
-        testService = new TestService(new TestRepository());
-        employeeService = new EmployeeService(new EmployeeRepository());
-        employeeLoginService = new EmployeeLoginService(new EmployeeLoginRepository(), new HashingService.HashingService());
+        employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeLoginRepository(), new HashingService.HashingService());
 
-        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
-       
         if (employeeLogin != null && employee != null)
         {
             Employee = employee;
@@ -169,7 +139,7 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
     private void CreateEmployee()
     {
         Employee = employeeService.CreateEmployee();
-        EmployeeLogin = employeeLoginService.CreateEmployeeLogin();
+        EmployeeLogin = employeeService.CreateEmployeeLogin();
 
         EmployeeLogin.Employee = Employee;
         EmployeeLogin.EmployeeId = Employee.Id;
@@ -199,17 +169,20 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
     }
     private void SaveEmployee()
     {
-        if (!CheckValidityInput())
-            return;
-        //todo check if password, email, firstname, lastname arent empty.
-        employeeService.ProcessEmployee(Employee, isNewEmployee);
-
-        employeeLoginService.ProcessEmployeeLogin(EmployeeLogin, isNewEmployee, PasswordChanged);
+        try
+        {
+            Employee.EmployeeLogin = EmployeeLogin;
+            employeeService.ProcessEmployee(Employee, isNewEmployee, PasswordChanged);
+            navigationStore!.CurrentViewModel = new EmployeeOverviewViewModel(navigationStore);
+        }
+        catch (Exception ex)
+        {
+            OpenErrorModal(ex.Message);
+        }
 
     }
     public void OpenConfirmationModal(Action action, string text)
     {
-        // Create a confirmation modal view model and open the confirmation modal.
         confirmationModalViewModel = new ConfirmationModalViewModel(navigationStore, text, this, action);
         navigationStore.OpenModal(confirmationModalViewModel);
     }
