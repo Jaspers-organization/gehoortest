@@ -13,17 +13,16 @@ public class EmployeeService
     private IEmployeeLoginRepository employeeLoginRepository;
     private IHashingService hashingService;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeLoginRepository employeeLoginRepository, IHashingService hashingService) 
+    public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeLoginRepository employeeLoginRepository, IHashingService hashingService) : this(employeeRepository, employeeLoginRepository)
     {
-        this.employeeRepository = employeeRepository;
-        this.employeeLoginRepository = employeeLoginRepository;
         this.hashingService = hashingService;
     }
-    public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeLoginRepository employeeLoginRepository)
+
+    public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeLoginRepository employeeLoginRepository) : this(employeeRepository)
     {
-        this.employeeRepository = employeeRepository;
         this.employeeLoginRepository = employeeLoginRepository;
     }
+
     public EmployeeService(IEmployeeRepository employeeRepository)
     {
         this.employeeRepository = employeeRepository;
@@ -36,7 +35,7 @@ public class EmployeeService
     {
         return employeeRepository.GetAllEmployeeProjections();
     }
-    
+
     private void SaveEmployee(Employee employee)
     {
         employeeRepository.SaveEmployee(employee);
@@ -65,7 +64,7 @@ public class EmployeeService
     {
         return new EmployeeLogin();
     }
-   
+
     public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged)
     {
         EmployeeBusinessRules.ValidateEmployee(employee.EmployeeNumber, employee.FirstName, employee.Infix, employee.LastName, employee.EmployeeLogin.Email);
