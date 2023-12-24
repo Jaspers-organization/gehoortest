@@ -19,7 +19,7 @@ public class EmployeeLoginRepository : IEmployeeLoginRepository
 
     public EmployeeLogin? GetByEmployeeId(Guid id)
     {
-        return repository.EmployeeLogins.Where(el => el.EmployeeId == id).FirstOrDefault();
+        return repository.EmployeeLogins.FirstOrDefault(el => el.EmployeeId == id);
     }
     public bool EmailExists(string email)
     {

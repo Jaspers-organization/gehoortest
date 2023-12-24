@@ -50,7 +50,7 @@ public class EmployeeService
     }
     public Employee CreateEmployee()
     {
-        return new Employee();
+        return new Employee { Id = new Guid() };
     }
     public bool AbleToDeleteEmployee(Guid id)
     {
@@ -62,7 +62,7 @@ public class EmployeeService
     }
     public EmployeeLogin CreateEmployeeLogin()
     {
-        return new EmployeeLogin();
+        return new EmployeeLogin { Id = new Guid() };
     }
 
     public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged)
