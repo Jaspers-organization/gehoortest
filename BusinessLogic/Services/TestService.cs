@@ -43,18 +43,24 @@ public class TestService
 
     public void ProcessTest(Test test, bool newTest, Guid initalId)
     {
-        TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
-        if (TargetAudienceChanged(test.TargetAudience.Id, initalId))
-            test.Active = false;
-
+        ValidateTestAgainstBusinessRules(test, newTest, initalId);
         if (newTest)
             SaveTest(test);
         else
-        {
+        {            
             RemoveOptionsWhereId();
             UpdateTest(test);
         }
-    private void RunTestAgainstBusinessRules(Test test, bool newTest, Guid id)
+    }    
+    private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
+    {
+        TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
+        if(!newTest) CheckTargetAudience(test.TargetAudience.Id, initalId);
+    }
+    private void CheckTargetAudience(Guid id, Guid initialId)
+    {
+        if (TargetAudienceChanged(id, initialId))
+            test.Active = false;
     }
     public void RemoveOptionsWhereId()
     {
