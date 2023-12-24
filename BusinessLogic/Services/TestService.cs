@@ -54,6 +54,7 @@ public class TestService
             RemoveOptionsWhereId();
             UpdateTest(test);
         }
+    private void RunTestAgainstBusinessRules(Test test, bool newTest, Guid id)
     }
     public void RemoveOptionsWhereId()
     {
