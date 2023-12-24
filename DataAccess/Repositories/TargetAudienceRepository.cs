@@ -13,9 +13,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
     {
         using (Repository context = repository)
         {
-            
             return context.TargetAudiences.OrderBy(audience => audience.From).ToList();
-
         }
     }
 

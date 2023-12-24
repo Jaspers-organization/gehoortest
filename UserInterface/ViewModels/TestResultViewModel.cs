@@ -1,14 +1,13 @@
 using UserInterface.Stores;
 using BusinessLogic.Classes;
-using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;
-using BusinessLogic.BusinessRules;
-using BusinessLogic.Controllers;
 using DataAccess.Repositories;
 using System;
 using System.Windows;
+using BusinessLogic.Guards;
+using BusinessLogic.Projections;
 
 namespace UserInterface.ViewModels;
 
@@ -86,7 +85,7 @@ internal class TestResultViewModel : ViewModelBase
         string host = "smtp.gmail.com";
         // ====================
 
-        emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
+        emailService = new EmailService(new TestResultRepository(), new EmailProvider.EmailProvider().Initialize(host, email, key));
 
         GetTestResult(testProgressData);
     }
@@ -105,7 +104,7 @@ internal class TestResultViewModel : ViewModelBase
 
     private void SendEmail()
     {
-        if (!EmailBusinessRules.IsValidEmail(Email))
+        if (!Guard.IsValidEmail(Email))
         {
             EmailError = Visibility.Visible;
             return;
@@ -126,6 +125,5 @@ internal class TestResultViewModel : ViewModelBase
     private void ShowSuccess()
     {
         EmailSuccess = Visibility.Visible;
-        
     }
 }
