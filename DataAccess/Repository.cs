@@ -23,6 +23,7 @@ public class Repository : DbContext
     public virtual DbSet<TextQuestionResult> TextQuestionResults { get; set; }
     public virtual DbSet<TextQuestionOptionResult> TextQuestionOptionResults { get; set; }
     public virtual DbSet<TextQuestionAnswerResult> TextQuestionAnswerResults { get; set; }
+    public virtual DbSet<Settings> Settings { get; set; }
     #endregion
 
     public Repository() { }
@@ -41,6 +42,7 @@ public class Repository : DbContext
         modelBuilder.ApplyConfiguration(new TextQuestionOptionResultConfiguration());
         modelBuilder.ApplyConfiguration(new TextQuestionAnswerResultConfiguration());
         modelBuilder.ApplyConfiguration(new EmployeeLoginConfiguration());
+        modelBuilder.ApplyConfiguration(new SettingsConfiguration());
 
 
         base.OnModelCreating(modelBuilder);
