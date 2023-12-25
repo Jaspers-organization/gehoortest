@@ -32,18 +32,18 @@ internal class TestResultViewModel : ViewModelBase
         set { _testResultExplanation = value; OnPropertyChanged(nameof(TestResultExplanation)); }
     }
 
-    private Visibility _positiveTestResult = Visibility.Hidden;
-    public Visibility PositiveTestResult
+    private Visibility _ShowPositiveImage = Visibility.Hidden;
+    public Visibility ShowPositiveImage
     {
-        get { return _positiveTestResult; }
-        set { _positiveTestResult = value; OnPropertyChanged(nameof(PositiveTestResult)); }
+        get { return _ShowPositiveImage; }
+        set { _ShowPositiveImage = value; OnPropertyChanged(nameof(ShowPositiveImage)); }
     }
 
-    private Visibility _negativeTestResult = Visibility.Hidden;
-    public Visibility NegativeTestResult
+    private Visibility _showNegativeImage = Visibility.Hidden;
+    public Visibility ShowNegativeImage
     {
-        get { return _negativeTestResult; }
-        set { _negativeTestResult = value; OnPropertyChanged(nameof(NegativeTestResult)); }
+        get { return _showNegativeImage; }
+        set { _showNegativeImage = value; OnPropertyChanged(nameof(ShowNegativeImage)); }
     }
 
     private string? _email;
@@ -98,8 +98,8 @@ internal class TestResultViewModel : ViewModelBase
         TestResultText = testResult.TestResultText;
         TestResultExplanation = testResult.TestResultExplanation;
 
-        NegativeTestResult = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
-        PositiveTestResult = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
+        ShowNegativeImage = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
+        ShowPositiveImage = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void SendEmail()

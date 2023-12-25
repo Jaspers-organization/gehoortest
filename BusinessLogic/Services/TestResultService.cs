@@ -17,35 +17,13 @@ public class TestResultService
 
     public TestResultProjection GetTestResult(TestProgressData testProgressData)
     {
-        TestResult testResult = AnalyzeTestResult(testProgressData);
+        bool hasHearingLoss = CalculateHearingLoss(testProgressData.ToneAudiometryAnswers);
 
-        repository.Store(testResult);
+        TestResult testResult = CreateTestResult(hasHearingLoss, testProgressData);
 
-        return new TestResultProjection()
-        {
-            TestResultId = testResult.Id,
-            TestResultText = testResult.HasHearingLoss
-                ? "Mogelijk gehoorschade" 
-                : "Gezond gehoor",
-            TestResultExplanation = testResult.HasHearingLoss
-                ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
-                : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.",
-            HasHearingLoss = testResult.HasHearingLoss,
-        };
-    }
+        StoreTestResult(testResult);
 
-    private TestResult AnalyzeTestResult(TestProgressData testProgressData)
-    {
-        return new TestResult()
-        {
-            Id = new Guid(),
-            TargetAudience = testProgressData.Test.TargetAudience.Label!,
-            TestDateTime = DateTime.Now,
-            Duration = 0, // TODO Temporary until timer is implemented
-            HasHearingLoss = CalculateHearingLoss(testProgressData.ToneAudiometryAnswers),
-            TextQuestions = MapTextQuestions(testProgressData.Test.Id, testProgressData.TextAnswers),
-            ToneAudiometryQuestions = MapToneAudiometryQuestions(testProgressData.Test.Id, testProgressData.ToneAudiometryAnswers),
-        };
+        return CreateTestResultProjection(testResult);
     }
 
     private bool CalculateHearingLoss(List<ToneAudiometryAnswer> answers)
@@ -64,6 +42,40 @@ public class TestResultService
         } 
         
         return hasHearingLoss;
+    }
+
+    private TestResult CreateTestResult(bool hasHearingLoss, TestProgressData testProgressData)
+    {
+        return new TestResult()
+        {
+            Id = Guid.NewGuid(),
+            TargetAudience = testProgressData.Test.TargetAudience.Label,
+            TestDateTime = DateTime.Now,
+            Duration = 0, // TODO Temporary until timer is implemented
+            HasHearingLoss = hasHearingLoss,
+            TextQuestions = MapTextQuestions(testProgressData.Test.Id, testProgressData.TextAnswers),
+            ToneAudiometryQuestions = MapToneAudiometryQuestions(testProgressData.Test.Id, testProgressData.ToneAudiometryAnswers),
+        };
+    }
+
+    private void StoreTestResult(TestResult testResult)
+    {
+        repository.Store(testResult);
+    }
+
+    private TestResultProjection CreateTestResultProjection(TestResult testResult)
+    {
+        return new TestResultProjection()
+        {
+            TestResultId = testResult.Id,
+            TestResultText = testResult.HasHearingLoss
+                ? "Mogelijk gehoorschade"
+                : "Gezond gehoor",
+            TestResultExplanation = testResult.HasHearingLoss
+                ? "Volgens de testresultaten is er mogelijk gehoorschade gevonden. Wij adviseren dat u een afspraak maakt voor een volledige gehoortest met een van onze audiciens."
+                : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.",
+            HasHearingLoss = testResult.HasHearingLoss,
+        };
     }
 
     // TODO: remove this. change the TestProgressData

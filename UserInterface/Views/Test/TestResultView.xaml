@@ -45,13 +45,13 @@
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding PositiveTestResult}"/>
+                Visibility="{Binding ShowPositiveImage}"/>
             <images:NegativeTestResult
                 Grid.Row="0" 
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding NegativeTestResult}"/>
+                Visibility="{Binding ShowNegativeImage}"/>
 
             <TextBlock
                 Style="{StaticResource Text}"
