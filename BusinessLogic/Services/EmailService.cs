@@ -20,7 +20,7 @@ public class EmailService
         this.provider = provider;
     }
 
-    public bool SendEmail(string reciever, Guid testResultId)
+    public void SendEmail(string reciever, Guid testResultId)
     {
         Guard.AssertValidEmail(reciever);
 
@@ -30,7 +30,7 @@ public class EmailService
         string subject = $"Testresultaat {date}"; 
         string body = CreateEmailBody(testResult, date);
 
-       return provider.SendEmail(reciever, subject, body);
+        provider.SendEmail(reciever, subject, body);
     }
   
     private string CreateEmailBody(TestResult testResult, string date)
