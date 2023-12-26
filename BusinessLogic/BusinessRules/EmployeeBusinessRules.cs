@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Enums;
+using BusinessLogic.Guards;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using System.Text.RegularExpressions;
@@ -11,7 +12,7 @@ public class EmployeeBusinessRules
     public static void ValidateEmployee(Employee employee)
     {
         AssertEmployeeNumber(employee.EmployeeNumber);
-        EmailBusinessRules.AssertValidEmail(employee.EmployeeLogin.Email);
+        Guard.AssertValidEmail(employee.EmployeeLogin.Email);
         AssertValidInfix(employee.Infix);
         AssertValidLastName(employee.LastName);
         AssertValidFirstName(employee.FirstName);
