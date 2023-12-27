@@ -29,7 +29,7 @@ public class TargetAudienceService
     {
         TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
 
-        targetAudience.Label = CreateLabel(targetAudience);
+        UpdateLabel(targetAudience);
 
         targetAudienceRepository.Create(targetAudience);
     }
@@ -39,7 +39,7 @@ public class TargetAudienceService
         TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
         AssertNotLinked(targetAudience.Id);
 
-        targetAudience.Label = CreateLabel(targetAudience);
+        UpdateLabel(targetAudience);
 
         targetAudienceRepository.Update(targetAudience);
     }
@@ -52,9 +52,9 @@ public class TargetAudienceService
     }
     #endregion
 
-    private string CreateLabel(TargetAudience targetAudience)
+    private void UpdateLabel(TargetAudience targetAudience)
     {
-        return $"{targetAudience.From}-{targetAudience.To}";
+        targetAudience.Label = $"{targetAudience.From}-{targetAudience.To}";
     }
 
     private void AssertNotLinked(Guid id)

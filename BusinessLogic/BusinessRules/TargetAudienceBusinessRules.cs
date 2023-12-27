@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.BusinessRules;
 
-internal class TargetAudienceBusinessRules
+public class TargetAudienceBusinessRules
 {
     public static bool IsValidRange(TargetAudience targetAudience, List<TargetAudience> existingTargetAudiences) 
     {
@@ -21,7 +21,7 @@ internal class TargetAudienceBusinessRules
     {
         if (!IsValidRange(targetAudience, existingTargetAudiences))
         {
-            throw new Exception("De leeftijden mogen niet hetzelfde zijn of aan gelijk zijn aan een bestaande leeftijdsgroep.");
+            throw new ArgumentException("De leeftijden mogen niet hetzelfde zijn of aan gelijk zijn aan een bestaande leeftijdsgroep.");
         }
     }
 }
