@@ -49,8 +49,23 @@ public class TestService
             SaveTest(test);
         else
         {
-            RemoveOptionsWhereId();
             UpdateTest(test);
+            RemoveOptionsNotInTest(test);
+        }
+    }
+    public void RemoveOptionsNotInTest(Test test)
+    {
+        var existingTest = testRepository.GetTestById(test.Id);
+
+        if (existingTest != null)
+        {
+            foreach (var existingTextQuestion in existingTest.TextQuestions)
+            {
+                if (!test.TextQuestions.Any(q => q.Id == existingTextQuestion.Id))
+                {
+                    testRepository.RemoveOptionsWhereId(existingTextQuestion.Id);
+                }
+            }
         }
     }
     private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
@@ -63,16 +78,7 @@ public class TestService
         if (TargetAudienceChanged(id, initialId))
             test.Active = false;
     }
-    public void RemoveOptionsWhereId()
-    {
-        if (test.TextQuestions.Count != 0 || test.TextQuestions == null)
-        {
-            foreach (var textQuestion in test.TextQuestions)
-            {
-                testRepository.RemoveOptionsWhereId(textQuestion.Id);
-            }
-        }
-    }
+  
     public static bool TargetAudienceChanged(Guid currentTargetAudienceId, Guid initalTargetAudienceId)
     {
         return currentTargetAudienceId != initalTargetAudienceId;
