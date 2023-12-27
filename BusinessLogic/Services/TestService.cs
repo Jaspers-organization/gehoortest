@@ -50,24 +50,9 @@ public class TestService
         else
         {
             UpdateTest(test);
-            RemoveOptionsNotInTest(test);
         }
     }
-    public void RemoveOptionsNotInTest(Test test)
-    {
-        var existingTest = testRepository.GetTestById(test.Id);
 
-        if (existingTest != null)
-        {
-            foreach (var existingTextQuestion in existingTest.TextQuestions)
-            {
-                if (!test.TextQuestions.Any(q => q.Id == existingTextQuestion.Id))
-                {
-                    testRepository.RemoveOptionsWhereId(existingTextQuestion.Id);
-                }
-            }
-        }
-    }
     private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
     {
         TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
@@ -229,6 +214,9 @@ public class TestService
         {
             questions.RemoveAt(index);
             questions = ShiftQuestionNumbers(questions);
+            if (index == 0 && questions.Count == 0)
+                return questions;
+
             switch (questions[index])
             {
                 case TextQuestion:

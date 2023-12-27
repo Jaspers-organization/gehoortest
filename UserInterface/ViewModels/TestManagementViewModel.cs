@@ -143,11 +143,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         // Set the overall test
         SetTest(test);
 
-        // Set audio questions based on provided test's tone audiometry questions
-        SetAudioQuestions(new ObservableCollection<ToneAudiometryQuestion>(test.ToneAudiometryQuestions));
+        // Set audio questions based on provided test's tone audiometry questions ordered by QuestionNumber
+        SetAudioQuestions(new ObservableCollection<ToneAudiometryQuestion>(test.ToneAudiometryQuestions.OrderBy(aq => aq.QuestionNumber)));
 
-        // Set text questions based on provided test's text questions
-        SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions));
+        // Set text questions based on provided test's text questions ordered by QuestionNumber
+        SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions.OrderBy(tq => tq.QuestionNumber)));
 
         // If there's a list of audiences available
         if (TargetAudiences != null)
@@ -186,10 +186,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetTestName(string title) => TestName = title;
 
     // Sets the status of the test (Active/Inactive)
-    private void SetStatus(bool active) {
+    private void SetStatus(bool active)
+    {
         Status = active ? "Actief" : "Inactief";
         Test.Active = active;
-    } 
+    }
 
     // Sets the selected target audience ID
     private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
@@ -343,7 +344,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     }
 
     // Refreshes the text question view.
-    private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions);
+    private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions.OrderBy(tq => tq.QuestionNumber));
 
     // Deletes a text question from the test.
     private void DeleteTextQuestion(int questionNumber)
@@ -397,7 +398,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     // Refreshes the audio question view.
     private void UpdateAudioQuestionListView()
     {
-        AudioQuestions = new ObservableCollection<ToneAudiometryQuestion>(Test.ToneAudiometryQuestions);
+        AudioQuestions = new ObservableCollection<ToneAudiometryQuestion>(Test.ToneAudiometryQuestions.OrderBy(aq => aq.QuestionNumber));
     }
 
     // Deletes an audio question from the test.

@@ -32,17 +32,6 @@ internal class AudioQuestionModalViewModel : ViewModelBase
             OnPropertyChanged(nameof(FrequencyString));
         }
     }
-    private int _frequency;
-    public int Frequency
-    {
-        get { return _frequency; }
-        set
-        {
-            _frequency = value;
-            OnPropertyChanged(nameof(Frequency));
-        }
-    }
-
     private string _startingDecibelsString;
     public string StartingDecibelsString
     {
@@ -53,16 +42,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
             OnPropertyChanged(nameof(StartingDecibelsString));
         }
     }
-    private int _startingDecibels;
-    public int StartingDecibels
-    {
-        get { return _startingDecibels; }
-        set
-        {
-            _startingDecibels = value;
-            OnPropertyChanged(nameof(StartingDecibels));
-        }
-    }
+
     #endregion
 
     public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
@@ -91,8 +71,8 @@ internal class AudioQuestionModalViewModel : ViewModelBase
             ToneAudiometryQuestion question = new ToneAudiometryQuestion
             {
                 Id = toneAudiometryQuestion.Id,
-                StartingDecibels = StartingDecibels,
-                Frequency = Frequency,
+                StartingDecibels = int.Parse(StartingDecibelsString),
+                Frequency = int.Parse(FrequencyString),
                 QuestionNumber = toneAudiometryQuestion.QuestionNumber
             };
 

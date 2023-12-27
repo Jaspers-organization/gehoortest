@@ -3,6 +3,7 @@ using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DataAccess.Repositories
 {
@@ -40,13 +41,14 @@ namespace DataAccess.Repositories
                 .Include(test => test.Employee)
                 .Include(test => test.TargetAudience);
         }
-        public void RemoveOptionsWhereId(Guid id) {
+        public void RemoveOptionsWhereId(Guid id)
+        {
 
             var optionsToRemove = repository.TextQuestionsOptions.Where(test => test.TextQuestionId == id);
             repository.TextQuestionsOptions.RemoveRange(optionsToRemove);
             repository.SaveChanges();
         }
-        
+
         public List<Test> GetAllTests()
         {
             var tests = IncludeTestRelations().ToList();
@@ -104,7 +106,7 @@ namespace DataAccess.Repositories
 
             return projections;
         }
-        
+
         public void SaveTest(Test test)
         {
             repository.Attach(test.TargetAudience);
@@ -113,10 +115,24 @@ namespace DataAccess.Repositories
             repository.SaveChanges();
         }
 
-        public void UpdateTest(Test test)
+        public void UpdateTest(Test updatedTest)
         {
-            repository.Tests.Update(test);
-            repository.SaveChanges();
+            var existingTest = repository.Tests
+                .Include(t => t.TextQuestions)
+                    .ThenInclude(tq => tq.Options)
+                .Include(t => t.ToneAudiometryQuestions)
+                .FirstOrDefault(t => t.Id == updatedTest.Id);
+
+            if (existingTest != null)
+            {
+                repository.Entry(existingTest).CurrentValues.SetValues(updatedTest);
+
+                existingTest.TextQuestions = updatedTest.TextQuestions;
+                existingTest.ToneAudiometryQuestions = updatedTest.ToneAudiometryQuestions;
+
+                repository.Tests.Update(existingTest);
+                repository.SaveChanges();
+            }
         }
     }
 }

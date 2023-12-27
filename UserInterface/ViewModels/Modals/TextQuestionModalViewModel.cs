@@ -99,7 +99,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!));
+        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!.ToList()));
     }
 
     private void OpenErrorModal(string text)
