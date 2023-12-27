@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="Assets/Styling/InputFieldStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ContentContainerStyles.xaml"/>
                 <ResourceDictionary Source="Assets/Styling/ModalContainerStyles.xaml"/>
+                <ResourceDictionary Source="Assets/Styling/PasswordBoxStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

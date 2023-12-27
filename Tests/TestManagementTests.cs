@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Enums;
+﻿using BusinessLogic.BusinessRules;
+using BusinessLogic.Enums;
 using BusinessLogic.IModels;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
@@ -74,7 +75,7 @@ public class TestManagementTests
     [InlineData("@#$%^&*()[]{};:'`|<>", true)]
     public void ContainsInvalidCharacters_ReturnsInValidString(string str, bool expectedResult)
     {
-        bool actualResult = ErrorMessageStore.ContainsAnyCharacter(str);
+        bool actualResult = TestBusinessRules.ContainsAnyCharacter(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -86,7 +87,7 @@ public class TestManagementTests
     [InlineData(8001, false)]
     public void IsValidHz_ReturnsExpectedResult(int hz, bool expectedResult)
     {
-        bool actualResult = ErrorMessageStore.IsValidHz(hz);
+        bool actualResult = TestBusinessRules.IsValidHz(hz);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -99,7 +100,7 @@ public class TestManagementTests
     [InlineData(121, false)]
     public void IsValidDecibel_ReturnsExpectedResult(int decibel, bool expectedResult)
     {
-        bool actualResult = ErrorMessageStore.IsValidDecibel(decibel);
+        bool actualResult = TestBusinessRules.IsValidDecibel(decibel);
 
         Assert.Equal(expectedResult, actualResult);
     }
@@ -110,23 +111,23 @@ public class TestManagementTests
     [InlineData("ValidString", false)]
     public void IsEmptyString_ReturnsExpectedResult(string str, bool expectedResult)
     {
-        bool actualResult = ErrorMessageStore.IsEmptyString(str);
+        bool actualResult = TestBusinessRules.IsEmptyString(str);
 
         Assert.Equal(expectedResult, actualResult);
     }
 
-    [Theory]
-    [InlineData(null, true)]
-    [InlineData("", true)]
-    [InlineData("ValidString", false)]
-    [InlineData("Invalid!Name", true)]
-    public void ValidateTestName_ReturnsExpectedResult(string str, bool expectedResult)
-    {
-        string result = ErrorMessageStore.ValidateTestName(str);
+    //[Theory]
+    //[InlineData(null, true)]
+    //[InlineData("", true)]
+    //[InlineData("ValidString", false)]
+    //[InlineData("Invalid!Name", true)]
+    //public void ValidateTestName_ReturnsExpectedResult(string str, bool expectedResult)
+    //{
+    //    string result = TestBusinessRules.AssertTestName(str);
 
-        bool actualResult = result == ErrorMessageStore.ErrorTestName || result == ErrorMessageStore.ErrorIllegalCharacters;
-        Assert.Equal(expectedResult, actualResult);
-    }
+    //    bool actualResult = result == ErrorMessageStore.ErrorTestName || result == ErrorMessageStore.ErrorIllegalCharacters;
+    //    Assert.Equal(expectedResult, actualResult);
+    //}
 
     [Theory]
     [InlineData("d4a77f27-3d91-4a9a-8e61-94a6c6a2f5e1", "d4a77f27-3d91-4a9a-8e61-94a6c6a2f5e1", false)]

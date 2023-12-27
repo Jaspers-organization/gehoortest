@@ -10,7 +10,6 @@ using System.Windows.Input;
 using UserInterface.Commands;
 using UserInterface.Stores;
 using UserInterface.ViewModels.Modals;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace UserInterface.ViewModels;
 
@@ -36,7 +35,6 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
         get { return _employees; }
         set { _employees = value; OnPropertyChanged(nameof(Employees)); }
     }
-
     public bool IsConfirmed { get; set; }
     #endregion
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
@@ -58,22 +56,22 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
         EmployeeLogin? employeeLogin = employeeService.GetEmployeeLoginById(id);
 
         if (employee != null && employeeLogin != null)
-            navigationStore!.CurrentViewModel = new EmployeeManagementViewModel(navigationStore,employeeLogin,employee);
+            navigationStore!.CurrentViewModel = new EmployeeManagementViewModel(navigationStore, employeeLogin, employee);
     }
     private void NewEmployee() => navigationStore!.CurrentViewModel = new EmployeeManagementViewModel(navigationStore);
 
     private void ToggleActiveStatus(Guid employeeId)
     {
+        var clickedEmployee = Employees?.FirstOrDefault(t => t.Id == employeeId);
+        if (clickedEmployee == null)
+            return;
         try
         {
-            var clickedEmployee = Employees?.Where(t => t.Id == employeeId).FirstOrDefault();
-            if (clickedEmployee == null)
-                return;
-
             employeeService.ToggleActiveStatus(clickedEmployee.Id, navigationStore!.LoggedInEmployee!.Id);
         }
         catch (Exception ex)
         {
+            GetEmployees();
             OpenErrorModal(ex.Message);
         }
     }
@@ -83,7 +81,7 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
     private void DeleteEmployee(Guid id)
     {
         //todo check if employee has any tests.
-        if(!employeeService.AbleToDeleteEmployee(id))
+        if (!employeeService.AbleToDeleteEmployee(id))
         {
             OpenErrorModal(ErrorMessageStore.ErrorDeleteEmployee);
             return;

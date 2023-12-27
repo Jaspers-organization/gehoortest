@@ -118,6 +118,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             CreateTest();
             SetStatus(false);
             SetSelected(0);
+            initalTargetAudience = SelectedTargetAudience;
         }
         SetEmployee();
     }
@@ -426,6 +427,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         try
         {
+
             testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }

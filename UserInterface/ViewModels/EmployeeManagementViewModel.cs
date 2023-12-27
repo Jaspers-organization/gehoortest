@@ -24,11 +24,14 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
     public ICommand SaveEmployeeCommand => new Command(SaveEmployee);
     public ICommand BackToEmployeeOverviewCommand => new Command(BackToTestOverview);
     public ICommand GenerateRandomPasswordCommand => new Command(GenerateRandomPassword);
+    public ICommand CheckAdministratorStatusCommand => new Command(CheckAdministratorStatus);
+
+
 
     #endregion
 
     #region Properties
-    
+
     private string? _status;
     public string? Status
     {
@@ -88,6 +91,7 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
     #endregion
 
     private bool PasswordChanged { get; set; }
+    private string InitialPassword {  get; set; }
     public bool IsConfirmed { get; set; }
     public EmployeeLogin EmployeeLogin { get; set; }
     public Employee Employee { get; set; }
@@ -105,6 +109,7 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
         {
             Employee = employee;
             EmployeeLogin = employeeLogin;
+            InitialPassword = employeeLogin.Password;
             SetValues(employeeLogin, employee);
         }
         else
@@ -167,12 +172,21 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
 
         OpenConfirmationModal(CreateAction(backAction), "Weet je zeker dat je terug wilt gaan? Alle wijzigingen zullen ongedaan worden gemaakt.");
     }
+    private void CheckAdministratorStatus()
+    {
+        if (navigationStore.LoggedInEmployee.Id == Employee.Id)
+        {
+            OpenErrorModal(ErrorMessageStore.ErrorAdministratorChanged);
+            IsAdministrator = true;
+        }
+
+    }
     private void SaveEmployee()
     {
         try
         {
             Employee.EmployeeLogin = EmployeeLogin;
-            employeeService.ProcessEmployee(Employee, isNewEmployee, PasswordChanged);
+            employeeService.ProcessEmployee(Employee, isNewEmployee, PasswordChanged, InitialPassword);
             navigationStore!.CurrentViewModel = new EmployeeOverviewViewModel(navigationStore);
         }
         catch (Exception ex)

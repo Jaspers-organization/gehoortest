@@ -64,19 +64,26 @@ public class EmployeeService
     {
         return new EmployeeLogin { Id = new Guid() };
     }
-
-    public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged)
+    private void RunEmployeeAgainstBusinessRules(Employee employee, bool newEmployee)
     {
         EmployeeBusinessRules.ValidateEmployee(employee);
-        if (employeeLoginRepository.EmailExists(employee.EmployeeLogin.Email))
-            throw new Exception(ErrorMessageStore.ErrorEmailInUse);
 
-        //check if email exists
+        if (employeeLoginRepository.EmailExists(employee.EmployeeLogin.Email) && newEmployee)
+            throw new Exception(ErrorMessageStore.ErrorEmailInUse);
+    }
+
+    public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged, string InitialPassword)
+    {
+        RunEmployeeAgainstBusinessRules(employee, newEmployee);
         if (passwordChanged || newEmployee)
         {
             (string salt, string hashedPassword) = PasswordService.GenerateLogin(employee.EmployeeLogin.Password, hashingService);
             employee.EmployeeLogin.Salt = salt;
             employee.EmployeeLogin.Password = hashedPassword;
+        }
+        else
+        {
+            employee.EmployeeLogin.Password = InitialPassword;
         }
         if (newEmployee)
         {

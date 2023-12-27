@@ -44,14 +44,15 @@ public class TestService
     public void ProcessTest(Test test, bool newTest, Guid initalId)
     {
         ValidateTestAgainstBusinessRules(test, newTest, initalId);
+
         if (newTest)
             SaveTest(test);
         else
-        {            
+        {
             RemoveOptionsWhereId();
             UpdateTest(test);
         }
-    }    
+    }
     private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
     {
         TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);

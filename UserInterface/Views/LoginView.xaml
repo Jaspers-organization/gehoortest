@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:images="clr-namespace:UserInterface.Assets.Images"
+             xmlns:images="clr-namespace:UserInterface.Assets.Images" 
+             xmlns:components="clr-namespace:UserInterface.Components"
              mc:Ignorable="d">
 
     <Border Style="{StaticResource ContentContainer_XL}">
@@ -69,11 +70,14 @@
                         Grid.Column="0"
                         VerticalAlignment="Center" 
                         Text="Wachtwoord"/>
-                    <TextBox 
+                    <!--<TextBox 
+                        x:Name="PasswordTextBox"
                         Style="{StaticResource InputField_S}"
                         Grid.Row="4" 
                         Grid.Column="1"
-                        Text="{Binding Password}"/>
+                        Text="{Binding Password}"/>-->
+                    <components:BindablePasswordBox
+                        Grid.Row="4" Grid.Column="1" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <Button 
                         Style="{StaticResource PrimaryButton_L}" 
                         Grid.Row="6" 
