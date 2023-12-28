@@ -1,12 +1,10 @@
-﻿<UserControl x:Class="UserInterface.Views.TestOverviewView"
+﻿<UserControl x:Class="UserInterface.Views.EmployeeOverviewView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
-             xmlns:types="clr-namespace:BusinessLogic.Projections;assembly=BusinessLogic"
-             xmlns:commandLocation="clr-namespace:UserInterface.Commands"
-             mc:Ignorable="d">
+             mc:Ignorable="d"             >
     <Border Style="{StaticResource ContentContainer_XXL}">
         <Grid>
             <Grid>
@@ -15,21 +13,9 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{StaticResource Header}" Text="Testen beheer"  Width="865" />
-                    <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
-                              SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
-                              SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"
-                              Text="Selecteer een doelgroep" Margin="31,0,78,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Label}" />
-                                    <TextBlock Text="{Binding Id}" Visibility="Collapsed" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Style="{StaticResource SecondaryButton_M}"  Content="Nieuwe test maken"/>
+                    <TextBlock Style="{StaticResource Header}" Text="Medewerker overzicht"  Width="1100" />
+
+                    <Button Grid.Row="1" Command="{Binding NewEmployeeCommand}" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe medewerker toevoegen"/>
                 </StackPanel>
             </Grid>
 
@@ -46,7 +32,7 @@
                     <Rectangle.RadiusX>5</Rectangle.RadiusX>
                     <Rectangle.RadiusY>5</Rectangle.RadiusY>
                 </Rectangle>
-                <ListView Width="1708" Height="580" Name="TestsList"  ItemsSource="{Binding Tests}" Style="{StaticResource ListViewStyle}" Margin="5,103,0,0" d:ItemsSource="{d:SampleData ItemCount=5}">
+                <ListView Width="1708" Height="580" Name="EmployeeList"  ItemsSource="{Binding Employees}" Style="{StaticResource ListViewStyle}" Margin="5,103,0,0" d:ItemsSource="{d:SampleData ItemCount=5}">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource OptionalListViewItemStyle_1}" />
                     </ListView.Resources>
@@ -54,46 +40,54 @@
                         <GridView >
                             <GridView.ColumnHeaderContainerStyle>
                                 <Style TargetType="{x:Type GridViewColumnHeader}"
-                                    BasedOn="{StaticResource ListViewHeaderStyle}" />
+                                 BasedOn="{StaticResource ListViewHeaderStyle}" />
                             </GridView.ColumnHeaderContainerStyle>
-                            <GridViewColumn Width="690" Header="Title" >
+                            <GridViewColumn Width="350" Header="Medewerkers nummer" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding Title}" />
+                                        <TextBlock Style="{StaticResource Text}" Text="{Binding EmployeeNumber}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="400" Header="Gemaakt door" >
+                            <GridViewColumn Width="450" Header="Naam" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding EmployeeName}" />
+                                        <TextBlock Style="{StaticResource Text}" Text="{Binding FullName}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="200" Header="Status" >
+                            <GridViewColumn Width="300" Header="Rol" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Style="{StaticResource Text}" Text="{Binding Role}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="250" Header="Aantal Testen" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Style="{StaticResource Text}" Text="{Binding AmountOfTests}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="150" Header="Actief" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <ToggleButton 
-                                            IsChecked="{Binding Active}" 
-                                            Command="{Binding DataContext.ToggleActiveStatusCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestOverviewView}}}" 
-                                            CommandParameter="{Binding Id}"
-                                            Style="{StaticResource ToggleButtonStyle}" />
+                                         IsChecked="{Binding Active, Mode=TwoWay}" 
+                                         Command="{Binding DataContext.ToggleActiveStatusCommand, RelativeSource={RelativeSource AncestorType={x:Type local:EmployeeOverviewView}}}" 
+                                         CommandParameter="{Binding Id}"
+                                         Style="{StaticResource ToggleButtonStyle}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="200" Header="Aantal vragen">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource Text}" Text="{Binding AmountOfQuestions}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+
                             <GridViewColumn Width="100">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Style="{StaticResource SecondaryButton_Icon}"
-                                                Command="{Binding DataContext.OpenTestCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestOverviewView}}}"
-                                                CommandParameter="{Binding Id }">
+                                             Command="{Binding DataContext.OpenEmployeeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:EmployeeOverviewView}}}"
+                                             CommandParameter="{Binding Id }">
                                             <Button.Content>
                                                 <Image Source="{StaticResource di_pencil}" Width="30" Height="30"/>
                                             </Button.Content>
@@ -105,8 +99,8 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Style="{StaticResource SecondaryButton_Icon}"
-                                                Command="{Binding DataContext.DeleteTestCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TestOverviewView}}}"
-                                                CommandParameter="{Binding Id }">
+                                             Command="{Binding DataContext.DeleteEmployeeCommand, RelativeSource={RelativeSource AncestorType={x:Type local:EmployeeOverviewView}}}"
+                                             CommandParameter="{Binding Id }">
                                             <Button.Content>
                                                 <Image Source="{StaticResource di_trashcan}" Width="30" Height="30"/>
                                             </Button.Content>

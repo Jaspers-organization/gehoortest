@@ -30,6 +30,12 @@
             <DataTemplate DataType="{x:Type viewModels:EmployeePortalViewModel}">
                 <views:EmployeePortalView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:EmployeeOverviewViewModel}">
+                <views:EmployeeOverviewView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:EmployeeManagementViewModel}">
+                <views:EmployeeManagementView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
             </DataTemplate>
