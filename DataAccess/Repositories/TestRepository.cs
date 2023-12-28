@@ -41,13 +41,6 @@ namespace DataAccess.Repositories
                 .Include(test => test.Employee)
                 .Include(test => test.TargetAudience);
         }
-        public void RemoveOptionsWhereId(Guid id)
-        {
-
-            var optionsToRemove = repository.TextQuestionsOptions.Where(test => test.TextQuestionId == id);
-            repository.TextQuestionsOptions.RemoveRange(optionsToRemove);
-            repository.SaveChanges();
-        }
 
         public List<Test> GetAllTests()
         {
