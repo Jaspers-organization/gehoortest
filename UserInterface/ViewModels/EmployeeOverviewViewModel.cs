@@ -80,12 +80,17 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
 
     private void DeleteEmployee(Guid id)
     {
-        //todo check if employee has any tests.
+        if (employeeService.CompareEmployeeIds(id, navigationStore.LoggedInEmployee.Id))
+        {
+            OpenErrorModal(ErrorMessageStore.ErrorDeleteEmployeeSelf);
+            return;
+        }
         if (!employeeService.AbleToDeleteEmployee(id))
         {
             OpenErrorModal(ErrorMessageStore.ErrorDeleteEmployee);
             return;
         }
+        
         Action DeleteAction = () =>
         {
             Employee employee = employeeService.GetEmployeeById(id);

@@ -28,5 +28,6 @@ public class ErrorMessageStore
     public const string ErrorEmployeeStatusGeneric = "Er is wat misgegaan bij het activieren/deactiveren van het account.";
     public const string ErrorEmailInUse = "Het opgegeven email adres is al in gebruik.";
     public const string ErrorDeleteEmployee = "Het verwijderen van deze medewerker is niet toegestaan omdat ze de eigenaar zijn van één of meer testen.";
+    public const string ErrorDeleteEmployeeSelf = "Het is niet toegestaan ​​om je eigen account te verwijderen.";
 
 }

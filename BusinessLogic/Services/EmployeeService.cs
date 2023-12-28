@@ -71,7 +71,10 @@ public class EmployeeService
         if (employeeLoginRepository.EmailExists(employee.EmployeeLogin.Email) && newEmployee)
             throw new Exception(ErrorMessageStore.ErrorEmailInUse);
     }
-
+    public bool CompareEmployeeIds(Guid employee1, Guid employee2)
+    {
+        return employee1 == employee2;
+    }
     public void ProcessEmployee(Employee employee, bool newEmployee, bool passwordChanged, string InitialPassword)
     {
         RunEmployeeAgainstBusinessRules(employee, newEmployee);

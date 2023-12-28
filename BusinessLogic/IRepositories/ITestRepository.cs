@@ -13,5 +13,4 @@ public interface ITestRepository
     public List<Test> GetAllTests();
     public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id);
     public Test? GetTestByTargetAudienceIdAndActive(Guid id);
-    public void RemoveOptionsWhereId(Guid id);
 }
