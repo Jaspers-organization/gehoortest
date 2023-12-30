@@ -112,6 +112,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     }
 
     public void OpenConfirmationModal(Action action, string text) => navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
+    private void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
 
     private void ToggleActiveStatus(Guid testId)
     {
@@ -119,18 +120,25 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         {
             var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
             if (clickedTest!.AmountOfQuestions == 0)
+            {
+                OpenErrorModal("Deze test heeft geen vragen. Voeg enkelen vragen toe om hem actief te kunnen zetten.");
+                UpdateTestProjections(SelectedTargetAudience.Id);
                 return;
+            }
+                
             testService.ToggleActiveStatus(testId);
 
             if (SelectedTargetAudience == null)
+            {
+                UpdateTestProjections(SelectedTargetAudience.Id);
                 return;
+            }
 
             UpdateTestProjections(SelectedTargetAudience.Id);
         }
         catch(Exception ex)
         {
-            
+
         }
-       
     }
 }
