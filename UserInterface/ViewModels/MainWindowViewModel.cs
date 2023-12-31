@@ -13,8 +13,20 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
-    private bool isBigFontSize = false;
     #region properties
+
+    private bool isBigFontSize = false; 
+    public bool IsBigFontSize
+    {
+        get { return isBigFontSize; }
+        set
+        {
+            isBigFontSize = value;
+            OnPropertyChanged(nameof(IsBigFontSize));
+            OnPropertyChanged(nameof(ChangeText));
+        }
+    }
+
     private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
@@ -63,8 +75,20 @@ internal class MainWindowViewModel : ViewModelBase
         get { return _showEnlargeTekstButton; }
         set { _showEnlargeTekstButton = value; OnPropertyChanged(nameof(ShowEnlargeTekstButton)); }
     }
+    private string changeText = "Vergroot tekst";
 
-    
+    public string ChangeText
+    {
+        get { return isBigFontSize ? "Verklein Tekst" : "Vergroot Tekst"; }
+        set
+        {
+            if (changeText != value)
+            {
+                changeText = value;
+                OnPropertyChanged(nameof(ChangeText));
+            }
+        }
+    }
     #endregion
 
     #region commands
@@ -159,19 +183,20 @@ internal class MainWindowViewModel : ViewModelBase
         ((Style)resourceDict["Text"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 32.0));
         ((Style)resourceDict["SubHeader"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 40.0));
         ((Style)resourceDict["Header"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 48.0));
+
     }
     private void ChangeTextSize()
     {
        ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
 
-        if (isBigFontSize)
+        if (!IsBigFontSize)
             ChangeToBig(resourceDict);
         else
             ChangeToSmall(resourceDict);
 
         Application.Current.Resources.MergedDictionaries.Add(resourceDict);
 
-        isBigFontSize = !isBigFontSize;
+        IsBigFontSize = !IsBigFontSize;
     }
 
     private void OnIsModalOpenChanged()

@@ -103,7 +103,7 @@
                 Margin="0 0 15 0"
                 HorizontalAlignment="Right"
                 Command="{Binding ChangeTextSizeCommand}"
-                Content="Vergroot Tekst"/>
+                Content="{Binding ChangeText}"/>
         </Grid>
 
         <ContentControl
