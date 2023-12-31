@@ -97,6 +97,13 @@
                 HorizontalAlignment="Right"
                 Command="{Binding CloseApplicationCommand}"
                 Content="Afsluiten"/>
+            <Button
+                Visibility="{Binding ShowEnlargeTekstButton}"
+                Style="{StaticResource PrimaryButton_S}"
+                Margin="0 0 15 0"
+                HorizontalAlignment="Right"
+                Command="{Binding ChangeTextSizeCommand}"
+                Content="Vergroot Tekst"/>
         </Grid>
 
         <ContentControl

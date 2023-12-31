@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <Border Style="{StaticResource ModalContainer_S}">
         <Grid >
-            <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource Text}" Margin="0,0,0,100" ></TextBlock>
+            <TextBlock  Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource Text}" Margin="0,0,0,100" ></TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>

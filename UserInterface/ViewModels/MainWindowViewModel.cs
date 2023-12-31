@@ -1,6 +1,10 @@
 ﻿using BusinessLogic.Projections;
+using System;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 
@@ -9,7 +13,7 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
-
+    private bool isBigFontSize = false;
     #region properties
     private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
@@ -52,6 +56,15 @@ internal class MainWindowViewModel : ViewModelBase
         get { return _showCloseApplicationButton; }
         set { _showCloseApplicationButton = value; OnPropertyChanged(nameof(ShowCloseApplicationButton)); }
     }
+
+    private Visibility _showEnlargeTekstButton = Visibility.Visible;
+    public Visibility ShowEnlargeTekstButton
+    {
+        get { return _showEnlargeTekstButton; }
+        set { _showEnlargeTekstButton = value; OnPropertyChanged(nameof(ShowEnlargeTekstButton)); }
+    }
+
+    
     #endregion
 
     #region commands
@@ -60,6 +73,8 @@ internal class MainWindowViewModel : ViewModelBase
     public ICommand BackCommand => new Command(Back);
     public ICommand CloseApplicationCommand => new Command(CloseApplication);
     public ICommand DoNothingCommand => new Command(DoNothing);
+    public ICommand ChangeTextSizeCommand => new Command(ChangeTextSize);
+
     #endregion
 
     public MainWindowViewModel(NavigationStore navigationStore)
@@ -77,7 +92,7 @@ internal class MainWindowViewModel : ViewModelBase
     private void OpenLogin()
     {
         if (navigationStore.LoggedInEmployee != null || navigationStore.CurrentViewModel is not HomeViewModel) return;
-
+        ShowEnlargeTekstButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
     }
 
@@ -87,7 +102,7 @@ internal class MainWindowViewModel : ViewModelBase
         ShowLogoutButton = Visibility.Hidden;
         ShowCloseApplicationButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
-    }    
+    }
     private void ToggleTopBar()
     {
         if (navigationStore.HideTopBar)
@@ -118,6 +133,7 @@ internal class MainWindowViewModel : ViewModelBase
         {
             ShowBackButton = Visibility.Hidden;
         }
+        ShowEnlargeTekstButton = Visibility.Visible;
 
         navigationStore.CurrentViewModel = previousViewModel;
     }
@@ -130,6 +146,32 @@ internal class MainWindowViewModel : ViewModelBase
     private void OnCurrentViewModelChanged()
     {
         CurrentViewModel = navigationStore.CurrentViewModel;
+    }
+
+    private void ChangeToBig(ResourceDictionary resourceDict)
+    {
+        ((Style)resourceDict["Text"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 40.0));
+        ((Style)resourceDict["SubHeader"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 48.0));
+        ((Style)resourceDict["Header"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 56.0));
+    }
+    private void ChangeToSmall(ResourceDictionary resourceDict)
+    {
+        ((Style)resourceDict["Text"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 32.0));
+        ((Style)resourceDict["SubHeader"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 40.0));
+        ((Style)resourceDict["Header"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 48.0));
+    }
+    private void ChangeTextSize()
+    {
+       ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
+
+        if (isBigFontSize)
+            ChangeToBig(resourceDict);
+        else
+            ChangeToSmall(resourceDict);
+
+        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+
+        isBigFontSize = !isBigFontSize;
     }
 
     private void OnIsModalOpenChanged()
