@@ -20,16 +20,15 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     public ICommand CloseModalCommand => new Command(CloseModal);
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
     #endregion
-
     #region Properties
-    private string _frequencyString;
-    public string FrequencyString
+    private int _selectedFrequency;
+    public int SelectedFrequency
     {
-        get { return _frequencyString; }
+        get { return _selectedFrequency; }
         set
         {
-            _frequencyString = value;
-            OnPropertyChanged(nameof(FrequencyString));
+            _selectedFrequency = value;
+            OnPropertyChanged(nameof(SelectedFrequency));
         }
     }
     private string _startingDecibelsString;
@@ -58,21 +57,21 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     public void SetValues()
     {
         StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
-        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
+        SelectedFrequency = toneAudiometryQuestion.Frequency;
     }
 
     private void SaveQuestion()
     {
         try
         {
-            TestBusinessRules.ValidateToneaudiometryValues(StartingDecibelsString, FrequencyString);
+            TestBusinessRules.ValidateToneaudiometryValues(StartingDecibelsString);
 
             // Creates a new ToneAudiometryQuestion object based on the provided data
             ToneAudiometryQuestion question = new ToneAudiometryQuestion
             {
                 Id = toneAudiometryQuestion.Id,
                 StartingDecibels = int.Parse(StartingDecibelsString),
-                Frequency = int.Parse(FrequencyString),
+                Frequency = SelectedFrequency,
                 QuestionNumber = toneAudiometryQuestion.QuestionNumber
             };
 

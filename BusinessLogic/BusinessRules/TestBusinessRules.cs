@@ -12,10 +12,9 @@ public class TestBusinessRules
         AssertTestName(testname);
         AssertTargetAudience(targetAudience);
     }
-    public static void ValidateToneaudiometryValues(string decibel, string frequency)
+    public static void ValidateToneaudiometryValues(string decibel)
     {
         AssertDecibels(decibel);
-        AssertFrequency(frequency);
     }
     public static void ValidateTextValues(string testQuestion, bool inputField, bool multipleChoice,List<string> options)
     {
@@ -68,21 +67,6 @@ public class TestBusinessRules
         if (!IsValidDecibel(startingDecibels))
         {
             throw new Exception(ErrorMessageStore.ErrorStartingDecibels);
-        }
-    }
-
-    public static void AssertFrequency(string FrequencyString)
-    {
-        int frequency = ParseStringToInt(FrequencyString);
-
-        if (frequency == -1)
-        {
-            throw new Exception(ErrorMessageStore.ErrorNotValidInteger);
-        }
-
-        if (!IsValidHz(frequency))
-        {
-            throw new Exception(ErrorMessageStore.ErrorFrequencyLimit);
         }
     }
 
