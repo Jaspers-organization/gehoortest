@@ -15,7 +15,7 @@ internal class MainWindowViewModel : ViewModelBase
     private NavigationStore navigationStore;
     #region properties
 
-    private bool isBigFontSize = false; 
+    private bool isBigFontSize = false;
     public bool IsBigFontSize
     {
         get { return isBigFontSize; }
@@ -174,20 +174,23 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void ChangeToBig(ResourceDictionary resourceDict)
     {
-        ((Style)resourceDict["Text"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 40.0));
-        ((Style)resourceDict["SubHeader"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 48.0));
-        ((Style)resourceDict["Header"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 56.0));
+        UpdateResource(resourceDict, "Text", 40.0);
+        UpdateResource(resourceDict, "SubHeader", 48.0);
+        UpdateResource(resourceDict, "Header", 56.0);
     }
     private void ChangeToSmall(ResourceDictionary resourceDict)
     {
-        ((Style)resourceDict["Text"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 32.0));
-        ((Style)resourceDict["SubHeader"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 40.0));
-        ((Style)resourceDict["Header"]).Setters.Add(new Setter(TextBlock.FontSizeProperty, 48.0));
-
+        UpdateResource(resourceDict, "Text", 32.0);
+        UpdateResource(resourceDict, "SubHeader", 40.0);
+        UpdateResource(resourceDict, "Header", 48.0);
+    }
+    private void UpdateResource(ResourceDictionary resourceDict, string field, double value)
+    {
+        ((Style)resourceDict[field]).Setters.Add(new Setter(TextBlock.FontSizeProperty, value));
     }
     private void ChangeTextSize()
     {
-       ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
+        ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
 
         if (!IsBigFontSize)
             ChangeToBig(resourceDict);
