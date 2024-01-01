@@ -33,7 +33,6 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
     public ICommand CreateCommand => new Command(Create);
     public ICommand UpdateCommand => new Command(Update);
     public ICommand DeleteCommand => new Command(Delete);
-    public ICommand ToggleStatusCommand => new Command(ToggleStatus);
     #endregion
 
     public TargetAudienceOverviewViewModel(NavigationStore navigationStore)
@@ -63,34 +62,33 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
 
     private void Delete(Guid id)
     {
-        try { 
-            Action confirmDeleteAction = () => {
-                service.Delete(id);
-                Get();
-            };
-
-            navigationStore.OpenModal(new ConfirmationModalViewModel(
-                navigationStore,
-                "Weet je zeker dat je deze leeftijdsgroep wilt verwijderen?",
-                this,
-                confirmDeleteAction
-            ));
-        }
-        catch (Exception e)
+        Action confirmDeleteAction = CreateAction(() =>
         {
-            navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
-        }
+            try 
+            { 
+                service.Delete(id); 
+            }
+            catch (Exception e)
+            {
+                navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
+            }
+            Get();
+        });
+
+        OpenConfirmationModal(confirmDeleteAction, "Weet je zeker dat je deze leeftijdsgroep wilt verwijderen?");
     }
 
-    private void ToggleStatus(TargetAudience targetAudience)
+    public Action CreateAction(Action action)
     {
-        try
+        return () =>
         {
-            service.Update(targetAudience);
-        }
-        catch (Exception e)
-        {
-            navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, e.Message));
-        }
+            if (!IsConfirmed) return;
+            action.Invoke();
+        };
+    }
+
+    public void OpenConfirmationModal(Action action, string text)
+    {
+        navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
     }
 }

@@ -44,22 +44,10 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Width="300" Header="Tot">
+                        <GridViewColumn Width="1000" Header="Tot">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Style="{StaticResource Text}" Text="{Binding To}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-
-                        <GridViewColumn Width="700" Header="Status">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ToggleButton 
-                                        IsChecked="{Binding Active}" 
-                                        Command="{Binding DataContext.ToggleStatusCommand, RelativeSource={RelativeSource AncestorType={x:Type local:TargetAudienceOverviewView}}}" 
-                                        CommandParameter="{Binding}"
-                                        Style="{StaticResource ToggleButtonStyle}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

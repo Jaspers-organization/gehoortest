@@ -37,7 +37,6 @@ public class TargetAudienceService
     public void Update(TargetAudience targetAudience)
     {
         TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
-        AssertNotLinked(targetAudience.Id);
 
         UpdateLabel(targetAudience);
 
