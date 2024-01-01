@@ -17,11 +17,26 @@ namespace BusinessLogic.Services
             settingsRepository.Create(settings);
         }
 
-        public void Update(Settings settings)
+        public void UpdateSetting(Settings settings)
         {
             settingsRepository.Update(settings);
-          
-            
+        }
+
+        public bool ValidateColor(Classes.Color convertedColor)
+        {
+            //not empty
+            if (convertedColor == null)
+                return false;
+
+            if (convertedColor.Alpha <= 0)
+                return false;
+
+            return true;
+        }
+
+        public Settings GetSetting()
+        {
+            return settingsRepository.GetSettings();
         }
     }
 }

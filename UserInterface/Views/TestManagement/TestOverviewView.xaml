@@ -39,7 +39,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <!-- Another dirty solution but corner radius on the listview just wouldnt work. -->
-                <Rectangle Width="1719" Fill="{StaticResource SecondaryColor}" Margin="0,103,0,-6" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+                <Rectangle Width="1719" Fill="{DynamicResource SecondaryColor}" Margin="0,103,0,-6" HorizontalAlignment="Left" Grid.ColumnSpan="2">
                     <Rectangle.Effect>
                         <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
                     </Rectangle.Effect>

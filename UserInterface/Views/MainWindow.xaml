@@ -36,6 +36,9 @@
             <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
                 <views:TestManagementView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
+                <views:SettingsView />
+            </DataTemplate>
 
             <!-- Define all modals here -->
             <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">

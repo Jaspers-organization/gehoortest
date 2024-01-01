@@ -15,6 +15,7 @@ internal class EmployeePortalViewModel : ViewModelBase
 
     #region commands
     public ICommand OpenTestOverviewCommand => new Command(OpenTestOverview);
+    public ICommand OpenSettingsCommand => new Command(OpenSettings);
     #endregion
 
     #region properties
@@ -44,7 +45,6 @@ internal class EmployeePortalViewModel : ViewModelBase
     private void SetEmployee()
     {
         EmployeeProjection employee = navigationStore.LoggedInEmployee!;
-
         EmployeeName = employee.FullName;
         if (employee.Role == Role.Administrator)
         {
@@ -55,5 +55,10 @@ internal class EmployeePortalViewModel : ViewModelBase
     private void OpenTestOverview()
     {
         navigationStore.CurrentViewModel = new TestOverviewViewModel(navigationStore);
+    }
+
+    private void OpenSettings()
+    {
+        navigationStore.CurrentViewModel = new SettingsViewModel(navigationStore);
     }
 }

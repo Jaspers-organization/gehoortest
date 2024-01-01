@@ -1,6 +1,13 @@
-﻿using BusinessLogic.Projections;
+﻿using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
+using BusinessLogic.Projections;
+using BusinessLogic.Services;
+using DataAccess.Repositories;
+using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 
@@ -11,6 +18,7 @@ internal class MainWindowViewModel : ViewModelBase
     private NavigationStore navigationStore;
 
     #region properties
+    private readonly SettingService settingService;
     private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
@@ -72,6 +80,10 @@ internal class MainWindowViewModel : ViewModelBase
         this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
         this.navigationStore.HideTopBarChanged += ToggleTopBar;
         CurrentViewModel = this.navigationStore.CurrentViewModel;
+        
+        ISettingsRepository settingsRepository = new SettingsRepository();
+        settingService = new SettingService(settingsRepository);
+        GetColorSetting();
     }
 
     private void OpenLogin()
@@ -153,4 +165,17 @@ internal class MainWindowViewModel : ViewModelBase
     /// This method is only used to make sure the application can't be stopped using alt+f4
     /// </summary>
     private void DoNothing() { }
+
+    private void GetColorSetting()
+    {
+        Settings savedSettings = settingService.GetSetting();
+        System.Windows.Media.Color color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
+        SolidColorBrush solidColorBrush = new SolidColorBrush(color);
+
+        ResourceDictionary resourceDict = new ResourceDictionary();
+        resourceDict.Source = new Uri("../../Assets/Styling/Colors.xaml", UriKind.RelativeOrAbsolute);
+        App.Current.Resources["SecondaryColor"] = solidColorBrush;
+    }
+
+   
 }

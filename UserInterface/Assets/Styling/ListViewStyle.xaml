@@ -10,9 +10,9 @@
 
     <!-- Style for the ListView Header -->
     <Style x:Key="ListViewHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-        <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}" />
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Margin" Value="0,0,0,0"/>
         <Setter Property="FontSize" Value="32"/>

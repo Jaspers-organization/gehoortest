@@ -27,7 +27,7 @@
                          Height="30" 
                          Name="ProgressBar" 
                          Background="{StaticResource PrimaryBackgroundColor}" 
-                         Foreground="{StaticResource SecondaryColor}" 
+                         Foreground="{DynamicResource SecondaryColor}" 
                          Value="{Binding ProgressValue, Mode=OneWay}">
             </ProgressBar>
 
