@@ -1,6 +1,10 @@
 ﻿using BusinessLogic.Projections;
+using System;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 
@@ -9,8 +13,21 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
-
+    private ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
     #region properties
+
+    private bool isBigFontSize = false;
+    public bool IsBigFontSize
+    {
+        get { return isBigFontSize; }
+        set
+        {
+            isBigFontSize = value;
+            OnPropertyChanged(nameof(IsBigFontSize));
+            OnPropertyChanged(nameof(ChangeText));
+        }
+    }
+
     private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
@@ -52,6 +69,27 @@ internal class MainWindowViewModel : ViewModelBase
         get { return _showCloseApplicationButton; }
         set { _showCloseApplicationButton = value; OnPropertyChanged(nameof(ShowCloseApplicationButton)); }
     }
+
+    private Visibility _showEnlargeTekstButton = Visibility.Visible;
+    public Visibility ShowEnlargeTekstButton
+    {
+        get { return _showEnlargeTekstButton; }
+        set { _showEnlargeTekstButton = value; OnPropertyChanged(nameof(ShowEnlargeTekstButton)); }
+    }
+    private string changeText = "Vergroot tekst";
+
+    public string ChangeText
+    {
+        get { return isBigFontSize ? "Verklein Tekst" : "Vergroot Tekst"; }
+        set
+        {
+            if (changeText != value)
+            {
+                changeText = value;
+                OnPropertyChanged(nameof(ChangeText));
+            }
+        }
+    }
     #endregion
 
     #region commands
@@ -60,6 +98,8 @@ internal class MainWindowViewModel : ViewModelBase
     public ICommand BackCommand => new Command(Back);
     public ICommand CloseApplicationCommand => new Command(CloseApplication);
     public ICommand DoNothingCommand => new Command(DoNothing);
+    public ICommand ChangeTextSizeCommand => new Command(ChangeTextSize);
+
     #endregion
 
     public MainWindowViewModel(NavigationStore navigationStore)
@@ -77,7 +117,7 @@ internal class MainWindowViewModel : ViewModelBase
     private void OpenLogin()
     {
         if (navigationStore.LoggedInEmployee != null || navigationStore.CurrentViewModel is not HomeViewModel) return;
-
+        ShowEnlargeTekstButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
     }
 
@@ -87,7 +127,7 @@ internal class MainWindowViewModel : ViewModelBase
         ShowLogoutButton = Visibility.Hidden;
         ShowCloseApplicationButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
-    }    
+    }
     private void ToggleTopBar()
     {
         if (navigationStore.HideTopBar)
@@ -118,6 +158,7 @@ internal class MainWindowViewModel : ViewModelBase
         {
             ShowBackButton = Visibility.Hidden;
         }
+        ShowEnlargeTekstButton = Visibility.Visible;
 
         navigationStore.CurrentViewModel = previousViewModel;
     }
@@ -130,6 +171,42 @@ internal class MainWindowViewModel : ViewModelBase
     private void OnCurrentViewModelChanged()
     {
         CurrentViewModel = navigationStore.CurrentViewModel;
+    }
+
+    private void ChangeToBig(ResourceDictionary resourceDict)
+    {
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Text", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 48.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 56.0);
+    }
+    private void ChangeToSmall(ResourceDictionary resourceDict)
+    {
+        UpdateResource(resourceDict,TextBlock.FontSizeProperty, "Text", 32.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 48.0);
+    }
+    private void UpdateResource(ResourceDictionary resourceDict, DependencyProperty type, string field, double value)
+    {
+        Style existingStyle = resourceDict[field] as Style;
+        if (existingStyle != null)
+        {
+            Style newStyle = new Style(typeof(TextBlock), existingStyle);
+            newStyle.Setters.Add(new Setter(type, value));
+            resourceDict[field] = newStyle;
+        }
+    }
+
+    private void ChangeTextSize()
+    {
+
+        if (!IsBigFontSize)
+            ChangeToBig(resourceDict);
+        else
+            ChangeToSmall(resourceDict);
+
+        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+
+        IsBigFontSize = !IsBigFontSize;
     }
 
     private void OnIsModalOpenChanged()

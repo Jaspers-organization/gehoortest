@@ -13,7 +13,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{StaticResource Header}" Text="Medewerker overzicht"  Width="1100" />
+                    <TextBlock Style="{DynamicResource Header}" Text="Medewerker overzicht"  Width="1100" />
 
                     <Button Grid.Row="1" Command="{Binding NewEmployeeCommand}" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe medewerker toevoegen"/>
                 </StackPanel>
@@ -45,28 +45,28 @@
                             <GridViewColumn Width="350" Header="Medewerkers nummer" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding EmployeeNumber}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding EmployeeNumber}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="450" Header="Naam" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding FullName}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding FullName}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="300" Header="Rol" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding Role}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding Role}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="250" Header="Aantal Testen" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding AmountOfTests}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding AmountOfTests}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
