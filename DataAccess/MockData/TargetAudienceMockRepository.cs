@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models;
+using Service.Projections;
 
 namespace DataAccess.MockData;
 
@@ -43,6 +44,11 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
     }
 
     public List<TargetAudience> GetAllAudiences(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<TargetAudienceProjection> GetAllWithTestAmount()
     {
         throw new NotImplementedException();
     }

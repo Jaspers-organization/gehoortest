@@ -4,6 +4,7 @@ using BusinessLogic.Projections;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace DataAccess.Repositories
 {
@@ -63,7 +64,44 @@ namespace DataAccess.Repositories
             }
             return test;
         }
+        public List<TestProjection>? GetTestProjectionsByNoTargetAudience()
+        {
+            var tests = IncludeTestRelations()
+                .Where(test =>  test.TargetAudienceId == Guid.Empty)
+                .ToList();
 
+            if (tests == null || tests.Count == 0)
+            {
+                return new List<TestProjection>();
+            }
+
+            return CreateProjections(tests);
+        }
+        public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id)
+        {
+            var tests = IncludeTestRelations()
+                .Where(test => test.TargetAudienceId == id)
+                .ToList();
+
+            if (tests == null || tests.Count == 0)
+            {
+                return new List<TestProjection>();
+            }
+
+            return CreateProjections(tests);
+        }
+
+        private List<TestProjection> CreateProjections(List<Test> tests)
+        {
+            return  tests.Select(test => new TestProjection
+            {
+                Id = test.Id,
+                Title = test.Title,
+                AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
+                Active = test.Active,
+                EmployeeName = test.Employee.FullName
+            }).ToList();
+        }
         public Test? GetTestByTargetAudienceIdAndActive(Guid id)
         {
             var test = IncludeTestRelations()
@@ -77,28 +115,7 @@ namespace DataAccess.Repositories
             return test;
         }
 
-        public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id)
-        {
-            var tests = IncludeTestRelations()
-                .Where(test => test.TargetAudienceId == id)
-                .ToList();
-
-            if (tests == null || tests.Count == 0)
-            {
-                return new List<TestProjection>();
-            }
-
-            List<TestProjection> projections = tests.Select(test => new TestProjection
-            {
-                Id = test.Id,
-                Title = test.Title,
-                AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
-                Active = test.Active,
-                EmployeeName = test.Employee.FullName
-            }).ToList();
-
-            return projections;
-        }
+        
 
         public void SaveTest(Test test)
         {

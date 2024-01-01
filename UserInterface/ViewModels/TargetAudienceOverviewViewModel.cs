@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
+using Service.Projections;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -19,8 +20,8 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
     #endregion
 
     #region properties
-    private List<TargetAudience> _targetAudiences;
-    public List<TargetAudience> TargetAudiences
+    private List<TargetAudienceProjection> _targetAudiences;
+    public List<TargetAudienceProjection> TargetAudiences
     {
         get { return _targetAudiences; }
         set { _targetAudiences = value; OnPropertyChanged(nameof(TargetAudiences)); }
@@ -47,7 +48,7 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
 
     private void Get()
     {
-        TargetAudiences = service.GetAllTargetAudiences();
+        TargetAudiences = service.GetAllTargetAudienceProjections();
     }
 
     private void Create()

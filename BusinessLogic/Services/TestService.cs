@@ -20,7 +20,11 @@ public class TestService
 
     public Test GetTestById(Guid id) => testRepository.GetTestById(id);
 
-    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) {
+        if(id == Guid.Empty) return testRepository.GetTestProjectionsByNoTargetAudience();
+
+       return testRepository.GetTestProjectionsByTargetAudienceId(id);
+    }
 
     public Test? GetTestByTargetAudienceIdAndActive(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceIdAndActive(targetAudienceId);
     #endregion

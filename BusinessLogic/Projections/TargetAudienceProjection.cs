@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Service.Projections;
 
-internal struct TargetAudienceProjection
+public class TargetAudienceProjection
 {
-    public int Id { get;set; }
-    public string Label { get;set; }
+    public string Label { get; set; }
+    public string From { get; set; }
+    public string To { get; set; }
+    public int AmountOfTests { get; set; }
 }

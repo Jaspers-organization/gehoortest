@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.BusinessRules;
 using BusinessLogic.Stores;
+using Service.Projections;
 
 namespace BusinessLogic.Services;
 
@@ -15,17 +16,20 @@ public class TargetAudienceService
     public TargetAudienceService(
         ITargetAudienceRepository targetAudienceRepository,
         ITestRepository testRepository
-    ) {
+    )
+    {
         this.targetAudienceRepository = targetAudienceRepository;
         this.testRepository = testRepository;
     }
 
     #region CRUD
-    public List<TargetAudience> GetAllTargetAudiences()
-    {
-        return targetAudienceRepository.GetAll();
-    }
+    public List<TargetAudience> GetAllTargetAudiences() => targetAudienceRepository.GetAll().ToList();
 
+
+    public List<TargetAudienceProjection> GetAllTargetAudienceProjections()
+    {
+        return targetAudienceRepository.GetAllWithTestAmount();
+    }
     public void Create(TargetAudience targetAudience)
     {
         TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());

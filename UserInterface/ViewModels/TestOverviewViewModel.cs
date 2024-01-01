@@ -72,10 +72,12 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
 
     private void GetTargetAudiences()
     {
+
         TargetAudiences = targetAudienceService.GetAllTargetAudiences();
 
         if (TargetAudiences == null)
             return;
+
 
         SelectedTargetAudience = TargetAudiences.First();
     }
@@ -118,6 +120,12 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     {
         try
         {
+            if(SelectedTargetAudience.Id == Guid.Empty)
+            {
+                OpenErrorModal("Deze test behoort niet tot een leeftijdsgroep. Geef de test een leeftijdsgroep om hem actief te kunnen maken.");
+                UpdateTestProjections(SelectedTargetAudience.Id);
+                return;
+            }
             var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
             if (clickedTest!.AmountOfQuestions == 0)
             {

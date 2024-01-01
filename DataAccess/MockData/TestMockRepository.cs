@@ -157,4 +157,9 @@ public class TestMockRepository : ITestRepository
     {
         throw new NotImplementedException();
     }
+
+    public List<TestProjection>? GetTestProjectionsByNoTargetAudience()
+    {
+        throw new NotImplementedException();
+    }
 }
