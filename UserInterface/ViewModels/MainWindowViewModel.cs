@@ -174,19 +174,19 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void ChangeToBig(ResourceDictionary resourceDict)
     {
-        UpdateResource(resourceDict, "Text", 40.0);
-        UpdateResource(resourceDict, "SubHeader", 48.0);
-        UpdateResource(resourceDict, "Header", 56.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Text", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 48.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 56.0);
     }
     private void ChangeToSmall(ResourceDictionary resourceDict)
     {
-        UpdateResource(resourceDict, "Text", 32.0);
-        UpdateResource(resourceDict, "SubHeader", 40.0);
-        UpdateResource(resourceDict, "Header", 48.0);
+        UpdateResource(resourceDict,TextBlock.FontSizeProperty, "Text", 32.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 48.0);
     }
-    private void UpdateResource(ResourceDictionary resourceDict, string field, double value)
+    private void UpdateResource(ResourceDictionary resourceDict, DependencyProperty Type, string field, double value) 
     {
-        ((Style)resourceDict[field]).Setters.Add(new Setter(TextBlock.FontSizeProperty, value));
+        ((Style)resourceDict[field]).Setters.Add(new Setter(Type, value));
     }
     private void ChangeTextSize()
     {
