@@ -13,6 +13,7 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
+    private ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
     #region properties
 
     private bool isBigFontSize = false;
@@ -184,13 +185,19 @@ internal class MainWindowViewModel : ViewModelBase
         UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 40.0);
         UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 48.0);
     }
-    private void UpdateResource(ResourceDictionary resourceDict, DependencyProperty Type, string field, double value) 
+    private void UpdateResource(ResourceDictionary resourceDict, DependencyProperty type, string field, double value)
     {
-        ((Style)resourceDict[field]).Setters.Add(new Setter(Type, value));
+        Style existingStyle = resourceDict[field] as Style;
+        if (existingStyle != null)
+        {
+            Style newStyle = new Style(typeof(TextBlock), existingStyle);
+            newStyle.Setters.Add(new Setter(type, value));
+            resourceDict[field] = newStyle;
+        }
     }
+
     private void ChangeTextSize()
     {
-        ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
 
         if (!IsBigFontSize)
             ChangeToBig(resourceDict);
