@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using BusinessLogic.Services;
+using BusinessLogic.Stores;
 using DataAccess.Repositories;
 using System;
 using System.Collections.Generic;

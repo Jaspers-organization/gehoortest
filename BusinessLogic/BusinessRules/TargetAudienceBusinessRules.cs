@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Models;
+using BusinessLogic.Stores;
 
 namespace BusinessLogic.BusinessRules;
 
@@ -21,7 +22,7 @@ public class TargetAudienceBusinessRules
     {
         if (!IsValidRange(targetAudience, existingTargetAudiences))
         {
-            throw new ArgumentException("De leeftijden mogen niet hetzelfde zijn of aan gelijk zijn aan een bestaande leeftijdsgroep.");
+            throw new ArgumentException(ErrorMessageStore.ErrorSameAges);
         }
     }
 }

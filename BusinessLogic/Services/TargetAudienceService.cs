@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.BusinessRules;
+using BusinessLogic.Stores;
 
 namespace BusinessLogic.Services;
 
@@ -60,7 +61,7 @@ public class TargetAudienceService
     {
         if (testRepository.GetByTargetAudienceId(id) != null)
         {
-            throw new Exception("Je kunt deze leeftijdsgroep niet aanpassen, omdat hij is gekoppeld aan een test.");
+            throw new Exception(ErrorMessageStore.ErrorTestLinked);
         }
     }
 }

@@ -2,6 +2,7 @@
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
+using BusinessLogic.Stores;
 using DataAccess.Repositories;
 using System;
 using System.Windows.Input;

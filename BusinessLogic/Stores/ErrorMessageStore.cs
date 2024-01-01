@@ -1,9 +1,4 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Models;
-using BusinessLogic.Projections;
-using System.Security.Principal;
-
-namespace UserInterface.Stores;
+﻿namespace BusinessLogic.Stores;
 
 public class ErrorMessageStore
 {
@@ -29,5 +24,6 @@ public class ErrorMessageStore
     public const string ErrorEmailInUse = "Het opgegeven email adres is al in gebruik.";
     public const string ErrorDeleteEmployee = "Het verwijderen van deze medewerker is niet toegestaan omdat ze de eigenaar zijn van één of meer testen.";
     public const string ErrorDeleteEmployeeSelf = "Het is niet toegestaan ​​om je eigen account te verwijderen.";
-
+    public const string ErrorSameAges = "De leeftijden mogen niet hetzelfde zijn of aan gelijk zijn aan een bestaande leeftijdsgroep.";
+    public const string ErrorTestLinked = "Je kunt deze leeftijdsgroep niet aanpassen, omdat hij is gekoppeld aan een test.";
 }

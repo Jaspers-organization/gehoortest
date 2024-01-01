@@ -3,7 +3,7 @@ using BusinessLogic.Guards;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using System.Text.RegularExpressions;
-using UserInterface.Stores;
+using BusinessLogic.Stores;
 
 namespace BusinessLogic.BusinessRules;
 
