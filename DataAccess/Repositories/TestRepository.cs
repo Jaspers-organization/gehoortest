@@ -127,5 +127,10 @@ namespace DataAccess.Repositories
                 repository.SaveChanges();
             }
         }
+
+        public Test? GetActiveByTargetAudienceId(Guid id)
+        {
+            return repository.Tests.FirstOrDefault(item => item.TargetAudience.Id == id && item.Active == true);
+        }
     }
 }

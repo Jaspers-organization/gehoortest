@@ -3,7 +3,7 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
-using UserInterface.Stores;
+using BusinessLogic.Stores;
 
 namespace BusinessLogic.Services;
 

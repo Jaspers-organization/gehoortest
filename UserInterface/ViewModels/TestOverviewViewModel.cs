@@ -65,7 +65,7 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         this.navigationStore.HideTopBar = false;
         // Services
         testService = new TestService(new TestRepository());
-        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository());
+        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
 
         GetTargetAudiences();
     }
