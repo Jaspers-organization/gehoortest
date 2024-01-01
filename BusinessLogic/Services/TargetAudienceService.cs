@@ -59,7 +59,7 @@ public class TargetAudienceService
 
     private void AssertNotLinked(Guid id)
     {
-        if (testRepository.GetByTargetAudienceId(id) != null)
+        if (testRepository.GetActiveByTargetAudienceId(id) != null)
         {
             throw new Exception(ErrorMessageStore.ErrorTestLinked);
         }

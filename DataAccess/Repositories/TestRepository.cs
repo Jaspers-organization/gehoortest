@@ -128,9 +128,9 @@ namespace DataAccess.Repositories
             }
         }
 
-        public Test? GetByTargetAudienceId(Guid id)
+        public Test? GetActiveByTargetAudienceId(Guid id)
         {
-            return repository.Tests.FirstOrDefault(item => item.TargetAudience.Id == id);
+            return repository.Tests.FirstOrDefault(item => item.TargetAudience.Id == id && item.Active == true);
         }
     }
 }
