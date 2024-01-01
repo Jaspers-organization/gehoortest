@@ -15,6 +15,7 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
         builder.Property(t => t.Id)
               .HasColumnName("id")
               .HasColumnType("nvarchar(128)");
+
         builder.Property(t => t.From)
                .HasColumnName("from")
                .HasColumnType("int");

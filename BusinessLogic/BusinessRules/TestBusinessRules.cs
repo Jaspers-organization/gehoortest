@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IModels;
 using BusinessLogic.Models;
-using UserInterface.Stores;
+using BusinessLogic.Stores;
 
 namespace BusinessLogic.BusinessRules;
 

@@ -3,7 +3,6 @@ using BusinessLogic.Enums;
 using BusinessLogic.IModels;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
-using UserInterface.Stores;
 
 namespace Tests;
 

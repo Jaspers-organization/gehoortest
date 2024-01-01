@@ -26,7 +26,7 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
 
         builder.Property(t => t.TargetAudienceId)
                .HasColumnName("target_audience_id")
-               .HasColumnType("nvarchar(128)").IsRequired();
+               .HasColumnType("nvarchar(128)");
 
         builder.HasOne(t => t.TargetAudience)
                .WithMany()
@@ -48,9 +48,7 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
         builder.HasMany(t => t.ToneAudiometryQuestions)
                .WithOne(tq => tq.Test)
                .HasForeignKey(tq => tq.TestId)
-               .OnDelete(DeleteBehavior.Cascade);
-
-
+               .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
 

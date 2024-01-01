@@ -100,7 +100,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
         testService = new TestService(new TestRepository());
         employeeService = new EmployeeService(new EmployeeRepository());
-        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
+        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
 
         //set values
         SetTargetAudiences();

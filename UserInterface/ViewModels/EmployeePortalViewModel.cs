@@ -15,6 +15,7 @@ internal class EmployeePortalViewModel : ViewModelBase
 
     #region commands
     public ICommand OpenTestOverviewCommand => new Command(OpenTestOverview);
+    public ICommand OpenTargetAudienceOverviewCommand => new Command(OpenTargetAudienceOverview);
     public ICommand OpenEmployeeOverviewCommand => new Command(OpenEmployeeOverview);
 
     #endregion
@@ -60,5 +61,10 @@ internal class EmployeePortalViewModel : ViewModelBase
     private void OpenTestOverview()
     {
         navigationStore.CurrentViewModel = new TestOverviewViewModel(navigationStore);
+    }
+
+    private void OpenTargetAudienceOverview()
+    {
+        navigationStore.CurrentViewModel = new TargetAudienceOverviewViewModel(navigationStore);
     }
 }
