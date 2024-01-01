@@ -45,7 +45,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock 
-                        Style="{StaticResource Text}"
+                        Style="{DynamicResource Text}"
                         Grid.Row="0" 
                         Grid.Column="0" 
                         Grid.ColumnSpan="2"
@@ -54,7 +54,7 @@
                         Foreground="Red"
                         Text="Onjuiste e-mail of wachtwoord"/>
                     <TextBlock 
-                        Style="{StaticResource Text}"
+                        Style="{DynamicResource Text}"
                         Grid.Row="2" 
                         Grid.Column="0" 
                         VerticalAlignment="Center" 
@@ -65,17 +65,11 @@
                         Grid.Column="1"
                         Text="{Binding Email}"/>
                     <TextBlock 
-                        Style="{StaticResource Text}"
+                        Style="{DynamicResource Text}"
                         Grid.Row="4" 
                         Grid.Column="0"
                         VerticalAlignment="Center" 
                         Text="Wachtwoord"/>
-                    <!--<TextBox 
-                        x:Name="PasswordTextBox"
-                        Style="{StaticResource InputField_S}"
-                        Grid.Row="4" 
-                        Grid.Column="1"
-                        Text="{Binding Password}"/>-->
                     <components:BindablePasswordBox
                         Grid.Row="4" Grid.Column="1" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <Button 

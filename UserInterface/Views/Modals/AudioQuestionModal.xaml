@@ -17,6 +17,7 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
+
             <TextBlock Grid.Column="0"  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Frequentie" Height="58" Width="auto"/>
             <ComboBox Style="{StaticResource ComboBoxStyle}"
                       Width="320" Height="70"

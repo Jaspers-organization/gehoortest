@@ -37,19 +37,19 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Medewerkers nummer" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Medewerkers nummer" Height="58" Width="auto"/>
                     <TextBox Text="{Binding EmployeeNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Voornaam" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Voornaam" Height="58" Width="auto"/>
                     <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Tussenvoegsel" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Tussenvoegsel" Height="58" Width="auto"/>
                     <TextBox Margin="15,0,0,0" HorizontalAlignment="Left" Text="{Binding Infix, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_XXS}"/>
                 </StackPanel>                
                 <StackPanel Grid.Row="3" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Achternaam" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Achternaam" Height="58" Width="auto"/>
                     <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
                 </StackPanel>
             </Grid>
@@ -62,11 +62,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Email" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Email" Height="58" Width="auto"/>
                     <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Wachtwoord" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Wachtwoord" Height="58" Width="auto"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBox IsReadOnly="True"  Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="15,0,25,0" HorizontalAlignment="Left" Style="{StaticResource InputField_S}"/>
                         <Button Style="{StaticResource SecondaryButton_Icon}"
@@ -79,7 +79,7 @@
                     
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,45,0,0"  >
-                    <TextBlock VerticalAlignment="Center" Style="{StaticResource Text}" Text="Status" Width="355"/>
+                    <TextBlock VerticalAlignment="Center" Style="{DynamicResource Text}" Text="Status" Width="355"/>
                     <Border Height="50">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -99,7 +99,7 @@
 
                 </StackPanel>
                 <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="0,45,0,0">
-                    <TextBlock  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Administrator" Height="58" Width="auto" Margin="0,0,160,0"/>
+                    <TextBlock  Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Administrator" Height="58" Width="auto" Margin="0,0,160,0"/>
                     <ToggleButton IsChecked="{Binding IsAdministrator}" Command="{Binding CheckAdministratorStatusCommand}" Style="{StaticResource ToggleButtonStyle}"/>
                 </StackPanel>
             </Grid>
