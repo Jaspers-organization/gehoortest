@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
+using BusinessLogic.Services;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -67,7 +68,7 @@ namespace DataAccess.Repositories
         public List<TestProjection>? GetTestProjectionsByNoTargetAudience()
         {
             var tests = IncludeTestRelations()
-                .Where(test =>  test.TargetAudienceId == Guid.Empty)
+                .Where(test => test.TargetAudienceId == Guid.Empty)
                 .ToList();
 
             if (tests == null || tests.Count == 0)
@@ -90,23 +91,10 @@ namespace DataAccess.Repositories
 
             return CreateProjections(tests);
         }
-        public void UpdateTargetAudienceForTests(Guid id)
-        {
-            repository.Tests
-                .Where(t => t.TargetAudienceId == id)
-                .ToList()
-                .ForEach(t =>
-                {
-                    t.TargetAudienceId = Guid.Empty;
-                    t.Active = false;
-                });
-
-            repository.SaveChanges();
-        }
 
         private List<TestProjection> CreateProjections(List<Test> tests)
         {
-            return  tests.Select(test => new TestProjection
+            return tests.Select(test => new TestProjection
             {
                 Id = test.Id,
                 Title = test.Title,
@@ -159,6 +147,11 @@ namespace DataAccess.Repositories
         public Test? GetActiveByTargetAudienceId(Guid id)
         {
             return repository.Tests.FirstOrDefault(item => item.TargetAudience.Id == id && item.Active == true);
+        }
+
+        public List<Test> GetTestsByTargetAudienceId(Guid id)
+        {
+            return repository.Tests.Where(t => t.TargetAudienceId == id).ToList();
         }
     }
 }

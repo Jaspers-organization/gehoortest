@@ -53,7 +53,13 @@ public class TargetAudienceService
     }
     public void Delete(Guid id)
     {
-        testRepository.UpdateTargetAudienceForTests(id);
+        var tests = testRepository.GetTestsByTargetAudienceId(id);
+        foreach (var test in tests)
+        {
+            test.TargetAudienceId = Guid.Empty;
+            test.Active = false;
+            testRepository.UpdateTest(test);
+        }
         targetAudienceRepository.Delete(id);
     }
     #endregion
