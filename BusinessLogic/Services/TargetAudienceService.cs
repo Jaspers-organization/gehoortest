@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using BusinessLogic.BusinessRules;
 using BusinessLogic.Stores;
+using Service.Projections;
 
 namespace BusinessLogic.Services;
 
@@ -15,17 +16,20 @@ public class TargetAudienceService
     public TargetAudienceService(
         ITargetAudienceRepository targetAudienceRepository,
         ITestRepository testRepository
-    ) {
+    )
+    {
         this.targetAudienceRepository = targetAudienceRepository;
         this.testRepository = testRepository;
     }
 
     #region CRUD
-    public List<TargetAudience> GetAllTargetAudiences()
-    {
-        return targetAudienceRepository.GetAll();
-    }
+    public List<TargetAudience> GetAllTargetAudiences() => targetAudienceRepository.GetAll().ToList();
 
+
+    public List<TargetAudienceProjection> GetAllTargetAudienceProjections()
+    {
+        return targetAudienceRepository.GetAllWithTestAmount();
+    }
     public void Create(TargetAudience targetAudience)
     {
         TargetAudienceBusinessRules.AssertValidRange(targetAudience, GetAllTargetAudiences());
@@ -43,11 +47,19 @@ public class TargetAudienceService
 
         targetAudienceRepository.Update(targetAudience);
     }
-
+    public TargetAudience Get(Guid id)
+    {
+        return targetAudienceRepository.Get(id);
+    }
     public void Delete(Guid id)
     {
-        AssertNotLinked(id);
-
+        var tests = testRepository.GetTestsByTargetAudienceId(id);
+        foreach (var test in tests)
+        {
+            test.TargetAudienceId = Guid.Empty;
+            test.Active = false;
+            testRepository.UpdateTest(test);
+        }
         targetAudienceRepository.Delete(id);
     }
     #endregion
@@ -57,11 +69,4 @@ public class TargetAudienceService
         targetAudience.Label = $"{targetAudience.From}-{targetAudience.To}";
     }
 
-    private void AssertNotLinked(Guid id)
-    {
-        if (testRepository.GetActiveByTargetAudienceId(id) != null)
-        {
-            throw new Exception(ErrorMessageStore.ErrorTestLinked);
-        }
-    }
 }

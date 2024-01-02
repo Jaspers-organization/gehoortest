@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
+using Service.Projections;
 
 namespace DataAccess.Repositories;
 
@@ -41,4 +42,30 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             repository.SaveChanges();
         }
     }
+    public TargetAudience Get(Guid id)
+    {
+        using (Repository repository = new Repository())
+        {
+            return repository.TargetAudiences.FirstOrDefault(item => item.Id == id);
+        }
+    }
+    public List<TargetAudienceProjection> GetAllWithTestAmount()
+    {
+        using (Repository repository = new Repository())
+        {
+            var result = repository.TargetAudiences.Where(ta => ta.Id != Guid.Empty)
+                .Select(ta => new TargetAudienceProjection
+                {
+                    Id = ta.Id,
+                    Label = ta.Label,
+                    From = ta.From.ToString(),
+                    To = ta.To.ToString(),
+                    AmountOfTests = ta.Tests.Count()
+                })
+                .ToList();
+
+            return result;
+        }
+    }
+
 }

@@ -428,7 +428,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         try
         {
-
             testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }

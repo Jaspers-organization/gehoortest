@@ -1,9 +1,11 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
+using BusinessLogic.Services;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace DataAccess.Repositories
 {
@@ -63,20 +65,19 @@ namespace DataAccess.Repositories
             }
             return test;
         }
-
-        public Test? GetTestByTargetAudienceIdAndActive(Guid id)
+        public List<TestProjection>? GetTestProjectionsByNoTargetAudience()
         {
-            var test = IncludeTestRelations()
-               .Where(test => test.TargetAudienceId == id && test.Active)
-               .FirstOrDefault();
+            var tests = IncludeTestRelations()
+                .Where(test => test.TargetAudienceId == Guid.Empty)
+                .ToList();
 
-            if (test == null)
+            if (tests == null || tests.Count == 0)
             {
-                return null; //error handeling 
+                return new List<TestProjection>();
             }
-            return test;
-        }
 
+            return CreateProjections(tests);
+        }
         public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id)
         {
             var tests = IncludeTestRelations()
@@ -88,7 +89,12 @@ namespace DataAccess.Repositories
                 return new List<TestProjection>();
             }
 
-            List<TestProjection> projections = tests.Select(test => new TestProjection
+            return CreateProjections(tests);
+        }
+
+        private List<TestProjection> CreateProjections(List<Test> tests)
+        {
+            return tests.Select(test => new TestProjection
             {
                 Id = test.Id,
                 Title = test.Title,
@@ -96,8 +102,18 @@ namespace DataAccess.Repositories
                 Active = test.Active,
                 EmployeeName = test.Employee.FullName
             }).ToList();
+        }
+        public Test? GetTestByTargetAudienceIdAndActive(Guid id)
+        {
+            var test = IncludeTestRelations()
+               .Where(test => test.TargetAudienceId == id && test.Active)
+               .FirstOrDefault();
 
-            return projections;
+            if (test == null)
+            {
+                return null; //error handeling 
+            }
+            return test;
         }
 
         public void SaveTest(Test test)
@@ -131,6 +147,11 @@ namespace DataAccess.Repositories
         public Test? GetActiveByTargetAudienceId(Guid id)
         {
             return repository.Tests.FirstOrDefault(item => item.TargetAudience.Id == id && item.Active == true);
+        }
+
+        public List<Test> GetTestsByTargetAudienceId(Guid id)
+        {
+            return repository.Tests.Where(t => t.TargetAudienceId == id).ToList();
         }
     }
 }
