@@ -47,11 +47,13 @@ public class TargetAudienceService
 
         targetAudienceRepository.Update(targetAudience);
     }
-
+    public TargetAudience Get(Guid id)
+    {
+        return targetAudienceRepository.Get(id);
+    }
     public void Delete(Guid id)
     {
-        AssertNotLinked(id);
-
+        testRepository.UpdateTargetAudienceForTests(id);
         targetAudienceRepository.Delete(id);
     }
     #endregion
@@ -61,11 +63,4 @@ public class TargetAudienceService
         targetAudience.Label = $"{targetAudience.From}-{targetAudience.To}";
     }
 
-    private void AssertNotLinked(Guid id)
-    {
-        if (testRepository.GetActiveByTargetAudienceId(id) != null)
-        {
-            throw new Exception(ErrorMessageStore.ErrorTestLinked);
-        }
-    }
 }

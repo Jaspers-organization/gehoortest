@@ -42,7 +42,13 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             repository.SaveChanges();
         }
     }
-
+    public TargetAudience Get(Guid id)
+    {
+        using (Repository repository = new Repository())
+        {
+            return repository.TargetAudiences.FirstOrDefault(item => item.Id == id);
+        }
+    }
     public List<TargetAudienceProjection> GetAllWithTestAmount()
     {
         using (Repository repository = new Repository())
@@ -50,6 +56,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             var result = repository.TargetAudiences.Where(ta => ta.Id != Guid.Empty)
                 .Select(ta => new TargetAudienceProjection
                 {
+                    Id = ta.Id,
                     Label = ta.Label,
                     From = ta.From.ToString(),
                     To = ta.To.ToString(),

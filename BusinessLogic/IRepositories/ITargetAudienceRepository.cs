@@ -10,5 +10,5 @@ public interface ITargetAudienceRepository
     public void Update(TargetAudience targetAudience);
     public void Delete(Guid id);
     public List<TargetAudienceProjection> GetAllWithTestAmount();
-
+    public TargetAudience Get(Guid id);
 }

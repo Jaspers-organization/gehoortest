@@ -15,4 +15,5 @@ public interface ITestRepository
     public Test? GetTestByTargetAudienceIdAndActive(Guid id);
     public Test? GetActiveByTargetAudienceId(Guid id);
     public List<TestProjection>? GetTestProjectionsByNoTargetAudience();
+    public void UpdateTargetAudienceForTests(Guid id);
 }

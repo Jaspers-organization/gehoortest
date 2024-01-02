@@ -90,6 +90,19 @@ namespace DataAccess.Repositories
 
             return CreateProjections(tests);
         }
+        public void UpdateTargetAudienceForTests(Guid id)
+        {
+            repository.Tests
+                .Where(t => t.TargetAudienceId == id)
+                .ToList()
+                .ForEach(t =>
+                {
+                    t.TargetAudienceId = Guid.Empty;
+                    t.Active = false;
+                });
+
+            repository.SaveChanges();
+        }
 
         private List<TestProjection> CreateProjections(List<Test> tests)
         {
@@ -114,8 +127,6 @@ namespace DataAccess.Repositories
             }
             return test;
         }
-
-        
 
         public void SaveTest(Test test)
         {

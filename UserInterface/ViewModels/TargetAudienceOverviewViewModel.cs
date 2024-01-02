@@ -56,8 +56,9 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
         navigationStore.OpenModal(new TargetAudienceModalViewModel(navigationStore, null));
     }
 
-    private void Update(TargetAudience targetAudience)
+    private void Update(Guid id)
     {
+        TargetAudience? targetAudience = service.Get(id);
         navigationStore.OpenModal(new TargetAudienceModalViewModel(navigationStore, targetAudience));
     }
 
@@ -66,7 +67,7 @@ internal class TargetAudienceOverviewViewModel : ViewModelBase, IConfirmation
         Action confirmDeleteAction = CreateAction(() =>
         {
             try 
-            { 
+            {
                 service.Delete(id); 
             }
             catch (Exception e)

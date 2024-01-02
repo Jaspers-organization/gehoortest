@@ -8,24 +8,7 @@ public class TestMockRepository : ITestRepository
 {
     //public List<Test> testDataList = new List<Test>();
     public List<Test> testDataList = new List<Test>
-        {
-            //new Test { Id = new Guid(), TargetAudience = new TargetAudience{ Id = new Guid(), From = 0, To=18, Label="-18" }, Active = false, Title = "Jongeren test",
-            //    TextQuestions = new List<TextQuestion>{
-            //        new TextQuestion { Id = new Guid(), Question = "Worden je oren snel gevoelig voor harde geluiden?", QuestionNumber = 1, HasInputField = false, IsMultiSelect = true, 
-            //            Options = new List<TextQuestionOption>() {
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ja" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Nee" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Niet gemerkt" },
-            //            }
-            //        },
-            //        new TextQuestion { Id = new Guid(), Question = "Heb je wel eens last gehad van een piep in je oren na het luisteren naar luide muziek?",Options = new List<TextQuestionOption>(), QuestionNumber = 2, HasInputField = true, IsMultiSelect = false},
-            //    },
-            //    ToneAudiometryQuestions = new List<ToneAudiometryQuestion>{
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
-            //    },Employee =  new Employee { Id = new Guid(), EmployeeNumber = "123456789", FirstName = "Dinny", Infix = "van", LastName = "Huizen" }
-            //},
+    {
             new Test { Id = new Guid(), TargetAudience = new TargetAudience{ Id = new Guid(), From = 19, To=29, Label="19-29" }, Active = true, Title = "Jong-volwassen test",
                 TextQuestions = new List<TextQuestion>{
                     new TextQuestion { Id = new Guid(), Question = "Ga je vaak naar festivals?", QuestionNumber = 1, HasInputField = true, IsMultiSelect = false},
@@ -45,54 +28,6 @@ public class TestMockRepository : ITestRepository
                     //new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
                 },Employee =  new Employee { Id = new Guid(), EmployeeNumber = "987654321", FirstName = "Sisimaile",  LastName = "Lolohea" }
             },
-            //new Test { Id = new Guid(), TargetAudience = new TargetAudience{ Id = new Guid(), From = 19, To=29, Label="19-29" }, Active = false, Title = "Jong-volwassen test #2",
-            //    TextQuestions = new List<TextQuestion>{
-            //        new TextQuestion { Id = new Guid(), Question = "Gebruik je gehoorbescherming als je naar een festival gaat?", QuestionNumber = 1, HasInputField = true, IsMultiSelect = true,
-            //            Options = new List<TextQuestionOption>() {
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ja" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Nee" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ik ga nooit naar festivals" },
-            //            }
-            //        },
-            //        new TextQuestion { Id = new Guid(), Question = "Heb je moeite met mensen verstaan in je omgeving?",QuestionNumber = 2, HasInputField = false, IsMultiSelect = true,
-            //            Options = new List<TextQuestionOption>() {
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ja" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Nee" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Niet gemerkt" },
-            //            }
-            //        },
-            //        new TextQuestion { Id = new Guid(), Question = "Nog een vraag... ik weet het nog niet.",Options = new List<TextQuestionOption>(), QuestionNumber = 3,  HasInputField = true, IsMultiSelect = false}
-            //    },
-            //    ToneAudiometryQuestions = new List<ToneAudiometryQuestion>{
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
-            //    },Employee =  new Employee { Id = new Guid(), EmployeeNumber = "543216789", FirstName = "Jasper", LastName = "Gräber" }
-            //},
-            //new Test { Id = new Guid(), TargetAudience = new TargetAudience{ Id = new Guid(), From = 19, To=29, Label="19-29" }, Active = false, Title = "Jong-volwassen test #3",
-            //    TextQuestions = new List<TextQuestion>{
-            //        new TextQuestion { Id = new Guid(), Question = "Gebruik je gehoorbescherming als je naar een festival gaat?", QuestionNumber = 1, HasInputField = true, IsMultiSelect = true,
-            //            Options = new List<TextQuestionOption>() {
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ja" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Nee" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ik ga nooit naar festivals" },
-            //            }
-            //        },
-            //        new TextQuestion { Id = new Guid(), Question = "Heb je moeite met mensen verstaan in je omgeving?",QuestionNumber = 2, HasInputField = false, IsMultiSelect = true,
-            //            Options = new List<TextQuestionOption>() {
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Ja" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Nee" },
-            //                new TextQuestionOption() { Id = new Guid(), Option = "Niet gemerkt" },
-            //            }
-            //        },
-            //        new TextQuestion { Id = new Guid(), Question = "Nog een vraag... ik weet het nog niet.",Options = new List<TextQuestionOption>(), QuestionNumber = 3,  HasInputField = true, IsMultiSelect = false}
-            //    },
-            //    ToneAudiometryQuestions = new List<ToneAudiometryQuestion>{
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
-            //        new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
-            //    },Employee =  new Employee { Id = new Guid(), EmployeeNumber = "543216789", FirstName = "Jasper", LastName = "Gräber" }
-            //},
         };
 
     public TestMockRepository() { }
@@ -159,6 +94,11 @@ public class TestMockRepository : ITestRepository
     }
 
     public List<TestProjection>? GetTestProjectionsByNoTargetAudience()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateTargetAudienceForTests(Guid id)
     {
         throw new NotImplementedException();
     }

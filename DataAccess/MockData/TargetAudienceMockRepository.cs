@@ -27,6 +27,11 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
         throw new NotImplementedException();
     }
 
+    public TargetAudience Get(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<TargetAudience> GetAll()
     {
 
