@@ -98,7 +98,7 @@
                 Command="{Binding CloseApplicationCommand}"
                 Content="Afsluiten"/>
             <Button
-                Visibility="{Binding ShowEnlargeTekstButton}"
+                Visibility="{Binding ShowEnlargeTextButton}"
                 Style="{StaticResource PrimaryButton_S}"
                 Margin="0 0 15 0"
                 HorizontalAlignment="Right"
