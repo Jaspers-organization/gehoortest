@@ -14,8 +14,8 @@ internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
     private ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
+    
     #region properties
-
     private bool isBigFontSize = false;
     public bool IsBigFontSize
     {
@@ -70,14 +70,14 @@ internal class MainWindowViewModel : ViewModelBase
         set { _showCloseApplicationButton = value; OnPropertyChanged(nameof(ShowCloseApplicationButton)); }
     }
 
-    private Visibility _showEnlargeTekstButton = Visibility.Visible;
-    public Visibility ShowEnlargeTekstButton
+    private Visibility _showEnlargeTextButton = Visibility.Visible;
+    public Visibility ShowEnlargeTextButton
     {
-        get { return _showEnlargeTekstButton; }
-        set { _showEnlargeTekstButton = value; OnPropertyChanged(nameof(ShowEnlargeTekstButton)); }
+        get { return _showEnlargeTextButton; }
+        set { _showEnlargeTextButton = value; OnPropertyChanged(nameof(ShowEnlargeTextButton)); }
     }
-    private string changeText = "Vergroot tekst";
 
+    private string changeText = "Vergroot tekst";
     public string ChangeText
     {
         get { return isBigFontSize ? "Verklein Tekst" : "Vergroot Tekst"; }
@@ -99,7 +99,6 @@ internal class MainWindowViewModel : ViewModelBase
     public ICommand CloseApplicationCommand => new Command(CloseApplication);
     public ICommand DoNothingCommand => new Command(DoNothing);
     public ICommand ChangeTextSizeCommand => new Command(ChangeTextSize);
-
     #endregion
 
     public MainWindowViewModel(NavigationStore navigationStore)
@@ -117,7 +116,7 @@ internal class MainWindowViewModel : ViewModelBase
     private void OpenLogin()
     {
         if (navigationStore.LoggedInEmployee != null || navigationStore.CurrentViewModel is not HomeViewModel) return;
-        ShowEnlargeTekstButton = Visibility.Hidden;
+        ShowEnlargeTextButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
     }
 
@@ -158,7 +157,7 @@ internal class MainWindowViewModel : ViewModelBase
         {
             ShowBackButton = Visibility.Hidden;
         }
-        ShowEnlargeTekstButton = Visibility.Visible;
+        ShowEnlargeTextButton = Visibility.Visible;
 
         navigationStore.CurrentViewModel = previousViewModel;
     }

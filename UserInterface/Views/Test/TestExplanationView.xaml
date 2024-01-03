@@ -8,7 +8,7 @@
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
@@ -26,7 +26,6 @@
                     <TextBlock Style="{DynamicResource Text}" Text="Tijdens dit onderdeel worden er vragen gesteld over u en uw levensstijl."/>
                     <TextBlock Style="{DynamicResource SubHeader}" Text="Toonaudiometrie" Margin="0 30 0 0"/>
                     <TextBlock Style="{DynamicResource Text}" Text="Tijdens dit onderdeel worden er verschillende tonen afgespeeld en moet u aangeven of u de toon hoort."/>
-                    <TextBlock Style="{DynamicResource Text}" Text="Klik op start test als u klaar bent om te beginnen." Margin="0 30 0 0"/>
                 </StackPanel>
 
                 <StackPanel  Grid.Row="2" Orientation="Horizontal">
