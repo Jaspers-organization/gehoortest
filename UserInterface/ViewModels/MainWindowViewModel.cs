@@ -1,15 +1,10 @@
 ﻿using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
-using BusinessLogic.Projections;
 using System;
-using System.ComponentModel;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
-using System;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
@@ -245,13 +240,13 @@ internal class MainWindowViewModel : ViewModelBase
     private void GetColorSetting()
     {
         Settings savedSettings = settingService.GetSetting();
-        System.Windows.Media.Color mediacolor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
+        Color mediacolor = (Color)ColorConverter.ConvertFromString(savedSettings.Color);
         SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
 
         var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
-        System.Drawing.Color lighterColor = ControlPaint.LightLight(drawingcolor);
+        System.Drawing.Color lighterColor = System.Windows.Forms.ControlPaint.LightLight(drawingcolor);
 
-        System.Windows.Media.Color lighterMediaColor = System.Windows.Media.Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+        Color lighterMediaColor =Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
         SolidColorBrush secondaryColorHighlight = new SolidColorBrush(lighterMediaColor);
 
         ResourceDictionary resourceDict = new ResourceDictionary();
