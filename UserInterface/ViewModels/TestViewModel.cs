@@ -272,7 +272,6 @@ namespace UserInterface.ViewModels
 
         }
 
-
         private void StartTest()
         {
             SetTestExplanationView(NOTVISIBLE);

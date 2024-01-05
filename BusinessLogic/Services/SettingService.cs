@@ -28,7 +28,7 @@ namespace BusinessLogic.Services
             if (convertedColor == null)
                 return false;
 
-            if (convertedColor.Alpha <= 0)
+            if (convertedColor.Alpha != 255)
                 return false;
 
             return true;
@@ -38,5 +38,6 @@ namespace BusinessLogic.Services
         {
             return settingsRepository.GetSettings();
         }
+
     }
 }

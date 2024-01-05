@@ -6,6 +6,7 @@ using DataAccess.Repositories;
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
@@ -136,7 +137,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void CloseApplication()
     {
-        Application.Current.Shutdown();
+        System.Windows.Application.Current.Shutdown();
     }
 
     private void OnCurrentViewModelChanged()
@@ -169,12 +170,19 @@ internal class MainWindowViewModel : ViewModelBase
     private void GetColorSetting()
     {
         Settings savedSettings = settingService.GetSetting();
-        System.Windows.Media.Color color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
-        SolidColorBrush solidColorBrush = new SolidColorBrush(color);
+        System.Windows.Media.Color mediacolor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
+        SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
+
+        var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
+        System.Drawing.Color lighterColor = ControlPaint.LightLight(drawingcolor);
+
+        System.Windows.Media.Color lighterMediaColor = System.Windows.Media.Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+        SolidColorBrush secondaryColorHighlight = new SolidColorBrush(lighterMediaColor);
 
         ResourceDictionary resourceDict = new ResourceDictionary();
         resourceDict.Source = new Uri("../../Assets/Styling/Colors.xaml", UriKind.RelativeOrAbsolute);
         App.Current.Resources["SecondaryColor"] = solidColorBrush;
+        App.Current.Resources["SecondaryColor_Highlight"] = secondaryColorHighlight;
     }
 
    

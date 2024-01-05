@@ -33,8 +33,7 @@
                     <Button  Grid.Row="2" Style="{StaticResource PrimaryButton_L}" 
                               HorizontalAlignment="Left"
                               Content="Start test" 
-                              Command="{Binding StartTestCommand}"/>
-                  
+                              Command="{Binding StartTestCommand}"/>                  
                 </StackPanel>
                 
             </Grid>

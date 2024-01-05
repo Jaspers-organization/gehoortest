@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Enums;
+using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using System.Windows;
 using System.Windows.Input;

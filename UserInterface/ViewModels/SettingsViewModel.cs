@@ -14,6 +14,8 @@ using BusinessLogic.IRepositories;
 using DataAccess.Repositories;
 using BusinessLogic.Models;
 using UserInterface.ViewModels.Modals;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 namespace UserInterface.ViewModels
 {
@@ -56,11 +58,13 @@ namespace UserInterface.ViewModels
             {
                 selectedColor = value;
                 OnPropertyChanged(nameof(SelectedColor));
+                SetColor();
             }
         }
 
         protected BusinessLogic.Classes.Color convertedColor;
         private Settings savedSettings { get; set; }
+
         #endregion Properties
 
         #region Constructor
@@ -77,18 +81,35 @@ namespace UserInterface.ViewModels
         }
         #endregion Constructor
 
+        private void SetColor()
+        {
+            SolidColorBrush solidColorBrush = new SolidColorBrush(SelectedColor);
+            if ( SavedColor != null && solidColorBrush != SavedColor)
+            {
+                SavedColor = solidColorBrush;
+            }
+        }
+
         private void GetSetting()
         {
             savedSettings = settingService.GetSetting();
-            System.Windows.Media.Color color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
-          
-            SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
-            SolidColorBrush solidColorBrush = new SolidColorBrush(color);
+            System.Windows.Media.Color mediacolor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(savedSettings.Color);
+
+            var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
+            System.Drawing.Color lighterColor = ControlPaint.LightLight(drawingcolor);
+
+            System.Windows.Media.Color lighterMediaColor = System.Windows.Media.Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+
+            SelectedColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(savedSettings.Color);
+            SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
             SavedColor = solidColorBrush;
+
+            SolidColorBrush secondaryColorHighlight = new SolidColorBrush(lighterMediaColor);
 
             ResourceDictionary resourceDict = new ResourceDictionary();
             resourceDict.Source = new Uri("../../Assets/Styling/Colors.xaml", UriKind.RelativeOrAbsolute);
             App.Current.Resources["SecondaryColor"] = solidColorBrush;
+            App.Current.Resources["SecondaryColor_Highlight"] = secondaryColorHighlight;
         }
 
         public void ValidateColor()
@@ -96,7 +117,7 @@ namespace UserInterface.ViewModels
             ConvertColor(SelectedColor);
             if (!settingService.ValidateColor(convertedColor))
             {
-                OpenErrorModal("De alpha waarde van de kleur mag niet 0 zijn. Kies een nieuwe kleur.");
+                OpenErrorModal("De alpha waarde van de kleur mag niet lager dan 255 zijn. Kies een nieuwe kleur.");
             }
             else
             {
@@ -104,9 +125,18 @@ namespace UserInterface.ViewModels
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            
+        }
+
         public void  ConvertColor(System.Windows.Media.Color selColor)
         {
-            convertedColor = new BusinessLogic.Classes.Color(selColor.R, selColor.G, selColor.B, selColor.A, selColor.ToString());
+            convertedColor = new BusinessLogic.Classes.Color(selColor.A, selColor.R, selColor.G, selColor.B,selColor.ToString());
             savedSettings.Color = convertedColor.Hex;
         }
         
