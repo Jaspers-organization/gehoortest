@@ -59,7 +59,7 @@
                             <GridViewColumn Width="300" Header="Rol" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding Role}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding RoleString}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

@@ -103,7 +103,15 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
 
     private void GetEmployees()
     {
-        Employees = employeeService.GetEmployeesProjections();
+        var employees = employeeService.GetEmployeesProjections();
+        if (employees != null)
+        {
+            foreach (var employee in employees)
+            {
+                employee.RoleString = employee.GetTranslatedRole();
+            }
+        }
+        Employees = employees;
     }
 
     public Action CreateAction(Action action)
