@@ -15,7 +15,7 @@
                 HorizontalAlignment="Center" 
                 Text="Medewerkersportaal" />
 
-            <Rectangle Width="auto" Height="10" Margin="-30 30" Fill="{StaticResource SecondaryColor}"/>
+            <Rectangle Width="auto" Height="10" Margin="-30 30" Fill="{DynamicResource SecondaryColor}"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -52,8 +52,9 @@
                     <Button Style="{StaticResource SecondaryButton_L}"
                         Visibility="{Binding ShowAdminButtons}"
                         Margin="0 30 0 0"
-                        IsEnabled="False"
-                        Content="Applicatie instellingen"/>
+                        IsEnabled="True"
+                        Content="Applicatie instellingen"
+                        Command="{Binding OpenSettingsCommand}"/>
                 </StackPanel>
 
                 <images:EmployeePortal Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />

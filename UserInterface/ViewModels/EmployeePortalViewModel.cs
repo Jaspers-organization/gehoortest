@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Enums;
+using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ internal class EmployeePortalViewModel : ViewModelBase
     public ICommand OpenTestOverviewCommand => new Command(OpenTestOverview);
     public ICommand OpenTargetAudienceOverviewCommand => new Command(OpenTargetAudienceOverview);
     public ICommand OpenEmployeeOverviewCommand => new Command(OpenEmployeeOverview);
-
+    public ICommand OpenSettingsCommand => new Command(OpenSettings);
     #endregion
 
     #region properties
@@ -47,7 +48,6 @@ internal class EmployeePortalViewModel : ViewModelBase
     private void SetEmployee()
     {
         EmployeeProjection employee = navigationStore.LoggedInEmployee!;
-
         EmployeeName = employee.FullName;
         if (employee.Role == Role.Administrator)
         {
@@ -66,5 +66,10 @@ internal class EmployeePortalViewModel : ViewModelBase
     private void OpenTargetAudienceOverview()
     {
         navigationStore.CurrentViewModel = new TargetAudienceOverviewViewModel(navigationStore);
+    }
+
+    private void OpenSettings()
+    {
+        navigationStore.CurrentViewModel = new SettingsViewModel(navigationStore);
     }
 }

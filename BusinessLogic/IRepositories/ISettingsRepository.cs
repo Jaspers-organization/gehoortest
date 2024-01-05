@@ -6,6 +6,7 @@ namespace BusinessLogic.IRepositories
     {
         public void Create(Settings setting);
         public void Update(Settings setting);
+        public Settings GetSettings();
        
     }
 }

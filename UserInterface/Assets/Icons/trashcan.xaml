@@ -66,7 +66,7 @@
             </GeometryDrawing>
             <GeometryDrawing>
                 <GeometryDrawing.Pen>
-                    <Pen Brush="{StaticResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    <Pen Brush="{DynamicResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
                 </GeometryDrawing.Pen>
                 <GeometryDrawing.Geometry>
                     <PathGeometry Figures="M 4 7 l 16 0" FillRule="Nonzero"/>
@@ -74,7 +74,7 @@
             </GeometryDrawing>
             <GeometryDrawing>
                 <GeometryDrawing.Pen>
-                    <Pen Brush="{StaticResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    <Pen Brush="{DynamicResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
                 </GeometryDrawing.Pen>
                 <GeometryDrawing.Geometry>
                     <PathGeometry Figures="M 10 11 l 0 6" FillRule="Nonzero"/>
@@ -82,7 +82,7 @@
             </GeometryDrawing>
             <GeometryDrawing>
                 <GeometryDrawing.Pen>
-                    <Pen Brush="{StaticResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    <Pen Brush="{DynamicResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
                 </GeometryDrawing.Pen>
                 <GeometryDrawing.Geometry>
                     <PathGeometry Figures="M 14 11 l 0 6" FillRule="Nonzero"/>
@@ -90,7 +90,7 @@
             </GeometryDrawing>
             <GeometryDrawing>
                 <GeometryDrawing.Pen>
-                    <Pen Brush="{StaticResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    <Pen Brush="{DynamicResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
                 </GeometryDrawing.Pen>
                 <GeometryDrawing.Geometry>
                     <PathGeometry Figures="M 5 7 l 1 12 a 2 2 0 0 0 2 2 h 8 a 2 2 0 0 0 2 -2 l 1 -12" FillRule="Nonzero"/>
@@ -98,7 +98,7 @@
             </GeometryDrawing>
             <GeometryDrawing>
                 <GeometryDrawing.Pen>
-                    <Pen Brush="{StaticResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    <Pen Brush="{DynamicResource SecondaryColor}" LineJoin="Round" Thickness="1.5" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
                 </GeometryDrawing.Pen>
                 <GeometryDrawing.Geometry>
                     <PathGeometry Figures="M 9 7 v -3 a 1 1 0 0 1 1 -1 h 4 a 1 1 0 0 1 1 1 v 3" FillRule="Nonzero"/>

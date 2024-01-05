@@ -216,6 +216,7 @@ namespace UserInterface.ViewModels
         public ICommand SaveQuestionCommand => new Command(SaveTextAnswer);
         public ICommand SaveAudioQuestionCommand => new Command(SaveAudioAnswer);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
+
         #endregion Commands
         private BackgroundWorker worker;
         #region Constructor
@@ -235,8 +236,6 @@ namespace UserInterface.ViewModels
 
             ISettingsRepository settingsRepository = new SettingsRepository();
             settingService = new SettingService(settingsRepository);
-
-
             nAudioPlayer = new NAudioPlayer();
         }
         #endregion Constructor
@@ -273,6 +272,7 @@ namespace UserInterface.ViewModels
             navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
 
         }
+
         private void StartTest()
         {
             SetTestExplanationView(NOTVISIBLE);

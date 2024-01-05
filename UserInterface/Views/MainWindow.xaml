@@ -45,7 +45,9 @@
             <DataTemplate DataType="{x:Type viewModels:TargetAudienceOverviewViewModel}">
                 <views:TargetAudienceOverviewView />
             </DataTemplate>
-            
+            <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
+                <views:SettingsView />
+            </DataTemplate>
 
             <!-- Define all modals here -->
             <DataTemplate DataType="{x:Type modalViewModels:TextQuestionModalViewModel}">

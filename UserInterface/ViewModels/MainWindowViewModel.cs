@@ -1,8 +1,15 @@
-﻿using BusinessLogic.Projections;
+﻿using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
+using BusinessLogic.Projections;
 using System;
 using System.ComponentModel;
+using BusinessLogic.Services;
+using DataAccess.Repositories;
+using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
@@ -13,7 +20,8 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
-    private ResourceDictionary resourceDict = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
+    private readonly SettingService settingService;
+    private ResourceDictionary resourceDictTextStyles = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
     
     #region properties
     private bool isBigFontSize = false;
@@ -111,6 +119,10 @@ internal class MainWindowViewModel : ViewModelBase
         this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
         this.navigationStore.HideTopBarChanged += ToggleTopBar;
         CurrentViewModel = this.navigationStore.CurrentViewModel;
+        
+        ISettingsRepository settingsRepository = new SettingsRepository();
+        settingService = new SettingService(settingsRepository);
+        GetColorSetting();
     }
 
     private void OpenLogin()
@@ -164,7 +176,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void CloseApplication()
     {
-        Application.Current.Shutdown();
+        System.Windows.Application.Current.Shutdown();
     }
 
     private void OnCurrentViewModelChanged()
@@ -199,11 +211,11 @@ internal class MainWindowViewModel : ViewModelBase
     {
 
         if (!IsBigFontSize)
-            ChangeToBig(resourceDict);
+            ChangeToBig(resourceDictTextStyles);
         else
-            ChangeToSmall(resourceDict);
+            ChangeToSmall(resourceDictTextStyles);
 
-        Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+        Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
 
         IsBigFontSize = !IsBigFontSize;
     }
@@ -229,4 +241,24 @@ internal class MainWindowViewModel : ViewModelBase
     /// This method is only used to make sure the application can't be stopped using alt+f4
     /// </summary>
     private void DoNothing() { }
+
+    private void GetColorSetting()
+    {
+        Settings savedSettings = settingService.GetSetting();
+        System.Windows.Media.Color mediacolor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(savedSettings.Color);
+        SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
+
+        var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
+        System.Drawing.Color lighterColor = ControlPaint.LightLight(drawingcolor);
+
+        System.Windows.Media.Color lighterMediaColor = System.Windows.Media.Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+        SolidColorBrush secondaryColorHighlight = new SolidColorBrush(lighterMediaColor);
+
+        ResourceDictionary resourceDict = new ResourceDictionary();
+        resourceDict.Source = new Uri("../../Assets/Styling/Colors.xaml", UriKind.RelativeOrAbsolute);
+        App.Current.Resources["SecondaryColor"] = solidColorBrush;
+        App.Current.Resources["SecondaryColor_Highlight"] = secondaryColorHighlight;
+    }
+
+   
 }

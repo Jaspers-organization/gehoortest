@@ -81,7 +81,7 @@
                 <StackPanel>
                     <TextBlock Text="Toonaudiometrie vragen" HorizontalAlignment="Center" Height="60" Style="{DynamicResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
-                        <Rectangle Width="420" Fill="{StaticResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
+                        <Rectangle Width="420" Fill="{DynamicResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
                                 <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
                             </Rectangle.Effect>
@@ -160,7 +160,7 @@
                 <StackPanel>
                     <TextBlock Text="Tekst vragen" HorizontalAlignment="Center" Height="60" Style="{DynamicResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
-                        <Rectangle Width="620" Fill="{StaticResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
+                        <Rectangle Width="620" Fill="{DynamicResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
                                 <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
                             </Rectangle.Effect>

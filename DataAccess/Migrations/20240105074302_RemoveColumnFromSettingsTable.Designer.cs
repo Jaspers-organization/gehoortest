@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gehoortest_application.Repository;
 
@@ -11,9 +12,11 @@ using gehoortest_application.Repository;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [Migration("20240105074302_RemoveColumnFromSettingsTable")]
+    partial class RemoveColumnFromSettingsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,6 +121,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("id");
 
@@ -126,7 +130,6 @@ namespace DataAccess.Migrations
                         .HasColumnName("from");
 
                     b.Property<string>("Label")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("label");
 
@@ -137,15 +140,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("target_audience", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "00000000-0000-0000-0000-000000000000",
-                            From = 0,
-                            Label = "Ongekoppelde testen",
-                            To = 0
-                        });
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>

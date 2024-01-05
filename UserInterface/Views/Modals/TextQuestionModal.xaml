@@ -57,7 +57,7 @@
                     </StackPanel>
 
                     <!-- Rectangle placed behind the ListView -->
-                    <Rectangle Width="520" Height="355" Margin="0,50,0,0" Fill="{StaticResource SecondaryColor}" HorizontalAlignment="Left">
+                    <Rectangle Width="520" Height="355" Margin="0,50,0,0" Fill="{DynamicResource SecondaryColor}" HorizontalAlignment="Left">
                         <Rectangle.Effect>
                             <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
                         </Rectangle.Effect>

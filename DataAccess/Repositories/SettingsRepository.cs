@@ -20,5 +20,10 @@ namespace DataAccess.Repositories
             repository.Settings.Update(settings);
             repository.SaveChanges();
         }
+
+        public Settings GetSettings()
+        {
+            return repository.Settings.First();
+        }
     }
 }

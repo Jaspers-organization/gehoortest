@@ -21,19 +21,6 @@ namespace DataAccess.EntityConfiguration
                 .HasColumnType("nvarchar(50)")
                 .HasDefaultValue("#DA0063");
 
-
-            builder.Property(x => x.Logo)
-                .HasColumnName("logo")
-                .HasColumnType("nvarchar(50)");
-
-            builder.Property(x => x.TestInactiveTime)
-                .HasColumnName("test_inactive_time")
-                .HasColumnType("int");
-
-            builder.Property(x => x.LoginInactiveTime)
-                .HasColumnName("login_inactive_time")
-                .HasColumnType("int");
-
         }
     }
 }
