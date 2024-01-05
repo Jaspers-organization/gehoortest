@@ -93,7 +93,11 @@ internal class TestResultViewModel : ViewModelBase
         string host = "smtp.gmail.com";
         // ====================
 
-        emailService = new EmailService(new TestResultRepository(), new EmailProvider.EmailProvider().Initialize(host, email, key));
+        emailService = new EmailService(
+            new TestResultRepository(), 
+            new SettingsRepository(),
+            new EmailProvider.EmailProvider().Initialize(host, email, key)
+        );
 
         GetTestResult(testProgressData);
     }

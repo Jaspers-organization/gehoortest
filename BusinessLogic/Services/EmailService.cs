@@ -11,33 +11,39 @@ namespace BusinessLogic.Services;
 public class EmailService
 {
     #region dependencies
-    private ITestResultRepository repository;
-    private IEmailProvider provider;
+    private ITestResultRepository testResultRepository;
+    private ISettingsRepository settingsRepository;
+    private IEmailProvider emailProvider;
     #endregion 
 
-    public EmailService(ITestResultRepository repository, IEmailProvider provider)
-    {
-        this.repository = repository;
-        this.provider = provider;
+    public EmailService(
+        ITestResultRepository testResultRepository, 
+        ISettingsRepository settingsRepository, 
+        IEmailProvider emailProvider
+    ) {
+        this.testResultRepository = testResultRepository;
+        this.settingsRepository = settingsRepository;
+        this.emailProvider = emailProvider;
     }
 
     public void SendEmail(string reciever, Guid testResultId)
     {
         Guard.AssertValidEmail(reciever);
 
-        TestResult testResult = repository.GetById(testResultId);
+        TestResult testResult = testResultRepository.GetById(testResultId);
 
         string date = DateTime.Now.ToString("dd-MM-yyyy");
         string subject = $"Testresultaat {date}"; 
         string body = CreateEmailBody(testResult, date);
 
-        provider.SendEmail(reciever, subject, body);
+        emailProvider.SendEmail(reciever, subject, body);
     }
   
     private string CreateEmailBody(TestResult testResult, string date)
     {
         string result = testResult.HasHearingLoss ? "Mogelijke gehoorschade" : "Gezond gehoor";
-
+        string color = settingsRepository.GetSettings().Color.Remove(1,2);
+        
         List<ToneAudiometryQuestionResult> rightEarAnswers = testResult.ToneAudiometryQuestions.Where(answer => answer.Ear == Ear.Right).ToList();
         string rightEarTable = CreateResultTable(rightEarAnswers);
 
@@ -48,19 +54,19 @@ public class EmailService
             <html>
                 <body>
                     <h1 style='text-align:center;'>Resultaten gehoortest</h1>
-                    <h2 style='text-align:center;color:#DA0063;'>{result}</h2>
+                    <h2 style='text-align:center;color:{color};'>{result}</h2>
                     <br>
                     <span>U heeft een gehoortest bij ons gedaan op:</span>
                     <span style='display:block;'>{date}</span>
                     <br>
-                    <span style='display:block;'>De resultaten duiden op <span style='color:#DA0063;'>{result.ToLower()}</span>.</span>
+                    <span style='display:block;'>De resultaten duiden op <span style='color:{color};'>{result.ToLower()}</span>.</span>
                     <br>
                     <span style='display:block;'>U gaf aan de getestte frequenties op onderstaand decibel niveau te horen:</span>
                     <br>
-                    <h3 style='margin-bottom:0;color:#DA0063;'>Rechter Oor</h3>
+                    <h3 style='margin-bottom:0;color:{color};'>Rechter Oor</h3>
                     {rightEarTable}
                     <br>
-                    <h3 style='margin-bottom:0;color:#DA0063;'>Linker Oor</h3>
+                    <h3 style='margin-bottom:0;color:{color};'>Linker Oor</h3>
                     {leftEarTable}
                     <br>
                     <p>De audicien kan u advies geven op basis van de testresultaten. maak een afspraak met de audicien.</p>

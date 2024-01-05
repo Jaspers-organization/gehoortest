@@ -215,7 +215,7 @@ internal class MainWindowViewModel : ViewModelBase
         else
             ChangeToSmall(resourceDictTextStyles);
 
-        Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
+        System.Windows.Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
 
         IsBigFontSize = !IsBigFontSize;
     }
