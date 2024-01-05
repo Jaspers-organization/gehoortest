@@ -18,11 +18,3 @@ public class Test : IModel
     public Guid EmployeeId { get; set; }
     public Employee Employee { get; set; }
 }
-
-
-/*
--	Overerving
--	Interfaces
--	Static methods
--	Generics
-*/

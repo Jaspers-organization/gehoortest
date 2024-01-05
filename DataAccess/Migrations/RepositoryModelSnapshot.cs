@@ -118,7 +118,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("id");
 
@@ -127,6 +126,7 @@ namespace DataAccess.Migrations
                         .HasColumnName("from");
 
                     b.Property<string>("Label")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("label");
 
@@ -137,6 +137,15 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("target_audience", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "00000000-0000-0000-0000-000000000000",
+                            From = 0,
+                            Label = "Ongekoppelde testen",
+                            To = 0
+                        });
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>

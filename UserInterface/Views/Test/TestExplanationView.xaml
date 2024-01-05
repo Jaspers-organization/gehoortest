@@ -8,7 +8,7 @@
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
@@ -20,13 +20,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
-                    <TextBlock Style="{StaticResource Header}" Text="Uitleg van de gehoortest"/>
-                    <TextBlock Style="{StaticResource Text}" Text="U staat op het punt te beginnen aan de gehoortest. Deze gehoortest bestaat uit 2 onderdelen."/>
-                    <TextBlock Style="{StaticResource SubHeader}" Text="Levensstijl vragen" Margin="0 30 0 0"/>
-                    <TextBlock Style="{StaticResource Text}" Text="Tijdens dit onderdeel worden er vragen gesteld over u en uw levensstijl."/>
-                    <TextBlock Style="{StaticResource SubHeader}" Text="Toonaudiometrie" Margin="0 30 0 0"/>
-                    <TextBlock Style="{StaticResource Text}" Text="Tijdens dit onderdeel worden er verschillende tonen afgespeeld en moet u aangeven of u de toon hoort."/>
-                    <TextBlock Style="{StaticResource Text}" Text="Klik op start test als u klaar bent om te beginnen." Margin="0 30 0 0"/>
+                    <TextBlock Style="{DynamicResource Header}" Text="Uitleg van de gehoortest"/>
+                    <TextBlock Style="{DynamicResource Text}" Text="U staat op het punt te beginnen aan de gehoortest. Deze gehoortest bestaat uit 2 onderdelen."/>
+                    <TextBlock Style="{DynamicResource SubHeader}" Text="Levensstijl vragen" Margin="0 30 0 0"/>
+                    <TextBlock Style="{DynamicResource Text}" Text="Tijdens dit onderdeel worden er vragen gesteld over u en uw levensstijl."/>
+                    <TextBlock Style="{DynamicResource SubHeader}" Text="Toonaudiometrie" Margin="0 30 0 0"/>
+                    <TextBlock Style="{DynamicResource Text}" Text="Tijdens dit onderdeel worden er verschillende tonen afgespeeld en moet u aangeven of u de toon hoort."/>
                 </StackPanel>
 
                 <StackPanel  Grid.Row="2" Orientation="Horizontal">

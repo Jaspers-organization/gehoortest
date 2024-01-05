@@ -227,11 +227,12 @@ namespace UserInterface.ViewModels
             this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
 
 
-            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
-            targetAudienceService = new TargetAudienceService(targetAudienceRepository);
-
             ITestRepository testRepository = new TestRepository();
             testService = new TestService(testRepository);
+
+            ITargetAudienceRepository targetAudienceRepository = new TargetAudienceRepository();
+            targetAudienceService = new TargetAudienceService(targetAudienceRepository, testRepository);
+
 
             ISettingsRepository settingsRepository = new SettingsRepository();
             settingService = new SettingService(settingsRepository);
@@ -367,7 +368,7 @@ namespace UserInterface.ViewModels
             if (currentTextQuestion.IsMultiSelect)
             {
                 SetQuestionInput(NOTVISIBLE);
-                List <string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options);
+                List <string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options.ToList());
                 List<string> tempRadioButtons = new();
                 foreach (string option in options)
                 {
@@ -409,7 +410,7 @@ namespace UserInterface.ViewModels
             }
 
             //save answers to TestProgressData
-            List<string> options = testService.ConvertQuestionOptionsToStrings(Test.TextQuestions.First(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Options);
+            List<string> options = testService.ConvertQuestionOptionsToStrings(Test.TextQuestions.First(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Options.ToList());
             testProgressData.TextAnswers.Add(new TextAnswer(testProgressData.CurrentQuestionNumber, options, answers));
             DetermineNextTextStep();
         }

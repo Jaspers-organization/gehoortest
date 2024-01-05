@@ -23,18 +23,18 @@
                 Grid.Column="0"
                 Orientation="Vertical">
                 <TextBlock 
-                    Style="{StaticResource Header}"
+                    Style="{DynamicResource Header}"
                     HorizontalAlignment="Center"
                     Text="Testresultaten"/>
                 <TextBlock 
-                    Style="{StaticResource Text}" 
+                    Style="{DynamicResource Text}" 
                     Text="U heeft de test succesvol afgerond."/>
                 <TextBlock 
-                    Style="{StaticResource SubHeader}"
+                    Style="{DynamicResource SubHeader}"
                     Margin="0 30 0 0"
                     Text="{Binding TestResultText}"/>
                 <TextBlock 
-                    Style="{StaticResource Text}"
+                    Style="{DynamicResource Text}"
                     Margin="0 30 0 0"
                     TextWrapping="Wrap"
                     Text="{Binding TestResultExplanation}"/>
@@ -45,16 +45,16 @@
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding PositiveTestResult}"/>
+                Visibility="{Binding ShowPositiveImage}"/>
             <images:NegativeTestResult
                 Grid.Row="0" 
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding NegativeTestResult}"/>
+                Visibility="{Binding ShowNegativeImage}"/>
 
             <TextBlock
-                Style="{StaticResource Text}"
+                Style="{DynamicResource Text}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
@@ -68,13 +68,13 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2">
                 <TextBlock
-                    Style="{StaticResource Text}"
+                    Style="{DynamicResource Text}"
                     Visibility="{Binding EmailError}"
                     Foreground="Red"
                     Padding="0 0 0 15"
                     Text="Vul een geldige e-mail in"/>
                 <TextBlock
-      Style="{StaticResource Text}"
+      Style="{DynamicResource Text}"
       Visibility="{Binding EmailSuccess}"
       Foreground="Green"
       Padding="0 0 0 15"

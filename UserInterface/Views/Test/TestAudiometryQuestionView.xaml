@@ -32,7 +32,7 @@
             </ProgressBar>
 
             <TextBlock 
-            Style="{StaticResource Text}"
+            Style="{DynamicResource Text}"
             Grid.Row="2"
             HorizontalAlignment="Center"
             Text="Heeft u het geluid gehoord?"/>

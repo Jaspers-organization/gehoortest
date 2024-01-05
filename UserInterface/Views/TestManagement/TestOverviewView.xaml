@@ -15,7 +15,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{StaticResource Header}" Text="Gehoortest beheer"  Width="865" />
+                    <TextBlock Style="{DynamicResource Header}" Text="Testen beheer"  Width="865" />
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
                               SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
                               SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"
@@ -59,14 +59,14 @@
                             <GridViewColumn Width="690" Header="Title" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding Title}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding Title}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="400" Header="Gemaakt door" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Style="{StaticResource Text}" Text="{Binding EmployeeName}" />
+                                        <TextBlock Style="{DynamicResource Text}" Text="{Binding EmployeeName}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -84,7 +84,7 @@
                             <GridViewColumn Width="200" Header="Aantal vragen">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource Text}" Text="{Binding AmountOfQuestions}" />
+                                        <TextBlock HorizontalAlignment="Center" Style="{DynamicResource Text}" Text="{Binding AmountOfQuestions}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

@@ -11,7 +11,7 @@
         <StackPanel>
 
             <TextBlock 
-                Style="{StaticResource Header}" 
+                Style="{DynamicResource Header}" 
                 HorizontalAlignment="Center" 
                 Text="Medewerkersportaal" />
 
@@ -25,7 +25,7 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <TextBlock 
-                        Style="{StaticResource Text}" 
+                        Style="{DynamicResource Text}" 
                         HorizontalAlignment="Center"
                         Text="{Binding Employee}"/>
                     
@@ -37,21 +37,24 @@
                     
                     <Button 
                         Style="{StaticResource SecondaryButton_L}" 
-                        Margin="0 30 0 0"
-                        IsEnabled="False"
-                        Content="Leeftijdsgroepen beheren"/>
-
-                    <Button Style="{StaticResource SecondaryButton_L}"
                         Visibility="{Binding ShowAdminButtons}"
                         Margin="0 30 0 0"
-                        Content="Applicatie instellingen"
-                        Command="{Binding OpenSettingsCommand}"/>
+                        Command="{Binding OpenTargetAudienceOverviewCommand}"
+                        Content="Leeftijdsgroepen beheren"/>
 
                     <Button Style="{StaticResource SecondaryButton_L}" 
                         Visibility="{Binding ShowAdminButtons}"
                         Margin="0 30 0 0"
-                        IsEnabled="False"
+                        IsEnabled="True"
+                        Command="{Binding OpenEmployeeOverviewCommand}"
                         Content="Medewerkersbeheer"/>
+
+                    <Button Style="{StaticResource SecondaryButton_L}"
+                        Visibility="{Binding ShowAdminButtons}"
+                        Margin="0 30 0 0"
+                        IsEnabled="True"
+                        Content="Applicatie instellingen"
+                        Command="{Binding OpenSettingsCommand}"/>
                 </StackPanel>
 
                 <images:EmployeePortal Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />

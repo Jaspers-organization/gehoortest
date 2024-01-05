@@ -30,11 +30,20 @@
             <DataTemplate DataType="{x:Type viewModels:EmployeePortalViewModel}">
                 <views:EmployeePortalView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:EmployeeOverviewViewModel}">
+                <views:EmployeeOverviewView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:EmployeeManagementViewModel}">
+                <views:EmployeeManagementView/>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestOverviewViewModel}">
                 <views:TestOverviewView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:TestManagementViewModel}">
                 <views:TestManagementView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:TargetAudienceOverviewViewModel}">
+                <views:TargetAudienceOverviewView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
                 <views:SettingsView />
@@ -52,6 +61,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type modalViewModels:ErrorModalViewModal}">
                 <modals:ErrorModal/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type modalViewModels:TargetAudienceModalViewModel}">
+                <modals:TargetAudienceFormView/>
             </DataTemplate>
         </Grid.Resources>
 
@@ -94,6 +106,13 @@
                 HorizontalAlignment="Right"
                 Command="{Binding CloseApplicationCommand}"
                 Content="Afsluiten"/>
+            <Button
+                Visibility="{Binding ShowEnlargeTextButton}"
+                Style="{StaticResource PrimaryButton_S}"
+                Margin="0 0 15 0"
+                HorizontalAlignment="Right"
+                Command="{Binding ChangeTextSizeCommand}"
+                Content="{Binding ChangeText}"/>
         </Grid>
 
         <ContentControl

@@ -26,12 +26,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Test vraag" Height="58" Width="auto"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Test vraag" Height="58" Width="auto"/>
                     <TextBox Text="{Binding TestName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputField_M}"/>
 
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,5,0,00" Grid.RowSpan="2" >
-                    <TextBlock Style="{StaticResource Text}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
+                    <TextBlock Style="{DynamicResource Text}" Text="Leeftijdsgroep" Width="auto" Margin="0,0,0,10"/>
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="auto" Height="70"
                               SelectedValue=""
                               SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
@@ -48,7 +48,7 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal"  Grid.RowSpan="1" >
-                    <TextBlock VerticalAlignment="Center" Style="{StaticResource Text}" Text="Status" Width="355"/>
+                    <TextBlock VerticalAlignment="Center" Style="{DynamicResource Text}" Text="Status" Width="355"/>
                     <Border Height="50">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -79,7 +79,7 @@
             </Grid>
             <Grid Grid.Column="1">
                 <StackPanel>
-                    <TextBlock Text="Toonaudiometrie vragen" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
+                    <TextBlock Text="Toonaudiometrie vragen" HorizontalAlignment="Center" Height="60" Style="{DynamicResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
                         <Rectangle Width="420" Fill="{DynamicResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
@@ -102,14 +102,14 @@
                                     <GridViewColumn Width="50" Header="Nr">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding QuestionNumber}" />
+                                                <TextBlock Style="{DynamicResource Text}" Text="{Binding QuestionNumber}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="Hertz" Width="230">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Frequency}" />
+                                                <TextBlock Style="{DynamicResource Text}" Text="{Binding Frequency}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -158,7 +158,7 @@
             </Grid>
             <Grid Grid.Column="2">
                 <StackPanel>
-                    <TextBlock Text="Tekst vragen" HorizontalAlignment="Center" Height="60" Style="{StaticResource SubHeader}"/>
+                    <TextBlock Text="Tekst vragen" HorizontalAlignment="Center" Height="60" Style="{DynamicResource SubHeader}"/>
                     <Grid Grid.Row="1" Height="500" Margin="0,0,0,50">
                         <Rectangle Width="620" Fill="{DynamicResource SecondaryColor}" Margin="0,-1,0,-5" HorizontalAlignment="Center">
                             <Rectangle.Effect>
@@ -178,14 +178,14 @@
                                     <GridViewColumn Header="Nr" Width="80">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding QuestionNumber}" />
+                                                <TextBlock Style="{DynamicResource Text}" Text="{Binding QuestionNumber}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="Vraag" Width="400">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Style="{StaticResource Text}" Text="{Binding Question}" TextWrapping="Wrap" />
+                                                <TextBlock Style="{DynamicResource Text}" Text="{Binding Question}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

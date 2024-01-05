@@ -49,8 +49,6 @@ public class TestConfiguration : IEntityTypeConfiguration<Test>
                .WithOne(tq => tq.Test)
                .HasForeignKey(tq => tq.TestId)
                .OnDelete(DeleteBehavior.Cascade);
-
-
     }
 }
 

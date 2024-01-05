@@ -65,17 +65,19 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
         this.navigationStore.HideTopBar = false;
         // Services
         testService = new TestService(new TestRepository());
-        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository());
+        targetAudienceService = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
 
         GetTargetAudiences();
     }
 
     private void GetTargetAudiences()
     {
+
         TargetAudiences = targetAudienceService.GetAllTargetAudiences();
 
         if (TargetAudiences == null)
             return;
+
 
         SelectedTargetAudience = TargetAudiences.First();
     }
@@ -112,25 +114,39 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     }
 
     public void OpenConfirmationModal(Action action, string text) => navigationStore.OpenModal(new ConfirmationModalViewModel(navigationStore, text, this, action));
+    private void OpenErrorModal(string text) => navigationStore.OpenModal(new ErrorModalViewModal(navigationStore, text));
 
     private void ToggleActiveStatus(Guid testId)
     {
         try
         {
+            if(SelectedTargetAudience.Id == Guid.Empty)
+            {
+                OpenErrorModal("Deze test behoort niet tot een leeftijdsgroep. Geef de test een leeftijdsgroep om hem actief te kunnen maken.");
+                UpdateTestProjections(SelectedTargetAudience.Id);
+                return;
+            }
             var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
             if (clickedTest!.AmountOfQuestions == 0)
+            {
+                OpenErrorModal("Deze test heeft geen vragen. Voeg enkelen vragen toe om hem actief te kunnen zetten.");
+                UpdateTestProjections(SelectedTargetAudience.Id);
                 return;
+            }
+                
             testService.ToggleActiveStatus(testId);
 
             if (SelectedTargetAudience == null)
+            {
+                UpdateTestProjections(SelectedTargetAudience.Id);
                 return;
+            }
 
             UpdateTestProjections(SelectedTargetAudience.Id);
         }
         catch(Exception ex)
         {
-            
+
         }
-       
     }
 }
