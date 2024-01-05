@@ -65,6 +65,30 @@ public class TargetAudienceRepository : ITargetAudienceRepository
                 .ToList();
 
             return result;
+    public List<TargetAudience> GetAllActiveWithTest()
+    {
+        using (Repository context = repository)
+        {
+            var query = from ta in context.TargetAudiences
+                        join t in context.Tests on ta.Id equals t.TargetAudienceId
+                        select ta;
+            return query.ToList();
+      }
+    }
+
+    public void FillTargetAudiences()
+    {
+        using (Repository context = repository)
+        {
+            context.TargetAudiences.AddRange(new List<TargetAudience>{
+                new TargetAudience { Id = new Guid(), From = 0, To = 18, Label = "0-18" },
+                new TargetAudience { Id = new Guid(), From = 19, To = 29, Label = "19-29" },
+                new TargetAudience { Id = new Guid(), From = 30, To = 49, Label = "30-49" },
+                new TargetAudience { Id = new Guid(), From = 50, To = 69, Label = "50-69" },
+                new TargetAudience { Id = new Guid(), From = 70, To = 79, Label = "70-79" },
+                new TargetAudience { Id = new Guid(), From = 80, To = 89, Label = "80-89" },
+            });
+            context.SaveChanges();
         }
     }
 

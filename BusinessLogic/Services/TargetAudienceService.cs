@@ -68,5 +68,10 @@ public class TargetAudienceService
     {
         targetAudience.Label = $"{targetAudience.From}-{targetAudience.To}";
     }
+    
+    public List<TargetAudience> GetAllActiveWithTest()
+    {
+        return targetAudienceRepository.GetAllActiveWithTest();
+    }
 
 }

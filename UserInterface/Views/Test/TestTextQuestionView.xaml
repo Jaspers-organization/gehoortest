@@ -34,7 +34,7 @@
                  Grid.Row="3" 
                  HorizontalAlignment="Left"
                  Content="Volgende vraag" 
-                 Command="{Binding SaveQuestionCommand}"/>
+                 Command="{Binding AnswerTextQuestionCommand}"/>
             </Grid>
             <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
         </Grid>
