@@ -216,8 +216,6 @@ public class TestService
         int index = GetQuestionNumberIndex(questions, questionNumber);
         if (index != -1)
         {
-            questions.RemoveAt(index);
-            questions = ShiftQuestionNumbers(questions);
             if (index == 0 && questions.Count == 0)
                 return questions;
 
@@ -230,6 +228,9 @@ public class TestService
                     test.ToneAudiometryQuestions.ToList().RemoveAt(index);
                     break;
             }
+
+            questions.RemoveAt(index);
+            questions = ShiftQuestionNumbers(questions);
         }
 
         return questions;
