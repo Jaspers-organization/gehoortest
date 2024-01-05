@@ -13,9 +13,9 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" >
-                    <TextBlock Style="{DynamicResource Header}" Text="Medewerker overzicht"  Width="1100" />
+                    <TextBlock Style="{DynamicResource Header}" Text="Medewerker overzicht"  Width="1500" />
 
-                    <Button Grid.Row="1" Command="{Binding NewEmployeeCommand}" Style="{StaticResource SecondaryButton_L}"  Content="Nieuwe medewerker toevoegen"/>
+                    <Button Grid.Row="1" Command="{Binding NewEmployeeCommand}" Style="{StaticResource SecondaryButton_S}"  Content="Nieuw"/>
                 </StackPanel>
             </Grid>
 

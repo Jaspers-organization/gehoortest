@@ -19,7 +19,7 @@
                     <ComboBox Style="{StaticResource ComboBoxStyle}" Width="320" Height="70"
                               SelectedValuePath="Label" ItemsSource="{Binding TargetAudiences}"
                               SelectedItem="{Binding SelectedTargetAudience, Mode=TwoWay}"
-                              Text="Selecteer een doelgroep" Margin="31,0,78,0">
+                              Text="Selecteer een doelgroep" Margin="31,0,278,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -29,7 +29,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Style="{StaticResource SecondaryButton_M}"  Content="Nieuwe test maken"/>
+                    <Button Grid.Row="1" Command="{Binding NewTestCommand}" Style="{StaticResource SecondaryButton_S}"  Content="Nieuw"/>
                 </StackPanel>
             </Grid>
 

@@ -19,7 +19,7 @@ internal class SettingsConfiguration : IEntityTypeConfiguration<Settings>
         builder.Property(x => x.Color)
             .HasColumnName("color")
             .HasColumnType("nvarchar(50)")
-            .HasDefaultValue("#DA0063");
+            .HasDefaultValue("#DA0063").ValueGeneratedOnAdd();
 
     }
 }
