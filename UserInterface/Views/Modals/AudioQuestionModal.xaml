@@ -23,7 +23,8 @@
                       Width="320" Height="70"
                       Grid.Row="0" Grid.Column="1" Margin="62,0,-12,0"
                       SelectedValue="{Binding SelectedFrequency, Mode=TwoWay}"
-                      SelectedValuePath="Content">
+                      SelectedValuePath="Content"
+                      SelectedIndex="0">
                 <ComboBoxItem>250</ComboBoxItem>
                 <ComboBoxItem>500</ComboBoxItem>
                 <ComboBoxItem>750</ComboBoxItem>
