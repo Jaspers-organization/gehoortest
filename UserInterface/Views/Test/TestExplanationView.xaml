@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
+             xmlns:images="clr-namespace:UserInterface.Assets.Images"
              mc:Ignorable="d" >
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
@@ -36,8 +37,8 @@
                 </StackPanel>
                 
             </Grid>
-
-            <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
+            <images:SittingScreen Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <!--<Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>-->
         </Grid>
     </Border>
 </UserControl>

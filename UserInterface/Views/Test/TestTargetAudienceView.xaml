@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views" 
              xmlns:viewmodels="clr-namespace:UserInterface.ViewModels" 
+             xmlns:images="clr-namespace:UserInterface.Assets.Images"
              d:DataContext="{d:DesignInstance Type=viewmodels:TestViewModel}"
              mc:Ignorable="d">
     <Grid>
@@ -29,7 +30,7 @@
 
                     <TextBlock Style="{DynamicResource Header}" Grid.RowSpan="1" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
 
-                    <StackPanel Grid.Row="1" Visibility="{Binding QuestionRadioButtons}">
+                    <StackPanel Grid.Row="1" Visibility="{Binding ShowQuestionRadioButtons}">
                         <ListBox SelectedItem="{Binding SelectedTextOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
                     </StackPanel>
 
@@ -40,7 +41,7 @@
                          Content="Volgende vraag" 
                          Command="{Binding TargetAudienceSelectedCommand}"/>
                 </Grid>
-                <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
+                <images:SittingScreen Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
         </Border>
     </Grid>

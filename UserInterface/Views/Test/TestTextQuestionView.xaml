@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
+              xmlns:images="clr-namespace:UserInterface.Assets.Images"
              mc:Ignorable="d" >
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
@@ -22,12 +23,12 @@
 
                 <TextBlock Style="{DynamicResource Header}" Grid.Row="0" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
 
-                <StackPanel Grid.Row="1" Visibility="{Binding QuestionRadioButtons}">
-                    <ListBox SelectedItem="{Binding SelectedOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
+                <StackPanel Grid.Row="1" Visibility="{Binding ShowQuestionRadioButtons}">
+                    <ListBox SelectedItem="{Binding SelectedTextOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
                 </StackPanel>
 
-                <TextBlock Style="{DynamicResource Text}"  Grid.Row="1" VerticalAlignment="Center" Visibility="{Binding QuestionInput}" />
-                <TextBox Style="{StaticResource InputField_L}" Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20"/>
+                <TextBlock Style="{DynamicResource Text}"  Grid.Row="1" VerticalAlignment="Center" Visibility="{Binding ShowQuestionInput}" />
+                <TextBox Style="{StaticResource InputField_L}" Visibility="{Binding ShowQuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20"/>
 
                 <Button 
                  Style="{StaticResource PrimaryButton_L}" 
@@ -36,7 +37,7 @@
                  Content="Volgende vraag" 
                  Command="{Binding AnswerTextQuestionCommand}"/>
             </Grid>
-            <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
+            <images:SittingScreen Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
     </Border>
 </UserControl>
