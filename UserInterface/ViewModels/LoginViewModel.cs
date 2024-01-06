@@ -62,7 +62,7 @@ internal class LoginViewModel : ViewModelBase
             return;
         }
 
-        EmployeeProjection? employee = service.Login(Email, Password);
+        EmployeeProjection? employee = service.Login(Email!, Password!);
 
         if (employee == null)
         {

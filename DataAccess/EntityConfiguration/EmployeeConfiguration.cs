@@ -52,6 +52,7 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 
         builder.HasOne(e => e.EmployeeLogin)
                .WithOne(el => el.Employee)
-               .HasForeignKey<EmployeeLogin>(el => el.EmployeeId);
+               .HasForeignKey<EmployeeLogin>(el => el.EmployeeId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace DataAccess.EntityConfiguration;
 
@@ -14,7 +15,8 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
 
         builder.Property(t => t.Id)
               .HasColumnName("id")
-              .HasColumnType("nvarchar(128)");
+              .HasColumnType("nvarchar(128)").ValueGeneratedNever(); ;
+
         builder.Property(t => t.From)
                .HasColumnName("from")
                .HasColumnType("int");
@@ -30,5 +32,12 @@ public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudien
         builder.HasMany(t => t.Tests)
                .WithOne(test => test.TargetAudience)
                .HasForeignKey(test => test.TargetAudienceId);
+
+        builder.HasData(new TargetAudience{
+            Id = Guid.Empty,
+            From = 0,
+            To = 0,
+            Label = "Ongekoppelde testen"
+        });
     }
 }

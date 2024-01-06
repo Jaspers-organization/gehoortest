@@ -27,12 +27,12 @@
                          Height="30" 
                          Name="ProgressBar" 
                          Background="{StaticResource PrimaryBackgroundColor}" 
-                         Foreground="{StaticResource SecondaryColor}" 
+                         Foreground="{DynamicResource SecondaryColor}" 
                          Value="{Binding ProgressValue, Mode=OneWay}">
             </ProgressBar>
 
             <TextBlock 
-            Style="{StaticResource Text}"
+            Style="{DynamicResource Text}"
             Grid.Row="2"
             HorizontalAlignment="Center"
             Text="Heeft u het geluid gehoord?"/>

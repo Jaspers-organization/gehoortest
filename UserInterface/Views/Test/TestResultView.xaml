@@ -12,6 +12,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*" />
@@ -23,18 +24,18 @@
                 Grid.Column="0"
                 Orientation="Vertical">
                 <TextBlock 
-                    Style="{StaticResource Header}"
+                    Style="{DynamicResource Header}"
                     HorizontalAlignment="Center"
                     Text="Testresultaten"/>
                 <TextBlock 
-                    Style="{StaticResource Text}" 
+                    Style="{DynamicResource Text}" 
                     Text="U heeft de test succesvol afgerond."/>
                 <TextBlock 
-                    Style="{StaticResource SubHeader}"
+                    Style="{DynamicResource SubHeader}"
                     Margin="0 30 0 0"
                     Text="{Binding TestResultText}"/>
                 <TextBlock 
-                    Style="{StaticResource Text}"
+                    Style="{DynamicResource Text}"
                     Margin="0 30 0 0"
                     TextWrapping="Wrap"
                     Text="{Binding TestResultExplanation}"/>
@@ -45,65 +46,64 @@
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding PositiveTestResult}"/>
+                Visibility="{Binding ShowPositiveImage}"/>
             <images:NegativeTestResult
                 Grid.Row="0" 
                 Grid.RowSpan="2" 
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Visibility="{Binding NegativeTestResult}"/>
+                Visibility="{Binding ShowNegativeImage}"/>
 
             <TextBlock
-                Style="{StaticResource Text}"
+                Style="{DynamicResource Text}"
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Padding="0 0 0 15"
+                Padding="0 15"
                 TextWrapping="Wrap" 
-                Text="U kunt de testresultaten vrijblijvend naar uw e-mail versturen." />
-            <!--of uitprinten-->
+                Text="U kunt de testresultaten vrijblijvend naar uw e-mail versturen."/>
 
-            <StackPanel 
+            <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
-                Grid.ColumnSpan="2">
-                <TextBlock
-                    Style="{StaticResource Text}"
-                    Visibility="{Binding EmailError}"
-                    Foreground="Red"
-                    Padding="0 0 0 15"
-                    Text="Vul een geldige e-mail in"/>
-                <TextBlock
-      Style="{StaticResource Text}"
-      Visibility="{Binding EmailSuccess}"
-      Foreground="Green"
-      Padding="0 0 0 15"
-      Text="De mail is successvol verzonden!"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox 
-                        Style="{StaticResource InputField_XXL}" 
-                        Text="{Binding Email}"/>
-                    <Button 
-                        Style="{StaticResource PrimaryButton_M}" 
-                        Margin="30 0 0 0"
-                        Content="Verstuur e-mail" 
-                        Command="{Binding SendEmailCommand}"/>
-                    <!--<Border 
-        CornerRadius="35" 
-        Height="70" 
-        Width="220" 
-        Background="{StaticResource PrimaryColor}"
-        Margin="30 0 0 0">
-        <Button
-            FontSize="32"
-            FontWeight="SemiBold"
-            Foreground="White"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Content="(icon) Print"/>
-    </Border>-->
-                </StackPanel>
-            </StackPanel>
+                Style="{StaticResource Text}"
+                Visibility="{Binding EmailInvalidError}"
+                Foreground="Red"
+                Padding="0 15"
+                Text="Vul een geldige e-mail in"/>
+
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                Style="{StaticResource Text}"
+                Visibility="{Binding EmailSendSuccess}"
+                Foreground="Green"
+                Padding="0 15"
+                Text="E-mail successvol verzonden!"/>
+
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                Style="{StaticResource Text}"
+                Visibility="{Binding EmailSendError}"
+                Foreground="Red"
+                Padding="0 15"
+                Text="Er ging iets mis tijdens het verzenden"/>
+
+            <TextBox 
+                Grid.Row="4"
+                Grid.Column="0"
+                Style="{StaticResource InputField_XXL}" 
+                HorizontalAlignment="Left"
+                Text="{Binding Email}"/>
+                    
+            <Button 
+                Grid.Row="4"
+                Grid.Column="1"
+                Style="{StaticResource PrimaryButton_M}" 
+                HorizontalAlignment="Left"
+                Content="Verstuur e-mail" 
+                Command="{Binding SendEmailCommand}"/>
 
         </Grid>
     </Border>

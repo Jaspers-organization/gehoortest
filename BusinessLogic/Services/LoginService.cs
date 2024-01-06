@@ -26,11 +26,7 @@ public class LoginService
             return null;
         }
 
-        bool isPasswordCorrect = CheckLogin(password, employeeLogin.Salt, employeeLogin.Password);
-        if (!isPasswordCorrect)
-        {
-            return null;
-        }
+        if (CheckLogin(password, employeeLogin.Password) == false) return null;
 
         Employee employee = employeeLogin.Employee!;
         return new EmployeeProjection()
@@ -42,8 +38,10 @@ public class LoginService
         };
     }
 
-    private bool CheckLogin(string password, string salt, string passwordToVerify)
+
+    private bool CheckLogin(string password, string passwordHash)
     {
-        return hashingService.VerifyPassword(password, salt, passwordToVerify);
+        return hashingService.VerifyPassword(password, passwordHash);
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.BusinessRules;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -81,26 +82,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         }
     }
     #endregion
-
-    #region Errors
-    private bool CheckValidityInput()
-    {
-        string testQuestionValidation = ErrorService.ValidateInput("TestQuestion", TestQuestion);
-        string anwserTypeValidation = ErrorService.ValidateInput("MultipleChoice", HasInputField, MultipleChoice, Options.ToList());
-        if (!string.IsNullOrEmpty(testQuestionValidation))
-        {
-            OpenErrorModal(testQuestionValidation);
-            return false;
-        }
-
-        if (!string.IsNullOrEmpty(anwserTypeValidation))
-        {
-            OpenErrorModal(anwserTypeValidation);
-            return false;
-        }
-        return true;
-    }
-    #endregion
+       
     private ErrorModalViewModal errorModalViewModal { get; set; }
 
     public TextQuestionModalViewModel(NavigationStore navigationStore, TextQuestion textQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel, TestService testService)
@@ -117,7 +99,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         MultipleChoice = textQuestion.IsMultiSelect;
         HasInputField = textQuestion.HasInputField;
         TestQuestion = textQuestion.Question;
-        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!));
+        Options = new ObservableCollection<string>(testService.ConvertQuestionOptionsToStrings(textQuestion.Options!.ToList()));
     }
 
     private void OpenErrorModal(string text)
@@ -129,7 +111,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!ErrorService.IsEmptyString(value))
+            if (!TestBusinessRules.IsEmptyString(value))
             {
                 Options.Add(value);
                 OnPropertyChanged(nameof(Options));
@@ -150,7 +132,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!ErrorService.IsEmptyString(value) && Options.Contains(value))
+            if (!TestBusinessRules.IsEmptyString(value) && Options.Contains(value))
             {
                 Options.Remove(value);
                 OnPropertyChanged(nameof(Options));
@@ -170,8 +152,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
     {
         try
         {
-            if (!CheckValidityInput())
-                return;
+            TestBusinessRules.ValidateTextValues(TestQuestion, HasInputField, MultipleChoice, Options.ToList());
 
             TextQuestion question = new TextQuestion
             {
@@ -192,7 +173,7 @@ internal class TextQuestionModalViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            OpenErrorModal("Er is wat fout gegaan bij het opslaan van de vraag.");
+            OpenErrorModal(ex.Message);
         }
 
     }

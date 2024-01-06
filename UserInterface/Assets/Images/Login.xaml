@@ -71,7 +71,7 @@
                                 <PathGeometry Figures="M 720.046 337.135 L 720.046 341.556 L 264.306 341.556 L 264.649 341.004 L 264.649 337.135 L 720.046 337.135 Z"/>
                             </GeometryDrawing.Geometry>
                         </GeometryDrawing>
-                        <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                        <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                             <GeometryDrawing.Geometry>
                                 <EllipseGeometry RadiusX="77.37523" RadiusY="77.37523" Center="707.33457,77.37523"/>
                             </GeometryDrawing.Geometry>
@@ -164,7 +164,7 @@
                             </GeometryDrawing>
                         </DrawingGroup>
                         <DrawingGroup Transform="1.0,0.0,0.0,1.0,-203.5,-174.134">
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 409.418 423.552 c -27.1387 18.4931 -46.3142 0.63272 -60.9473 -26.9235 c 2.03338 -16.8619 -1.259 -37.0406 -7.35672 -58.9663 a 40.1376 40.1376 0 0 1 24.5057 -48.4012 h 0 l 32.0612 13.421 c 27.2236 22.1904 32.582 46.227 22.3682 71.5784 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -178,7 +178,7 @@
                             </GeometryDrawing>
                         </DrawingGroup>
                         <DrawingGroup Transform="1.0,0.0,0.0,1.0,-203.5,-174.134">
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 361.146 329.524 c -12.4386 -5.4511 -23.7493 0.47044 -38.026 5.21926 l -2.23683 -39.5172 c 14.1761 -7.55568 27.6921 -9.59281 40.2629 -3.728 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>

@@ -12,8 +12,5 @@ namespace BusinessLogic.Models
     {
         public Guid Id { get; set; }
         public string Color { get;set; }
-        public string Logo { get; set; }
-        public int TestInactiveTime { get;set; }
-        public int LoginInactiveTime { get;set; }
     }
 }
