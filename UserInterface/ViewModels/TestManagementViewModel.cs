@@ -418,22 +418,31 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         return new TestOverviewViewModel(navigationStore);
     }
+
     private void SetEmployee()
     {
         Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
         Test.EmployeeId = EmployeeId;
         Test.Employee = employeeService.GetEmployeeById(EmployeeId);
     }
+    private void CheckEmployee()
+    {
+        if (Test.Employee == null && Test.EmployeeId == Guid.Empty)
+            SetEmployee();
+    }
     private void SaveTest()
     {
         try
         {
+
             testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
+
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }
         catch (Exception ex)
         {
             OpenErrorModal(ex.Message);
+
         }
     }
     #endregion
