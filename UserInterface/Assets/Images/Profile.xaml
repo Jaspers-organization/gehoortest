@@ -56,7 +56,7 @@
                                     <RectangleGeometry Rect="357.10447,38.32998,530.61006,222.81354"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="#ffda0063">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <RectangleGeometry Rect="340.77116,0.0,562.79595,23.90924"/>
                                 </GeometryDrawing.Geometry>
@@ -131,7 +131,7 @@
                                 </GeometryDrawing>
                             </DrawingGroup>
                             <DrawingGroup Transform="1.0,0.0,0.0,1.0,-148.096,-195.427">
-                                <GeometryDrawing Brush="#ffda0063">
+                                <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                     <GeometryDrawing.Geometry>
                                         <PathGeometry Figures="M 613.48 412.325 a 65.38 65.38 0 0 1 -10.6991 -1.75788 l 0.19683 -3.728 L 604.615 377.197 l 0.0148 -0.22735 h 32.9306 l 5.1679 27.2932 l 0.697 3.68251 c -1.36375 0.53046 -2.743 1.03058 -4.15193 1.47 c -0.01554 0 -0.01554 0.01517 -0.03034 0.01517 c -1.955 0.60612 -3.9403 1.13658 -5.94116 1.576 a 68.5581 68.5581 0 0 1 -8.06189 1.24267 a 62.0453 62.0453 0 0 1 -6.30374 0.30311 C 617.117 412.552 615.284 412.477 613.48 412.325 Z" FillRule="Nonzero"/>
                                     </GeometryDrawing.Geometry>
@@ -221,7 +221,7 @@
                                 </GeometryDrawing>
                             </DrawingGroup>
                             <DrawingGroup Transform="1.0,0.0,0.0,1.0,-148.096,-195.427">
-                                <GeometryDrawing Brush="#ffda0063">
+                                <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                     <GeometryDrawing.Geometry>
                                         <PathGeometry Figures="M 310.376 308.604 h 45.4117 l 32.1097 169.575 s -27.9938 2.3937 -43.9939 8.3937 s -42.5984 -13.7058 -42.5984 -13.7058 Z" FillRule="Nonzero"/>
                                     </GeometryDrawing.Geometry>
