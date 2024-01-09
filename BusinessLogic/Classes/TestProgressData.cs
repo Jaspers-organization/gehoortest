@@ -133,8 +133,6 @@ public class TestProgressData
                 }
             }
 
-           
-
             return Test.ToneAudiometryQuestions.First(x => x.QuestionNumber == CurrentQuestionNumber);
         }
     }

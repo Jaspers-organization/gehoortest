@@ -33,12 +33,12 @@
                     <Button  Grid.Row="2" Style="{StaticResource PrimaryButton_L}" 
                               HorizontalAlignment="Left"
                               Content="Start test" 
-                              Command="{Binding StartTestCommand}"/>                  
+                              Command="{Binding StartTestCommand}"/>
+                   
                 </StackPanel>
                 
             </Grid>
             <images:SittingScreen Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <!--<Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>-->
         </Grid>
     </Border>
 </UserControl>

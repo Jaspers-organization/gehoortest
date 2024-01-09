@@ -49,6 +49,7 @@ internal class EmployeePortalViewModel : ViewModelBase
     {
         EmployeeProjection employee = navigationStore.LoggedInEmployee!;
         EmployeeName = employee.FullName;
+
         if (employee.Role == Role.Administrator)
         {
             ShowAdminButtons = Visibility.Visible;
