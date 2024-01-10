@@ -11,7 +11,7 @@ public class TestProgressData
     public int CurrentQuestionNumber { get; set; }
     public Ear CurrentEar { get; set; }
     public int Decibel { get; set; }
-    public List<(bool, Ear, ToneAudiometryQuestion, int)> CurrentToneAudioMetryAnswers { get; set; }
+    public List<(bool answer, Ear ear, ToneAudiometryQuestion question, int decibel)> CurrentToneAudioMetryAnswers { get; set; }
     public List<TextQuestionResult> TextQuestionResults { get; set; }
     public List<ToneAudiometryQuestionResult> ToneAudiometryQuestionResults { get; set; }
 
@@ -51,7 +51,9 @@ public class TestProgressData
         textQAnswerResult.Id = Guid.NewGuid();
         textQAnswerResult.Answer = answer;
         answerList.Add(textQAnswerResult);
-        givenAnswer.Answers = answerList;   
+        givenAnswer.Answers = answerList;
+
+        TextQuestionResults.Add(givenAnswer);
     }
 
     public void Add(bool answer, Ear ear, ToneAudiometryQuestion question)
@@ -74,7 +76,7 @@ public class TestProgressData
         }
     }
 
-    public ToneAudiometryQuestion? GetNextTOneAudiometryQuestion()
+    public ToneAudiometryQuestion? GetNextToneAudiometryQuestion()
     {
         if (IsFrequencyDone())
         {
@@ -164,28 +166,21 @@ public class TestProgressData
             return false;
         }
 
-        if (resultLeft == null && resultRight == null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return resultLeft == null && resultRight == null;
     }
 
     private int? GetNextDecibels(Ear ear)
     {
-        var answersOfSelectedEar = CurrentToneAudioMetryAnswers.Where(x => x.Item2 == ear).ToList();
+        var answersOfSelectedEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == ear).ToList();
         var lastAnswer = answersOfSelectedEar[answersOfSelectedEar.Count() - 1];
         //last answer was true
-        if (lastAnswer.Item1)
+        if (lastAnswer.answer)
         {
             bool falseGivenAnswer = false;
             //check if any of the previous answers were false (opposite of the last given answer)
             foreach (var item in answersOfSelectedEar)
             {
-                if (item.Item1 != lastAnswer.Item1)
+                if (item.answer != lastAnswer.answer)
                 {
                     falseGivenAnswer = true;
                     break;
@@ -195,8 +190,8 @@ public class TestProgressData
             if (falseGivenAnswer)
             {
                 //any false answers
-                int? modulus = lastAnswer.Item4 % 2;
-                if (lastAnswer.Item4 == 0 || modulus != 0)
+                int? modulus = lastAnswer.decibel % 2;
+                if (lastAnswer.decibel == 0 || modulus != 0)
                 {
                     return null;
                 }
@@ -218,7 +213,7 @@ public class TestProgressData
             //check if any of the previous answers were true
             foreach (var item in answersOfSelectedEar)
             {
-                if (item.Item1 != lastAnswer.Item1)
+                if (item.answer != lastAnswer.answer)
                 {
                     trueGivenAnswer = true;
                     break;
@@ -228,8 +223,8 @@ public class TestProgressData
             if (trueGivenAnswer)
             {
                 //any true answers given
-                int? modulus = lastAnswer.Item4 % 2;
-                if (lastAnswer.Item4 == 0 || modulus != 0)
+                int? modulus = lastAnswer.decibel % 2;
+                if (lastAnswer.decibel == 0 || modulus != 0)
                 {
                     return null;
                 }
@@ -247,26 +242,29 @@ public class TestProgressData
     }
     private void SaveToneAudiometryQuestionResult()
     {
-        var answersRightEar = CurrentToneAudioMetryAnswers.Where(x => x.Item2 == Ear.Right).ToList();
-        var lastAnswerRightEar = answersRightEar[answersRightEar.Count - 1];
-        ToneAudiometryQuestionResult finalAnswerRightEar = new ToneAudiometryQuestionResult();
-        finalAnswerRightEar.Id = Guid.NewGuid();
-        finalAnswerRightEar.Frequency = lastAnswerRightEar.Item3.Frequency;
-        finalAnswerRightEar.StartingDecibels = lastAnswerRightEar.Item3.StartingDecibels;
-        finalAnswerRightEar.LowestDecibels = Decibel;
-        finalAnswerRightEar.Ear = Ear.Right;
+        var lastAnswersRightEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == Ear.Right).ToList().Last();
+        ToneAudiometryQuestionResult finalAnswerRightEar = new ToneAudiometryQuestionResult()
+        {
+            Id = Guid.NewGuid(),
+            Frequency = lastAnswersRightEar.question.Frequency,
+            StartingDecibels = lastAnswersRightEar.question.StartingDecibels,
+            LowestDecibels = Decibel,
+            Ear = Ear.Right
+        };
+
         ToneAudiometryQuestionResults.Add(finalAnswerRightEar);
 
-
-        var answersLeftEar = CurrentToneAudioMetryAnswers.Where(x => x.Item2 == Ear.Left).ToList();
-        var lastAnswerLeftEar = answersLeftEar[answersLeftEar.Count - 1];
-        ToneAudiometryQuestionResult finalAnswerLefttEar = new ToneAudiometryQuestionResult();
-        finalAnswerLefttEar.Id = Guid.NewGuid();
-        finalAnswerLefttEar.Frequency = lastAnswerLeftEar.Item3.Frequency;
-        finalAnswerLefttEar.StartingDecibels = lastAnswerLeftEar.Item3.StartingDecibels;
-        finalAnswerLefttEar.LowestDecibels = Decibel;
-        finalAnswerLefttEar.Ear = Ear.Right;
-        ToneAudiometryQuestionResults.Add(finalAnswerLefttEar);
+        var lastAnswersLeftEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == Ear.Left).ToList().Last();
+        ToneAudiometryQuestionResult finalAnswerLeftEar = new ToneAudiometryQuestionResult()
+        {
+            Id = Guid.NewGuid(),
+            Frequency = lastAnswersLeftEar.Item3.Frequency,
+            StartingDecibels = lastAnswersLeftEar.Item3.StartingDecibels,
+            LowestDecibels = Decibel,
+            Ear = Ear.Right
+        };
+       
+        ToneAudiometryQuestionResults.Add(finalAnswerLeftEar);
     }
 
     private void ResetToneAudiometryTest()

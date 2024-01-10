@@ -28,7 +28,7 @@ using System.Runtime.CompilerServices;
 
 namespace UserInterface.ViewModels
 {
-    internal class TestViewModel : ViewModelBase, INotifyPropertyChanged
+    internal class TestViewModel : ViewModelBase
     {
         private readonly NavigationStore navigationStore;
 
@@ -39,8 +39,6 @@ namespace UserInterface.ViewModels
         #endregion Services
 
         private AudioPlayer.AudioPlayer audioPlayer;
-     
-
         TextQuestion currentTextQuestion;
         ToneAudiometryQuestion currentAudiometryQuestion;
         private BackgroundWorker worker;
@@ -231,7 +229,7 @@ namespace UserInterface.ViewModels
             {
                 questionInputText = value;
                 OnPropertyChanged(nameof(QuestionInputText));
-                TextBtnAnswerEnabled = !string.IsNullOrEmpty(value);
+                TextBtnAnswerEnabled = !string.IsNullOrEmpty(value.Trim());
             }
         }
 
@@ -284,6 +282,7 @@ namespace UserInterface.ViewModels
 
 
             audioPlayer = new AudioPlayer.AudioPlayer();
+            Guid ee = Guid.NewGuid();
         }
         #endregion Constructor
       
@@ -306,7 +305,7 @@ namespace UserInterface.ViewModels
         private void StartTextQuestions()
         {
             GetTest();
-            DetermineTextQuestionJ();
+            DetermineFirstTextQuestion();
             SetVisualsTextQuestion();
         }
         private void GetTest()
@@ -317,7 +316,7 @@ namespace UserInterface.ViewModels
             Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id);
             testProgressData = new TestProgressData(Test);
         }
-        private void DetermineTextQuestionJ()
+        private void DetermineFirstTextQuestion()
         {
             TextQuestion = Test.TextQuestions.First().Question;
             currentTextQuestion = Test.TextQuestions.First();
@@ -325,12 +324,12 @@ namespace UserInterface.ViewModels
         }
         private void SetVisualsTextQuestion()
         {
+            ShowQuestionInput = Visibility.Hidden;
             QuestionInputText = string.Empty;
             ShowQuestionRadioButtons = Visibility.Hidden;
 
             if (currentTextQuestion.IsMultiSelect)
             {
-                ShowQuestionInput = Visibility.Hidden;
                 List<string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options.ToList());
                 List<string> tempRadioButtons = new();
                 foreach (string option in options)
@@ -341,7 +340,8 @@ namespace UserInterface.ViewModels
                 RadioButtons = tempRadioButtons;
                 ShowQuestionRadioButtons = Visibility.Visible;
             }
-            else if (currentTextQuestion.HasInputField)
+            
+            if (currentTextQuestion.HasInputField)
             {
                 ShowQuestionInput = Visibility.Visible;
             }
@@ -352,10 +352,10 @@ namespace UserInterface.ViewModels
         private void StartToneAudioMetryQuestions()
         {
             ShowTestExplanationStartAudioView = Visibility.Hidden;
-            DetermineAudioQuestionJ();
+            DetermineFirstAudioQuestion();
             SetVisualsAudioQuestion();
         }
-        private void DetermineAudioQuestionJ()
+        private void DetermineFirstAudioQuestion()
         {
             currentAudiometryQuestion = Test.ToneAudiometryQuestions.First();
             testProgressData.Decibel = currentAudiometryQuestion.StartingDecibels;
@@ -366,7 +366,7 @@ namespace UserInterface.ViewModels
         }
         private void AnswerTextQuestion()
         {
-            string answerToAdd = currentTextQuestion.IsMultiSelect ? SelectedTextOption : QuestionInputText;
+            string answerToAdd = QuestionInputText.Trim().IsNullOrEmpty() ?  SelectedTextOption : QuestionInputText;
             testProgressData.Add(answerToAdd, currentTextQuestion);
 
             currentTextQuestion = testProgressData.GetNextTextQuestion();
@@ -386,7 +386,7 @@ namespace UserInterface.ViewModels
             bool answer = value == "true" ? true : false;
             testProgressData.Add(answer, testProgressData.CurrentEar, currentAudiometryQuestion);
 
-            currentAudiometryQuestion = testProgressData.GetNextTOneAudiometryQuestion();
+            currentAudiometryQuestion = testProgressData.GetNextToneAudiometryQuestion();
             if (currentAudiometryQuestion == null)
             {
                 ShowResults();
