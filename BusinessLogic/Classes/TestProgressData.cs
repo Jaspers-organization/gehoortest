@@ -251,19 +251,17 @@ public class TestProgressData
             LowestDecibels = Decibel,
             Ear = Ear.Right
         };
-
         ToneAudiometryQuestionResults.Add(finalAnswerRightEar);
 
         var lastAnswersLeftEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == Ear.Left).ToList().Last();
         ToneAudiometryQuestionResult finalAnswerLeftEar = new ToneAudiometryQuestionResult()
         {
             Id = Guid.NewGuid(),
-            Frequency = lastAnswersLeftEar.Item3.Frequency,
-            StartingDecibels = lastAnswersLeftEar.Item3.StartingDecibels,
+            Frequency = lastAnswersLeftEar.question.Frequency,
+            StartingDecibels = lastAnswersLeftEar.question.StartingDecibels,
             LowestDecibels = Decibel,
-            Ear = Ear.Right
-        };
-       
+            Ear = Ear.Left
+        };       
         ToneAudiometryQuestionResults.Add(finalAnswerLeftEar);
     }
 
