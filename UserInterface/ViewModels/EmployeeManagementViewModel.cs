@@ -102,7 +102,6 @@ internal class EmployeeManagementViewModel : ViewModelBase, IConfirmation
     {
         //Dependencies initialization
         this.navigationStore = navigationStore;
-        this.navigationStore.HideTopBar = true;
 
         employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeLoginRepository(), new HashingService.HashingService());
 

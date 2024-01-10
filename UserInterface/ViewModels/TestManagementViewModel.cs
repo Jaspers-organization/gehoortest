@@ -96,7 +96,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         //Dependencies initialization
         this.navigationStore = navigationStore;
-        this.navigationStore.HideTopBar = true;
 
         testService = new TestService(new TestRepository());
         employeeService = new EmployeeService(new EmployeeRepository());

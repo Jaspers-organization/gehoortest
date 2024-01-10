@@ -44,7 +44,6 @@ internal class EmployeeOverviewViewModel : ViewModelBase, IConfirmation
     {
         this.navigationStore = navigationStore;
         this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
-        this.navigationStore.HideTopBar = false;
         // Services
         employeeService = new EmployeeService(new EmployeeRepository(), new EmployeeLoginRepository());
 

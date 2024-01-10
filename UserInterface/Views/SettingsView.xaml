@@ -28,7 +28,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock 
-                Style="{StaticResource Header}"
+                Style="{DynamicResource Header}"
                 HorizontalAlignment="Center"  
                 Text="Applicatie instellingen" 
                 Grid.Row="0"
@@ -40,7 +40,7 @@
                 Fill="{DynamicResource SecondaryColor}"/>
 
             <TextBlock
-                Style="{StaticResource Text}"
+                Style="{DynamicResource Text}"
                 Text="Thema instelling"
                 Grid.Column="0"
                 VerticalAlignment="Center"

@@ -62,7 +62,6 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
     {
         this.navigationStore = navigationStore;
         this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
-        this.navigationStore.HideTopBar = false;
         // Services
         testService = new TestService(new TestRepository());
         targetAudienceService = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
