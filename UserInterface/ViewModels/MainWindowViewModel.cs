@@ -109,46 +109,55 @@ internal class MainWindowViewModel : ViewModelBase
         this.navigationStore = navigationStore;
 
         this.navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+        this.navigationStore.CurrentViewModelChanged += SetTopBarButtons;
+
         this.navigationStore.IsModalOpenChanged += OnIsModalOpenChanged;
-        this.navigationStore.LoggedInEmployeeChanged += LoggedInEmployeeChanged;
         this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
-        this.navigationStore.HideTopBarChanged += ToggleTopBar;
+        
         CurrentViewModel = this.navigationStore.CurrentViewModel;
         
         ISettingsRepository settingsRepository = new SettingsRepository();
         settingService = new SettingService(settingsRepository);
         GetColorSetting();
     }
+    private void SetTopBarButtons()
+    {
+        ShowLogoutButton = Visibility.Hidden;
+        ShowCloseApplicationButton = Visibility.Hidden;
+        ShowEnlargeTextButton = Visibility.Hidden;
 
+        switch (navigationStore.CurrentViewModel.GetType())
+        {
+            case Type a when a == typeof(TestOverviewViewModel):
+            case Type b when b == typeof(TestResultViewModel):
+            case Type c when c == typeof(TestViewModel):
+            case Type d when d == typeof(TargetAudienceOverviewViewModel):
+            case Type e when e == typeof(SettingsViewModel):
+            case Type f when f == typeof(LoginViewModel):
+            case Type g when g == typeof(HomeViewModel):
+            case Type h when h == typeof(TestManagementViewModel):
+            case Type i when i == typeof(EmployeeManagementViewModel):
+            case Type j when j == typeof(EmployeeOverviewViewModel):
+                ShowEnlargeTextButton = Visibility.Visible;
+                break;
+            case Type k when k == typeof(EmployeePortalViewModel):
+                ShowLogoutButton = Visibility.Visible;
+                ShowCloseApplicationButton = Visibility.Visible;
+                break;
+            default:
+                break;
+        }
+    }
     private void OpenLogin()
     {
         if (navigationStore.LoggedInEmployee != null || navigationStore.CurrentViewModel is not HomeViewModel) return;
-        ShowEnlargeTextButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
     }
 
     private void Logout()
     {
         navigationStore.LoggedInEmployee = null;
-        ShowLogoutButton = Visibility.Hidden;
-        ShowCloseApplicationButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
-    }
-    private void ToggleTopBar()
-    {
-        if (navigationStore.HideTopBar)
-        {
-            ShowBackButton = Visibility.Hidden;
-            ShowCloseApplicationButton = Visibility.Hidden;
-            ShowLogoutButton = Visibility.Hidden;
-        }
-        else
-        {
-            ShowLogoutButton = Visibility.Visible;
-            ShowBackButton = Visibility.Visible;
-            ShowCloseApplicationButton = Visibility.Visible;
-        }
-
     }
     private void Back()
     {
@@ -164,7 +173,6 @@ internal class MainWindowViewModel : ViewModelBase
         {
             ShowBackButton = Visibility.Hidden;
         }
-        ShowEnlargeTextButton = Visibility.Visible;
 
         navigationStore.CurrentViewModel = previousViewModel;
     }
@@ -210,7 +218,7 @@ internal class MainWindowViewModel : ViewModelBase
         else
             ChangeToSmall(resourceDictTextStyles);
 
-        Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
+        System.Windows.Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
 
         IsBigFontSize = !IsBigFontSize;
     }
@@ -219,12 +227,6 @@ internal class MainWindowViewModel : ViewModelBase
     {
         CurrentModalViewModel = navigationStore.CurrentModalViewModel;
         ShowModal = navigationStore.IsModalOpen ? Visibility.Visible : Visibility.Hidden;
-    }
-
-    private void LoggedInEmployeeChanged()
-    {
-        ShowLogoutButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
-        ShowCloseApplicationButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void PreviousViewModelChanged()

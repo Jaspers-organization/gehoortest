@@ -73,7 +73,6 @@ namespace UserInterface.ViewModels
         {
             this.navigationStore = navigationStore;
             this.navigationStore.AddPreviousViewModel(new EmployeePortalViewModel(navigationStore));
-            this.navigationStore.HideTopBar = false;
 
             ISettingsRepository settingsRepository = new SettingsRepository();
             settingService = new SettingService(settingsRepository);

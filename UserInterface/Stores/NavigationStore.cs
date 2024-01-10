@@ -10,9 +10,7 @@ internal class NavigationStore
 {
     public event Action? CurrentViewModelChanged;
     public event Action? IsModalOpenChanged;
-    public event Action? LoggedInEmployeeChanged;
     public event Action? PreviousViewModelChanged;
-    public event Action? HideTopBarChanged;
 
     #region properties
     private ViewModelBase? _currentViewModel;
@@ -35,17 +33,11 @@ internal class NavigationStore
         get { return _isModalOpen; }
         set { _isModalOpen = value; OnIsModalOpenChanged(); }
     }
-    public bool _hideTopBar = false;
-    public bool HideTopBar
-    {
-        get { return _hideTopBar; }
-        set { _hideTopBar = value; OnHideTopBarChanged(); }
-    }
     private EmployeeProjection? _loggedInEmployee = null;
     public EmployeeProjection? LoggedInEmployee
     {
         get { return _loggedInEmployee; }
-        set { _loggedInEmployee = value; OnLoggedInEmployeeChanged(); }
+        set { _loggedInEmployee = value; }
     }
 
     private Stack<ViewModelBase> _previousViewModel = new Stack<ViewModelBase>();
@@ -61,7 +53,6 @@ internal class NavigationStore
         CurrentModalViewModel = viewModal;
         IsModalOpen = true;
     }
-    
     
     public void CloseModal()
     {
@@ -93,10 +84,6 @@ internal class NavigationStore
 
     private void OnIsModalOpenChanged() => IsModalOpenChanged?.Invoke();
 
-    private void OnLoggedInEmployeeChanged() => LoggedInEmployeeChanged?.Invoke();
-
     private void OnPreviousViewModelChanged() => PreviousViewModelChanged?.Invoke();
-
-    private void OnHideTopBarChanged() => HideTopBarChanged?.Invoke();
    
 }
