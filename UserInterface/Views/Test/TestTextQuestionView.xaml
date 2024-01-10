@@ -37,10 +37,25 @@
                         <ListBox SelectedItem="{Binding SelectedTextOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
                     </StackPanel>
 
+                    <Border Height="70"
+                            CornerRadius="15"
+                            Width="450"
+                            Background="{StaticResource SecondaryBackgroundColor}"
+                            Grid.Row="2"
+                            Visibility="{Binding ShowQuestionInput}"
+                            Margin="5"
+                            HorizontalAlignment="Left">         
+                        <TextBox Visibility="{Binding ShowQuestionInput}" Grid.Row="2" Padding="10 0"
+                                 VerticalContentAlignment="Center"
+                                 FontSize="32" Text="{Binding QuestionInputText, UpdateSourceTrigger=PropertyChanged}"  
+                                 Width="450"
+                                 BorderBrush="{StaticResource SecondaryBackgroundColor}"
+                                 Margin="10"
+                                 Background="{StaticResource SecondaryBackgroundColor}"
+                                 HorizontalAlignment="Left"/>
+                    </Border>
+                   
 
-                    <TextBox Visibility="{Binding ShowQuestionInput}" Grid.Row="2" Text="{Binding QuestionInputText, UpdateSourceTrigger=PropertyChanged}"  
-                                 Width="200" HorizontalAlignment="Left"/>
-                  
                     <Button 
                          Style="{StaticResource PrimaryButton_L}" 
                          Grid.Row="3" 

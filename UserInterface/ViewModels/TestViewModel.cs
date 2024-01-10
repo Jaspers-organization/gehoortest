@@ -195,6 +195,7 @@ namespace UserInterface.ViewModels
                 if (value != null)
                 {
                     TargetAudienceBtnEnabled = true;
+                    TextBtnAnswerEnabled = true;
                 }
             }
         }
@@ -248,8 +249,12 @@ namespace UserInterface.ViewModels
         public List<string> RadioButtons
         {
             get { return radioButtons; }
-            set { radioButtons = value; OnPropertyChanged(nameof(RadioButtons)); }
-        } 
+            set 
+            { 
+                radioButtons = value;
+                OnPropertyChanged(nameof(RadioButtons));
+            }         
+    } 
 
         #endregion
 
@@ -279,7 +284,6 @@ namespace UserInterface.ViewModels
 
 
             audioPlayer = new AudioPlayer.AudioPlayer();
-
         }
         #endregion Constructor
       
@@ -321,7 +325,7 @@ namespace UserInterface.ViewModels
         }
         private void SetVisualsTextQuestion()
         {
-           // QuestionInputText = string.Empty;
+            QuestionInputText = string.Empty;
             ShowQuestionRadioButtons = Visibility.Hidden;
 
             if (currentTextQuestion.IsMultiSelect)
@@ -364,7 +368,7 @@ namespace UserInterface.ViewModels
         {
             string answerToAdd = currentTextQuestion.IsMultiSelect ? SelectedTextOption : QuestionInputText;
             testProgressData.Add(answerToAdd, currentTextQuestion);
-        
+
             currentTextQuestion = testProgressData.GetNextTextQuestion();
             if (currentTextQuestion == null)
             {
@@ -373,6 +377,7 @@ namespace UserInterface.ViewModels
             else
             {
                 TextQuestion = currentTextQuestion.Question;
+                SetVisualsTextQuestion();
             }
         }
         private void AnswerToneAudiometryQuestion(string value)
