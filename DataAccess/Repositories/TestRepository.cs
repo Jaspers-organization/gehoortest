@@ -113,6 +113,11 @@ namespace DataAccess.Repositories
             {
                 return null; //error handeling 
             }
+            test.TextQuestions = test.TextQuestions.OrderBy(q => q.QuestionNumber).ToList();
+
+            test.ToneAudiometryQuestions = test.ToneAudiometryQuestions.OrderBy(q => q.QuestionNumber).ToList();
+
+
             return test;
         }
 

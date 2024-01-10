@@ -12,6 +12,6 @@
         <Views:TestTargetAudienceView Visibility="{Binding ShowTestTargetAudienceView}"/>
         <Views:TestTextQuestionView Visibility="{Binding ShowTestTextQuestionView}" />
         <Views:TestAudiometryQuestionView Visibility="{Binding ShowTestToneAudiometryView}"/>
-
+        <Views:TestExplanationStartAudioView Visibility="{Binding ShowTestExplanationStartAudioView}"/>
     </Grid>
 </UserControl>

@@ -9,8 +9,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
 using NAudio.Utils;
 using System;
-using gehoortest_application.Repository;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -25,127 +23,194 @@ using static System.Net.Mime.MediaTypeNames;
 using BusinessLogic.Enums;
 using DataAccess.Repositories;
 using System.Windows;
+using Microsoft.IdentityModel.Tokens;
+using System.Runtime.CompilerServices;
 
 namespace UserInterface.ViewModels
 {
     internal class TestViewModel : ViewModelBase
     {
-        #region Const
-        private const string NOTVISIBLE = "Hidden";
-        private const string VISIBLE = "Visible";
-        #endregion Const
-
         private readonly NavigationStore navigationStore;
-        private string _showTestExplanationView = Visibility.Hidden.ToString();
-        private string _showTestTargetAudienceView = "Hidden";
-        private string _showTestTextQuestionView = "Hidden";
-        private string _showTestToneAudiometryView = "Hidden";
-        private string _showTestResultView = "Hidden";
-        private int highestTextQuestionNumber;
-        private int highestAudioQuestionNumber;
 
-
-        private NAudioPlayer nAudioPlayer;
-        private ObservableCollection<TargetAudience> _targetAudiences;
-        private Test _test;
+        #region Services
         private TargetAudienceService targetAudienceService { get; set; }
         private TestService testService { get; set; }
-        private SettingService settingService {get;set;}
         private TestProgressData testProgressData { get; set; }
-        private int currentFrequency = 0;
-        private bool finalDecibelToPlay = false;
-        private bool testedLeftEar = false;
-        private bool testedRightEar = false;
+        #endregion Services
+
+        private AudioPlayer.AudioPlayer audioPlayer;
         TextQuestion currentTextQuestion;
         ToneAudiometryQuestion currentAudiometryQuestion;
+        private BackgroundWorker worker;
         #region Properties
-        private bool _answerButtonEnabled;
+        private bool answerButtonEnabled;
         public bool AnswerButtonEnabled
         {
-            get { return _answerButtonEnabled; }
+            get { return answerButtonEnabled; }
             set
             {
-                _answerButtonEnabled = value;
+                answerButtonEnabled = value;
                 OnPropertyChanged(nameof(AnswerButtonEnabled));
             }
         }
-        private int _progressValue;
+        private int progressValue;
         public int ProgressValue
         {
-            get { return _progressValue; }
+            get { return progressValue; }
             set
             {
-                _progressValue = value;
+                progressValue = value;
                 OnPropertyChanged(nameof(ProgressValue));
             }
         }
 
-        private string _progressTextBlock;
+        private string progressTextBlock;
         public string ProgressTextBlock
         {
-            get { return _progressTextBlock; }
+            get { return progressTextBlock; }
             set
             {
-                _progressTextBlock = value;
+                progressTextBlock = value;
                 OnPropertyChanged(nameof(ProgressTextBlock));
             }
         }
-        public string ShowTestExplanationView
+
+        private bool targetAudienceBtnEnabled;
+        public bool TargetAudienceBtnEnabled
         {
-            get { return _showTestExplanationView; }
+            get { return targetAudienceBtnEnabled; }
             set
             {
-                _showTestExplanationView = value;
+                targetAudienceBtnEnabled = value;
+                OnPropertyChanged(nameof(TargetAudienceBtnEnabled));
+            }
+        }
+
+        private bool textBtnAnswerEnabled;
+        public bool TextBtnAnswerEnabled 
+        {
+            get { return textBtnAnswerEnabled; }
+            set
+            {
+                textBtnAnswerEnabled = value;
+                OnPropertyChanged(nameof(TextBtnAnswerEnabled));
+            }
+        }
+
+        #region Visibility
+
+        private Visibility showTestExplanationStartAudioView = Visibility.Hidden;
+        public Visibility ShowTestExplanationStartAudioView
+        {
+            get { return showTestExplanationStartAudioView; }
+            set
+            {
+                showTestExplanationStartAudioView = value;
+                OnPropertyChanged(nameof(ShowTestExplanationStartAudioView));
+            }
+        }
+        private Visibility showTestExplanationView = Visibility.Hidden;
+        public Visibility ShowTestExplanationView
+        {
+            get { return showTestExplanationView; }
+            set
+            {
+                showTestExplanationView = value;
                 OnPropertyChanged(nameof(ShowTestExplanationView));
             }
         }
-        public string ShowTestTargetAudienceView
+        private Visibility showTestTargetAudienceView = Visibility.Hidden;
+        public Visibility ShowTestTargetAudienceView
         {
-            get { return _showTestTargetAudienceView; }
+            get { return showTestTargetAudienceView; }
             set
             {
-                _showTestTargetAudienceView = value;
+                showTestTargetAudienceView = value;
                 OnPropertyChanged(nameof(ShowTestTargetAudienceView));
             }
         }
-        public string ShowTestTextQuestionView
+        private Visibility showTestTextQuestionView = Visibility.Hidden;
+        public Visibility ShowTestTextQuestionView
         {
-            get { return _showTestTextQuestionView; }
+            get { return showTestTextQuestionView; }
             set
             {
-                _showTestTextQuestionView = value;
+                showTestTextQuestionView = value;
                 OnPropertyChanged(nameof(ShowTestTextQuestionView));
             }
         }
-        public string ShowTestToneAudiometryView
+        private Visibility showTestToneAudiometryView = Visibility.Hidden;
+        public Visibility ShowTestToneAudiometryView
         {
-            get { return _showTestToneAudiometryView; }
+            get { return showTestToneAudiometryView; }
             set
             {
-                _showTestToneAudiometryView = value;
+                showTestToneAudiometryView = value;
                 OnPropertyChanged(nameof(ShowTestToneAudiometryView));
             }
         }
-        public string ShowTestResultView
+        private Visibility showTestResultView = Visibility.Hidden;
+        public Visibility ShowTestResultView
         {
-            get { return _showTestResultView; }
+            get { return showTestResultView; }
             set
             {
-                _showTestResultView = value;
+                showTestResultView = value;
                 OnPropertyChanged(nameof(ShowTestResultView));
             }
         }
-        public string ButtonsDisabled { get; set; }
-        public ObservableCollection<TargetAudience> TargetAudiences
+        private Visibility showQuestionRadioButtons { get; set; } = Visibility.Hidden;
+        public Visibility ShowQuestionRadioButtons
         {
-            get { return _targetAudiences; }
+            get { return showQuestionRadioButtons; }
+            set 
+            {
+                showQuestionRadioButtons = value; 
+                OnPropertyChanged(nameof(ShowQuestionRadioButtons));
+            }
+        }
+        private Visibility showQuestionInput = Visibility.Hidden;
+        public Visibility ShowQuestionInput
+        {
+            get { return showQuestionInput; }
+            set 
+            { 
+                showQuestionInput = value; 
+                OnPropertyChanged(nameof(ShowQuestionInput)); 
+            }
+        }
+
+        #endregion Visibility
+
+        private string selectedTextOption = string.Empty;
+        public string SelectedTextOption
+        {
+            get { return selectedTextOption; }
             set
             {
-                _targetAudiences = value;
+                selectedTextOption = value;
+                OnPropertyChanged(nameof(SelectedTextOption));
+                if (value != null)
+                {
+                    TargetAudienceBtnEnabled = true;
+                    TextBtnAnswerEnabled = true;
+                }
+            }
+        }
+
+        public string ButtonsDisabled { get; set; }
+        private ObservableCollection<TargetAudience> targetAudiences;
+        public ObservableCollection<TargetAudience> TargetAudiences
+        {
+            get { return targetAudiences; }
+            set
+            {
+                targetAudiences = value;
                 OnPropertyChanged(nameof(TargetAudiences));
             }
         }
 
+        private string textQuestion { get; set; }
         public string TextQuestion
         {
             get { return textQuestion; }
@@ -155,7 +220,8 @@ namespace UserInterface.ViewModels
                 OnPropertyChanged(nameof(TextQuestion));
             }
         }
-        private string textQuestion { get; set; }
+
+        private string questionInputText { get; set; }
         public string QuestionInputText
         {
             get { return questionInputText; }
@@ -163,67 +229,48 @@ namespace UserInterface.ViewModels
             {
                 questionInputText = value;
                 OnPropertyChanged(nameof(QuestionInputText));
+                TextBtnAnswerEnabled = !string.IsNullOrEmpty(value.Trim());
             }
         }
-        private string questionInputText { get; set; }
 
-   
-        private int playDecibel { get; set; }
+        private Test test;
         public Test Test
         {
-            get { return _test; }
+            get { return test; }
             set
             {
-                _test = value;
+                test = value;
                 OnPropertyChanged(nameof(Test));
             }
         }
-        public string QuestionRadioButtons
-        {
-            get { return _questionRadioButtons; }
-            set { _questionRadioButtons = value; OnPropertyChanged(nameof(QuestionRadioButtons)); }
-        }
-        private string _questionRadioButtons { get; set; }
-        private int lowestDecibel = 0;
+        private List<string> radioButtons = new();
         public List<string> RadioButtons
         {
-            get { return _radioButtons; }
-            set { _radioButtons = value; OnPropertyChanged(nameof(RadioButtons)); }
-        }
-        private List<string> _radioButtons = new();
+            get { return radioButtons; }
+            set 
+            { 
+                radioButtons = value;
+                OnPropertyChanged(nameof(RadioButtons));
+            }         
+    } 
 
-        public string QuestionInput
-        {
-            get { return _questionInput; }
-            set { _questionInput = value; OnPropertyChanged(nameof(QuestionInput)); }
-        }
-        private string _questionInput = "Hidden";
-
-        public string SelectedOption
-        {
-            get { return _selectedOption; }
-            set { _selectedOption = value; OnPropertyChanged(nameof(SelectedOption)); }
-        }
-        private Ear currentAudioEar;
-        public Decibel DecibelManager;
         #endregion
 
         #region Commands
-        private string _selectedOption = "";
-        public ICommand StartTestCommand => new Command(StartTest);
-        public ICommand TargetAudienceSelectedCommand => new Command(PrepTest);
-        public ICommand PlayFrequencyCommand { get; }
-        public ICommand SaveQuestionCommand => new Command(SaveTextAnswer);
-        public ICommand SaveAudioQuestionCommand => new Command(SaveAudioAnswer);
+        public ICommand StartTestCommand => new Command(GetTargetAudiences);
+        public ICommand TargetAudienceSelectedCommand => new Command(StartTextQuestions);
+        public ICommand AnswerTextQuestionCommand => new Command(AnswerTextQuestion);
+        public ICommand StartAudiometryTestCommand => new Command(StartToneAudioMetryQuestions);
+        public ICommand SaveAudioQuestionCommand => new Command(AnswerToneAudiometryQuestion);
         public ICommand OpenTestManagementCommand => new Command(OpenTestManagement);
-
         #endregion Commands
-        private BackgroundWorker worker;
+
         #region Constructor
         public TestViewModel(NavigationStore navigationStore)
         {
             this.navigationStore = navigationStore;
-            SetTestExplanationView(VISIBLE);
+            
+            ShowTestExplanationView = Visibility.Visible;
             this.navigationStore.AddPreviousViewModel(new HomeViewModel(navigationStore));
 
 
@@ -234,141 +281,56 @@ namespace UserInterface.ViewModels
             targetAudienceService = new TargetAudienceService(targetAudienceRepository, testRepository);
 
 
-            ISettingsRepository settingsRepository = new SettingsRepository();
-            settingService = new SettingService(settingsRepository);
-            nAudioPlayer = new NAudioPlayer();
+            audioPlayer = new AudioPlayer.AudioPlayer();
+            Guid ee = Guid.NewGuid();
         }
         #endregion Constructor
-
-        #region SetVisibility
-        private void SetTestExplanationView(string visibility)
+      
+        private void GetTargetAudiences()
         {
-            ShowTestExplanationView = visibility;
-        }
-        private void SetTestTargetAudienceView(string visibility)
-        {
-            ShowTestTargetAudienceView = visibility;
-        }
-        private void SetTestToneAudiometryView(string visibility)
-        {
-            ShowTestToneAudiometryView = visibility;
-        }
-        private void SetQuestionRadioButtons(string visibility)
-        {
-            QuestionRadioButtons = visibility;
-        }
-        private void SetQuestionInput(string visibility)
-        {
-            QuestionInput = visibility;
-        }
-        private void SetTestTextQuestionView(string visibility)
-        {
-            ShowTestTextQuestionView = visibility;
-        }
-        #endregion SetVisibility
-        
-        private void OpenTestManagement()
-        {
-            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
-
-        }
-
-        private void StartTest()
-        {
-            SetTestExplanationView(NOTVISIBLE);
-            SetTestTargetAudienceView(VISIBLE);
-            GetTargetAudiencesWithTest();
-            TextQuestion = "Wat is uw leeftijdsgroep?";
-            SetQuestionRadioButtons(VISIBLE);
-        }
-        private void GetTargetAudiencesWithTest()
-        {
-            //TODO ERROR HERE.
-            List<TargetAudience> tempTargetAudiences = targetAudienceService.GetAllTargetAudiences();
-            List<Test> tempTests = testService.GetAllTests();
-            List<TargetAudience> finalList = new List<TargetAudience>();
-
-            foreach (var test in tempTests)
-            {
-                foreach (var audience in tempTargetAudiences)
-                {
-                    if (test.TargetAudience.Id == audience.Id && test.Active)
-                    {
-                        if (!finalList.Contains(audience))
-                        {
-                            finalList.Add(audience);
-                        }
-
-                    }
-                }
-            }
-
-            TargetAudiences = new ObservableCollection<TargetAudience>(finalList);
+            TargetAudiences = new ObservableCollection<TargetAudience>(targetAudienceService.GetAllActiveWithTest());
             List<string> TargetAudienceOptions = new();
             foreach (TargetAudience targetAudience in TargetAudiences)
             {
                 TargetAudienceOptions.Add(targetAudience.Label);
             }
             RadioButtons = TargetAudienceOptions;
-        }
 
-        private void PrepTest()
+            TextQuestion = "Wat is uw leeftijdsgroep?";
+            ShowTestExplanationView = Visibility.Hidden;
+            ShowTestTargetAudienceView = Visibility.Visible;
+            ShowQuestionRadioButtons = Visibility.Visible;
+            TargetAudienceBtnEnabled = false;
+        }
+        private void StartTextQuestions()
         {
-            SetTestTargetAudienceView(NOTVISIBLE);
             GetTest();
-            CheckTestContent();
+            DetermineFirstTextQuestion();
+            SetVisualsTextQuestion();
         }
-
         private void GetTest()
         {
-            TargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedOption);
+            ShowTestTargetAudienceView = Visibility.Hidden;
+            TargetAudience? selectedTargetAudience = TargetAudiences.FirstOrDefault(item => item.Label == SelectedTextOption);
             if (selectedTargetAudience == null) return;
-            Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id); 
+            Test = testService.GetTestByTargetAudienceIdAndActive(selectedTargetAudience.Id);
             testProgressData = new TestProgressData(Test);
         }
-
-        private void CheckTestContent()
+        private void DetermineFirstTextQuestion()
         {
-            if (Test.TextQuestions.Count() > 0)
-            {
-                DetermineTextQuestion();
-                SetVisualsTextQuestion();
-            }
-            else if (Test.ToneAudiometryQuestions.Count() > 0)
-            {
-                DetermineAudioQuestion();
-            }
-        }
-
-        private void DetermineTextQuestion()
-        {
-            if (testProgressData.CurrentQuestionNumber == 0)
-            {
-                TextQuestion = Test.TextQuestions.First().Question;
-                currentTextQuestion = Test.TextQuestions.First();
-                testProgressData.CurrentQuestionNumber = Test.TextQuestions.First().QuestionNumber;
-                highestTextQuestionNumber = Test.TextQuestions.MaxBy(x => x.QuestionNumber).QuestionNumber;
-            }
-            else
-            {
-                //set new currentQuestionNumber
-                testProgressData.CurrentQuestionNumber = testProgressData.CurrentQuestionNumber + 1;
-
-                //Get new Question
-                currentTextQuestion = Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-                TextQuestion = currentTextQuestion?.Question;
-            }
+            TextQuestion = Test.TextQuestions.First().Question;
+            currentTextQuestion = Test.TextQuestions.First();
+            testProgressData.CurrentQuestionNumber = Test.TextQuestions.First().QuestionNumber;
         }
         private void SetVisualsTextQuestion()
         {
-            //remove given answer + everything that's ugly
+            ShowQuestionInput = Visibility.Hidden;
             QuestionInputText = string.Empty;
-            SetQuestionRadioButtons(NOTVISIBLE);
-            //check if multiselect
+            ShowQuestionRadioButtons = Visibility.Hidden;
+
             if (currentTextQuestion.IsMultiSelect)
             {
-                SetQuestionInput(NOTVISIBLE);
-                List <string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options.ToList());
+                List<string> options = testService.ConvertQuestionOptionsToStrings(currentTextQuestion.Options.ToList());
                 List<string> tempRadioButtons = new();
                 foreach (string option in options)
                 {
@@ -376,155 +338,85 @@ namespace UserInterface.ViewModels
                 }
 
                 RadioButtons = tempRadioButtons;
-                SetQuestionRadioButtons(VISIBLE);
+                ShowQuestionRadioButtons = Visibility.Visible;
             }
-            else if (currentTextQuestion.HasInputField)
+            
+            if (currentTextQuestion.HasInputField)
             {
-                SetTestTextQuestionView(VISIBLE);
-                SetQuestionInput(VISIBLE);
+                ShowQuestionInput = Visibility.Visible;
             }
-            SetTestTargetAudienceView(NOTVISIBLE);
-            SetTestTextQuestionView(VISIBLE);
+            ShowTestTextQuestionView = Visibility.Visible;
+            ShowTestTargetAudienceView = Visibility.Hidden;
+            TextBtnAnswerEnabled = false;
         }
-        private void SetAudioVisuals()
+        private void StartToneAudioMetryQuestions()
         {
-            QuestionRadioButtons = "Hidden";
-            ShowTestTextQuestionView = "Hidden";
-            QuestionInput = "Hidden";
-            ShowTestToneAudiometryView = "Visible";
-            AnswerButtonEnabled = false;
+            ShowTestExplanationStartAudioView = Visibility.Hidden;
+            DetermineFirstAudioQuestion();
+            SetVisualsAudioQuestion();
         }
-        private void SaveTextAnswer()
+        private void DetermineFirstAudioQuestion()
         {
-            List<string> answers = new();
-            //check type of question
-            if (Test.TextQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).IsMultiSelect)
-            {
-                //ABC question
-                answers.Add(SelectedOption);
-            }
-            else
-            {
-                //textQuestion
-                answers.Add(QuestionInputText);
-            }
+            currentAudiometryQuestion = Test.ToneAudiometryQuestions.First();
+            testProgressData.Decibel = currentAudiometryQuestion.StartingDecibels;
+            testProgressData.CurrentQuestionNumber = currentAudiometryQuestion.QuestionNumber;
+           
 
-            //save answers to TestProgressData
-            List<string> options = testService.ConvertQuestionOptionsToStrings(Test.TextQuestions.First(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber).Options.ToList());
-            testProgressData.TextAnswers.Add(new TextAnswer(testProgressData.CurrentQuestionNumber, options, answers));
-            DetermineNextTextStep();
-        }
-        private void SaveAudioAnswer(string value)
-        {
-            ToneAudiometryQuestion q = testProgressData.Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-            testProgressData.ToneAudiometryAnswers.Add(new ToneAudiometryAnswer(q.QuestionNumber, q.Frequency, currentAudioEar, q.StartingDecibels, DecibelManager.LowestDecibel, value));
-            DetermineNextAudioStep(value);
-            AnswerButtonEnabled = false;
-        }
-        private void DetermineNextTextStep()
-        {
-            //if there are text questions left
-            if (testProgressData.CurrentQuestionNumber != highestTextQuestionNumber)
-            {
-                DetermineTextQuestion();
-            }
-            else
-            {
-                if (Test.ToneAudiometryQuestions.Count() > 0)
-                {
-                    testProgressData.CurrentQuestionNumber = 0;
-                    DetermineAudioQuestion();
-                }
-            }
-        }
-        private void DetermineAudioQuestion()
-        {
-            if (testProgressData.CurrentQuestionNumber == 0)
-            {
-                testProgressData.CurrentQuestionNumber = Test.ToneAudiometryQuestions.First().QuestionNumber;
-                highestAudioQuestionNumber = Test.ToneAudiometryQuestions.MaxBy(x => x.QuestionNumber).QuestionNumber;
-                DecibelManager = new Decibel();
-                DetermineWhichEar();
-            }
-            else
-            {
-                if (testProgressData.CurrentQuestionNumber != highestAudioQuestionNumber)
-                {
-                    testProgressData.CurrentQuestionNumber = testProgressData.CurrentQuestionNumber + 1;
-                    DecibelManager = new Decibel();
-                    testedLeftEar = false;
-                    testedRightEar = false;
-                    DetermineWhichEar();
-                }
-                else
-                {
-                    ShowResults();
-                    return;
-                }
-            }
-            currentAudiometryQuestion = Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-            currentFrequency = currentAudiometryQuestion.Frequency;
-            DecibelManager.PlayDecibel = currentAudiometryQuestion.StartingDecibels;
             AskAudioQuestion();
+        }
+        private void AnswerTextQuestion()
+        {
+            string answerToAdd = QuestionInputText.Trim().IsNullOrEmpty() ?  SelectedTextOption : QuestionInputText;
+            testProgressData.Add(answerToAdd, currentTextQuestion);
+
+            currentTextQuestion = testProgressData.GetNextTextQuestion();
+            if (currentTextQuestion == null)
+            {
+                ShowTestExplanationStartAudioView = Visibility.Visible;
+            }
+            else
+            {
+                TextQuestion = currentTextQuestion.Question;
+                SetVisualsTextQuestion();
+            }
+        }
+        private void AnswerToneAudiometryQuestion(string value)
+        {
+            AnswerButtonEnabled = false;
+            bool answer = value == "true" ? true : false;
+            testProgressData.Add(answer, testProgressData.CurrentEar, currentAudiometryQuestion);
+
+            currentAudiometryQuestion = testProgressData.GetNextToneAudiometryQuestion();
+            if (currentAudiometryQuestion == null)
+            {
+                ShowResults();
+            }
+            else
+            {
+                AskAudioQuestion(); 
+            }
+        }
+        private void PlayFrequency(int frequency, Ear ear)
+        {
+            Random random = new Random();
+            int delay = random.Next(0, 3) * 1000;
+
+            Task.Delay(delay).ContinueWith(_ =>
+            {
+                audioPlayer.PlayFrequency(frequency, testProgressData.Decibel, ear);
+            });
+        }
+        private void ShowResults()
+        {
+            ShowTestTextQuestionView = Visibility.Hidden;
+            ShowTestToneAudiometryView = Visibility.Hidden;
+            navigationStore!.CurrentViewModel = new TestResultViewModel(navigationStore, testProgressData);
         }
         private void AskAudioQuestion()
         {
-            SetAudioVisuals();
             StartProgress();
-            PlayFrequency(currentFrequency, currentAudioEar);
+            PlayFrequency(currentAudiometryQuestion.Frequency, testProgressData.CurrentEar);
         }
-        private void DetermineWhichEar()
-        {
-            Random random = new Random();
-            int ear = random.Next(0, 1);
-
-            if (ear == 1)
-            {
-                testedRightEar = true;
-                currentAudioEar = Ear.Right;
-            }
-            else{
-                currentAudioEar = Ear.Left;
-                testedLeftEar = true;
-            }            
-        }
-        private void DetermineNextAudioStep(string value)
-        {
-            if (DecibelManager.FinalDecibelToPlay)
-            {
-                DecibelManager.FinalDecibelToPlay = false;
-                DecibelManager.LowestDecibel = 0;
-
-                if (testedRightEar && testedLeftEar) 
-                {
-                    DetermineAudioQuestion();
-                }
-                else
-                {
-                    if (testedLeftEar)
-                    {
-                        currentAudioEar = Ear.Right;
-                        testedRightEar = true;
-                    }
-                    else
-                    {
-                        currentAudioEar = Ear.Left;
-                        testedLeftEar= true;
-                    }
-                    currentAudiometryQuestion = Test.ToneAudiometryQuestions.FirstOrDefault(x => x.QuestionNumber == testProgressData.CurrentQuestionNumber);
-                    currentFrequency = currentAudiometryQuestion.Frequency;
-                    DecibelManager.PlayDecibel = currentAudiometryQuestion.StartingDecibels;
-                    AskAudioQuestion();
-                }
-            }
-            else
-            {
-                DecibelManager.DetermineNextDecibel(value);
-                StartProgress();
-                PlayFrequency(currentFrequency, currentAudioEar);
-            }
-        }
-
         public void StartProgress()
         {
             worker = new BackgroundWorker();
@@ -550,28 +442,24 @@ namespace UserInterface.ViewModels
             worker.ReportProgress(100, String.Format("process 100."));
             for (int i = 100; i >= 0; i = i - 20)
             {
-                Thread.Sleep(500); 
+                Thread.Sleep(500);
                 worker.ReportProgress(i - 10, string.Format("process {0}.", i - 10));
             }
             worker.ReportProgress(0, "process done");
         }
-        private void PlayFrequency(int frequency, Ear ear)
+        private void SetVisualsAudioQuestion()
         {
-            Random random = new Random();
-            int delay = random.Next(0, 3) * 1000;
-
-            Task.Delay(delay).ContinueWith(_ =>
-            {
-                nAudioPlayer.PlayFrequency(frequency, DecibelManager.PlayDecibel, ear);
-            });
+            ShowQuestionRadioButtons = Visibility.Hidden;
+            ShowTestTextQuestionView = Visibility.Hidden;
+            ShowQuestionInput = Visibility.Hidden;
+            ShowTestToneAudiometryView = Visibility.Visible;
+            AnswerButtonEnabled = false;
         }
-        private void ShowResults()
+        private void OpenTestManagement()
         {
-            SetTestTextQuestionView(NOTVISIBLE);
-            SetTestToneAudiometryView(NOTVISIBLE);
+            navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
 
-            // toegevoegd door jasper
-            navigationStore!.CurrentViewModel = new TestResultViewModel(navigationStore, testProgressData);
         }
+
     }
 }

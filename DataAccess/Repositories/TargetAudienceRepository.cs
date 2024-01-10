@@ -67,5 +67,18 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             return result;
         }
     }
-
+    public List<TargetAudience> GetAllActiveWithTest()
+    {
+        using (Repository context = new Repository())
+        {
+            return context.TargetAudiences
+                .Join(context.Tests,
+                    ta => ta.Id,
+                    t => t.TargetAudienceId,
+                    (ta, t) => new { TargetAudience = ta, Test = t })
+                .Where(joinResult => joinResult.Test.Active)
+                .Select(joinResult => joinResult.TargetAudience)
+                .Distinct().ToList();
+        }
+    }
 }

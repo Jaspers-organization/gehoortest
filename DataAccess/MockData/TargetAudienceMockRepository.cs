@@ -62,4 +62,9 @@ public class TargetAudienceMockRepository : ITargetAudienceRepository
     {
         throw new NotImplementedException();
     }
+
+    public List<TargetAudience> GetAllActiveWithTest()
+    {
+        throw new NotImplementedException();
+    }
 }

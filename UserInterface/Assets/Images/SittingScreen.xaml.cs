@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UserInterface.Views
+namespace UserInterface.Assets.Images
 {
     /// <summary>
-    /// Interaction logic for TestAudiometryQuestionView.xaml
+    /// Interaction logic for SittingScreen.xaml
     /// </summary>
-    public partial class TestAudiometryQuestionView : UserControl
+    public partial class SittingScreen : UserControl
     {
-        public TestAudiometryQuestionView()
+        public SittingScreen()
         {
             InitializeComponent();
-         
         }
-
     }
 }

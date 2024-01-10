@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,15 +16,13 @@ using System.Windows.Shapes;
 namespace UserInterface.Views
 {
     /// <summary>
-    /// Interaction logic for TestAudiometryQuestionView.xaml
+    /// Interaction logic for TestExplanationStartAudioView.xaml
     /// </summary>
-    public partial class TestAudiometryQuestionView : UserControl
+    public partial class TestExplanationStartAudioView : UserControl
     {
-        public TestAudiometryQuestionView()
+        public TestExplanationStartAudioView()
         {
             InitializeComponent();
-         
         }
-
     }
 }
