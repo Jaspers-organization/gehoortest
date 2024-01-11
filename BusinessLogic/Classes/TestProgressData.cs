@@ -37,7 +37,7 @@ public class TestProgressData
         foreach (TextQuestionOption textQOption in question.Options)
         {
             TextQuestionOptionResult option = new TextQuestionOptionResult();
-            option.Id = textQOption.Id;
+            option.Id = Guid.NewGuid();
             option.TextQuestionResultId = textQuestionResultId;
             option.Option = textQOption.Option;
             resultList.Add(option);
@@ -172,6 +172,11 @@ public class TestProgressData
     private int? GetNextDecibels(Ear ear)
     {
         var answersOfSelectedEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == ear).ToList();
+        if (answersOfSelectedEar.Count() == 0)
+        {
+            return null;
+        }
+
         var lastAnswer = answersOfSelectedEar[answersOfSelectedEar.Count() - 1];
         //last answer was true
         if (lastAnswer.answer)

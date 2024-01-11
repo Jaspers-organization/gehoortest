@@ -305,6 +305,13 @@ namespace UserInterface.ViewModels
         private void StartTextQuestions()
         {
             GetTest();
+
+            if (test.TextQuestions.Count == 0)
+            {
+                StartToneAudioMetryQuestions();
+                return;
+            }
+
             DetermineFirstTextQuestion();
             SetVisualsTextQuestion();
         }
@@ -351,6 +358,12 @@ namespace UserInterface.ViewModels
         }
         private void StartToneAudioMetryQuestions()
         {
+            if (test.ToneAudiometryQuestions.Count == 0)
+            {
+                ShowResults();
+                return;
+            }
+
             ShowTestExplanationStartAudioView = Visibility.Hidden;
             DetermineFirstAudioQuestion();
             SetVisualsAudioQuestion();

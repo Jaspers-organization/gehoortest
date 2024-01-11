@@ -126,9 +126,9 @@ internal class TestOverviewViewModel : ViewModelBase, IConfirmation
                 return;
             }
             var clickedTest = Tests?.Where(t => t.Id == testId).FirstOrDefault();
-            if (clickedTest!.AmountOfQuestions == 0)
+            if (clickedTest!.TextQuestions.Count == 0 || clickedTest!.ToneAudiometryQuestions.Count == 0)
             {
-                OpenErrorModal("Deze test heeft geen vragen. Voeg enkelen vragen toe om hem actief te kunnen zetten.");
+                OpenErrorModal("Deze test heeft geen toonaudiometrie of tekst vraag. Voeg minimaal 1 vraag toe om hem actief te kunnen zetten.");
                 UpdateTestProjections(SelectedTargetAudience.Id);
                 return;
             }

@@ -100,7 +100,10 @@ namespace DataAccess.Repositories
                 Title = test.Title,
                 AmountOfQuestions = test.TextQuestions.Count + test.ToneAudiometryQuestions.Count,
                 Active = test.Active,
-                EmployeeName = test.Employee.FullName
+                EmployeeName = test.Employee.FullName,
+                TextQuestions = test.TextQuestions.ToList(),
+                ToneAudiometryQuestions = test.ToneAudiometryQuestions.ToList(),
+                
             }).ToList();
         }
         public Test? GetTestByTargetAudienceIdAndActive(Guid id)
