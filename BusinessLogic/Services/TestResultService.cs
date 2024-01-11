@@ -17,7 +17,7 @@ public class TestResultService
 
     public TestResultProjection GetTestResult(TestProgressData testProgressData)
     {
-        bool hasHearingLoss = CalculateHearingLoss(testProgressData.ToneAudiometryAnswers);
+        bool hasHearingLoss = CalculateHearingLoss(testProgressData.ToneAudiometryQuestionResults);
 
         TestResult testResult = CreateTestResult(hasHearingLoss, testProgressData);
 
@@ -26,11 +26,11 @@ public class TestResultService
         return CreateTestResultProjection(testResult);
     }
 
-    private bool CalculateHearingLoss(List<ToneAudiometryAnswer> answers)
+    private bool CalculateHearingLoss(List<ToneAudiometryQuestionResult> answers)
     {
         bool hasHearingLoss = false;
 
-        foreach (ToneAudiometryAnswer answer in answers)
+        foreach (ToneAudiometryQuestionResult answer in answers)
         {
             if (hasHearingLoss == true) break;
 
@@ -38,23 +38,28 @@ public class TestResultService
             int min = frequencyMap.HearingLoss.Min;
             int max = frequencyMap.HearingLoss.Max;
 
-            if (min <= answer.LowestLimitDecibels && max >= answer.LowestLimitDecibels) hasHearingLoss = true;
-        } 
-        
+            if (min <= answer.LowestDecibels && max >= answer.LowestDecibels) hasHearingLoss = true;
+        }
+
         return hasHearingLoss;
     }
 
     private TestResult CreateTestResult(bool hasHearingLoss, TestProgressData testProgressData)
     {
+        Guid testResultId = Guid.NewGuid();
+
+        testProgressData.ToneAudiometryQuestionResults.ForEach(item => item.TestResultId = testResultId);
+        testProgressData.TextQuestionResults.ForEach(item => item.TestResultId = testResultId);
+
         return new TestResult()
         {
-            Id = Guid.NewGuid(),
+            Id = testResultId,
             TargetAudience = testProgressData.Test.TargetAudience.Label,
             TestDateTime = DateTime.Now,
             Duration = 0, // TODO Temporary until timer is implemented
             HasHearingLoss = hasHearingLoss,
-            TextQuestions = MapTextQuestions(testProgressData.Test.Id, testProgressData.TextAnswers),
-            ToneAudiometryQuestions = MapToneAudiometryQuestions(testProgressData.Test.Id, testProgressData.ToneAudiometryAnswers),
+            TextQuestions = testProgressData.TextQuestionResults,
+            ToneAudiometryQuestions = testProgressData.ToneAudiometryQuestionResults,
         };
     }
 
@@ -76,60 +81,5 @@ public class TestResultService
                 : "Volgens de testresultaten heeft u een gezond gehoor. Wij adviseren u om uw gehoor eens per jaar te laten testen.",
             HasHearingLoss = testResult.HasHearingLoss,
         };
-    }
-
-    // TODO: remove this. change the TestProgressData
-    // This is because TestProgressData uses different answer classes than the database
-    private List<TextQuestionResult> MapTextQuestions(Guid testResultId, List<TextAnswer> answers)
-    {
-        List<TextQuestionResult> result = new();
-
-        foreach (TextAnswer answer in answers)
-        {
-            Guid textAnswerId = new Guid();
-
-            List<TextQuestionOptionResult> tempOption = new();
-            answer.Options.ForEach(o => {
-                tempOption.Add(new TextQuestionOptionResult() { Id = new Guid(), Option = o, TextQuestionResultId = textAnswerId });
-            });
-
-            List<TextQuestionAnswerResult> tempAnswer = new();
-            answer.Options.ForEach(a =>{
-                tempAnswer.Add(new TextQuestionAnswerResult() { Id = new Guid(), Answer = a, TextQuestionResultId = textAnswerId });
-            });
-
-            result.Add(new TextQuestionResult()
-            {
-                Id = textAnswerId,
-                Question = answer.Question,
-                Options = tempOption,
-                Answers = tempAnswer,
-                TestResultId = testResultId
-            });
-        }
-
-        return result;
-    }
-
-    // TODO: remove this. change the TestProgressData
-    // This is because TestProgressData uses different answer classes than the database
-    private List<ToneAudiometryQuestionResult> MapToneAudiometryQuestions(Guid testResultId, List<ToneAudiometryAnswer> answers)
-    {
-        List<ToneAudiometryQuestionResult> result = new();
-
-        foreach (ToneAudiometryAnswer answer in answers)
-        {
-            result.Add(new ToneAudiometryQuestionResult()
-            {
-                Id = new Guid(),
-                Frequency = answer.Frequency,
-                StartingDecibels = answer.StartingDecibels,
-                LowestDecibels = answer.LowestLimitDecibels,
-                Ear = answer.Ear,
-                TestResultId = testResultId,
-            });
-        }
-
-        return result;
     }
 }
