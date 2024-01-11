@@ -13,4 +13,15 @@ public class ToneAudiometryQuestionResult : IModel
 
     public Guid TestResultId { get; set; }
     public TestResult TestResult { get; set; }
+
+    public ToneAudiometryQuestionResult() { }
+
+    public ToneAudiometryQuestionResult(Guid id, int frequency, int startingDecibels, int lowestDecibels, Ear ear)
+    {
+        Id = id;
+        Frequency = frequency;
+        StartingDecibels = startingDecibels;
+        LowestDecibels = lowestDecibels;
+        Ear = ear;
+    }
 }

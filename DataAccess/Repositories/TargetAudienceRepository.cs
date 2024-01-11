@@ -62,6 +62,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
                     To = ta.To.ToString(),
                     AmountOfTests = ta.Tests.Count()
                 })
+                .OrderBy(ta => ta.From)
                 .ToList();
 
             return result;

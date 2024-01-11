@@ -24,11 +24,11 @@ public class EmployeeBusinessRules
            employee.AccountType == Role.Administrator))
             throw new Exception(ErrorMessageStore.ErrorAdministratorChanged);
     }    
-    public static void AssertEmployeeNumber(string employeeNumber)
+    public static void AssertEmployeeNumber(string? employeeNumber)
     {
-        if (!IsNumeric(employeeNumber)) throw new Exception(ErrorMessageStore.ErrorEmployeeNumber);
+        if (employeeNumber != null && !IsNumeric(employeeNumber)) throw new Exception(ErrorMessageStore.ErrorEmployeeNumber);
     }
-    public static void AssertValidInfix(string infix)
+    public static void AssertValidInfix(string? infix)
     {
         if (!IsValidStringMayBeNull(infix)) throw new Exception(ErrorMessageStore.ErrorInfix);
     }
@@ -44,11 +44,11 @@ public class EmployeeBusinessRules
     {
         return IsLettersOnly(str) && str.Length <= 50 && str.Length >= 1;
     }
-    public static bool IsValidStringMayBeNull(string str)
+    public static bool IsValidStringMayBeNull(string? str)
     {
-        return (IsLettersOnly(str) && str.Length <= 50) || string.IsNullOrEmpty(str);
+        return (string.IsNullOrEmpty(str) || IsLettersOnly(str) && str.Length <= 50);
     }
-    private static bool IsNumeric(string input)
+    private static bool IsNumeric(string? input)
     {
         return int.TryParse(input, out _);
     }

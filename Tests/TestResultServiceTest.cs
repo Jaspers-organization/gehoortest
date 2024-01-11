@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Classes;
 using BusinessLogic.DataMappings;
 using BusinessLogic.Enums;
+using BusinessLogic.Models;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
 using System.Reflection;
@@ -25,7 +26,7 @@ public class TestResultServiceTest
         var service = Activator.CreateInstance(type, [new TestResultRepository()]);
         MethodInfo method = type.GetMethod("CalculateHearingLoss", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-        List<ToneAudiometryAnswer> answers = new() { new(1, frequency, Ear.Left, 30, 0, "") };
+        List<ToneAudiometryQuestionResult> answers = new() { new(Guid.NewGuid(), frequency, 30, 0, Ear.Left) };
 
         bool hasHearingLoss = (bool) method.Invoke(service, [answers])!;
 
@@ -49,7 +50,7 @@ public class TestResultServiceTest
         MethodInfo method = type.GetMethod("CalculateHearingLoss", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         int minHearingLoss = FrequencyMapping.Frequencies.Find(x => x.Frequency == frequency)!.HearingLoss.Min;
-        List<ToneAudiometryAnswer> answers = new() { new(1, frequency, Ear.Left, 30, minHearingLoss, "") };
+        List<ToneAudiometryQuestionResult> answers = new() { new(Guid.NewGuid(), frequency, 30, minHearingLoss, Ear.Left) };
 
         bool hasHearingLoss = (bool)method.Invoke(service, [answers])!;
 
@@ -73,7 +74,7 @@ public class TestResultServiceTest
         MethodInfo method = type.GetMethod("CalculateHearingLoss", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         int maxHearingLoss = FrequencyMapping.Frequencies.Find(x => x.Frequency == frequency)!.HearingLoss.Max;
-        List<ToneAudiometryAnswer> answers = new() { new(1, frequency, Ear.Left, 30, maxHearingLoss, "") };
+        List<ToneAudiometryQuestionResult> answers = new() { new(Guid.NewGuid(), frequency, 30, maxHearingLoss, Ear.Left) };
 
         bool hasHearingLoss = (bool)method.Invoke(service, [answers])!;
 

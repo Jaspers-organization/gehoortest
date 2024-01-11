@@ -15,16 +15,11 @@ public class TestProgressData
     public List<TextQuestionResult> TextQuestionResults { get; set; }
     public List<ToneAudiometryQuestionResult> ToneAudiometryQuestionResults { get; set; }
 
-
-    public List<TextAnswer> TextAnswers { get; set; }
-    public List<ToneAudiometryAnswer> ToneAudiometryAnswers { get; set; }
     public TestProgressData(Test test)
     {
         Test = test;
         CurrentQuestionNumber = 0;
         Decibel = 0;
-        TextAnswers = new List<TextAnswer>();
-        ToneAudiometryAnswers = new List<ToneAudiometryAnswer>();
         CurrentToneAudioMetryAnswers = new List<(bool, Ear, ToneAudiometryQuestion, int)>();
         TextQuestionResults = new List<TextQuestionResult>();
         ToneAudiometryQuestionResults = new List<ToneAudiometryQuestionResult>();
@@ -32,14 +27,18 @@ public class TestProgressData
 
     public void Add(string answer, TextQuestion question)
     {
+        Guid textQuestionResultId = Guid.NewGuid();
+
         TextQuestionResult givenAnswer = new TextQuestionResult();
+        givenAnswer.Id = textQuestionResultId;
         givenAnswer.Question = question.QuestionNumber;
         
         ICollection<TextQuestionOptionResult> resultList = new List<TextQuestionOptionResult>();
         foreach (TextQuestionOption textQOption in question.Options)
         {
             TextQuestionOptionResult option = new TextQuestionOptionResult();
-            option.Id = textQOption.Id;
+            option.Id = Guid.NewGuid();
+            option.TextQuestionResultId = textQuestionResultId;
             option.Option = textQOption.Option;
             resultList.Add(option);
         }
@@ -49,6 +48,7 @@ public class TestProgressData
         ICollection<TextQuestionAnswerResult> answerList = new List<TextQuestionAnswerResult>();
         TextQuestionAnswerResult textQAnswerResult = new TextQuestionAnswerResult();
         textQAnswerResult.Id = Guid.NewGuid();
+        textQAnswerResult.TextQuestionResultId = textQuestionResultId;
         textQAnswerResult.Answer = answer;
         answerList.Add(textQAnswerResult);
         givenAnswer.Answers = answerList;
@@ -172,6 +172,11 @@ public class TestProgressData
     private int? GetNextDecibels(Ear ear)
     {
         var answersOfSelectedEar = CurrentToneAudioMetryAnswers.Where(x => x.ear == ear).ToList();
+        if (answersOfSelectedEar.Count() == 0)
+        {
+            return null;
+        }
+
         var lastAnswer = answersOfSelectedEar[answersOfSelectedEar.Count() - 1];
         //last answer was true
         if (lastAnswer.answer)

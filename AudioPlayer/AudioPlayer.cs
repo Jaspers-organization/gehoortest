@@ -39,7 +39,11 @@ namespace AudioPlayer
             directSoundOut.Init(Stereo);
             directSoundOut.Play();
             Thread.Sleep(500);
+
+            // Somethings gives unexpected error:
+            // System.PlatformNotSupportedException: 'Thread abort is not supported on this platform.'
             directSoundOut.Stop();
+
             directSoundOut.Dispose();
         }
 
@@ -55,7 +59,6 @@ namespace AudioPlayer
                 Stereo.LeftVolume = 0.0f; // silence in left channel
                 Stereo.RightVolume = decibels; // full volume in right channel
             }
-
         }
     }
 }
