@@ -48,20 +48,28 @@ public class TestService
 
     public void ProcessTest(Test test, bool newTest, Guid initalId)
     {
-        ValidateTestAgainstBusinessRules(test, newTest, initalId);
+        this.test = test;
+        ValidateTestAgainstBusinessRules(newTest, initalId);
 
         if (newTest)
-            SaveTest(test);
+            SaveTest(this.test);
         else
         {
-            UpdateTest(test);
+            UpdateTest(this.test);
         }
     }
 
-    private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
+    private void ValidateTestAgainstBusinessRules(bool newTest, Guid initalId)
     {
         TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
         if(!newTest) CheckTargetAudience(test.TargetAudience.Id, initalId);
+        CheckQuestionAmount();  
+    }
+    private void CheckQuestionAmount()
+    {
+        if (test.TextQuestions.Count == 0 || test.ToneAudiometryQuestions.Count == 0)
+            test.Active = false;
+
     }
     private void CheckTargetAudience(Guid id, Guid initialId)
     {
