@@ -110,19 +110,6 @@ namespace DataAccess.Migrations
                         .HasDefaultValue("#DA0063")
                         .HasColumnName("color");
 
-                    b.Property<int>("LoginInactiveTime")
-                        .HasColumnType("int")
-                        .HasColumnName("login_inactive_time");
-
-                    b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("logo");
-
-                    b.Property<int>("TestInactiveTime")
-                        .HasColumnType("int")
-                        .HasColumnName("test_inactive_time");
-
                     b.HasKey("Id");
 
                     b.ToTable("settings", (string)null);
@@ -131,7 +118,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("id");
 
@@ -140,6 +126,7 @@ namespace DataAccess.Migrations
                         .HasColumnName("from");
 
                     b.Property<string>("Label")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("label");
 
@@ -150,6 +137,15 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("target_audience", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "00000000-0000-0000-0000-000000000000",
+                            From = 0,
+                            Label = "Ongekoppelde testen",
+                            To = 0
+                        });
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>

@@ -16,17 +16,17 @@
 
             <StackPanel Grid.Column="0" VerticalAlignment="Center">
                 <TextBlock
-                    Style="{StaticResource Header}"
+                    Style="{DynamicResource Header}"
                     HorizontalAlignment="Center"
                     Text="Gehoortest doen?"/>
                 <TextBlock
-                    Style="{StaticResource Text}"
+                    Style="{DynamicResource Text}"
                     TextAlignment="Center"
                     Margin="0 30 0 0"
                     Width="450"
                     Text="Meet uw gehoor binnen een paar minuten!"/>
                 <TextBlock
-                    Style="{StaticResource Text}"
+                    Style="{DynamicResource Text}"
                     TextAlignment="Center"
                     Margin="0 15 0 0"
                     Width="450"

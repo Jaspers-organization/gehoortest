@@ -3,8 +3,7 @@ using BusinessLogic.Projections;
 using BusinessLogic.IModels;
 using BusinessLogic.Enums;
 using BusinessLogic.Models;
-using BusinessLogic.Classes;
-using UserInterface.Stores;
+using BusinessLogic.BusinessRules;
 
 namespace BusinessLogic.Services;
 
@@ -21,7 +20,11 @@ public class TestService
 
     public Test GetTestById(Guid id) => testRepository.GetTestById(id);
 
-    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) => testRepository.GetTestProjectionsByTargetAudienceId(id);
+    public List<TestProjection>? GetTestProjectionsByTargetAudienceId(Guid id) {
+        if(id == Guid.Empty) return testRepository.GetTestProjectionsByNoTargetAudience();
+
+       return testRepository.GetTestProjectionsByTargetAudienceId(id);
+    }
 
     public Test? GetTestByTargetAudienceIdAndActive(Guid targetAudienceId) => testRepository.GetTestByTargetAudienceIdAndActive(targetAudienceId);
     #endregion
@@ -42,29 +45,33 @@ public class TestService
 
     public void SetTest(Test test) => this.test = test;
 
-    public void ProcessTest(Test test, bool newTest)
+
+    public void ProcessTest(Test test, bool newTest, Guid initalId)
     {
+        ValidateTestAgainstBusinessRules(test, newTest, initalId);
+
         if (newTest)
             SaveTest(test);
         else
         {
-            RemoveOptionsWhereId();
             UpdateTest(test);
         }
     }
 
-    public void RemoveOptionsWhereId()
+    private void ValidateTestAgainstBusinessRules(Test test, bool newTest, Guid initalId)
     {
-        if (test.TextQuestions.Count != 0 || test.TextQuestions == null)
-        {
-            foreach (var textQuestion in test.TextQuestions)
-            {
-                testRepository.RemoveOptionsWhereId(textQuestion.Id);
-            }
-        }
+        TestBusinessRules.ValidateTestValues(test.Title, test.TargetAudience);
+        if(!newTest) CheckTargetAudience(test.TargetAudience.Id, initalId);
     }
+    private void CheckTargetAudience(Guid id, Guid initialId)
+    {
+        if (TargetAudienceChanged(id, initialId))
+            test.Active = false;
+    }
+  
     public static bool TargetAudienceChanged(Guid currentTargetAudienceId, Guid initalTargetAudienceId)
     {
+
         return currentTargetAudienceId != initalTargetAudienceId;
     }
 
@@ -135,7 +142,7 @@ public class TestService
             if (activeTest != null)
             {
                 activeTest.Active = false;
-                testRepository.UpdateTest(test);
+                testRepository.UpdateTest(activeTest);
             }
         }
         test.Active = !test.Active;
@@ -166,14 +173,14 @@ public class TestService
 
     public static int GetQuestionNumberIndex<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
 
         return questions.FindIndex(q => q.QuestionNumber == questionNumber);
     }
 
     public static List<T> ShiftQuestionNumbers<T>(List<T> questions) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
         int newNumber = 1;
 
         foreach (IQuestion question in questions)
@@ -186,7 +193,7 @@ public class TestService
 
     public List<T> UpdateQuestion<T>(List<T> questions, int questionNumber, T question) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
         int index = GetQuestionNumberIndex(questions, questionNumber);
         if (index != -1)
         {
@@ -206,13 +213,14 @@ public class TestService
 
     public List<T> DeleteQuestion<T>(List<T> questions, int questionNumber) where T : IQuestion
     {
-        ErrorService.AssertQuestions(questions);
+        TestBusinessRules.AssertQuestions(questions);
 
         int index = GetQuestionNumberIndex(questions, questionNumber);
         if (index != -1)
         {
-            questions.RemoveAt(index);
-            questions = ShiftQuestionNumbers(questions);
+            if (index == 0 && questions.Count == 0)
+                return questions;
+
             switch (questions[index])
             {
                 case TextQuestion:
@@ -222,6 +230,9 @@ public class TestService
                     test.ToneAudiometryQuestions.ToList().RemoveAt(index);
                     break;
             }
+
+            questions.RemoveAt(index);
+            questions = ShiftQuestionNumbers(questions);
         }
 
         return questions;

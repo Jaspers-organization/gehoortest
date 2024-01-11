@@ -1,6 +1,12 @@
-﻿using BusinessLogic.Projections;
+﻿using BusinessLogic.IRepositories;
+using BusinessLogic.Models;
+using System;
+using BusinessLogic.Services;
+using DataAccess.Repositories;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
 
@@ -9,8 +15,22 @@ namespace UserInterface.ViewModels;
 internal class MainWindowViewModel : ViewModelBase
 {
     private NavigationStore navigationStore;
-
+    private readonly SettingService settingService;
+    private ResourceDictionary resourceDictTextStyles = new ResourceDictionary { Source = new Uri("pack://application:,,,/UserInterface;component/Assets/Styling/TextStyles.xaml") };
+    
     #region properties
+    private bool isBigFontSize = false;
+    public bool IsBigFontSize
+    {
+        get { return isBigFontSize; }
+        set
+        {
+            isBigFontSize = value;
+            OnPropertyChanged(nameof(IsBigFontSize));
+            OnPropertyChanged(nameof(ChangeText));
+        }
+    }
+
     private ViewModelBase? _currentViewModel;
     public ViewModelBase? CurrentViewModel
     {
@@ -52,6 +72,27 @@ internal class MainWindowViewModel : ViewModelBase
         get { return _showCloseApplicationButton; }
         set { _showCloseApplicationButton = value; OnPropertyChanged(nameof(ShowCloseApplicationButton)); }
     }
+
+    private Visibility _showEnlargeTextButton = Visibility.Visible;
+    public Visibility ShowEnlargeTextButton
+    {
+        get { return _showEnlargeTextButton; }
+        set { _showEnlargeTextButton = value; OnPropertyChanged(nameof(ShowEnlargeTextButton)); }
+    }
+
+    private string changeText = "Vergroot tekst";
+    public string ChangeText
+    {
+        get { return isBigFontSize ? "Verklein Tekst" : "Vergroot Tekst"; }
+        set
+        {
+            if (changeText != value)
+            {
+                changeText = value;
+                OnPropertyChanged(nameof(ChangeText));
+            }
+        }
+    }
     #endregion
 
     #region commands
@@ -60,6 +101,7 @@ internal class MainWindowViewModel : ViewModelBase
     public ICommand BackCommand => new Command(Back);
     public ICommand CloseApplicationCommand => new Command(CloseApplication);
     public ICommand DoNothingCommand => new Command(DoNothing);
+    public ICommand ChangeTextSizeCommand => new Command(ChangeTextSize);
     #endregion
 
     public MainWindowViewModel(NavigationStore navigationStore)
@@ -67,42 +109,55 @@ internal class MainWindowViewModel : ViewModelBase
         this.navigationStore = navigationStore;
 
         this.navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-        this.navigationStore.IsModalOpenChanged += OnIsModalOpenChanged;
-        this.navigationStore.LoggedInEmployeeChanged += LoggedInEmployeeChanged;
-        this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
-        this.navigationStore.HideTopBarChanged += ToggleTopBar;
-        CurrentViewModel = this.navigationStore.CurrentViewModel;
-    }
+        this.navigationStore.CurrentViewModelChanged += SetTopBarButtons;
 
+        this.navigationStore.IsModalOpenChanged += OnIsModalOpenChanged;
+        this.navigationStore.PreviousViewModelChanged += PreviousViewModelChanged;
+        
+        CurrentViewModel = this.navigationStore.CurrentViewModel;
+        
+        ISettingsRepository settingsRepository = new SettingsRepository();
+        settingService = new SettingService(settingsRepository);
+        GetColorSetting();
+    }
+    private void SetTopBarButtons()
+    {
+        ShowLogoutButton = Visibility.Hidden;
+        ShowCloseApplicationButton = Visibility.Hidden;
+        ShowEnlargeTextButton = Visibility.Hidden;
+
+        switch (navigationStore.CurrentViewModel.GetType())
+        {
+            case Type a when a == typeof(TestOverviewViewModel):
+            case Type b when b == typeof(TestResultViewModel):
+            case Type c when c == typeof(TestViewModel):
+            case Type d when d == typeof(TargetAudienceOverviewViewModel):
+            case Type e when e == typeof(SettingsViewModel):
+            case Type f when f == typeof(LoginViewModel):
+            case Type g when g == typeof(HomeViewModel):
+            case Type h when h == typeof(TestManagementViewModel):
+            case Type i when i == typeof(EmployeeManagementViewModel):
+            case Type j when j == typeof(EmployeeOverviewViewModel):
+                ShowEnlargeTextButton = Visibility.Visible;
+                break;
+            case Type k when k == typeof(EmployeePortalViewModel):
+                ShowLogoutButton = Visibility.Visible;
+                ShowCloseApplicationButton = Visibility.Visible;
+                break;
+            default:
+                break;
+        }
+    }
     private void OpenLogin()
     {
         if (navigationStore.LoggedInEmployee != null || navigationStore.CurrentViewModel is not HomeViewModel) return;
-
         navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
     }
 
     private void Logout()
     {
         navigationStore.LoggedInEmployee = null;
-        ShowLogoutButton = Visibility.Hidden;
-        ShowCloseApplicationButton = Visibility.Hidden;
         navigationStore.CurrentViewModel = new HomeViewModel(navigationStore);
-    }    
-    private void ToggleTopBar()
-    {
-        if (navigationStore.HideTopBar)
-        {
-            ShowBackButton = Visibility.Hidden;
-            ShowCloseApplicationButton = Visibility.Hidden;
-            ShowLogoutButton = Visibility.Hidden;
-        }
-        else
-        {
-            ShowLogoutButton = Visibility.Visible;
-            ShowBackButton = Visibility.Visible;
-            ShowCloseApplicationButton = Visibility.Visible;
-        }
-
     }
     private void Back()
     {
@@ -124,7 +179,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void CloseApplication()
     {
-        Application.Current.Shutdown();
+        System.Windows.Application.Current.Shutdown();
     }
 
     private void OnCurrentViewModelChanged()
@@ -132,16 +187,46 @@ internal class MainWindowViewModel : ViewModelBase
         CurrentViewModel = navigationStore.CurrentViewModel;
     }
 
+    private void ChangeToBig(ResourceDictionary resourceDict)
+    {
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Text", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 48.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 56.0);
+    }
+    private void ChangeToSmall(ResourceDictionary resourceDict)
+    {
+        UpdateResource(resourceDict,TextBlock.FontSizeProperty, "Text", 32.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "SubHeader", 40.0);
+        UpdateResource(resourceDict, TextBlock.FontSizeProperty, "Header", 48.0);
+    }
+    private void UpdateResource(ResourceDictionary resourceDict, DependencyProperty type, string field, double value)
+    {
+        Style existingStyle = resourceDict[field] as Style;
+        if (existingStyle != null)
+        {
+            Style newStyle = new Style(typeof(TextBlock), existingStyle);
+            newStyle.Setters.Add(new Setter(type, value));
+            resourceDict[field] = newStyle;
+        }
+    }
+
+    private void ChangeTextSize()
+    {
+
+        if (!IsBigFontSize)
+            ChangeToBig(resourceDictTextStyles);
+        else
+            ChangeToSmall(resourceDictTextStyles);
+
+        System.Windows.Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
+
+        IsBigFontSize = !IsBigFontSize;
+    }
+
     private void OnIsModalOpenChanged()
     {
         CurrentModalViewModel = navigationStore.CurrentModalViewModel;
         ShowModal = navigationStore.IsModalOpen ? Visibility.Visible : Visibility.Hidden;
-    }
-
-    private void LoggedInEmployeeChanged()
-    {
-        ShowLogoutButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
-        ShowCloseApplicationButton = navigationStore.LoggedInEmployee == null ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void PreviousViewModelChanged()
@@ -153,4 +238,24 @@ internal class MainWindowViewModel : ViewModelBase
     /// This method is only used to make sure the application can't be stopped using alt+f4
     /// </summary>
     private void DoNothing() { }
+
+    private void GetColorSetting()
+    {
+        Settings savedSettings = settingService.GetSetting();
+        Color mediacolor = (Color)ColorConverter.ConvertFromString(savedSettings.Color);
+        SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
+
+        var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
+        System.Drawing.Color lighterColor = System.Windows.Forms.ControlPaint.LightLight(drawingcolor);
+
+        Color lighterMediaColor =Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+        SolidColorBrush secondaryColorHighlight = new SolidColorBrush(lighterMediaColor);
+
+        ResourceDictionary resourceDict = new ResourceDictionary();
+        resourceDict.Source = new Uri("../../Assets/Styling/Colors.xaml", UriKind.RelativeOrAbsolute);
+        App.Current.Resources["SecondaryColor"] = solidColorBrush;
+        App.Current.Resources["SecondaryColor_Highlight"] = secondaryColorHighlight;
+    }
+
+   
 }

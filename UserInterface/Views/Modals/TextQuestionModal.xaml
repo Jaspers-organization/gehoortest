@@ -16,7 +16,7 @@
                 <RowDefinition Height="3*" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
-                <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Vraag" Height="58" Width="auto" Margin="0,0,50,0"/>
+                <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Vraag" Height="58" Width="auto" Margin="0,0,50,0"/>
                 <TextBox Text="{Binding TestQuestion}" Style="{StaticResource InputField_XXL}" ></TextBox>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0">
@@ -30,12 +30,12 @@
                     <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource Text}" VerticalAlignment="Center" Text="Meerkeuze" Height="58" Width="auto" Margin="0,0,197,0"/>
+                    <TextBlock Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Meerkeuze" Height="58" Width="auto" Margin="0,0,197,0"/>
                     <ToggleButton IsChecked="{Binding MultipleChoice}" Style="{StaticResource ToggleButtonStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1"  Orientation="Horizontal">
-                    <TextBlock  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Open invoerveld" Height="58" Width="auto" Margin="0,0,120,0"/>
+                    <TextBlock  Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Open invoerveld" Height="58" Width="auto" Margin="0,0,120,0"/>
                     <ToggleButton IsChecked="{Binding HasInputField}" Style="{StaticResource ToggleButtonStyle}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2"  Orientation="Horizontal" Margin="0,150,0,0">
@@ -53,11 +53,11 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <!-- TextBlocks or other elements -->
-                        <TextBlock  Style="{StaticResource Text}" VerticalAlignment="Center" Text="Opties" Height="58" Width="auto" Margin="0,0,0,0"/>
+                        <TextBlock  Style="{DynamicResource Text}" VerticalAlignment="Center" Text="Opties" Height="58" Width="auto" Margin="0,0,0,0"/>
                     </StackPanel>
 
                     <!-- Rectangle placed behind the ListView -->
-                    <Rectangle Width="520" Height="355" Margin="0,50,0,0" Fill="{StaticResource SecondaryColor}" HorizontalAlignment="Left">
+                    <Rectangle Width="520" Height="355" Margin="0,50,0,0" Fill="{DynamicResource SecondaryColor}" HorizontalAlignment="Left">
                         <Rectangle.Effect>
                             <DropShadowEffect BlurRadius="20" ShadowDepth="1" Color="#dcdcdc"/>
                         </Rectangle.Effect>

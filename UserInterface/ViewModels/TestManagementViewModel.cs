@@ -88,28 +88,6 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
 
     #endregion
 
-    #region Errors
-    private bool CheckValidityInput()
-    {
-        // Check the validity of the input
-        string testNameValidation = ErrorService.ValidateInput("TestName", TestName!);
-        string audienceValidation = ErrorService.ValidateInput("Audience", SelectedTargetAudience!);
-
-        if (!string.IsNullOrEmpty(testNameValidation))
-        {
-            OpenErrorModal(testNameValidation);
-            return false;
-        }
-
-        if (!string.IsNullOrEmpty(audienceValidation))
-        {
-            OpenErrorModal(audienceValidation);
-            return false;
-        }
-        return true;
-    }
-    #endregion
-
     public bool IsConfirmed { get; set; }
     public Test Test { get; set; }
     private ConfirmationModalViewModel confirmationModalViewModel { get; set; }
@@ -118,11 +96,10 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         //Dependencies initialization
         this.navigationStore = navigationStore;
-        this.navigationStore.HideTopBar = true;
 
         testService = new TestService(new TestRepository());
         employeeService = new EmployeeService(new EmployeeRepository());
-        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository());
+        targetAudienceSerivce = new TargetAudienceService(new TargetAudienceRepository(), new TestRepository());
 
         //set values
         SetTargetAudiences();
@@ -140,7 +117,9 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
             CreateTest();
             SetStatus(false);
             SetSelected(0);
+            initalTargetAudience = SelectedTargetAudience;
         }
+        SetEmployee();
     }
 
 
@@ -163,11 +142,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         // Set the overall test
         SetTest(test);
 
-        // Set audio questions based on provided test's tone audiometry questions
-        SetAudioQuestions(new ObservableCollection<ToneAudiometryQuestion>(test.ToneAudiometryQuestions));
+        // Set audio questions based on provided test's tone audiometry questions ordered by QuestionNumber
+        SetAudioQuestions(new ObservableCollection<ToneAudiometryQuestion>(test.ToneAudiometryQuestions.OrderBy(aq => aq.QuestionNumber)));
 
-        // Set text questions based on provided test's text questions
-        SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions));
+        // Set text questions based on provided test's text questions ordered by QuestionNumber
+        SetTextQuestions(new ObservableCollection<TextQuestion>(test.TextQuestions.OrderBy(tq => tq.QuestionNumber)));
 
         // If there's a list of audiences available
         if (TargetAudiences != null)
@@ -206,10 +185,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     private void SetTestName(string title) => TestName = title;
 
     // Sets the status of the test (Active/Inactive)
-    private void SetStatus(bool active) {
+    private void SetStatus(bool active)
+    {
         Status = active ? "Actief" : "Inactief";
         Test.Active = active;
-    } 
+    }
 
     // Sets the selected target audience ID
     private void SetSelected(int id) => SelectedTargetAudience = TargetAudiences![id];
@@ -363,7 +343,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     }
 
     // Refreshes the text question view.
-    private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions);
+    private void UpdateTextQuestionListView() => TextQuestions = new ObservableCollection<TextQuestion>(Test.TextQuestions.OrderBy(tq => tq.QuestionNumber));
 
     // Deletes a text question from the test.
     private void DeleteTextQuestion(int questionNumber)
@@ -417,7 +397,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     // Refreshes the audio question view.
     private void UpdateAudioQuestionListView()
     {
-        AudioQuestions = new ObservableCollection<ToneAudiometryQuestion>(Test.ToneAudiometryQuestions);
+        AudioQuestions = new ObservableCollection<ToneAudiometryQuestion>(Test.ToneAudiometryQuestions.OrderBy(aq => aq.QuestionNumber));
     }
 
     // Deletes an audio question from the test.
@@ -437,14 +417,7 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         return new TestOverviewViewModel(navigationStore);
     }
-    private void CheckTargetAudienceChanged()
-    {
-        if(initalTargetAudience == null)
-            return;
-        
-        if (TestService.TargetAudienceChanged(Test.TargetAudience.Id, initalTargetAudience.Id))
-            Test.Active = false;
-    }
+
     private void SetEmployee()
     {
         Guid EmployeeId = navigationStore.LoggedInEmployee.Id;
@@ -460,23 +433,15 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
     {
         try
         {
-            if (!CheckValidityInput())
-                return;
 
-            if(Test.Employee == null && Test.EmployeeId == Guid.Empty)
-                SetEmployee();
-
-            if(!isNewTest)
-                CheckTargetAudienceChanged();
-
-            testService.ProcessTest(Test, isNewTest);
+            testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
 
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();
         }
         catch (Exception ex)
         {
-            OpenErrorModal("Er is een fout opgetreden bij het opslaan van de test.");
-            Console.WriteLine("Error occurred: " + ex);
+            OpenErrorModal(ex.Message);
+
         }
     }
     #endregion

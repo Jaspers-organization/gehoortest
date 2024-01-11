@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <DrawingGroup x:Key="refresh">
+        <DrawingGroup.ClipGeometry>
+            <RectangleGeometry Rect="0.0,0.0,24.0,24.0"/>
+        </DrawingGroup.ClipGeometry>
+        <DrawingGroup>
+            <DrawingGroup Transform="0.24,0.0,0.0,0.24,9.12,9.12">
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry Figures="M 20 11 A 8.1 8.1 0 0 0 4.5 9 M 4 5 v 4 h 4" FillRule="Nonzero"/>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+            <DrawingGroup Transform="0.24,0.0,0.0,0.24,9.12,9.12">
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" DashCap="Round" EndLineCap="Round" StartLineCap="Round"/>
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry Figures="m 4 13 a 8.1 8.1 0 0 0 15.5 2 m 0.5 4 v -4 h -4" FillRule="Nonzero"/>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingGroup>
+    </DrawingGroup>
+    <DrawingImage Drawing="{StaticResource refresh}" x:Key="di_refresh"/>
+</ResourceDictionary>

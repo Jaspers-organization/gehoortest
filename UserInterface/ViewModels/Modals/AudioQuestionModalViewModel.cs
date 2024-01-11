@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.BusinessRules;
+using BusinessLogic.Models;
 using System;
 using System.Windows.Input;
 using UserInterface.Commands;
@@ -19,29 +20,17 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     public ICommand CloseModalCommand => new Command(CloseModal);
     public ICommand SaveQuestionCommand => new Command(SaveQuestion);
     #endregion
-
-    #region Propertys
-    private string _frequencyString;
-    public string FrequencyString
+    #region Properties
+    private int _selectedFrequency;
+    public int SelectedFrequency
     {
-        get { return _frequencyString; }
+        get { return _selectedFrequency; }
         set
         {
-            _frequencyString = value;
-            OnPropertyChanged(nameof(FrequencyString));
+            _selectedFrequency = value;
+            OnPropertyChanged(nameof(SelectedFrequency));
         }
     }
-    private int _frequency;
-    public int Frequency
-    {
-        get { return _frequency; }
-        set
-        {
-            _frequency = value;
-            OnPropertyChanged(nameof(Frequency));
-        }
-    }
-
     private string _startingDecibelsString;
     public string StartingDecibelsString
     {
@@ -52,46 +41,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
             OnPropertyChanged(nameof(StartingDecibelsString));
         }
     }
-    private int _startingDecibels;
-    public int StartingDecibels
-    {
-        get { return _startingDecibels; }
-        set
-        {
-            _startingDecibels = value;
-            OnPropertyChanged(nameof(StartingDecibels));
-        }
-    }
-    #endregion
 
-    #region Errors
-
-    private bool CheckValidityInput()
-    {
-        string frequencyValidation = ErrorService.ValidateInput("Frequency", FrequencyString);
-        string decibelValidation = ErrorService.ValidateInput("StartingDecibelsString", StartingDecibelsString);
-
-        if (!string.IsNullOrEmpty(frequencyValidation))
-        {
-            OpenErrorModal(frequencyValidation);
-            return false;
-        }
-        else
-        {
-            Frequency = ErrorService.ParseStringToInt(FrequencyString);//not sure of this.
-        }
-
-        if (!string.IsNullOrEmpty(decibelValidation))
-        {
-            OpenErrorModal(decibelValidation);
-            return false;
-        }
-        else
-        {
-            StartingDecibels = ErrorService.ParseStringToInt(StartingDecibelsString);
-        }
-        return true;
-    }
     #endregion
 
     public AudioQuestionModalViewModel(NavigationStore navigationStore, ToneAudiometryQuestion toneAudiometryQuestion, bool newQuestion, TestManagementViewModel testManagementViewModel)
@@ -107,23 +57,21 @@ internal class AudioQuestionModalViewModel : ViewModelBase
     public void SetValues()
     {
         StartingDecibelsString = toneAudiometryQuestion.StartingDecibels.ToString();
-        FrequencyString = toneAudiometryQuestion.Frequency.ToString();
+        SelectedFrequency = toneAudiometryQuestion.Frequency;
     }
 
     private void SaveQuestion()
     {
         try
         {
-            // Checks the validity of input data before proceeding
-            if (!CheckValidityInput())
-                return;
+            TestBusinessRules.ValidateToneaudiometryValues(StartingDecibelsString);
 
             // Creates a new ToneAudiometryQuestion object based on the provided data
             ToneAudiometryQuestion question = new ToneAudiometryQuestion
             {
                 Id = toneAudiometryQuestion.Id,
-                StartingDecibels = StartingDecibels,
-                Frequency = Frequency,
+                StartingDecibels = int.Parse(StartingDecibelsString),
+                Frequency = SelectedFrequency,
                 QuestionNumber = toneAudiometryQuestion.QuestionNumber
             };
 
@@ -139,7 +87,7 @@ internal class AudioQuestionModalViewModel : ViewModelBase
         catch (Exception ex)
         {
             // If an exception occurs during the saving process, opens an error modal
-            OpenErrorModal("Er is wat foutgegaan bij het opslaan van de vraag");
+            OpenErrorModal(ex.Message);
         }
     }
 

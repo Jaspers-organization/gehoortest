@@ -35,7 +35,7 @@ public class HashingServiceTest
         string salt = service.GenerateSalt();
         string realPassword = service.HashPassword("CorrectPassword", salt);
 
-        bool result = service.VerifyPassword(password, salt, realPassword);
+        bool result = service.VerifyPassword(password, realPassword);
 
         Assert.Equal(isCorrect, result);
     }

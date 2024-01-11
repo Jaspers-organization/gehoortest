@@ -4,7 +4,7 @@ public interface IHashingService
 {
     public string GenerateSalt();
 
-    public string HashPassword(string salt, string password);
+    public string HashPassword(string password, string salt);
 
-    public bool VerifyPassword(string password, string salt, string passwordToVerify);
+    public bool VerifyPassword(string password, string passwordToVerify);
 }
