@@ -31,7 +31,7 @@
                                     <PathGeometry Figures="M 612.727 177.751 l -8.22992 -3.89856 c 3.37555 4.71082 6.28418 12.068 7.84137 17.9225 c 2.63654 -5.45343 6.88672 -12.1261 11.0938 -16.1119 l -8.69812 2.23767 c 5.35974 -26.2679 25.5191 -45.1257 48.6044 -45.1257 l 0.32679 -0.9488 c -24.1132 0 -45.4658 18.5964 -50.9382 45.9249 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 650.606 217.775 h -52 c -2.20557 0 -4 -1.79443 -4 -4 s 1.79443 -4 4 -4 h 52 c 2.20557 0 4 1.79443 4 4 s -1.79443 4 -4 4 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -76,7 +76,7 @@
                                 <PathGeometry Figures="M 224.01 485.454 h -86.216 c -0.62359 0 -1.19236 -0.35629 -1.46448 -0.91737 l -0.52506 -1.08263 l -11.4572 -23.5178 c -0.73767 -1.5142 -3.0078 -1.04796 -3.08896 0.63441 l -1.10388 22.8834 l -0.02268 0.45363 c -0.0433 0.86625 -0.75827 1.54637 -1.6256 1.54637 H 33.6197 c -0.85776 0 -1.56884 -0.66712 -1.62511 -1.52303 c -0.01048 -0.15948 -0.02067 -0.31851 -0.03028 -0.47697 c -5.41998 -83.65 14.07 -140.35 25.5 -165.72 l 0.01001 -0.01001 c 4.48999 -9.97998 7.75 -15.11 7.75 -15.11 l 1.13 -0.01001 h 0.01001 l 22.83 -0.39996 h 0.01001 l 20.22 -0.34003 l 15.28 -0.25 l 6.13 -0.10999 h 0.01001 l 3.84003 -0.06 l 19.09 -0.33002 l 17.05 -0.28998 l 12.2401 -0.20001 h 0.33997 l 1.82001 7.84998 v 0.01001 l 0.07001 0.35004 v 0.01001 l 0.31 1.28998 l 0.01001 0.03998 l 0.62 2.71002 v 0.02002 l 0.03998 0.14996 v 0.01001 l 0.15002 0.65002 l 0.01001 0.02997 l 1.44 6.22998 l 2.32996 10.13 l 3.07001 13.25 l 3.87 16.82 l 1.96002 8.47003 l 2.69 11.67 l 23.8 103.14 h 0 c 0.24008 1.02157 -0.53506 2 -1.58446 2 Z" FillRule="Nonzero"/>
                             </GeometryDrawing.Geometry>
                         </GeometryDrawing>
-                        <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                        <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                             <GeometryDrawing.Geometry>
                                 <PathGeometry Figures="M 166.689 107.284 l -46.6709 -1.62849 l -18.4483 24.7386 l -9.7071 2.10791 c -14.5512 3.1598 -24.5331 16.5803 -23.3736 31.4254 l 4.40964 102.848 l 2 12 l 110 18 l 24.7339 -155.648 l -32.5461 -11.6925 l -10.3975 -22.1506 Z" FillRule="Nonzero"/>
                             </GeometryDrawing.Geometry>
@@ -97,7 +97,7 @@
                                     <PathGeometry Figures="M 656.469 404.972 c -0.2305 -0.08566 -0.48759 0.03212 -0.57325 0.26262 l -4.97021 13.374 c -0.08566 0.2305 0.03212 0.48759 0.26262 0.57325 s 0.48759 -0.03212 0.57325 -0.26262 l 4.97021 -13.374 c 0.08566 -0.2305 -0.03212 -0.48759 -0.26262 -0.57325 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 664.475 378.998 l -35.6799 96.0082 c -1.76209 4.74148 -6.89382 7.24846 -11.6719 5.81524 l -0.00209 -0.00078 c -0.07052 -0.02145 -0.14102 -0.04289 -0.21285 -0.0672 c -0.12562 -0.03956 -0.24969 -0.08328 -0.37506 -0.12988 c 0 0 -0.4473 -0.20429 -1.26406 -0.57917 c -0.82511 -0.37799 -2.02516 -0.93099 -3.51945 -1.62663 c -0.44861 -0.20716 -0.92075 -0.42781 -1.41929 -0.66064 c -0.99287 -0.46412 -2.08295 -0.97388 -3.24987 -1.52646 c -0.46587 -0.21832 -0.94691 -0.44703 -1.43839 -0.67963 c -2.51228 -1.18813 -5.32196 -2.52958 -8.27724 -3.96558 c -0.50037 -0.24067 -1.00415 -0.48496 -1.51134 -0.73291 c -0.13248 -0.06588 -21.6709 -14.8674 -21.2546 -15.9875 l 35.6799 -96.0082 c 1.83509 -4.9379 7.32401 -7.45246 12.2619 -5.61737 l 5.33704 1.98342 c 0.85259 0.31685 1.29104 1.23609 1.04812 2.11377 c -0.01471 0.05875 -0.0294 0.1175 -0.03992 0.1778 c -0.163 0.91215 0.39931 1.79893 1.26861 2.12199 l 18.7594 6.97163 c 0.8693 0.32306 1.87426 0.01873 2.34652 -0.77849 c 0.03142 -0.05254 0.05866 -0.10662 0.0859 -0.16072 c 0.38921 -0.82332 1.32157 -1.23312 2.17417 -0.91627 l 5.33705 1.98343 c 4.9379 1.83509 7.45246 7.32401 5.61737 12.2619 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -151,17 +151,17 @@
                                     <PathGeometry Figures="M 527.137 178.394 h -31.3623 c -4.03564 0 -7.31886 -3.28321 -7.31886 -7.31885 c -1.57703 -13.0214 -2.01147 -25.1487 0 -35.3623 c 0 -4.03564 3.28322 -7.31884 7.31886 -7.31884 h 31.3623 c 4.03564 0 7.31885 3.2832 7.31885 7.31885 v 35.3623 c 0 4.03564 -3.2832 7.31885 -7.31885 7.31885 Z m -31.3623 -49 c -3.48438 0 -6.31885 2.83447 -6.31885 6.31885 v 35.3623 c 0 3.48438 2.83447 6.31885 6.31885 6.31885 h 31.3623 c 3.48438 0 6.31885 -2.83447 6.31885 -6.31885 v -35.3623 c 0 -3.48438 -2.83447 -6.31885 -6.31885 -6.31885 h -31.3623 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 523.968 149.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 523.968 160.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 523.968 138.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -173,7 +173,7 @@
                                     <PathGeometry Figures="M 135.412 116.425 c 2.29554 4.32749 5.37816 7.77771 8.64644 10.0099 l 19.2641 42.6063 l 20.0056 -9.75968 l -21.6954 -42.1691 c -0.01513 -3.95779 -1.14294 -8.44495 -3.43848 -12.7724 c -5.24414 -9.88614 -14.5953 -15.195 -20.8865 -11.8578 c -6.29115 3.33719 -7.13991 14.0567 -1.89579 23.9428 l 2e-05 2e-05 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 178.79 143.28 s 29.3413 -15.3756 38.445 0.76875 c 7.7674 13.7745 13.3798 82.7011 14.8601 102.64 c 0.25983 3.49976 -0.65327 6.97551 -2.5962 9.89799 v 2e-05 c -5.75394 8.65487 -18.1582 9.47999 -25.0078 1.6635 l -59.4556 -117.067 l 28.2021 -13.4031 l 6.89737 16.7048 l -1.34492 -1.20489 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -195,17 +195,17 @@
                                     <PathGeometry Figures="M 408.137 531.394 h -31.3623 c -4.03564 0 -7.31886 -3.28321 -7.31886 -7.31885 c -1.57703 -13.0214 -2.01147 -25.1487 0 -35.3623 c 0 -4.03564 3.28322 -7.31884 7.31886 -7.31884 h 31.3623 c 4.03564 0 7.31885 3.2832 7.31885 7.31885 v 35.3623 c 0 4.03564 -3.2832 7.31885 -7.31885 7.31885 Z m -31.3623 -49 c -3.48438 0 -6.31885 2.83447 -6.31885 6.31885 v 35.3623 c 0 3.48438 2.83447 6.31885 6.31885 6.31885 h 31.3623 c 3.48438 0 6.31885 -2.83447 6.31885 -6.31885 v -35.3623 c 0 -3.48438 -2.83447 -6.31885 -6.31885 -6.31885 h -31.3623 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 404.968 502.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 404.968 513.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 404.968 491.894 h -25.8411 c -1.09605 0 -1.98778 -0.89174 -1.98778 -1.98778 s 0.89174 -1.98778 1.98778 -1.98778 h 25.8411 c 1.09605 0 1.98778 0.89174 1.98778 1.98778 s -0.89174 1.98778 -1.98778 1.98778 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
@@ -217,7 +217,7 @@
                                     <PathGeometry Figures="M 134.539 294.628 c -4.89857 0.02591 -9.38514 1.15606 -12.8788 3.01579 l -46.6809 -2.7008 l -0.63535 22.2502 l 47.4216 0.34406 c 3.51312 1.82273 8.01139 2.90535 12.91 2.87945 c 11.1908 -0.05918 20.2321 -5.88017 20.1944 -13.0015 c -0.03768 -7.12138 -9.14005 -12.8464 -20.3308 -12.7872 h -3e-05 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>
                             </GeometryDrawing>
-                            <GeometryDrawing Brush="{StaticResource SecondaryColor}">
+                            <GeometryDrawing Brush="{DynamicResource SecondaryColor}">
                                 <GeometryDrawing.Geometry>
                                     <PathGeometry Figures="M 89.6892 132.578 s -39.6824 -4.42168 -49.7909 20.1964 c -7.72191 18.8058 -27.783 92.1002 -39.0403 134.063 c -4.11574 15.3418 7.07334 30.5324 22.9452 31.161 l 70.0952 2.77605 l 4.05432 -31.0091 l -50.0543 -7.99094 l 28 -84 l 13.7909 -65.1964 Z" FillRule="Nonzero"/>
                                 </GeometryDrawing.Geometry>

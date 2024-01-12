@@ -96,10 +96,28 @@ namespace DataAccess.Migrations
                     b.ToTable("employee_login", (string)null);
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
+            modelBuilder.Entity("BusinessLogic.Models.Settings", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("#DA0063")
+                        .HasColumnName("color");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("settings", (string)null);
+                });
+
+            modelBuilder.Entity("BusinessLogic.Models.TargetAudience", b =>
+                {
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("id");
 
@@ -108,6 +126,7 @@ namespace DataAccess.Migrations
                         .HasColumnName("from");
 
                     b.Property<string>("Label")
+                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("label");
 
@@ -118,6 +137,15 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("target_audience", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "00000000-0000-0000-0000-000000000000",
+                            From = 0,
+                            Label = "Ongekoppelde testen",
+                            To = 0
+                        });
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>
@@ -347,17 +375,6 @@ namespace DataAccess.Migrations
                     b.ToTable("tone_audiometry_question", (string)null);
                 });
 
-            modelBuilder.Entity("BusinessLogic.Models.EmployeeLogin", b =>
-                {
-                    b.HasOne("BusinessLogic.Models.Employee", "Employee")
-                        .WithOne("EmployeeLogin")
-                        .HasForeignKey("BusinessLogic.Models.EmployeeLogin", "EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("BusinessLogic.Models.ToneAudiometryQuestionResult", b =>
                 {
                     b.Property<string>("Id")
@@ -392,6 +409,17 @@ namespace DataAccess.Migrations
                     b.HasIndex("TestResultId");
 
                     b.ToTable("tone_audiometry_question_result", (string)null);
+                });
+
+            modelBuilder.Entity("BusinessLogic.Models.EmployeeLogin", b =>
+                {
+                    b.HasOne("BusinessLogic.Models.Employee", "Employee")
+                        .WithOne("EmployeeLogin")
+                        .HasForeignKey("BusinessLogic.Models.EmployeeLogin", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("BusinessLogic.Models.Test", b =>

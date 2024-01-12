@@ -1,5 +1,4 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using System;
 using System.Windows.Input;
 
@@ -10,10 +9,10 @@ public abstract class CommandBase : ICommand
     public event EventHandler? CanExecuteChanged;
     protected Action? command;
     protected Action<int>? intCommand;
-    protected Action<Guid>? guidCommand;
-
     protected Action<string>? stringCommand;
+    protected Action<Guid>? guidCommand;
     protected Action<Test>? testCommand;
+    protected Action<TargetAudience>? targetAudienceCommand;
 
     public virtual bool CanExecute(object? parameter) => true;
 
@@ -34,14 +33,19 @@ public abstract class CommandBase : ICommand
             stringCommand.Invoke((string)parameter!);
             return;
         }
+        if (guidCommand != null)
+        {
+            guidCommand.Invoke((Guid)parameter!);
+            return;
+        }
         if (testCommand != null)
         {
             testCommand.Invoke((Test)parameter!);
             return;
         }
-        if (guidCommand != null)
+        if (targetAudienceCommand != null)
         {
-            guidCommand.Invoke((Guid)parameter!);
+            targetAudienceCommand.Invoke((TargetAudience)parameter!);
             return;
         }
     }

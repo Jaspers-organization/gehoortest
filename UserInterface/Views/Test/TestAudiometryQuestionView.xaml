@@ -22,11 +22,17 @@
             Width="420">
             </Rectangle>
 
-            <ProgressBar Grid.Row="0" Width="350" Height="30" Name="ProgressBar" Background="{StaticResource PrimaryBackgroundColor}" Foreground="{StaticResource SecondaryColor}" Value="{Binding ProgressValue, Mode=OneWay}">
+            <ProgressBar Grid.Row="0" 
+                         Width="350" 
+                         Height="30" 
+                         Name="ProgressBar" 
+                         Background="{StaticResource PrimaryBackgroundColor}" 
+                         Foreground="{DynamicResource SecondaryColor}" 
+                         Value="{Binding ProgressValue, Mode=OneWay}">
             </ProgressBar>
 
             <TextBlock 
-            Style="{StaticResource Text}"
+            Style="{DynamicResource Text}"
             Grid.Row="2"
             HorizontalAlignment="Center"
             Text="Heeft u het geluid gehoord?"/>

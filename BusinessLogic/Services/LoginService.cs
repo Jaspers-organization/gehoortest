@@ -21,9 +21,12 @@ public class LoginService
     public EmployeeProjection? Login(string email, string password) 
     {
         EmployeeLogin? employeeLogin = repository.GetByEmailAndActive(email);
-        if (employeeLogin == null) return null;
+        if (employeeLogin == null)
+        {
+            return null;
+        }
 
-        if (CheckLogin(password, employeeLogin.Password, employeeLogin.Salt) == false) return null;
+        if (CheckLogin(password, employeeLogin.Password) == false) return null;
 
         Employee employee = employeeLogin.Employee!;
         return new EmployeeProjection()
@@ -35,8 +38,10 @@ public class LoginService
         };
     }
 
-    private bool CheckLogin(string password, string passwordHash, string salt)
+
+    private bool CheckLogin(string password, string passwordHash)
     {
-        return hashingService.VerifyPassword(hashingService.HashPassword(password, salt), passwordHash);
+        return hashingService.VerifyPassword(password, passwordHash);
+
     }
 }

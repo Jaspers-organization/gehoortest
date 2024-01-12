@@ -4,39 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserInterface.Views"
+              xmlns:images="clr-namespace:UserInterface.Assets.Images" xmlns:viewmodels="clr-namespace:UserInterface.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:TestViewModel}"
              mc:Ignorable="d" >
+
     <Border Style="{StaticResource ContentContainer_XL}">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="4*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Style="{StaticResource Header}" Grid.Row="0" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
-
-                <StackPanel Grid.Row="1" Visibility="{Binding QuestionRadioButtons}">
-                    <ListBox SelectedItem="{Binding SelectedOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Style="{DynamicResource Header}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding TextQuestion}" VerticalAlignment="Center"/>
                 </StackPanel>
-
-                <TextBlock Style="{StaticResource Text}"  Grid.Row="1" VerticalAlignment="Center" Visibility="{Binding QuestionInput}" />
-                <TextBox Style="{StaticResource InputField_L}" Visibility="{Binding QuestionInput}" Text="{Binding QuestionInputText}" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20"/>
-
-                <Button 
-                 Style="{StaticResource PrimaryButton_L}" 
-                 Grid.Row="3" 
-                 HorizontalAlignment="Left"
-                 Content="Volgende vraag" 
-                 Command="{Binding SaveQuestionCommand}"/>
             </Grid>
-            <Image Grid.Column="1" Source="/UserInterface;component/Assets/Images/test.png"></Image>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="1" Visibility="{Binding ShowQuestionRadioButtons}">
+                        <ListBox SelectedItem="{Binding SelectedTextOption}" FontSize="30" ItemsSource="{Binding RadioButtons}"/>
+                    </StackPanel>
+
+                    <Border Height="70"
+                            CornerRadius="15"
+                            Width="450"
+                            Background="{StaticResource SecondaryBackgroundColor}"
+                            Grid.Row="2"
+                            Visibility="{Binding ShowQuestionInput}"
+                            Margin="5"
+                            HorizontalAlignment="Left">         
+                        <TextBox Visibility="{Binding ShowQuestionInput}" Grid.Row="2" Padding="10 0"
+                                 VerticalContentAlignment="Center"
+                                 FontSize="32" Text="{Binding QuestionInputText, UpdateSourceTrigger=PropertyChanged}"  
+                                 Width="450"
+                                 BorderBrush="{StaticResource SecondaryBackgroundColor}"
+                                 Margin="10"
+                                 Background="{StaticResource SecondaryBackgroundColor}"
+                                 HorizontalAlignment="Left"/>
+                    </Border>
+                   
+
+                    <Button 
+                         Style="{StaticResource PrimaryButton_L}" 
+                         Grid.Row="3" 
+                         HorizontalAlignment="Left"
+                         Content="Volgende vraag" 
+                         Command="{Binding AnswerTextQuestionCommand}"
+                         IsEnabled="{Binding TextBtnAnswerEnabled}"/>
+                </Grid>
+                <images:SittingScreen Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
         </Grid>
     </Border>
 </UserControl>

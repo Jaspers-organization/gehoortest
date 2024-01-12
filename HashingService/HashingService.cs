@@ -14,8 +14,8 @@ public class HashingService : IHashingService
         return BCrypt.Net.BCrypt.HashPassword(password, salt);
     }
 
-    public bool VerifyPassword(string password, string hashedPassword)
+    public bool VerifyPassword(string password, string passwordToVerify)
     {
-        return password.Equals(hashedPassword);
-    }
+        return BCrypt.Net.BCrypt.Verify(password, passwordToVerify);
+    }   
 }

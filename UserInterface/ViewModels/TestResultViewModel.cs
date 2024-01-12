@@ -1,14 +1,13 @@
 using UserInterface.Stores;
 using BusinessLogic.Classes;
-using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;
-using BusinessLogic.BusinessRules;
-using BusinessLogic.Controllers;
 using DataAccess.Repositories;
 using System;
 using System.Windows;
+using BusinessLogic.Guards;
+using BusinessLogic.Projections;
 
 namespace UserInterface.ViewModels;
 
@@ -33,18 +32,18 @@ internal class TestResultViewModel : ViewModelBase
         set { _testResultExplanation = value; OnPropertyChanged(nameof(TestResultExplanation)); }
     }
 
-    private Visibility _positiveTestResult = Visibility.Hidden;
-    public Visibility PositiveTestResult
+    private Visibility _ShowPositiveImage = Visibility.Hidden;
+    public Visibility ShowPositiveImage
     {
-        get { return _positiveTestResult; }
-        set { _positiveTestResult = value; OnPropertyChanged(nameof(PositiveTestResult)); }
+        get { return _ShowPositiveImage; }
+        set { _ShowPositiveImage = value; OnPropertyChanged(nameof(ShowPositiveImage)); }
     }
 
-    private Visibility _negativeTestResult = Visibility.Hidden;
-    public Visibility NegativeTestResult
+    private Visibility _showNegativeImage = Visibility.Hidden;
+    public Visibility ShowNegativeImage
     {
-        get { return _negativeTestResult; }
-        set { _negativeTestResult = value; OnPropertyChanged(nameof(NegativeTestResult)); }
+        get { return _showNegativeImage; }
+        set { _showNegativeImage = value; OnPropertyChanged(nameof(ShowNegativeImage)); }
     }
 
     private string? _email;
@@ -54,17 +53,25 @@ internal class TestResultViewModel : ViewModelBase
         set { _email = value; OnPropertyChanged(nameof(Email)); }
     }
 
-    private Visibility _emailError = Visibility.Hidden;
-    public Visibility EmailError
+    private Visibility _emailInvalidError = Visibility.Hidden;
+    public Visibility EmailInvalidError
     {
-        get { return _emailError; }
-        set { _emailError = value; OnPropertyChanged(nameof(EmailError)); }
+        get { return _emailInvalidError; }
+        set { _emailInvalidError = value; OnPropertyChanged(nameof(EmailInvalidError)); }
     }
-    private Visibility _emailSuccess = Visibility.Hidden;
-    public Visibility EmailSuccess
+
+    private Visibility _emailSendError = Visibility.Hidden;
+    public Visibility EmailSendError
     {
-        get { return _emailSuccess; }
-        set { _emailSuccess = value; OnPropertyChanged(nameof(EmailSuccess)); }
+        get { return _emailSendError; }
+        set { _emailSendError = value; OnPropertyChanged(nameof(EmailSendError)); }
+    }
+
+    private Visibility _emailSendSuccess = Visibility.Hidden;
+    public Visibility EmailSendSuccess
+    {
+        get { return _emailSendSuccess; }
+        set { _emailSendSuccess = value; OnPropertyChanged(nameof(EmailSendSuccess)); }
     }
     #endregion
 
@@ -86,7 +93,11 @@ internal class TestResultViewModel : ViewModelBase
         string host = "smtp.gmail.com";
         // ====================
 
-        emailService = new EmailService(new EmailProvider.EmailProvider().Initialize(host, email, key));
+        emailService = new EmailService(
+            new TestResultRepository(), 
+            new SettingsRepository(),
+            new EmailProvider.EmailProvider().Initialize(host, email, key)
+        );
 
         GetTestResult(testProgressData);
     }
@@ -99,33 +110,41 @@ internal class TestResultViewModel : ViewModelBase
         TestResultText = testResult.TestResultText;
         TestResultExplanation = testResult.TestResultExplanation;
 
-        NegativeTestResult = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
-        PositiveTestResult = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
+        ShowNegativeImage = testResult.HasHearingLoss ? Visibility.Visible : Visibility.Hidden;
+        ShowPositiveImage = testResult.HasHearingLoss ? Visibility.Hidden : Visibility.Visible;
     }
 
     private void SendEmail()
     {
-        if (!EmailBusinessRules.IsValidEmail(Email))
+        if (!Guard.IsValidEmail(Email))
         {
-            EmailError = Visibility.Visible;
+            EmailInvalidError = Visibility.Visible;
+            return;
+        }
+        EmailInvalidError = Visibility.Hidden;
+
+        try
+        {
+            emailService.SendEmail(Email, testResultId);
+        } 
+        catch (Exception e) 
+        {
+            ShowEmailSendError();
             return;
         }
 
-        EmailError = Visibility.Hidden;
-        bool result = emailService.SendEmail(Email, testResultId);
-        if (result)
-        {
-            ShowSuccess();
-        }
-        else
-        {
-            //show error voor jasper;
-        }
-
+        ShowEmailSendSuccess();
     }
-    private void ShowSuccess()
+
+    private void ShowEmailSendError()
     {
-        EmailSuccess = Visibility.Visible;
-        
+        EmailSendSuccess = Visibility.Hidden;
+        EmailSendError = Visibility.Visible;
+    }
+
+    private void ShowEmailSendSuccess()
+    {
+        EmailSendError = Visibility.Hidden;
+        EmailSendSuccess = Visibility.Visible;
     }
 }

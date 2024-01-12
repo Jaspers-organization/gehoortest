@@ -1,4 +1,4 @@
-﻿using BusinessLogic.BusinessRules;
+﻿using BusinessLogic.Guards;
 using BusinessLogic.Projections;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
@@ -56,13 +56,13 @@ internal class LoginViewModel : ViewModelBase
     {
         ShowInputError = Visibility.Hidden;
 
-        if (Password.IsNullOrEmpty() || !EmailBusinessRules.IsValidEmail(Email))
+        if (Password.IsNullOrEmpty() || !Guard.IsValidEmail(Email))
         {
             ShowInputError = Visibility.Visible;
             return;
         }
 
-        EmployeeProjection? employee = service.Login(Email, Password);
+        EmployeeProjection? employee = service.Login(Email!, Password!);
 
         if (employee == null)
         {

@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace BusinessLogic.BusinessRules;
+namespace BusinessLogic.Guards;
 
-public class EmailBusinessRules
+sealed public class Guard
 {
     public static bool IsValidEmail(string? email)
     {
@@ -15,4 +15,3 @@ public class EmailBusinessRules
         if (!IsValidEmail(email)) throw new ArgumentException("Email is invalid");
     }
 }
-
