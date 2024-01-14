@@ -1,8 +1,7 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DataAccess.Repositories;
 
@@ -21,6 +20,7 @@ public class EmployeeLoginRepository : IEmployeeLoginRepository
     {
         return repository.EmployeeLogins.FirstOrDefault(el => el.EmployeeId == id);
     }
+
     public bool EmailExists(string email)
     {
         return repository.EmployeeLogins.Where(el => el.Email == email).Any();

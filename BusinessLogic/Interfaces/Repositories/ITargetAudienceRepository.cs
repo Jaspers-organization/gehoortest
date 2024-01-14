@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Models;
 using Service.Projections;
 
-namespace BusinessLogic.IRepositories;
+namespace BusinessLogic.Interfaces.Repositories;
 
 public interface ITargetAudienceRepository
 {

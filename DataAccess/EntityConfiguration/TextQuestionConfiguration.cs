@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.EntityConfiguration;
 
-public class TextQuestionConfiguration : IEntityTypeConfiguration<TextQuestion>
+internal class TextQuestionConfiguration : IEntityTypeConfiguration<TextQuestion>
 {
     public void Configure(EntityTypeBuilder<TextQuestion> builder)
     {

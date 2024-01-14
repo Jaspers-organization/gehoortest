@@ -1,4 +1,4 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using gehoortest_application.Repository;

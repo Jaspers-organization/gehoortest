@@ -1,5 +1,5 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
+using BusinessLogic.Interfaces.Services;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 
@@ -38,10 +38,8 @@ public class LoginService
         };
     }
 
-
     private bool CheckLogin(string password, string passwordHash)
     {
         return hashingService.VerifyPassword(password, passwordHash);
-
     }
 }

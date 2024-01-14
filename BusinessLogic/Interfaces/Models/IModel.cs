@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.IModels;
+﻿namespace BusinessLogic.Interfaces.Models;
 
 public interface IModel
 {

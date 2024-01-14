@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Interfaces.Services;
 
 namespace HashingService;
 

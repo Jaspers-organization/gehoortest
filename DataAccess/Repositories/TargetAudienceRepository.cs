@@ -1,4 +1,4 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
 using Service.Projections;
@@ -42,6 +42,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             repository.SaveChanges();
         }
     }
+
     public TargetAudience Get(Guid id)
     {
         using (Repository repository = new Repository())
@@ -49,6 +50,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             return repository.TargetAudiences.FirstOrDefault(item => item.Id == id);
         }
     }
+
     public List<TargetAudienceProjection> GetAllWithTestAmount()
     {
         using (Repository repository = new Repository())
@@ -68,6 +70,7 @@ public class TargetAudienceRepository : ITargetAudienceRepository
             return result;
         }
     }
+
     public List<TargetAudience> GetAllActiveWithTest()
     {
         using (Repository context = new Repository())

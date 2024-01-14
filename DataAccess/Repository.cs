@@ -51,9 +51,9 @@ public class Repository : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //turn this on/off to get loggin in ouput window.
-        optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);
+       // optionsBuilder.LogTo(value => Debug.WriteLine(value), LogLevel.Trace);
         optionsBuilder.UseSqlServer(ConnectionString);
-        optionsBuilder.EnableSensitiveDataLogging(true);
-        optionsBuilder.EnableDetailedErrors(true);
+       // optionsBuilder.EnableSensitiveDataLogging(true);
+       // optionsBuilder.EnableDetailedErrors(true);
     }
 }

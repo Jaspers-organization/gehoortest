@@ -1,9 +1,7 @@
-﻿
-using BusinessLogic.Enums;
+﻿using BusinessLogic.Enums;
 using BusinessLogic.Models;
-using System.Diagnostics;
 
-namespace BusinessLogic.Classes;
+namespace BusinessLogic.HelperClasses;
 
 public class TestProgressData
 {
