@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.EntityConfiguration;
 
-public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudience>
+internal class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudience>
 {
     public void Configure(EntityTypeBuilder<TargetAudience> builder)
     {

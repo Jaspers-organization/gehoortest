@@ -424,16 +424,11 @@ internal class TestManagementViewModel : ViewModelBase, IConfirmation
         Test.EmployeeId = EmployeeId;
         Test.Employee = employeeService.GetEmployeeById(EmployeeId);
     }
-    private void CheckEmployee()
-    {
-        if (Test.Employee == null && Test.EmployeeId == Guid.Empty)
-            SetEmployee();
-    }
+    
     private void SaveTest()
     {
         try
         {
-
             testService.ProcessTest(Test, isNewTest, initalTargetAudience.Id);
 
             navigationStore!.CurrentViewModel = CreateTestOverviewViewModel();

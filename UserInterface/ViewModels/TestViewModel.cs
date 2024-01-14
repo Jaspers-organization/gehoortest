@@ -1,4 +1,4 @@
-using BusinessLogic.Classes;
+using BusinessLogic.HelperClasses;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
 using System;
@@ -462,7 +462,6 @@ internal class TestViewModel : ViewModelBase
     private void OpenTestManagement()
     {
         navigationStore!.CurrentViewModel = new TestOverviewViewModel(navigationStore);
-
     }
 
 }

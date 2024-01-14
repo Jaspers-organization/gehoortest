@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Classes;
+﻿using BusinessLogic.HelperClasses;
 using BusinessLogic.Enums;
 using BusinessLogic.Models;
 using BusinessLogic.Services;

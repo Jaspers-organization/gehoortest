@@ -1,5 +1,5 @@
 using UserInterface.Stores;
-using BusinessLogic.Classes;
+using BusinessLogic.HelperClasses;
 using BusinessLogic.Services;
 using UserInterface.Commands;
 using System.Windows.Input;

@@ -6,7 +6,6 @@ namespace DataAccess.MockData;
 
 public class TestMockRepository : ITestRepository
 {
-    //public List<Test> testDataList = new List<Test>();
     public List<Test> testDataList = new List<Test>
     {
             new Test { Id = new Guid(), TargetAudience = new TargetAudience{ Id = new Guid(), From = 19, To=29, Label="19-29" }, Active = true, Title = "Jong-volwassen test",
@@ -24,8 +23,8 @@ public class TestMockRepository : ITestRepository
                 },
                 ToneAudiometryQuestions = new List<ToneAudiometryQuestion>{
                     new ToneAudiometryQuestion { Id = new Guid(), Frequency = 1000, StartingDecibels = 30, QuestionNumber = 1},
-                    //new ToneAudiometryQuestion { Id = new Guid(), Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
-                    //new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
+                    new ToneAudiometryQuestion { Id = new Guid(), Frequency = 2000, StartingDecibels = 30, QuestionNumber = 2},
+                    new ToneAudiometryQuestion { Id = new Guid(), Frequency = 3000, StartingDecibels = 30, QuestionNumber = 3}
                 },Employee =  new Employee { Id = new Guid(), EmployeeNumber = "987654321", FirstName = "Sisimaile",  LastName = "Lolohea" }
             },
         };

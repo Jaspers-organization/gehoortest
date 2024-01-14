@@ -7,6 +7,5 @@ namespace BusinessLogic.Interfaces.Repositories
         public void Create(Settings setting);
         public void Update(Settings setting);
         public Settings GetSettings();
-
     }
 }

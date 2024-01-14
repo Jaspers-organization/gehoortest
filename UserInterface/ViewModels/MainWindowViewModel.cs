@@ -179,7 +179,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void CloseApplication()
     {
-        System.Windows.Application.Current.Shutdown();
+       Application.Current.Shutdown();
     }
 
     private void OnCurrentViewModelChanged()
@@ -218,7 +218,7 @@ internal class MainWindowViewModel : ViewModelBase
         else
             ChangeToSmall(resourceDictTextStyles);
 
-        System.Windows.Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
+        Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
 
         IsBigFontSize = !IsBigFontSize;
     }

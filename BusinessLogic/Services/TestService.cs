@@ -75,7 +75,6 @@ public class TestService
         return currentTargetAudienceId != initalTargetAudienceId;
     }
 
-    #region ???? not sure yet TODO
     public TextQuestionOption ConvertStringToQuestionOption(string text, Guid textQuestionId)
     {
         return new TextQuestionOption { Id = new Guid(), Option = text, TextQuestionId = textQuestionId };
@@ -95,7 +94,6 @@ public class TestService
     {
         return questionOptions.Select(ConvertQuestionOptionToString).ToList();
     }
-    #endregion
 
     #region Questions
     public ToneAudiometryQuestion CreateToneAudiometryQuestion()

@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Enums;
 using BusinessLogic.Models;
 
-namespace BusinessLogic.Classes;
+namespace BusinessLogic.HelperClasses;
 
 public class TestProgressData
 {

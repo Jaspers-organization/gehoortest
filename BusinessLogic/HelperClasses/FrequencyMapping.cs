@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Classes;
+﻿namespace BusinessLogic.HelperClasses;
 
 public class FrequencyMapping
 {

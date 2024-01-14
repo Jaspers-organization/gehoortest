@@ -43,8 +43,8 @@ namespace UserInterface.ViewModels
             }
         }
 
-        private System.Windows.Media.Color selectedColor;
-        public  System.Windows.Media.Color SelectedColor
+        private Color selectedColor;
+        public  Color SelectedColor
         {
             get
             {
@@ -58,7 +58,7 @@ namespace UserInterface.ViewModels
             }
         }
 
-        protected BusinessLogic.Classes.Color convertedColor;
+        protected BusinessLogic.HelperClasses.Color convertedColor;
         private Settings savedSettings { get; set; }
 
         #endregion Properties
@@ -88,14 +88,14 @@ namespace UserInterface.ViewModels
         private void GetSetting()
         {
             savedSettings = settingService.GetSetting();
-            System.Windows.Media.Color mediacolor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(savedSettings.Color);
+            Color mediacolor = (Color)ColorConverter.ConvertFromString(savedSettings.Color);
 
             var drawingcolor = System.Drawing.Color.FromArgb(mediacolor.A, mediacolor.R, mediacolor.G, mediacolor.B);
             System.Drawing.Color lighterColor = ControlPaint.LightLight(drawingcolor);
 
-            System.Windows.Media.Color lighterMediaColor = System.Windows.Media.Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
+            Color lighterMediaColor = Color.FromArgb(lighterColor.A, lighterColor.R, lighterColor.G, lighterColor.B);
 
-            SelectedColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(savedSettings.Color);
+            SelectedColor = (Color)ColorConverter.ConvertFromString(savedSettings.Color);
             SolidColorBrush solidColorBrush = new SolidColorBrush(mediacolor);
             SavedColor = solidColorBrush;
 
@@ -125,13 +125,11 @@ namespace UserInterface.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-            
         }
 
-        public void  ConvertColor(System.Windows.Media.Color selColor)
+        public void  ConvertColor(Color selColor)
         {
-            convertedColor = new BusinessLogic.Classes.Color(selColor.A, selColor.R, selColor.G, selColor.B,selColor.ToString());
+            convertedColor = new BusinessLogic.HelperClasses.Color(selColor.A, selColor.R, selColor.G, selColor.B,selColor.ToString());
             savedSettings.Color = convertedColor.Hex;
         }
         

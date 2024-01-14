@@ -22,7 +22,7 @@ public class SettingService
         settingsRepository.Update(settings);
     }
 
-    public bool ValidateColor(Classes.Color convertedColor)
+    public bool ValidateColor(HelperClasses.Color convertedColor)
     {
         //not empty
         if (convertedColor == null)
