@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Projections;
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using UserInterface.ViewModels;
 
 namespace UserInterface.Stores;

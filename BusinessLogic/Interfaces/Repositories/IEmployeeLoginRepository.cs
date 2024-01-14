@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Models;
 
-namespace BusinessLogic.IRepositories;
+namespace BusinessLogic.Interfaces.Repositories;
 
 public interface IEmployeeLoginRepository
 {

@@ -1,4 +1,4 @@
-﻿using BusinessLogic.IModels;
+﻿using BusinessLogic.Interfaces.Models;
 using BusinessLogic.Models;
 using BusinessLogic.Stores;
 

@@ -1,9 +1,9 @@
-﻿using BusinessLogic.IRepositories;
-using BusinessLogic.Projections;
-using BusinessLogic.IModels;
+﻿using BusinessLogic.Projections;
 using BusinessLogic.Enums;
 using BusinessLogic.Models;
 using BusinessLogic.BusinessRules;
+using BusinessLogic.Interfaces.Repositories;
+using BusinessLogic.Interfaces.Models;
 
 namespace BusinessLogic.Services;
 

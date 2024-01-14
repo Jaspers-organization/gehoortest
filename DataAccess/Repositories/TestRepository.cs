@@ -1,11 +1,8 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
-using BusinessLogic.Services;
 using gehoortest_application.Repository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 
 namespace DataAccess.Repositories
 {

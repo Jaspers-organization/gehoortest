@@ -1,7 +1,5 @@
-﻿
-using BusinessLogic.Enums;
+﻿using BusinessLogic.Enums;
 using BusinessLogic.Models;
-using System.Diagnostics;
 
 namespace BusinessLogic.Classes;
 

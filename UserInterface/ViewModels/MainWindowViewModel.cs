@@ -1,5 +1,4 @@
-﻿using BusinessLogic.IRepositories;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using System;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
@@ -9,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace UserInterface.ViewModels;
 

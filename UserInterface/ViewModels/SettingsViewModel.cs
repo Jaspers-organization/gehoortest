@@ -1,5 +1,4 @@
-﻿using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
+﻿using BusinessLogic.Services;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -7,15 +6,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
-using Xceed.Wpf.Toolkit;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
-using BusinessLogic.Classes;
-using BusinessLogic.IRepositories;
 using DataAccess.Repositories;
 using BusinessLogic.Models;
 using UserInterface.ViewModels.Modals;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace UserInterface.ViewModels
 {

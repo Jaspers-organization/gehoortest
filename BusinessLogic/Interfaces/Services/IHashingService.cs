@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Interfaces;
+﻿namespace BusinessLogic.Interfaces.Services;
 
 public interface IHashingService
 {

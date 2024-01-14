@@ -1,7 +1,6 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DataAccess.Repositories
 {

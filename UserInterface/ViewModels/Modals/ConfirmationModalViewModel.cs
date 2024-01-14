@@ -3,7 +3,6 @@ using UserInterface.Commands;
 using UserInterface.Stores;
 using BusinessLogic.Interfaces;
 using System;
-using BusinessLogic.Services;
 
 namespace UserInterface.ViewModels.Modals;
 

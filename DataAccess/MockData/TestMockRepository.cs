@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Projections;
-using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace DataAccess.MockData;
 

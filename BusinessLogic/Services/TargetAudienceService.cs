@@ -1,8 +1,7 @@
-﻿using BusinessLogic.IRepositories;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using BusinessLogic.BusinessRules;
-using BusinessLogic.Stores;
 using Service.Projections;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace BusinessLogic.Services;
 
@@ -47,10 +46,12 @@ public class TargetAudienceService
 
         targetAudienceRepository.Update(targetAudience);
     }
+
     public TargetAudience Get(Guid id)
     {
         return targetAudienceRepository.Get(id);
     }
+
     public void Delete(Guid id)
     {
         var tests = testRepository.GetTestsByTargetAudienceId(id);

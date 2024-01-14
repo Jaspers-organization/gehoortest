@@ -1,12 +1,6 @@
-﻿using BusinessLogic.IModels;
-using BusinessLogic.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using Service.Projections;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace DataAccess.MockData;
 
