@@ -1,11 +1,10 @@
 ﻿using BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace DataAccess.EntityConfiguration;
 
-public class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudience>
+internal class TargetAudienceConfiguration : IEntityTypeConfiguration<TargetAudience>
 {
     public void Configure(EntityTypeBuilder<TargetAudience> builder)
     {

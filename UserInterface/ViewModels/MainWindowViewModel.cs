@@ -1,5 +1,4 @@
-﻿using BusinessLogic.IRepositories;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 using System;
 using BusinessLogic.Services;
 using DataAccess.Repositories;
@@ -9,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using UserInterface.Commands;
 using UserInterface.Stores;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace UserInterface.ViewModels;
 
@@ -179,7 +179,7 @@ internal class MainWindowViewModel : ViewModelBase
 
     private void CloseApplication()
     {
-        System.Windows.Application.Current.Shutdown();
+       Application.Current.Shutdown();
     }
 
     private void OnCurrentViewModelChanged()
@@ -218,7 +218,7 @@ internal class MainWindowViewModel : ViewModelBase
         else
             ChangeToSmall(resourceDictTextStyles);
 
-        System.Windows.Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
+        Application.Current.Resources.MergedDictionaries.Add(resourceDictTextStyles);
 
         IsBigFontSize = !IsBigFontSize;
     }

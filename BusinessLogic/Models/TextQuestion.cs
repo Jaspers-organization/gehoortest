@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Enums;
-using BusinessLogic.IModels;
+using BusinessLogic.Interfaces.Models;
 
 namespace BusinessLogic.Models;
 

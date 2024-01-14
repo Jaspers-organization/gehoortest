@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Models;
 using BusinessLogic.Projections;
 
-namespace BusinessLogic.IRepositories;
+namespace BusinessLogic.Interfaces.Repositories;
 
 public interface IEmployeeRepository
 {

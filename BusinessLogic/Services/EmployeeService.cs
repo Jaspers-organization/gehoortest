@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.BusinessRules;
-using BusinessLogic.Interfaces;
-using BusinessLogic.IRepositories;
+using BusinessLogic.Interfaces.Repositories;
+using BusinessLogic.Interfaces.Services;
 using BusinessLogic.Models;
 using BusinessLogic.Projections;
 using BusinessLogic.Stores;

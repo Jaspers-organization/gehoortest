@@ -1,29 +1,27 @@
-﻿using BusinessLogic.IRepositories;
+﻿using BusinessLogic.Interfaces.Repositories;
 using BusinessLogic.Models;
 using gehoortest_application.Repository;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories;
+
+public class SettingsRepository : ISettingsRepository
 {
-    public class SettingsRepository : ISettingsRepository
+    private readonly Repository repository = new Repository();
+
+    public void Create(Settings setting)
     {
-        private readonly Repository repository = new Repository();
+        repository.Settings.Add(setting);
+        repository.SaveChanges();
+    }
 
-        public void Create(Settings setting)
-        {
-            repository.Settings.Add(setting);
-            repository.SaveChanges();
-        }
+    public void Update(Settings settings)
+    {
+        repository.Settings.Update(settings);
+        repository.SaveChanges();
+    }
 
-        public void Update(Settings settings)
-        {
-            repository.Settings.Update(settings);
-            repository.SaveChanges();
-        }
-
-        public Settings GetSettings()
-        {
-            return repository.Settings.First();
-        }
+    public Settings GetSettings()
+    {
+        return repository.Settings.First();
     }
 }

@@ -1,11 +1,6 @@
 ﻿using BusinessLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.IModels;
+namespace BusinessLogic.Interfaces.Models;
 
 public interface IQuestion
 {

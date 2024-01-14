@@ -1,8 +1,7 @@
-﻿using BusinessLogic.Classes;
+﻿using BusinessLogic.HelperClasses;
 using BusinessLogic.Projections;
-using BusinessLogic.IRepositories;
 using BusinessLogic.Models;
-using BusinessLogic.DataMappings;
+using BusinessLogic.Interfaces.Repositories;
 
 namespace BusinessLogic.Services;
 
@@ -56,7 +55,7 @@ public class TestResultService
             Id = testResultId,
             TargetAudience = testProgressData.Test.TargetAudience.Label,
             TestDateTime = DateTime.Now,
-            Duration = 0, // TODO Temporary until timer is implemented
+            Duration = 0, // [FUTURE DEVELOPEMT] Temporary until timer is implemented
             HasHearingLoss = hasHearingLoss,
             TextQuestions = testProgressData.TextQuestionResults,
             ToneAudiometryQuestions = testProgressData.ToneAudiometryQuestionResults,
